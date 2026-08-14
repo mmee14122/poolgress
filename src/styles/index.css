@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   設計 token — 要換整站風格，只需要改這一段
+   ------------------------------------------------------------------ */
+@theme {
+  /* 品牌色：CTA、重點文字、圖示 */
+  --color-brand-50: #eefaf6;
+  --color-brand-100: #d3f2e7;
+  --color-brand-500: #10917a;
+  --color-brand-600: #0e7c66;
+  --color-brand-700: #0b6152;
+
+  /* 強調色：只用在深色底上（徽章、數字） */
+  --color-accent-400: #f5a524;
+  --color-accent-500: #e08c0b;
+
+  /* 中性色：ink = 文字與深色區塊，sand = 淺色區塊底 */
+  --color-ink-900: #0f1418;
+  --color-ink-800: #1b2228;
+  --color-ink-600: #47535c;
+  --color-ink-400: #7b8894;
+  --color-sand-50: #faf8f4;
+  --color-sand-100: #f3efe8;
+  --color-sand-200: #e7e1d6;
+
+  --font-sans:
+    'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', ui-sans-serif, system-ui, sans-serif;
+
+  /* 區塊上下留白：手機 / 桌機 */
+  --spacing-section: 4rem;
+  --spacing-section-lg: 6.5rem;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* sticky 導覽列高度，錨點捲動時不被蓋住 */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink-800 antialiased;
+    /* 手機底部常駐購買列的高度，避免蓋住頁尾內容 */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply text-ink-900 font-bold tracking-tight text-balance;
+  }
+
+  /* 段落文字在中文下需要更鬆的行高 */
+  p {
+    @apply leading-[1.9];
+  }
+
+  :focus-visible {
+    @apply outline-brand-600 outline-2 outline-offset-2;
+  }
+}
+
+@layer utilities {
+  /* 見證區在手機用橫向 scroll-snap，桌機切回 grid */
+  .scroll-row {
+    scrollbar-width: none;
+  }
+  .scroll-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
