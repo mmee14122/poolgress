@@ -42,6 +42,17 @@ CTA 全頁共出現 6 次，手機另有底部常駐購買列（`StickyBar`，He
 就是資料介面。API 回傳符合這些型別，把 `course` 常數換成 fetch 結果即可，
 元件一行都不用改。
 
+## 部署
+
+推到 `main` 就會自動部署到 GitHub Pages（`.github/workflows/deploy.yml`）。
+
+- 自訂網域寫在 `public/CNAME`，build 時會複製到 `dist/`
+- Pages 的 source 必須設為 **GitHub Actions**（不是 Deploy from a branch）
+- 換網域時同時改 `public/CNAME` 與 repo 設定裡的 Custom domain
+
+備用：`npm run build:single` 會產生 `dist-single/index.html` 單一檔案，
+適合只能上傳一個檔案的虛擬主機。
+
 ## 還沒做的事
 
 - [ ] 換掉 Hero 的預覽影片佔位（保留 `aspect-video` 以免 CLS）
