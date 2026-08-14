@@ -1,6 +1,8 @@
 node_modules
 dist
+dist-single
 dist-ssr
+site-upload.zip
 *.tsbuildinfo
 *.local
 .DS_Store

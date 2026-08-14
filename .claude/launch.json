@@ -6,6 +6,19 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
       "runtimeArgs": ["node_modules/vite/bin/vite.js"],
       "port": 5173
+    },
+    {
+      "name": "single-file-check",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "preview",
+        "--outDir",
+        "dist-single",
+        "--port",
+        "4173"
+      ],
+      "port": 4173
     }
   ]
 }
