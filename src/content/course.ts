@@ -30,11 +30,29 @@ export type FlowStage = {
   body: string
 }
 
+export type LessonType = 'video' | 'game'
+
+export type Lesson = {
+  title: string
+  type: LessonType
+  /** 影片時長 mm:ss；遊戲闖關無時長 */
+  duration?: string
+  /** 可免費試看 */
+  free?: boolean
+  /** 付費單元彈窗顯示的內容重點（1–3 點） */
+  points?: string[]
+  /** 試看影片網址；未接入前顯示佔位播放區 */
+  videoUrl?: string
+  /** 遊戲闖關：闖關目標 */
+  goal?: string
+  /** 遊戲闖關：完成後獲得的能力 */
+  ability?: string
+}
+
 export type Chapter = {
-  no: string
-  /** 真實章節名稱，未提供時顯示待補 */
+  /** 章節名稱；Chapter 編號由順序自動產生 */
   name: string
-  summary: string
+  lessons: Lesson[]
 }
 
 export type Review = {
@@ -149,11 +167,77 @@ export const course: CourseIntro = {
     '與上一堂／下一堂課程的關係待補',
   ],
 
-  /* 06｜課程章節（真實資料，未提供前為待補） */
+  /* 06｜課程內容
+     單元數與時數由資料自動計算；Chapter 03、04 的單元名稱與
+     付費單元的內容重點、闖關目標仍為待補 */
   chapters: [
-    { no: 'Chapter 01', name: '章節名稱待補', summary: '章節內容待補' },
-    { no: 'Chapter 02', name: '章節名稱待補', summary: '章節內容待補' },
-    { no: 'Chapter 03', name: '章節名稱待補', summary: '章節內容待補' },
+    {
+      name: '撞球器材、背景認識',
+      lessons: [
+        { title: '撞球三大領域', type: 'video', duration: '03:42', free: true },
+        {
+          title: '球桿、組成結構',
+          type: 'video',
+          duration: '04:55',
+          points: ['內容重點待補', '內容重點待補'],
+        },
+        { title: '球檯組成', type: 'video', duration: '01:20', points: ['內容重點待補'] },
+      ],
+    },
+    {
+      name: '基本動作養成',
+      lessons: [
+        { title: '標準動作展示', type: 'video', duration: '02:15', free: true },
+        {
+          title: '基本動作 SOP',
+          type: 'video',
+          duration: '03:30',
+          points: ['內容重點待補', '內容重點待補'],
+        },
+        { title: '後手的握力', type: 'video', duration: '02:50', points: ['內容重點待補'] },
+        { title: '後手的擺動', type: 'video', duration: '05:00', points: ['內容重點待補'] },
+        {
+          title: '基本動作三角形',
+          type: 'video',
+          duration: '04:10',
+          points: ['內容重點待補', '內容重點待補'],
+        },
+        { title: '打擊練習', type: 'game', goal: '闖關目標待補', ability: '完成後能力待補' },
+        {
+          title: '長檯直線來回打進區塊內練習',
+          type: 'game',
+          goal: '闖關目標待補',
+          ability: '完成後能力待補',
+        },
+        {
+          title: '五分點純準度挑戰',
+          type: 'game',
+          goal: '闖關目標待補',
+          ability: '完成後能力待補',
+        },
+      ],
+    },
+    {
+      name: '瞄準與擊球原理',
+      lessons: [
+        { title: '單元名稱待補', type: 'video', duration: '05:20', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '06:10', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '04:45', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '07:05', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '05:40', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '05:20', points: ['內容重點待補'] },
+      ],
+    },
+    {
+      name: '從練習到實戰',
+      lessons: [
+        { title: '單元名稱待補', type: 'video', duration: '07:20', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '06:50', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '08:00', points: ['內容重點待補'] },
+        { title: '單元名稱待補', type: 'video', duration: '06:00', points: ['內容重點待補'] },
+        { title: '實戰挑戰待補', type: 'game', goal: '闖關目標待補', ability: '完成後能力待補' },
+      ],
+    },
   ],
 
   /* C｜學員評價（⚠️ 範例評價，上線前請替換為真實學員回饋） */
