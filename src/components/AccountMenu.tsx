@@ -14,11 +14,7 @@ const items = [
     href: './my-courses.html',
     icon: 'M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z',
   },
-  {
-    label: '我的星星',
-    href: './stars.html',
-    icon: 'M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z',
-  },
+  /* 「我的星星」不放在此清單：頂端的星星徽章已是同一個入口，避免重複 */
   {
     label: '我的訂單',
     href: './orders.html',
