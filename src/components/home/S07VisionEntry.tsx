@@ -10,7 +10,7 @@ export function S07VisionEntry() {
   const { vision, entry } = home.visionEntry
 
   return (
-    <section id="vision" className="scroll-mt-32 bg-brand-950 py-16 text-white lg:py-24">
+    <section id="vision" className="scroll-mt-24 bg-brand-950 py-16 text-white lg:py-24">
       <div className="mx-auto w-full max-w-2xl px-5 text-center sm:px-8">
         {/* 品牌願景 */}
         <p className="text-sm font-semibold tracking-widest text-brass-300 uppercase">

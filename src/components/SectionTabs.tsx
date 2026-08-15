@@ -27,7 +27,7 @@ export function SectionTabs({ active }: { active: string }) {
   }, [active])
 
   return (
-    <div className="sticky top-24 z-30 border-b border-line bg-ivory-50/95 backdrop-blur lg:hidden">
+    <div className="sticky top-[calc(var(--promo-h)+4rem)] z-30 border-b border-line bg-ivory-50/95 backdrop-blur lg:hidden">
       <ul ref={listRef} className="scroll-row flex gap-2 overflow-x-auto px-4 py-2.5">
         {sections.map((section) => {
           const isActive = section.id === active

@@ -63,6 +63,12 @@
   html {
     scroll-behavior: smooth;
     /* 錨點偏移由各區段的 scroll-mt 負責，這裡不再重複加，否則會疊加成兩倍 */
+    /* 促銷列高度：只在掛載促銷列的頁面（html.has-promo）為 2rem，
+       其餘為 0；全站 sticky 與錨點偏移以 calc(var(--promo-h) + …) 取用 */
+    --promo-h: 0px;
+  }
+  html.has-promo {
+    --promo-h: 2rem;
   }
 
   body {
@@ -129,8 +135,8 @@
 
 .hs-stage {
   position: sticky;
-  top: 6rem;
-  height: calc(100svh - 6rem);
+  top: calc(4rem + var(--promo-h, 0px));
+  height: calc(100svh - 4rem - var(--promo-h, 0px));
   overflow: hidden;
 }
 .hs-spacer {
@@ -317,8 +323,8 @@
 @media (min-width: 1024px) {
   .hero-sticky {
     position: sticky;
-    top: 6rem;
-    height: calc(94svh - 6rem);
+    top: calc(4rem + var(--promo-h, 0px));
+    height: calc(94svh - 4rem - var(--promo-h, 0px));
     overflow: hidden;
   }
   .hero-spacer {
@@ -343,7 +349,7 @@
 @media (min-width: 1024px) {
   html.course-hero-scroll { scroll-snap-type: y proximity; }
   .hero-outer { scroll-snap-align: start; }
-  .hero-next { scroll-snap-align: start; scroll-margin-top: 6rem; }
+  .hero-next { scroll-snap-align: start; scroll-margin-top: calc(4rem + var(--promo-h, 0px)); }
 }
 
 /* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下 */

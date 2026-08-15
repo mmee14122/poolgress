@@ -16,7 +16,7 @@ type Props = {
  */
 export function Section({ id, title, eyebrow, description, children }: Props) {
   return (
-    <section id={id} className="scroll-mt-40 py-10 lg:scroll-mt-32 lg:py-14">
+    <section id={id} className="scroll-mt-[calc(var(--promo-h)+8rem)] py-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:py-14">
       {eyebrow && (
         <p className="mb-2 text-sm font-semibold tracking-widest text-brand-600">{eyebrow}</p>
       )}

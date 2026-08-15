@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from 'react'
 import { Navbar } from './components/Navbar'
-import { PromoBar } from './components/PromoBar'
 import { Footer } from './components/Footer'
 import { Field, TextInput } from './ui/Field'
 import { Button } from './ui/Button'
@@ -67,7 +66,6 @@ export default function RegisterApp() {
 
   return (
     <>
-      <PromoBar />
       <Navbar />
 
       <main className="mx-auto w-full max-w-md px-4 py-10 sm:px-6 lg:py-16">

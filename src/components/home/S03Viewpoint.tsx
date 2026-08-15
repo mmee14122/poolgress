@@ -10,7 +10,7 @@ export function S03Viewpoint() {
   const { blind, guided } = viewpoint.paths
 
   return (
-    <section id="viewpoint" className="scroll-mt-32 bg-white py-16 lg:py-24">
+    <section id="viewpoint" className="scroll-mt-24 bg-white py-16 lg:py-24">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <h2 className="text-2xl sm:text-4xl">
           {viewpoint.titleLines.map((line) => (

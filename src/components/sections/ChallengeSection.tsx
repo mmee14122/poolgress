@@ -12,7 +12,7 @@ export function ChallengeSection() {
   return (
     <section
       id="challenge"
-      className="scroll-mt-40 py-10 lg:scroll-mt-32 lg:py-14"
+      className="scroll-mt-[calc(var(--promo-h)+8rem)] py-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:py-14"
     >
       <div className="relative overflow-hidden rounded-card bg-brand-950 px-6 py-10 text-white sm:px-10 lg:py-12">
         {/* 背景球路軌跡（裝飾） */}

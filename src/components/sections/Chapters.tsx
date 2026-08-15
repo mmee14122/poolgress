@@ -169,7 +169,7 @@ export function Chapters() {
   const [modal, setModal] = useState<ModalState>(null)
 
   return (
-    <section id="chapters" className="scroll-mt-40 py-10 lg:scroll-mt-32 lg:py-14">
+    <section id="chapters" className="scroll-mt-[calc(var(--promo-h)+8rem)] py-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:py-14">
       {/* 標題列：左標題、右總規模 */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2 className="text-2xl sm:text-3xl">課程內容</h2>

@@ -1,5 +1,4 @@
 import { Navbar } from './components/Navbar'
-import { PromoBar } from './components/PromoBar'
 import { Footer } from './components/Footer'
 import { CourseThumb } from './components/cart/MiniCart'
 import { cart, useCart, formatNT } from './lib/cart'
@@ -14,7 +13,6 @@ export default function CartApp() {
 
   return (
     <>
-      <PromoBar />
       <Navbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
@@ -62,7 +60,7 @@ export default function CartApp() {
             </ul>
 
             {/* 右：sticky 訂單摘要 */}
-            <aside className="mt-8 lg:sticky lg:top-32 lg:mt-0">
+            <aside className="mt-8 lg:sticky lg:top-[calc(var(--promo-h)+6rem)] lg:mt-0">
               <div className="rounded-card border border-line bg-white p-6">
                 <h2 className="text-lg">訂單摘要</h2>
 

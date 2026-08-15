@@ -1,5 +1,4 @@
 import { Navbar } from './components/Navbar'
-import { PromoBar } from './components/PromoBar'
 import { Footer } from './components/Footer'
 import { S01Hero } from './components/home/S01Hero'
 import { S02Struggle } from './components/home/S02Struggle'
@@ -20,7 +19,6 @@ import { S07VisionEntry } from './components/home/S07VisionEntry'
 export default function HomeApp() {
   return (
     <>
-      <PromoBar />
       <Navbar />
       <main>
         <S01Hero />

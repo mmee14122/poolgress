@@ -9,7 +9,7 @@ export function S06Fit() {
   const { fit } = home
 
   return (
-    <section id="fit" className="scroll-mt-32 bg-ivory-50 py-16 lg:py-24">
+    <section id="fit" className="scroll-mt-24 bg-ivory-50 py-16 lg:py-24">
       <div className="mx-auto w-full max-w-4xl px-5 sm:px-8">
         <h2 className="text-2xl sm:text-4xl">
           {fit.titleLines.map((line) => (

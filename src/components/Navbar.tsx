@@ -55,7 +55,7 @@ export function Navbar() {
   }, [menuOpen])
 
   return (
-    <header className="sticky top-8 z-40 border-b border-line bg-white/95 backdrop-blur">
+    <header className="sticky top-(--promo-h) z-40 border-b border-line bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6">
         {/* 左：Logo + 主導覽連結 */}
         <div className="flex min-w-0 items-center gap-4">

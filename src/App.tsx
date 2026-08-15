@@ -45,7 +45,7 @@ export default function App() {
         <div className="lg:grid lg:grid-cols-[11rem_minmax(0,1fr)_21rem] lg:items-start lg:gap-8 xl:grid-cols-[13rem_minmax(0,1fr)_23rem] xl:gap-12">
           {/* 左欄：桌機專用錨點導覽。sticky 必須放在格線欄本身，
               內層元素會因 items-start 讓欄高縮成內容高而失效 */}
-          <div className="sticky top-32 hidden pt-10 lg:block">
+          <div className="sticky top-[calc(var(--promo-h)+6rem)] hidden pt-10 lg:block">
             <SideNav active={active} />
           </div>
 
@@ -65,7 +65,7 @@ export default function App() {
           </main>
 
           {/* 右欄：桌機 sticky 課程卡（id 供 Hero 的立即購買捲動定位） */}
-          <aside id="buy-card" className="sticky top-32 hidden scroll-mt-32 pt-10 lg:block">
+          <aside id="buy-card" className="sticky top-[calc(var(--promo-h)+6rem)] hidden scroll-mt-[calc(var(--promo-h)+6rem)] pt-10 lg:block">
             <CourseCard />
           </aside>
         </div>
