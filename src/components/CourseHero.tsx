@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { course, courseStats } from '../content/course'
 import { products } from '../content/catalog'
 import { cart } from '../lib/cart'
@@ -10,9 +11,28 @@ const product = products[0]
  * 左（桌機約 55%）：撞球原理循環動畫——傳達「理解原理，才能真正打進球」。
  * 右：分類標籤、課程大標、核心價值、簡介、規模資訊、CTA。
  * 不重複價格與優惠——那是右欄購買卡的工作。
+ *
+ * 捲動超過 Hero 一半後整塊平滑摺疊（讓路給內容），
+ * 捲回接近頂端時展開；兩個門檻不同以避免臨界點抖動。
  */
 export function CourseHero() {
   const { hero } = course
+  const [collapsed, setCollapsed] = useState(false)
+  const innerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const onScroll = () => {
+      setCollapsed((prev) => {
+        if (prev) return window.scrollY > 60
+        // 展開狀態下 offsetHeight 即自然高度
+        const half = (innerRef.current?.offsetHeight ?? 0) / 2
+        return half > 0 && window.scrollY > half
+      })
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   /**
    * 立即購買：
@@ -29,8 +49,14 @@ export function CourseHero() {
   }
 
   return (
-    <section className="border-b border-line bg-ivory-50">
-      <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
+    /* 淺藍灰底與下方內容區隔；grid-rows 過渡實作摺疊 */
+    <section
+      className={`grid border-b border-line bg-[#e4eaf3] transition-[grid-template-rows] duration-500 ease-out ${
+        collapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'
+      }`}
+    >
+      <div ref={innerRef} className="overflow-hidden">
+        <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
         {/* 左：撞球原理動畫（俯視球檯） */}
         <BilliardsAnimation />
 
@@ -82,6 +108,7 @@ export function CourseHero() {
               </svg>
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </section>
