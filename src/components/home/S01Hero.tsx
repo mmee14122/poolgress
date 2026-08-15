@@ -118,7 +118,7 @@ export function S01Hero() {
               ))}
             </h1>
             <p className="mt-5 text-lg font-semibold text-brass-300 sm:text-xl">{hero.core}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
               <Button href={hero.cta.href} size="lg">
                 {hero.cta.label}
               </Button>
@@ -250,7 +250,7 @@ function StaticHero() {
           </h1>
           <p className="mt-6 max-w-xl text-base text-white/75 sm:text-lg">{hero.subtitle}</p>
           <p className="mt-8 text-lg font-semibold text-brass-300 sm:text-xl">{hero.core}</p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
             <Button href={hero.cta.href} size="lg">
               {hero.cta.label}
             </Button>
