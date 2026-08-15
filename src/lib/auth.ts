@@ -23,8 +23,8 @@ export type AuthResult = { ok: true } | { ok: false; code: AuthErrorCode }
 
 const NOT_CONFIGURED: AuthResult = { ok: false, code: 'not_configured' }
 
-/** 登入成功後的導向位置。會員中心建置後改這裡即可（相對路徑，子資料夾部署適用） */
-export const AFTER_LOGIN_URL = './index.html'
+/** 登入成功後的導向位置（相對路徑，子資料夾部署適用） */
+export const AFTER_LOGIN_URL = './account.html'
 
 /** Email + 密碼登入 */
 export async function signInWithPassword(_email: string, _password: string): Promise<AuthResult> {

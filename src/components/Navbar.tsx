@@ -3,6 +3,8 @@ import { site } from '../content/site'
 import { LanguageMenu } from './LanguageMenu'
 import { CartHover, CartDrawerButton } from './cart/CartWidget'
 import { Logo } from './Logo'
+import { AccountMenu } from './AccountMenu'
+import { useSession } from '../lib/session'
 
 
 type NavTheme = 'light' | 'hero'
@@ -25,6 +27,7 @@ const navLinkClass = (dark: boolean) =>
  */
 export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const user = useSession()
   /* 首頁初始就是深色 → 第一幀不會閃白 */
   const [dark, setDark] = useState(theme === 'hero')
 
@@ -91,18 +94,21 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
           {/* 桌機：hover 展開 mini cart */}
           <CartHover />
 
-          <a
-            href={site.loginUrl}
-            className={navLinkClass(dark)}
-          >
-            登入／註冊
-          </a>
+          {/* 登入後改顯示頭像選單 */}
+          {user ? (
+            <AccountMenu user={user} />
+          ) : (
+            <a href={site.loginUrl} className={navLinkClass(dark)}>
+              登入／註冊
+            </a>
+          )}
 
           <LanguageMenu />
         </div>
 
-        {/* 手機：購物車抽屜 + 漢堡選單 */}
+        {/* 手機：頭像（登入後）＋購物車抽屜 + 漢堡選單 */}
         <div className="flex items-center gap-1 lg:hidden">
+          {user && <AccountMenu user={user} />}
           <CartDrawerButton />
           <button
             type="button"
@@ -135,12 +141,15 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
                 {item.label}
               </a>
             ))}
-            <a
-              href={site.loginUrl}
-              className="block rounded-lg px-3 py-3 text-base font-medium text-ink-900 transition-colors hover:bg-ivory-100"
-            >
-              登入／註冊
-            </a>
+            {/* 已登入時個人相關入口由頭像選單負責，這裡只在未登入時顯示 */}
+            {!user && (
+              <a
+                href={site.loginUrl}
+                className="block rounded-lg px-3 py-3 text-base font-medium text-ink-900 transition-colors hover:bg-ivory-100"
+              >
+                登入／註冊
+              </a>
+            )}
 
             <div className="mt-2 flex items-center justify-between border-t border-line px-3 pt-3">
               <span className="text-sm text-ink-500">語言</span>

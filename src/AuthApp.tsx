@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Logo } from './components/Logo'
 import { Button } from './ui/Button'
 import { isEmail, MIN_PASSWORD_LENGTH } from './lib/validate'
+import { session } from './lib/session'
 import {
   AFTER_LOGIN_URL,
   requestPasswordReset,
@@ -141,6 +142,17 @@ export default function AuthApp() {
       return
     }
     setFormError(formErrorText[result.code] ?? formErrorText.unknown)
+  }
+
+  /**
+   * ⚠️ 示範登入：後端串接前用來預覽登入後的個人頁面。
+   * 只在本機建立顯示用的 session（僅存 Email），不驗證、不存密碼。
+   * signInWithPassword 接上後端後即可移除此函式與對應按鈕。
+   */
+  const demoSignIn = () => {
+    const demoEmail = isEmail(email) ? email.trim() : 'demo@poolgress.com'
+    session.signIn({ email: demoEmail })
+    location.href = AFTER_LOGIN_URL
   }
 
   const onProvider = async (provider: OAuthProvider) => {
@@ -331,6 +343,18 @@ export default function AuthApp() {
                     <div className="grid gap-3 sm:grid-cols-2">
                       <ProviderButton provider="apple" onClick={() => onProvider('apple')} />
                       <ProviderButton provider="google" onClick={() => onProvider('google')} />
+                    </div>
+
+                    {/* ⚠️ 示範入口：後端串接前用來預覽登入後的個人頁面。
+                        不做任何驗證、不代表真的登入，接上後端後整段移除 */}
+                    <div className="mt-6 border-t border-dashed border-line pt-4 text-center">
+                      <button
+                        type="button"
+                        onClick={demoSignIn}
+                        className="rounded px-2 py-1 text-xs text-ink-400 underline underline-offset-4 transition-colors hover:text-brand-700"
+                      >
+                        示範登入（後端串接前，僅供預覽個人頁面）
+                      </button>
                     </div>
                   </>
                 )}
