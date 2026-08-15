@@ -1,12 +1,19 @@
 import { course } from '../content/course'
+import { products } from '../content/catalog'
+import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 import { CourseCover } from './CourseCover'
+
+/** 這一頁對應的商品（⚠️ 價格為示範資料） */
+const product = products[0]
 
 /**
  * 右欄課程卡（桌機 sticky）。
  * ⚠️ 價格、時數、學員數等資料尚未確認，一律顯示待補，不虛構。
  */
 export function CourseCard() {
+  const inCart = useCart().some((i) => i.id === product.id)
+
   return (
     <div className="overflow-hidden rounded-card border border-line bg-white shadow-sm">
       <div className="p-4">
@@ -39,12 +46,18 @@ export function CourseCard() {
           <Button block size="lg" href={course.startUrl}>
             {course.ctaLabel}
           </Button>
-          <Button block variant="secondary" size="lg" href="#how">
-            看看怎麼學
-          </Button>
+          {inCart ? (
+            <Button block variant="secondary" size="lg" href="./cart.html">
+              已在購物車，前往結帳
+            </Button>
+          ) : (
+            <Button block variant="secondary" size="lg" onClick={() => cart.add(product)}>
+              加入購物車 · {formatNT(product.price)}
+            </Button>
+          )}
         </div>
 
-        <p className="mt-4 text-center text-xs text-ink-400">價格與方案資訊待補</p>
+        <p className="mt-4 text-center text-xs text-ink-400">＊金額為示範資料，正式價格待補</p>
       </div>
     </div>
   )

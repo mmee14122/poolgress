@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { site } from '../content/site'
 import { LanguageMenu } from './LanguageMenu'
+import { CartHover, CartDrawerButton } from './cart/CartWidget'
 
 function Logo() {
   return (
@@ -12,25 +13,6 @@ function Logo() {
         <span className="absolute right-1 bottom-1.5 h-1.5 w-1.5 rounded-full bg-brass-400" />
       </span>
       <span className="text-lg font-bold tracking-tight text-ink-900">{site.brandName}</span>
-    </a>
-  )
-}
-
-function CartIcon({ count }: { count: number }) {
-  return (
-    <a
-      href={site.cartUrl}
-      aria-label={`購物車，${count} 件商品`}
-      className="relative flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-ivory-100"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-ink-700">
-        <path d="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z" />
-      </svg>
-      {count > 0 && (
-        <span className="absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-felt-600 px-1 text-[0.6875rem] font-bold text-white tabular-nums">
-          {count}
-        </span>
-      )}
     </a>
   )
 }
@@ -65,7 +47,8 @@ export function Navbar() {
 
           <span aria-hidden="true" className="mx-2 h-5 w-px bg-line" />
 
-          <CartIcon count={site.cartCount} />
+          {/* 桌機：hover 展開 mini cart */}
+          <CartHover />
 
           <a
             href={site.loginUrl}
@@ -77,9 +60,9 @@ export function Navbar() {
           <LanguageMenu />
         </nav>
 
-        {/* 手機：僅保留購物車與漢堡選單 */}
+        {/* 手機：購物車抽屜 + 漢堡選單 */}
         <div className="flex items-center gap-1 lg:hidden">
-          <CartIcon count={site.cartCount} />
+          <CartDrawerButton />
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}

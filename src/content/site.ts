@@ -17,7 +17,7 @@ export const site = {
     { label: '關於教練', href: '/coach' },
   ] as NavLink[],
 
-  cartUrl: '/cart',
+  cartUrl: './cart.html',
   loginUrl: '/login',
   signupUrl: '/signup',
 

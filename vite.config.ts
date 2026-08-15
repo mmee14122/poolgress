@@ -13,6 +13,9 @@ export default defineConfig({
       input: {
         home: fileURLToPath(new URL('./index.html', import.meta.url)),
         course: fileURLToPath(new URL('./course.html', import.meta.url)),
+        cart: fileURLToPath(new URL('./cart.html', import.meta.url)),
+        checkout: fileURLToPath(new URL('./checkout.html', import.meta.url)),
+        register: fileURLToPath(new URL('./register.html', import.meta.url)),
       },
     },
   },
