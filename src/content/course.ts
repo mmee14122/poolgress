@@ -78,11 +78,20 @@ export type CoachInfo = {
 
 export type Faq = { q: string; a: string }
 
+export type HeroInfo = {
+  /** 課程分類／難度標籤，例：「新手入門｜花式撞球」 */
+  category: string
+  title: string
+  /** 一句課程核心價值 */
+  value: string
+  /** 簡短課程介紹（2–3 行） */
+  intro: string
+  /** 適合程度，例：「新手入門」 */
+  level: string
+}
+
 export type PurchaseInfo = {
   studentCount: string
-  totalHours: string
-  lessonCount: string
-  gameCount: string
   /** 優惠／早鳥／組合文案；null 時不顯示該區 */
   offerNote: string | null
 }
@@ -92,6 +101,7 @@ export type CourseIntro = {
   name: string
   /** 一句話說明這堂課處理什麼 */
   tagline: string
+  hero: HeroInfo
   problem: {
     /** 這堂課要解決的具體問題（非首頁的大問題） */
     lines: string[]
@@ -121,6 +131,16 @@ export type CourseIntro = {
 export const course: CourseIntro = {
   name: '課程名稱待補',
   tagline: '課程定位一句話待補',
+
+  /* Hero 區塊文案 */
+  hero: {
+    category: '新手入門｜花式撞球',
+    title: '從第一顆球開始，建立真正打得準的基本功',
+    value: '不再只靠感覺亂打；理解擊球原理，讓每一次練習都有進步。',
+    intro:
+      '這堂課會帶你從觀念、基本動作、擊球原理到實際闖關練習，一步步建立可複製的進步方法——知道自己在練什麼，也看得見自己練到哪裡。',
+    level: '新手入門',
+  },
 
   /* 01｜你現在可能卡在哪裡？ */
   problem: {
@@ -324,18 +344,36 @@ export const course: CourseIntro = {
     },
   ],
 
-  /* 右欄購買卡資訊（⚠️ 待補） */
+  /* 右欄購買卡資訊（單元數、時數由章節資料自動計算） */
   purchase: {
     studentCount: '＿＿',
-    totalHours: '＿＿',
-    lessonCount: '＿＿',
-    gameCount: '＿＿',
     offerNote: '預購六折優惠中｜活動方案：NT$4,900 加贈一堂教練課',
   },
 
   startUrl: '#', // ⚠️ 課程平台連結待補
   ctaLabel: '開始課程',
 }
+
+/**
+ * 課程規模統計：由章節資料自動計算。
+ * Hero 資訊列、購買卡、課程內容標題列共用，改資料自動同步。
+ */
+export const courseStats = (() => {
+  let units = 0
+  let games = 0
+  let seconds = 0
+  for (const chapter of course.chapters) {
+    for (const lesson of chapter.lessons) {
+      if (lesson.type === 'video') units += 1
+      else games += 1
+      if (lesson.duration) {
+        const [m, s] = lesson.duration.split(':').map(Number)
+        seconds += m * 60 + s
+      }
+    }
+  }
+  return { units, games, hours: (seconds / 3600).toFixed(1), totalSeconds: seconds }
+})()
 
 /**
  * 錨點導覽項目（左欄與手機標籤列共用）。

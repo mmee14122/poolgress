@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { course } from '../content/course'
+import { course, courseStats } from '../content/course'
 import { products } from '../content/catalog'
 import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
@@ -79,19 +79,19 @@ export function CourseCard() {
               <Icon d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6l5 3 1-1.7-4-2.3z" />
               <span>
                 課程長度約{' '}
-                <strong className="font-semibold text-ink-900">{purchase.totalHours}</strong> 小時
+                <strong className="font-semibold text-ink-900">{courseStats.hours}</strong> 小時
               </span>
             </li>
             <li className="flex items-center gap-2.5">
               <Icon d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z" />
               <span>
-                <strong className="font-semibold text-ink-900">{purchase.lessonCount}</strong>
+                <strong className="font-semibold text-ink-900">{courseStats.units}</strong>
                 個課程單元
               </span>
             </li>
             <li className="flex items-center gap-2.5">
               <Icon d="M17 4a5 5 0 014.9 6l-1.6 8A3 3 0 0117.4 21a3 3 0 01-2.5-1.4L13.4 17h-2.8l-1.5 2.6A3 3 0 016.6 21a3 3 0 01-2.9-3l-1.6-8A5 5 0 017 4zM9 8H7v2H5v2h2v2h2v-2h2v-2H9zm7 0a1.2 1.2 0 100 2.4A1.2 1.2 0 0016 8zm2.5 3a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" />
-              <strong className="font-semibold text-ink-900">{purchase.gameCount}</strong>
+              <strong className="font-semibold text-ink-900">{courseStats.games}</strong>
               個遊戲練習題
             </li>
             <li className="flex items-center gap-2.5">

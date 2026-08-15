@@ -1,4 +1,5 @@
 import { Navbar } from './components/Navbar'
+import { CourseHero } from './components/CourseHero'
 import { SectionTabs } from './components/SectionTabs'
 import { SideNav } from './components/SideNav'
 import { CourseCard } from './components/CourseCard'
@@ -13,7 +14,7 @@ import { Chapters } from './components/sections/Chapters'
 import { Reviews } from './components/sections/Reviews'
 import { CoachSection } from './components/sections/CoachSection'
 import { Faq } from './components/sections/Faq'
-import { course, sections } from './content/course'
+import { sections } from './content/course'
 import { useScrollSpy } from './hooks/useScrollSpy'
 
 const sectionIds = sections.map((s) => s.id)
@@ -32,6 +33,8 @@ export default function App() {
   return (
     <>
       <Navbar />
+      {/* Hero 位於三欄版面之前，橫跨主內容完整寬度 */}
+      <CourseHero />
       <SectionTabs active={active} />
 
       <div className="mx-auto w-full max-w-[90rem] px-4 sm:px-6">
@@ -42,17 +45,8 @@ export default function App() {
             <SideNav active={active} />
           </div>
 
-          {/* 中欄：課程簡介六區段 */}
+          {/* 中欄：課程簡介六區段（課名與定位由 Hero 呈現） */}
           <main className="min-w-0 divide-y divide-line">
-            {/* 頁首：課名與定位 */}
-            <header className="pt-8 pb-10 lg:pt-12">
-              <p className="text-sm font-semibold tracking-widest text-felt-600 uppercase">
-                Poolgress 課程
-              </p>
-              <h1 className="mt-3 text-3xl leading-[1.3] sm:text-4xl">{course.name}</h1>
-              <p className="mt-3 text-lg text-ink-500">{course.tagline}</p>
-            </header>
-
             {/* 手機：購買卡改為一般內容區塊（桌機由右欄 sticky 呈現） */}
             <div id="purchase" className="scroll-mt-32 py-8 lg:hidden">
               <CourseCard />
@@ -69,8 +63,8 @@ export default function App() {
             <Faq />
           </main>
 
-          {/* 右欄：桌機 sticky 課程卡 */}
-          <aside className="sticky top-24 hidden pt-10 lg:block">
+          {/* 右欄：桌機 sticky 課程卡（id 供 Hero 的立即購買捲動定位） */}
+          <aside id="buy-card" className="sticky top-24 hidden scroll-mt-24 pt-10 lg:block">
             <CourseCard />
           </aside>
         </div>

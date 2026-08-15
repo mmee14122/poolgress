@@ -144,6 +144,55 @@
   animation: one-pop 0.7s ease-out 2.9s forwards;
 }
 
+/* ------------------------------------------------------------------
+   課程頁 Hero 撞球原理動畫（俯視球檯，5 秒循環）
+   時間軸：瞄準線浮現 → 假想球提示 → 母球沿預測線前進 → 撞擊
+   → 目標球沿路徑進袋 → 軌跡線停留後淡出 → 淡入重來
+   預設（未套動畫時）為畫好軌跡線的靜態畫面，
+   動畫只在 prefers-reduced-motion: no-preference 時啟用。
+   ------------------------------------------------------------------ */
+@keyframes hero-line1 {
+  0% { stroke-dashoffset: 220; opacity: 1; }
+  12% { stroke-dashoffset: 0; opacity: 1; }
+  72% { stroke-dashoffset: 0; opacity: 1; }
+  82%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes hero-line2 {
+  0%, 10% { stroke-dashoffset: 310; opacity: 1; }
+  22% { stroke-dashoffset: 0; opacity: 1; }
+  72% { stroke-dashoffset: 0; opacity: 1; }
+  82%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes hero-ghost {
+  0%, 16% { opacity: 0; }
+  24% { opacity: 0.65; }
+  72% { opacity: 0.65; }
+  82%, 100% { opacity: 0; }
+}
+@keyframes hero-cue {
+  0%, 30% { transform: none; opacity: 1; }
+  48% { transform: translate(198px, -85px); opacity: 1; }
+  84% { transform: translate(198px, -85px); opacity: 1; }
+  88% { transform: translate(198px, -85px); opacity: 0; }
+  90% { transform: none; opacity: 0; }
+  96%, 100% { transform: none; opacity: 1; }
+}
+@keyframes hero-obj {
+  0%, 48% { transform: none; opacity: 1; }
+  63% { transform: translate(252px, -172px) scale(1); opacity: 1; }
+  67% { transform: translate(252px, -172px) scale(0.25); opacity: 0; }
+  90% { transform: none; opacity: 0; }
+  96%, 100% { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-line1 { animation: hero-line1 5s ease-in-out infinite; }
+  .hero-line2 { animation: hero-line2 5s ease-in-out infinite; }
+  .hero-ghost { animation: hero-ghost 5s ease-in-out infinite; }
+  .hero-cue { animation: hero-cue 5s cubic-bezier(0.4, 0, 0.4, 1) infinite; }
+  .hero-obj { animation: hero-obj 5s cubic-bezier(0.4, 0, 0.4, 1) infinite; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

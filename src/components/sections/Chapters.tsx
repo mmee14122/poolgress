@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { course, type Chapter, type Lesson } from '../../content/course'
+import { course, courseStats, type Chapter, type Lesson } from '../../content/course'
 import { products } from '../../content/catalog'
 import { cart } from '../../lib/cart'
 import { Button } from '../../ui/Button'
@@ -19,12 +19,8 @@ const fmtDuration = (sec: number) =>
 
 const chapterSeconds = (c: Chapter) =>
   c.lessons.reduce((sum, l) => sum + (l.duration ? toSeconds(l.duration) : 0), 0)
-const chapterUnitCount = (c: Chapter) => c.lessons.filter((l) => l.type === 'video').length
 
-const totalUnits = course.chapters.reduce((sum, c) => sum + chapterUnitCount(c), 0)
-const totalHours = (
-  course.chapters.reduce((sum, c) => sum + chapterSeconds(c), 0) / 3600
-).toFixed(1)
+// 總規模統一由 courseStats 提供（與 Hero、購買卡同源）
 
 /* ---------- 單元彈窗 ---------- */
 
@@ -178,9 +174,9 @@ export function Chapters() {
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2 className="text-2xl sm:text-3xl">課程內容</h2>
         <p className="text-sm text-ink-500">
-          共 <strong className="font-semibold text-ink-900">{totalUnits}</strong> 個單元
+          共 <strong className="font-semibold text-ink-900">{courseStats.units}</strong> 個單元
           <span aria-hidden="true" className="mx-2 text-ink-400">·</span>
-          總時數約 <strong className="font-semibold text-ink-900">{totalHours}</strong> 小時
+          總時數約 <strong className="font-semibold text-ink-900">{courseStats.hours}</strong> 小時
         </p>
       </div>
 
