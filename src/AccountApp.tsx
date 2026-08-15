@@ -227,21 +227,26 @@ function NameEditor({ user }: { user: Session }) {
   }
 
   return (
-    /* 更名入口只留名稱旁的鉛筆鈕（aria-label 供螢幕閱讀器辨識） */
-    <div className="flex items-center gap-2">
-      <h1 className="truncate text-2xl sm:text-3xl">{displayNameOf(user)}</h1>
+    /* 整個名稱就是編輯入口；鉛筆圖示保留作為可編輯的視覺提示 */
+    <h1 className="text-2xl sm:text-3xl">
       <button
         type="button"
         onClick={start}
-        aria-label="更改顯示名稱"
         title="更改顯示名稱"
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ivory-100 hover:text-brand-700"
+        className="group flex max-w-full items-center gap-2 rounded-lg text-left transition-colors hover:text-brand-700"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current">
-          <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
-        </svg>
+        <span className="truncate">{displayNameOf(user)}</span>
+        <span
+          aria-hidden="true"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors group-hover:bg-ivory-100 group-hover:text-brand-700"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
+            <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
+          </svg>
+        </span>
+        <span className="sr-only">（點擊更改顯示名稱）</span>
       </button>
-    </div>
+    </h1>
   )
 }
 

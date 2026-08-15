@@ -207,22 +207,26 @@ export function AccountMenu({ user }: { user: Session }) {
                     )}
                   </div>
                 ) : (
-                  <p className="flex items-center gap-1">
-                    <span className="truncate font-semibold text-ink-900">
+                  /* 整個名稱就是編輯入口；鉛筆圖示保留作為視覺提示 */
+                  <button
+                    type="button"
+                    onClick={startEditName}
+                    title="更改顯示名稱"
+                    className="group flex max-w-full items-center gap-1 rounded-lg text-left"
+                  >
+                    <span className="truncate font-semibold text-ink-900 transition-colors group-hover:text-brand-700">
                       {displayNameOf(user)}
                     </span>
-                    <button
-                      type="button"
-                      onClick={startEditName}
-                      aria-label="更改顯示名稱"
-                      title="更改顯示名稱"
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ivory-100 hover:text-brand-700"
+                    <span
+                      aria-hidden="true"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors group-hover:bg-ivory-100 group-hover:text-brand-700"
                     >
-                      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 fill-current">
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current">
                         <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
                       </svg>
-                    </button>
-                  </p>
+                    </span>
+                    <span className="sr-only">（點擊更改顯示名稱）</span>
+                  </button>
                 )}
                 {/* 星星數（實際數值待後端） */}
                 <a
