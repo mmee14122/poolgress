@@ -57,22 +57,24 @@ export function Navbar() {
   return (
     <header className="sticky top-8 z-40 border-b border-line bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6">
-        <Logo />
+        {/* 左：Logo + 主導覽連結 */}
+        <div className="flex min-w-0 items-center gap-4">
+          <Logo />
+          <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
+            {site.nav.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="rounded-full px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-ivory-100 hover:text-ink-900"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
-        {/* 桌機導覽 */}
-        <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
-          {site.nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-ivory-100 hover:text-ink-900"
-            >
-              {item.label}
-            </a>
-          ))}
-
-          <span aria-hidden="true" className="mx-2 h-5 w-px bg-line" />
-
+        {/* 右：購物車、登入、語言 */}
+        <div className="hidden items-center gap-1 lg:flex">
           {/* 桌機：hover 展開 mini cart */}
           <CartHover />
 
@@ -84,7 +86,7 @@ export function Navbar() {
           </a>
 
           <LanguageMenu />
-        </nav>
+        </div>
 
         {/* 手機：購物車抽屜 + 漢堡選單 */}
         <div className="flex items-center gap-1 lg:hidden">
