@@ -57,6 +57,12 @@ export const session = {
     if (!cache) return
     commit({ ...cache, avatar: avatar ?? undefined })
   },
+  /** 更新顯示名稱；空字串視為清除（UI 改用 Email 前綴） */
+  setName(name: string) {
+    if (!cache) return
+    const trimmed = name.trim()
+    commit({ ...cache, name: trimmed || undefined })
+  },
   subscribe(listener: () => void) {
     listeners.add(listener)
     return () => listeners.delete(listener)
@@ -87,6 +93,9 @@ export function initialOf(s: Session): string {
 export function displayNameOf(s: Session): string {
   return s.name?.trim() || s.email.split('@')[0]
 }
+
+/** 顯示名稱長度上限 */
+export const MAX_NAME_LENGTH = 20
 
 /** 頭像上限邊長；縮圖後存 localStorage，避免超過容量 */
 const AVATAR_SIZE = 160

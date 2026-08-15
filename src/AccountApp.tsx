@@ -8,6 +8,7 @@ import {
   displayNameOf,
   readAvatarFile,
   session,
+  MAX_NAME_LENGTH,
   type Session,
 } from './lib/session'
 
@@ -37,11 +38,11 @@ export default function AccountApp({ page }: { page: AccountPage }) {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:py-12">
-        {/* 身分列：頭像可直接點擊更換，右側顯示星星數 */}
+        {/* 身分列：頭像可直接點擊更換、名稱可更名，右側顯示星星數 */}
         <div className="flex items-center gap-4">
           <AvatarPicker user={user} />
-          <div className="min-w-0">
-            <h1 className="truncate text-2xl sm:text-3xl">{displayNameOf(user)}</h1>
+          <div className="min-w-0 flex-1">
+            <NameEditor user={user} />
             <p className="truncate text-sm text-ink-500">{user.email}</p>
           </div>
           <a
@@ -74,7 +75,7 @@ export default function AccountApp({ page }: { page: AccountPage }) {
         </div>
 
         <div className="mt-8">
-          {page === 'profile' && <ProfilePanel email={user.email} />}
+          {page === 'profile' && <ProfilePanel user={user} />}
           {page === 'courses' && <CoursesPanel />}
           {page === 'stars' && <StarsPanel />}
           {page === 'orders' && <OrdersPanel />}
@@ -125,13 +126,19 @@ function OrdersPanel() {
 }
 
 /** 個人檔案：帳號設定 */
-function ProfilePanel({ email }: { email: string }) {
+function ProfilePanel({ user }: { user: Session }) {
+  const named = !!user.name?.trim()
   return (
     <div className="space-y-8">
       <Card title="帳號設定">
         <dl className="divide-y divide-line">
-          <Row label="電子信箱" value={email} />
-          <Row label="顯示名稱" value="待補" muted />
+          <Row label="電子信箱" value={user.email} />
+          <Row
+            label="顯示名稱"
+            value={named ? displayNameOf(user) : '尚未設定'}
+            muted={!named}
+            action={<span className="text-xs text-ink-400">可於上方名稱旁的鉛筆圖示更改</span>}
+          />
           <Row
             label="密碼"
             value="••••••••"
@@ -142,6 +149,105 @@ function ProfilePanel({ email }: { email: string }) {
           />
         </dl>
       </Card>
+    </div>
+  )
+}
+
+/**
+ * 顯示名稱編輯：名稱旁的鉛筆鈕進入編輯，Enter 儲存、Esc 取消。
+ * 未編輯時在名稱下方顯示「可更名」小提示，讓使用者知道能改。
+ */
+function NameEditor({ user }: { user: Session }) {
+  const [editing, setEditing] = useState(false)
+  const [value, setValue] = useState(displayNameOf(user))
+  const [error, setError] = useState<string | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const start = () => {
+    setValue(displayNameOf(user))
+    setError(null)
+    setEditing(true)
+    requestAnimationFrame(() => inputRef.current?.select())
+  }
+
+  const save = () => {
+    const next = value.trim()
+    if (!next) {
+      setError('請輸入顯示名稱')
+      return
+    }
+    if (next.length > MAX_NAME_LENGTH) {
+      setError(`顯示名稱最多 ${MAX_NAME_LENGTH} 個字`)
+      return
+    }
+    session.setName(next)
+    setEditing(false)
+  }
+
+  if (editing) {
+    return (
+      <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            ref={inputRef}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value)
+              setError(null)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') save()
+              if (e.key === 'Escape') setEditing(false)
+            }}
+            maxLength={MAX_NAME_LENGTH}
+            aria-label="顯示名稱"
+            aria-invalid={error ? true : undefined}
+            className={`min-w-0 flex-1 rounded-lg border bg-white px-3 py-2 text-xl font-bold text-ink-900 focus:outline-2 focus:outline-offset-1 ${
+              error ? 'border-red-400 focus:outline-red-600' : 'border-line focus:outline-brand-600'
+            }`}
+          />
+          <Button size="sm" onClick={save}>
+            儲存
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => setEditing(false)}>
+            取消
+          </Button>
+        </div>
+        {error ? (
+          <p role="alert" className="mt-1 text-xs text-red-700">
+            {error}
+          </p>
+        ) : (
+          <p className="mt-1 text-xs text-ink-400">
+            最多 {MAX_NAME_LENGTH} 個字；按 Enter 儲存、Esc 取消
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <h1 className="truncate text-2xl sm:text-3xl">{displayNameOf(user)}</h1>
+        <button
+          type="button"
+          onClick={start}
+          aria-label="更改顯示名稱"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ivory-100 hover:text-brand-700"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current">
+            <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
+          </svg>
+        </button>
+      </div>
+      <button
+        type="button"
+        onClick={start}
+        className="text-xs text-ink-400 underline underline-offset-4 transition-colors hover:text-brand-700"
+      >
+        可更名
+      </button>
     </div>
   )
 }
