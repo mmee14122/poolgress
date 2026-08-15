@@ -10,11 +10,12 @@ export const site = {
   brandName: 'Poolgress',
   tagline: 'AI 撞球教育平台',
 
-  /** 主導覽。/games 與 /coach 為佔位路徑，頁面建立後接上 */
+  /** 主導覽。/games、/coach、/venues 為佔位路徑，頁面建立後接上 */
   nav: [
     { label: '線上課程', href: './course.html' },
     { label: '遊戲闖關', href: '/games' },
     { label: '關於教練', href: '/coach' },
+    { label: '合作場館', href: '/venues' },
   ] as NavLink[],
 
   cartUrl: './cart.html',
