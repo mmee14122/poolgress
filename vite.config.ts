@@ -7,6 +7,7 @@ export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5173,
+    // 預設 5173；被佔用時可由 PORT 環境變數指定（多個預覽同時開）
+    port: Number(process.env.PORT) || 5173,
   },
 })
