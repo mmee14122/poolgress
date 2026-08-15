@@ -75,9 +75,9 @@ export function CourseHero() {
       {/* sticky 本體：釘在導覽列下；效果只動 transform/opacity/filter/圓角 */}
       <div ref={stickyRef} className="hero-sticky hero-fx-panel flex items-center bg-[#e4eaf3]">
         <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
-        {/* 左：撞球原理動畫（俯視球檯），隨進度微放大、亮度微降 */}
+        {/* 左：課程介紹影片位（素材待補），隨進度微放大、亮度微降 */}
         <div className="hero-fx-media">
-          <BilliardsAnimation />
+          <VideoPlaceholder />
         </div>
 
         {/* 右：課程介紹 */}
@@ -146,65 +146,18 @@ function StatIcon({ d }: { d: string }) {
 }
 
 /**
- * 俯視球檯動畫：瞄準線 → 假想球 → 母球前進 → 撞擊 → 目標球進袋 → 淡出循環。
- * 純 SVG + CSS keyframes，無外部資源；prefers-reduced-motion 時
- * 動畫類別不啟用，呈現畫好軌跡線的靜態畫面。
+ * 課程介紹影片佔位：素材確定後以 <video> 或嵌入播放器取代。
+ * 比例沿用原球檯動畫（720×460），避免版面位移。
  */
-function BilliardsAnimation() {
+function VideoPlaceholder() {
   return (
-    <div className="overflow-hidden rounded-card shadow-sm">
-      <svg viewBox="0 0 720 460" className="block w-full" aria-hidden="true">
-        {/* 外框（木邊）與庫邊 */}
-        <rect x="0" y="0" width="720" height="460" rx="26" fill="#16294d" />
-        <rect x="14" y="14" width="692" height="432" rx="18" fill="#1e4276" />
-        {/* 檯面 */}
-        <rect x="40" y="40" width="640" height="380" rx="10" fill="#2b66b4" />
-        {/* 檯面光澤 */}
-        <ellipse cx="360" cy="180" rx="330" ry="150" fill="#387ed9" opacity="0.35" />
-
-        {/* 六個袋口 */}
-        {[
-          [48, 48], [360, 40], [672, 48],
-          [48, 412], [360, 420], [672, 412],
-        ].map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r="17" fill="#060d1a" />
-        ))}
-        {/* 目標袋口微光 */}
-        <circle cx="672" cy="48" r="17" fill="none" stroke="rgba(230,196,120,0.5)" strokeWidth="2" />
-
-        {/* 瞄準輔助線：母球 → 撞擊點 */}
-        <line
-          className="hero-line1"
-          x1="200" y1="320" x2="398" y2="235"
-          stroke="rgba(251,249,245,0.75)" strokeWidth="2.5"
-          strokeDasharray="220" strokeLinecap="round"
-        />
-        {/* 預測球路：目標球 → 袋口 */}
-        <line
-          className="hero-line2"
-          x1="420" y1="220" x2="672" y2="48"
-          stroke="rgba(230,196,120,0.8)" strokeWidth="2.5"
-          strokeDasharray="310" strokeLinecap="round"
-        />
-        {/* 假想球（撞擊點提示） */}
-        <circle
-          className="hero-ghost"
-          cx="398" cy="235" r="13"
-          fill="none" stroke="rgba(251,249,245,0.7)" strokeWidth="2" strokeDasharray="4 5"
-        />
-
-        {/* 目標球 */}
-        <g className="hero-obj">
-          <circle cx="420" cy="220" r="13" fill="#d9a441" />
-          <circle cx="416" cy="215" r="4" fill="rgba(255,255,255,0.5)" />
-        </g>
-
-        {/* 母球 */}
-        <g className="hero-cue">
-          <circle cx="200" cy="320" r="13" fill="#fbf9f5" />
-          <circle cx="196" cy="315" r="4" fill="rgba(255,255,255,0.85)" />
-        </g>
-      </svg>
+    <div className="flex aspect-[720/460] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-card bg-[#16294d] shadow-sm">
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/25">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="ml-1 h-7 w-7 fill-white/80">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+      <p className="text-sm text-white/60">課程介紹影片待補</p>
     </div>
   )
 }

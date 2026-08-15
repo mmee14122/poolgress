@@ -1,6 +1,7 @@
 import { course } from '../../content/course'
 import { Section } from '../../ui/Section'
 import { RichLines } from './RichLines'
+import { BilliardsAnimation } from '../BilliardsAnimation'
 
 /**
  * SECTION 04｜這堂課怎麼學？
@@ -13,7 +14,13 @@ export function HowSteps() {
   const { how } = course.intro
 
   return (
-    <Section id="how" title={how.title} description={how.sub}>
+    /* 外層包一層，讓動畫與 Section 在 main 的 divide-y 下仍視為同一區塊（中間不出現分隔線） */
+    <div>
+      {/* 撞球原理動畫（自 Hero 移入）：置於「這堂課怎麼學」標題上方 */}
+      <div className="pt-10 lg:pt-14">
+        <BilliardsAnimation />
+      </div>
+      <Section id="how" title={how.title} description={how.sub}>
       <ol>
         {how.steps.map((step, i) => {
           const last = i === how.steps.length - 1
@@ -69,7 +76,8 @@ export function HowSteps() {
           )
         })}
       </ol>
-    </Section>
+      </Section>
+    </div>
   )
 }
 
