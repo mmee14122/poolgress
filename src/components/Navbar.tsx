@@ -7,22 +7,33 @@ function Logo() {
   return (
     // 相對路徑：部署在子資料夾（github.io/poolgress/）時也能正確回首頁
     <a href="./" className="flex shrink-0 items-center gap-2 py-2">
-      {/* Poolgress 標誌：四葉風車形 + 準星瞄準鏡（白圓、細環、四刻度） */}
+      {/* Poolgress 標誌：對稱四葉圓潤十字（單一路徑）+ 準星瞄準鏡
+          （白圓、細環、環外四條長刻度深入花瓣） */}
       <svg viewBox="0 0 48 48" aria-hidden="true" className="h-9 w-9">
-        <g fill="var(--color-brand-900)">
-          <rect x="14.5" y="2.5" width="19" height="19" rx="8.5" transform="rotate(8 24 12)" />
-          <rect x="26.5" y="14.5" width="19" height="19" rx="8.5" transform="rotate(8 36 24)" />
-          <rect x="14.5" y="26.5" width="19" height="19" rx="8.5" transform="rotate(8 24 36)" />
-          <rect x="2.5" y="14.5" width="19" height="19" rx="8.5" transform="rotate(8 12 24)" />
-          <rect x="11.5" y="11.5" width="25" height="25" rx="9" />
-        </g>
-        <circle cx="24" cy="24" r="7.2" fill="white" />
-        <circle cx="24" cy="24" r="11.2" fill="none" stroke="white" strokeWidth="1.6" />
+        <path
+          fill="var(--color-brand-900)"
+          d="M24 2.5
+             C28.7 2.5 31.5 5.2 31.5 9
+             C31.5 12.8 35.2 16.5 39 16.5
+             C42.8 16.5 45.5 19.3 45.5 24
+             C45.5 28.7 42.8 31.5 39 31.5
+             C35.2 31.5 31.5 35.2 31.5 39
+             C31.5 42.8 28.7 45.5 24 45.5
+             C19.3 45.5 16.5 42.8 16.5 39
+             C16.5 35.2 12.8 31.5 9 31.5
+             C5.2 31.5 2.5 28.7 2.5 24
+             C2.5 19.3 5.2 16.5 9 16.5
+             C12.8 16.5 16.5 12.8 16.5 9
+             C16.5 5.2 19.3 2.5 24 2.5
+             Z"
+        />
+        <circle cx="24" cy="24" r="7" fill="white" />
+        <circle cx="24" cy="24" r="11.5" fill="none" stroke="white" strokeWidth="1.5" />
         <g stroke="white" strokeWidth="1.8" strokeLinecap="round">
-          <line x1="24" y1="10.4" x2="24" y2="15" />
-          <line x1="24" y1="33" x2="24" y2="37.6" />
-          <line x1="10.4" y1="24" x2="15" y2="24" />
-          <line x1="33" y1="24" x2="37.6" y2="24" />
+          <line x1="24" y1="4.2" x2="24" y2="10.4" />
+          <line x1="24" y1="37.6" x2="24" y2="43.8" />
+          <line x1="4.2" y1="24" x2="10.4" y2="24" />
+          <line x1="37.6" y1="24" x2="43.8" y2="24" />
         </g>
       </svg>
       <span className="font-logo text-xl font-semibold tracking-tight text-brand-900">
