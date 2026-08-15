@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Button } from './ui/Button'
-import { course } from './content/course'
-import { site } from './content/site'
+import { course } from './data/course-detail'
+import { site } from './data/site'
 
 export type InfoPage = 'coach' | 'faq' | 'contact'
 

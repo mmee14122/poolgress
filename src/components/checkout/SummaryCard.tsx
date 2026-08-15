@@ -1,5 +1,5 @@
-import type { Coupon } from '../../content/catalog'
-import { couponDiscount } from '../../content/catalog'
+import type { Coupon } from '../../data/catalog'
+import { couponDiscount } from '../../data/catalog'
 import { formatNT, type CartItem } from '../../lib/cart'
 import type { PaymentMethod } from '../../lib/checkout'
 import { CourseThumb } from '../cart/MiniCart'

@@ -8,7 +8,9 @@ import {
 } from '../lib/session'
 import { Avatar } from './Avatar'
 import { Button } from '../ui/Button'
-import { totalStars, currentUserMeta } from '../data/user'
+import { currentUserMeta } from '../data/user'
+import { useLibrary, totalStarsOf } from '../lib/library'
+import { toast } from '../ui/Toast'
 
 /**
  * 選單項目（依產品規格只保留：個人檔案／我的課程／登出＋摘要與星星卡片；
@@ -38,6 +40,7 @@ const items = [
 export function AccountMenu({ user }: { user: Session }) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const lib = useLibrary()
   const ref = useRef<HTMLDivElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const closeTimer = useRef<number | null>(null)
@@ -67,6 +70,7 @@ export function AccountMenu({ user }: { user: Session }) {
     }
     session.setName(next)
     setEditingName(false)
+    toast('名稱已更新', 'success')
   }
 
   const openNow = () => {
@@ -112,6 +116,7 @@ export function AccountMenu({ user }: { user: Session }) {
     setError(null)
     try {
       session.setAvatar(await readAvatarFile(file))
+      toast('頭像已更新', 'success')
     } catch (e) {
       setError(e instanceof Error ? e.message : '頭像更換失敗')
     }
@@ -267,7 +272,7 @@ export function AccountMenu({ user }: { user: Session }) {
                 />
               </svg>
               <span className="flex-1 text-sm font-semibold text-brass-700">實戰星星</span>
-              <span className="text-base font-bold text-brass-700 tabular-nums">{totalStars}</span>
+              <span className="text-base font-bold text-brass-700 tabular-nums">{totalStarsOf(lib)}</span>
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brass-600">
                 <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
               </svg>

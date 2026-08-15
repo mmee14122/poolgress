@@ -13,7 +13,7 @@ import {
 } from './components/checkout/ResultViews'
 import { cart, useCart, formatNT } from './lib/cart'
 import { library } from './lib/library'
-import { couponDiscount, type Coupon } from './content/catalog'
+import { couponDiscount, type Coupon } from './data/catalog'
 import {
   validateCheckout,
   missingSummary,

@@ -1,4 +1,4 @@
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 
 /** 四支柱圖示：課程、球桌挑戰、成長、教練 */
 const icons = [

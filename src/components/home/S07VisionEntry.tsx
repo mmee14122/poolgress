@@ -1,4 +1,4 @@
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 import { Button } from '../../ui/Button'
 
 /**

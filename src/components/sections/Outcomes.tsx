@@ -1,4 +1,4 @@
-import { course } from '../../content/course'
+import { course } from '../../data/course-detail'
 import { Section } from '../../ui/Section'
 import { RichLines } from './RichLines'
 

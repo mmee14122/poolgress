@@ -1,5 +1,5 @@
-import { course } from '../../content/course'
-import { site } from '../../content/site'
+import { course } from '../../data/course-detail'
+import { site } from '../../data/site'
 import { Section } from '../../ui/Section'
 import { Accordion } from '../../ui/Accordion'
 

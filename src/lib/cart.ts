@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import type { Product } from '../content/catalog'
+import type { Product } from '../data/catalog'
 
 /**
  * 購物車 store：localStorage 持久化 + 訂閱通知。

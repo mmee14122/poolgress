@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { SectionId } from '../content/course'
+import type { SectionId } from '../data/course-detail'
 
 type Props = {
   id: SectionId

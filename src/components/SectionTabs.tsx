@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { sections } from '../content/course'
+import { sections } from '../data/course-detail'
 
 /**
  * 手機版的段落標籤列：取代桌機左欄，sticky 在導覽列下方，可橫向滑動。

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { site } from '../content/site'
+import { site } from '../data/site'
 import { LanguageMenu } from './LanguageMenu'
 import { CartHover, CartDrawerButton } from './cart/CartWidget'
 import { Logo } from './Logo'

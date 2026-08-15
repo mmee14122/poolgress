@@ -14,6 +14,7 @@ import {
 import { useLibrary, totalStarsOf, type Library } from './lib/library'
 import { courseById, flatLessons } from './data/courses'
 import { currentUserMeta } from './data/user'
+import { toast } from './ui/Toast'
 
 export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
 
@@ -307,6 +308,7 @@ function NameEditor({ user }: { user: Session }) {
     }
     session.setName(next)
     setEditing(false)
+    toast('名稱已更新', 'success')
   }
 
   if (editing) {
@@ -396,6 +398,7 @@ function AvatarPicker({ user }: { user: Session }) {
     setError(null)
     try {
       session.setAvatar(await readAvatarFile(file))
+      toast('頭像已更新', 'success')
     } catch (e) {
       setError(e instanceof Error ? e.message : '頭像更換失敗')
     }

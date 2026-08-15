@@ -16,7 +16,7 @@ import { Chapters } from './components/sections/Chapters'
 import { Reviews } from './components/sections/Reviews'
 import { CoachSection } from './components/sections/CoachSection'
 import { Faq } from './components/sections/Faq'
-import { sections } from './content/course'
+import { sections } from './data/course-detail'
 import { useScrollSpy } from './hooks/useScrollSpy'
 
 const sectionIds = sections.map((s) => s.id)

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { availableCoupons, findCoupon, couponDiscount, type Coupon } from '../../content/catalog'
+import { availableCoupons, findCoupon, couponDiscount, type Coupon } from '../../data/catalog'
 import { formatNT } from '../../lib/cart'
 
 type Props = {

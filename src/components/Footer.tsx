@@ -1,4 +1,4 @@
-import { site } from '../content/site'
+import { site } from '../data/site'
 
 export function Footer() {
   return (

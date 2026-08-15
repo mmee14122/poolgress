@@ -1,4 +1,4 @@
-import { course, courseStats } from '../../content/course'
+import { course, courseStats } from '../../data/course-detail'
 
 /**
  * 課程資訊列：課程簡介最上方的小型資訊區。

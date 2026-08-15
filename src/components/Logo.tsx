@@ -1,4 +1,4 @@
-import { site } from '../content/site'
+import { site } from '../data/site'
 
 /**
  * Poolgress 標誌：對稱四葉圓潤十字（單一路徑）+ 準星瞄準鏡

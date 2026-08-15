@@ -1,4 +1,4 @@
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 
 /**
  * SECTION 02｜困境

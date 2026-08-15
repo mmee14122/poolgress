@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { course, courseStats, type Chapter, type Lesson } from '../../content/course'
-import { products } from '../../content/catalog'
+import { course, courseStats, type Chapter, type Lesson } from '../../data/course-detail'
+import { products } from '../../data/catalog'
 import { cart } from '../../lib/cart'
 import { Button } from '../../ui/Button'
 

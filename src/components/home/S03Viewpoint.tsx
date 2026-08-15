@@ -1,4 +1,4 @@
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 
 /**
  * SECTION 03｜Poolgress 的觀點

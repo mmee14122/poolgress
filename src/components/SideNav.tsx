@@ -1,4 +1,4 @@
-import { course, sections } from '../content/course'
+import { course, sections } from '../data/course-detail'
 
 /**
  * 桌機左欄錨點導覽。sticky 於視窗左側，

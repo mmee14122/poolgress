@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 
 /**
  * SECTION 04｜The One —— 首頁第一個情緒高潮。

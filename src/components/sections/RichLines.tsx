@@ -1,4 +1,4 @@
-import type { RichLine } from '../../content/course'
+import type { RichLine } from '../../data/course-detail'
 
 /** 依原文節奏逐行渲染，粗體行加重呈現 */
 export function RichLines({ lines, className = '' }: { lines: RichLine[]; className?: string }) {

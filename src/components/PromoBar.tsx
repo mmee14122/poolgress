@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { site } from '../content/site'
+import { site } from '../data/site'
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number } | null
 

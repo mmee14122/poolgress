@@ -4,6 +4,7 @@ import { Footer } from './components/Footer'
 import { Button } from './ui/Button'
 import { formatNT } from './lib/cart'
 import { courseCatalog, courseLevels, type CourseLevel, type CourseSummary } from './data/courses'
+import { SafeImage, CoverFallback } from './ui/SafeImage'
 
 /**
  * 線上課程列表頁。
@@ -160,26 +161,15 @@ function CourseCard({ course }: { course: CourseSummary }) {
   )
 }
 
-/** 封面：有圖用圖（載入失敗回退佔位），沒圖用品牌漸層佔位 */
+/** 封面：有圖用圖（載入失敗自動回退），沒圖用品牌漸層佔位 */
 function Cover({ course }: { course: CourseSummary }) {
-  const [failed, setFailed] = useState(false)
-  if (course.cover && !failed) {
-    return (
-      <img
-        src={course.cover}
-        alt=""
-        onError={() => setFailed(true)}
-        className="aspect-video w-full object-cover"
-      />
-    )
-  }
   return (
-    <div className="flex aspect-video w-full items-center justify-center bg-gradient-to-br from-brand-900 to-brand-600">
-      <svg viewBox="0 0 48 24" aria-hidden="true" className="h-10 w-20 opacity-70">
-        <circle cx="12" cy="12" r="6" fill="#fbf9f5" />
-        <circle cx="34" cy="12" r="6" fill="#d9a441" />
-        <line x1="18" y1="12" x2="28" y2="12" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeDasharray="3 3" />
-      </svg>
+    <div className="aspect-video w-full overflow-hidden">
+      <SafeImage
+        src={course.cover}
+        className="h-full w-full object-cover"
+        fallback={<CoverFallback />}
+      />
     </div>
   )
 }

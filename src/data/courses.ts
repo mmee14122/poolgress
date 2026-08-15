@@ -20,8 +20,8 @@
  *   href      課程詳情頁connect；即將推出者為 null
  */
 
-import { course, courseStats } from '../content/course'
-import type { Chapter } from '../content/course'
+import { course, courseStats } from './course-detail'
+import type { Chapter } from './course-detail'
 
 export type CourseLevel = '新手入門' | '進階' | '高階'
 

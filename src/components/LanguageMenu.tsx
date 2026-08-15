@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { site } from '../content/site'
+import { site } from '../data/site'
 
 /**
  * 語言切換。目前只切換 UI 狀態 —— 實際 i18n 尚未接上，

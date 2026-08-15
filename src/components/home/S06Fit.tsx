@@ -1,4 +1,4 @@
-import { home } from '../../content/home'
+import { home } from '../../data/home'
 
 /**
  * SECTION 06｜適合誰

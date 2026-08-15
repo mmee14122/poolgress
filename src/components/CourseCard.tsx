@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { course, courseStats } from '../content/course'
-import { products } from '../content/catalog'
+import { course, courseStats } from '../data/course-detail'
+import { products } from '../data/catalog'
 import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 import { CourseCover } from './CourseCover'
+import { toast } from '../ui/Toast'
 
 /** 這一頁對應的商品（⚠️ 價格為示範資料） */
 const product = products[0]
@@ -48,6 +49,7 @@ export function CourseCard() {
       window.setTimeout(() => {
         cart.add(product)
         setAddState('done')
+        toast('已加入購物車', 'success')
       }, 450),
     )
   }

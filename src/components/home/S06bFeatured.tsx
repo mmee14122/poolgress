@@ -1,7 +1,7 @@
 import { Button } from '../../ui/Button'
 import { courseCatalog } from '../../data/courses'
 import { challenges } from '../../data/challenges'
-import { course } from '../../content/course'
+import { course } from '../../data/course-detail'
 import { formatNT } from '../../lib/cart'
 
 /**
@@ -9,7 +9,7 @@ import { formatNT } from '../../lib/cart'
  *
  * 首頁到這裡已經講完「為什麼」，這一區給具體入口：
  * 可買的課程、可挑戰的關卡、教這堂課的人。
- * 資料全部來自 src/data/（courses、challenges）與 content/course.ts（教練）。
+ * 資料全部來自 src/data/（courses、challenges）與 data/course-detail.ts（教練）。
  */
 export function S06bFeatured() {
   const featured = courseCatalog.filter((c) => c.price !== null).slice(0, 3)
