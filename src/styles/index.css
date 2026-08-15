@@ -121,29 +121,39 @@
   to { --story-p: 1; }
 }
 
-/* 進度來源：scroll timeline（範圍＝spacer 高度）；JS 後援於元件內 */
+/* 進度來源：scroll timeline（範圍＝spacer 高度）；JS 後援於元件內。
+   手機不釘住（普通 Hero），效果在最初 40vh 內完成；
+   桌機停留距離僅 25vh（外層總高約 117vh），滾輪約兩下即完成退場。 */
 @supports (animation-timeline: scroll()) {
   html.home-hero-scroll {
     animation: story-progress linear both;
     animation-timeline: scroll(root);
-    animation-range: 0px 140vh;
+    animation-range: 0px 40vh;
   }
   @media (min-width: 1024px) {
-    html.home-hero-scroll { animation-range: 0px 200vh; }
+    html.home-hero-scroll { animation-range: 0px 25vh; }
   }
 }
 
+/* 手機：普通 Hero，不 sticky、無額外停留距離（高度用 dvh 避免網址列伸縮跳動） */
 .hs-stage {
-  position: sticky;
-  top: calc(4rem + var(--promo-h, 0px));
-  height: calc(100svh - 4rem - var(--promo-h, 0px));
+  position: relative;
+  height: calc(100dvh - 4rem - var(--promo-h, 0px));
   overflow: hidden;
 }
 .hs-spacer {
-  height: 140vh;
+  display: none;
 }
 @media (min-width: 1024px) {
-  .hs-spacer { height: 200vh; }
+  .hs-stage {
+    position: sticky;
+    top: calc(4rem + var(--promo-h, 0px));
+    height: calc(100svh - 4rem - var(--promo-h, 0px));
+  }
+  .hs-spacer {
+    display: block;
+    height: 25vh;
+  }
 }
 
 /* 分段進度（供子元素取用） */

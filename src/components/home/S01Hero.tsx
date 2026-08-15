@@ -5,8 +5,10 @@ import { Button } from '../../ui/Button'
 /**
  * SECTION 01｜Hero：Scroll Story（五幕）
  *
- * 外層 .hs-story 提供捲動距離（spacer 桌機 200vh／手機 140vh），
- * 舞台 sticky 釘住；進度 --story-p 直接對應捲動位置：
+ * 桌機：舞台 sticky 釘住，外層 .hs-story 以 spacer 提供 25vh 停留距離
+ * （外層總高約 117vh，滾輪約兩下即完成退場）；
+ * 手機：不釘住的普通 Hero，效果在最初 40vh 內完成，一次滑動即見下一區。
+ * 進度 --story-p 直接對應捲動位置：
  *   SCENE 01 0–18%   品牌主標（載入時一次性淡入）
  *   SCENE 02 18–38%  主標退場、鏡頭推進、瞄準線逐段畫出
  *   SCENE 03 38–62%  母球沿線前進——捲多少走多少，倒捲即倒退
@@ -32,19 +34,39 @@ export function S01Hero() {
     const root = document.documentElement
     root.classList.add('home-hero-scroll')
 
+    /* 進度距離＝桌機 spacer（25vh）；手機不釘住、無 spacer，取 40vh 與 CSS 對齊 */
+    const measure = () =>
+      spacerRef.current?.offsetHeight || window.innerHeight * 0.4
+
     let cleanup = () => {}
     if (!CSS.supports('animation-timeline: scroll()')) {
-      const onScroll = () => {
-        const distance = spacerRef.current?.offsetHeight ?? 0
+      /* rAF 節流：每幀最多寫入一次；距離只在 resize 重新量測，
+         進度未變（Hero 已離場）即跳過，不做多餘計算 */
+      let distance = measure()
+      let ticking = false
+      let lastP = -1
+      const apply = () => {
+        ticking = false
         const p = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 1
+        if (p === lastP) return
+        lastP = p
         root.style.setProperty('--story-p', p.toFixed(4))
       }
-      onScroll()
+      const onScroll = () => {
+        if (ticking) return
+        ticking = true
+        requestAnimationFrame(apply)
+      }
+      const onResize = () => {
+        distance = measure()
+        onScroll()
+      }
+      apply()
       window.addEventListener('scroll', onScroll, { passive: true })
-      window.addEventListener('resize', onScroll)
+      window.addEventListener('resize', onResize)
       cleanup = () => {
         window.removeEventListener('scroll', onScroll)
-        window.removeEventListener('resize', onScroll)
+        window.removeEventListener('resize', onResize)
       }
     }
 
@@ -52,8 +74,7 @@ export function S01Hero() {
     let debugTimer = 0
     if (new URLSearchParams(location.search).has('debug')) {
       debugTimer = window.setInterval(() => {
-        const distance = spacerRef.current?.offsetHeight ?? 1
-        const p = Math.min(1, Math.max(0, window.scrollY / distance))
+        const p = Math.min(1, Math.max(0, window.scrollY / measure()))
         const scene = p < 0.18 ? 1 : p < 0.38 ? 2 : p < 0.62 ? 3 : p < 0.8 ? 4 : 5
         setDebug({ p, scene })
       }, 150)
