@@ -49,6 +49,9 @@
 
   --font-sans:
     'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', ui-sans-serif, system-ui, sans-serif;
+  /* 品牌字標用幾何圓體（Poppins 由各頁 <head> 載入） */
+  --font-logo:
+    'Poppins', 'Noto Sans TC', ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 0.875rem;
 

@@ -7,24 +7,27 @@ function Logo() {
   return (
     // 相對路徑：部署在子資料夾（github.io/poolgress/）時也能正確回首頁
     <a href="./" className="flex shrink-0 items-center gap-2 py-2">
-      {/* Poolgress 標誌：四葉十字 + 準星圓心（深藍） */}
+      {/* Poolgress 標誌：四葉風車形 + 準星瞄準鏡（白圓、細環、四刻度） */}
       <svg viewBox="0 0 48 48" aria-hidden="true" className="h-9 w-9">
         <g fill="var(--color-brand-900)">
-          <circle cx="24" cy="10" r="9.5" />
-          <circle cx="24" cy="38" r="9.5" />
-          <circle cx="10" cy="24" r="9.5" />
-          <circle cx="38" cy="24" r="9.5" />
-          <rect x="12" y="12" width="24" height="24" rx="7" />
+          <rect x="14.5" y="2.5" width="19" height="19" rx="8.5" transform="rotate(8 24 12)" />
+          <rect x="26.5" y="14.5" width="19" height="19" rx="8.5" transform="rotate(8 36 24)" />
+          <rect x="14.5" y="26.5" width="19" height="19" rx="8.5" transform="rotate(8 24 36)" />
+          <rect x="2.5" y="14.5" width="19" height="19" rx="8.5" transform="rotate(8 12 24)" />
+          <rect x="11.5" y="11.5" width="25" height="25" rx="9" />
         </g>
-        <circle cx="24" cy="24" r="8.5" fill="white" />
-        <g stroke="var(--color-brand-900)" strokeWidth="2.2" strokeLinecap="round">
-          <line x1="24" y1="16.5" x2="24" y2="19.8" />
-          <line x1="24" y1="28.2" x2="24" y2="31.5" />
-          <line x1="16.5" y1="24" x2="19.8" y2="24" />
-          <line x1="28.2" y1="24" x2="31.5" y2="24" />
+        <circle cx="24" cy="24" r="7.2" fill="white" />
+        <circle cx="24" cy="24" r="11.2" fill="none" stroke="white" strokeWidth="1.6" />
+        <g stroke="white" strokeWidth="1.8" strokeLinecap="round">
+          <line x1="24" y1="10.4" x2="24" y2="15" />
+          <line x1="24" y1="33" x2="24" y2="37.6" />
+          <line x1="10.4" y1="24" x2="15" y2="24" />
+          <line x1="33" y1="24" x2="37.6" y2="24" />
         </g>
       </svg>
-      <span className="text-lg font-bold tracking-tight text-brand-900">{site.brandName}</span>
+      <span className="font-logo text-xl font-semibold tracking-tight text-brand-900">
+        {site.brandName}
+      </span>
     </a>
   )
 }
