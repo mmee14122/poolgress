@@ -78,18 +78,10 @@ export function CourseHero() {
     }
   }, [])
 
-  /**
-   * 立即購買：
-   * 桌機平滑捲動到右欄固定購買卡；
-   * 手機沒有內容流購買卡，直接加入購物車並前往結帳。
-   */
-  const scrollToBuy = () => {
-    if (window.innerWidth >= 1024) {
-      document.getElementById('buy-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    } else {
-      cart.add(product)
-      location.href = './checkout.html'
-    }
+  /** 立即購買：桌機與手機一致——加入購物車後直接前往結帳 */
+  const buyNow = () => {
+    cart.add(product)
+    location.href = './checkout.html'
   }
 
   return (
@@ -148,7 +140,7 @@ export function CourseHero() {
           </ul>
 
           <div className="hero-fx-fade mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button size="lg" onClick={scrollToBuy} className="w-full sm:w-auto">
+            <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
               立即購買
             </Button>
             <Button href="#chapters" variant="quiet" size="lg" className="w-full text-brand-700 sm:w-auto">
