@@ -19,7 +19,8 @@ import { S07VisionEntry } from './components/home/S07VisionEntry'
 export default function HomeApp() {
   return (
     <>
-      <Navbar />
+      {/* 首頁專用：Hero 範圍內導覽列為深色，離開 Hero 後切回淺色 */}
+      <Navbar theme="hero" />
       <main>
         <S01Hero />
         <S02Struggle />

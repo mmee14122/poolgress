@@ -92,6 +92,55 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   首頁 Hero 深色導覽列（header.nav-hero）
+   購物車、語言選單等共用元件不需傳 props：在此統一覆寫「觸發按鈕」
+   的文字與圖示顏色；彈出面板（role=menu／region／dialog、手機選單）
+   以下方 reset 排除，維持原本淺色底深色字。
+   ------------------------------------------------------------------ */
+.nav-hero button,
+.nav-hero [role='button'] {
+  color: #fff;
+}
+.nav-hero button svg {
+  fill: #fff;
+  transition: fill 250ms ease;
+}
+/* 購物車數量徽章：深底上改用品牌金＋深藍字，維持高辨識度 */
+.nav-hero button span.bg-brand-600 {
+  background-color: var(--color-brass-300);
+  color: var(--color-brand-950);
+}
+.nav-hero button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.nav-hero span.hover\:bg-ivory-100:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+/* 彈出面板不受深色覆寫影響（面板本身是白底） */
+.nav-hero [role='menu'],
+.nav-hero [role='menu'] *,
+.nav-hero [role='region'],
+.nav-hero [role='region'] *,
+.nav-hero [role='dialog'],
+.nav-hero [role='dialog'] *,
+.nav-hero #mobile-menu,
+.nav-hero #mobile-menu * {
+  color: revert-layer;
+}
+.nav-hero [role='menu'] svg,
+.nav-hero [role='region'] svg,
+.nav-hero [role='dialog'] svg,
+.nav-hero #mobile-menu svg {
+  fill: revert-layer;
+}
+.nav-hero [role='menu'] button:hover,
+.nav-hero [role='region'] button:hover,
+.nav-hero [role='dialog'] button:hover,
+.nav-hero #mobile-menu a:hover {
+  background-color: revert-layer;
+}
+
 @layer utilities {
   /* 橫向捲動容器隱藏捲軸，但保留捲動能力 */
   .scroll-row {

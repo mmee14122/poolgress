@@ -154,6 +154,10 @@ export function S01Hero() {
       {/* 捲動距離 */}
       <div ref={spacerRef} className="hs-spacer" aria-hidden="true" />
 
+      {/* Hero 結束標記：導覽列以 IntersectionObserver 觀察它切換深／淺色。
+          16px 高度提供遲滯範圍，交界處小幅捲動不會反覆切換 */}
+      <div id="hero-end" aria-hidden="true" className="h-4" />
+
       {/* 開發用進度徽章（?debug） */}
       {debug && (
         <div className="fixed right-3 bottom-3 z-50 rounded-lg bg-black/80 px-3 py-2 font-mono text-xs text-white tabular-nums">
@@ -264,6 +268,9 @@ function StaticHero() {
           <StoryTable />
         </div>
       </div>
+
+      {/* 與動態版一致：導覽列據此切換深／淺色 */}
+      <div id="hero-end" aria-hidden="true" className="h-4" />
     </section>
   )
 }

@@ -5,8 +5,53 @@ import { CartHover, CartDrawerButton } from './cart/CartWidget'
 import { Logo } from './Logo'
 
 
-export function Navbar() {
+type NavTheme = 'light' | 'hero'
+
+/** 導覽連結樣式：深色態白字、hover 轉品牌金；兩態尺寸完全相同 */
+const navLinkClass = (dark: boolean) =>
+  `rounded-full px-4 py-2 text-sm font-medium transition-colors duration-250 ${
+    dark
+      ? 'text-white/85 hover:bg-white/10 hover:text-brass-300'
+      : 'text-ink-700 hover:bg-ivory-100 hover:text-ink-900'
+  }`
+
+/**
+ * 主導覽列。
+ *
+ * theme='hero'（僅首頁）：載入時即為深色（與 Hero 同一個 brand-950），
+ * 並以 Hero 底部的 sentinel + IntersectionObserver 判斷是否已離開 Hero，
+ * 離開後平滑切回淺色，捲回時自動變深。不新增 scroll listener。
+ * 其他頁面不傳 theme，維持原本淺色。
+ */
+export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
+  /* 首頁初始就是深色 → 第一幀不會閃白 */
+  const [dark, setDark] = useState(theme === 'hero')
+
+  useEffect(() => {
+    if (theme !== 'hero') {
+      setDark(false)
+      return
+    }
+    /* Hero 尚未掛載完成時重試一次；仍找不到就退回淺色（安全預設） */
+    const sentinel = document.getElementById('hero-end')
+    if (!sentinel) {
+      setDark(false)
+      return
+    }
+
+    /* sentinel 位於 Hero 底部且有 16px 高度＝遲滯範圍：
+       交界處小幅上下捲動不會反覆切換。
+       上邊界扣掉導覽列高度，讓切換點落在導覽列底線；
+       下邊界放大，確保 sentinel 遠在畫面下方時仍判定為「still in hero」 */
+    const navOffset = 64 + (document.documentElement.classList.contains('has-promo') ? 32 : 0)
+    const io = new IntersectionObserver(
+      ([entry]) => setDark(entry.isIntersecting),
+      { rootMargin: `-${navOffset}px 0px 100000px 0px`, threshold: 0 },
+    )
+    io.observe(sentinel)
+    return () => io.disconnect()
+  }, [theme])
 
   // 開啟手機選單時鎖住背景捲動
   useEffect(() => {
@@ -17,18 +62,23 @@ export function Navbar() {
   }, [menuOpen])
 
   return (
-    /* 背景改純白：backdrop-filter 在捲動時整條列逐幀重繪，是滾動卡頓來源之一 */
-    <header className="sticky top-(--promo-h) z-40 border-b border-line bg-white">
+    /* 背景用純色：backdrop-filter 在捲動時整條列逐幀重繪，是滾動卡頓來源之一。
+       深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。 */
+    <header
+      className={`sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
+        dark ? 'nav-hero border-transparent bg-brand-950' : 'border-line bg-white'
+      }`}
+    >
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6">
         {/* 左：Logo + 主導覽連結 */}
         <div className="flex min-w-0 items-center gap-4">
-          <Logo />
+          <Logo dark={dark} />
           <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
             {site.nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-ivory-100 hover:text-ink-900"
+                className={navLinkClass(dark)}
               >
                 {item.label}
               </a>
@@ -43,7 +93,7 @@ export function Navbar() {
 
           <a
             href={site.loginUrl}
-            className="rounded-full px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-ivory-100 hover:text-ink-900"
+            className={navLinkClass(dark)}
           >
             登入／註冊
           </a>
@@ -62,7 +112,7 @@ export function Navbar() {
             aria-label={menuOpen ? '關閉選單' : '開啟選單'}
             className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-ivory-100"
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-ink-900">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-6 w-6 transition-colors duration-250 ${dark ? "fill-white" : "fill-ink-900"}`}>
               {menuOpen ? (
                 <path d="M6.4 5l12.6 12.6-1.4 1.4L5 6.4z M19 6.4L6.4 19 5 17.6 17.6 5z" />
               ) : (
