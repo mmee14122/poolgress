@@ -141,9 +141,9 @@ export function AccountMenu({ user }: { user: Session }) {
                 {/* 星星數（實際數值待後端） */}
                 <a
                   href="./stars.html"
-                  className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brass-400/15 px-2.5 py-1 text-sm font-semibold text-brass-700 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/25"
+                  className="mt-1.5 inline-flex items-center gap-2 rounded-full bg-brass-400/15 px-4 py-2 text-base font-bold text-brass-700 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/25"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-brass-600">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-brass-600">
                     <path d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z" />
                   </svg>
                   <span className="tabular-nums">0</span>
