@@ -126,10 +126,9 @@ export function S01Hero() {
                 href={hero.ctaSecondary.href}
                 size="lg"
                 variant="quiet"
-                className="group text-white transition-colors hover:bg-[#80898E]! hover:text-black! active:bg-[#6f787d]!"
+                className="border border-white py-[calc(0.875rem-1px)]! text-white transition-colors hover:bg-white! hover:text-black! active:bg-white/85!"
               >
                 {hero.ctaSecondary.label}
-                <ArrowCircle />
               </Button>
             </div>
           </div>
@@ -175,26 +174,6 @@ export function S01Hero() {
  *   母球 (250,470) → 撞擊點 (455,300)：Δ(205,-170)
  *   目標球 (470,285) → 袋口 (620,140)：Δ(150,-145)
  */
-/**
- * 次要 CTA 文字右側的圓形箭頭框（34px 正圓）。
- * 預設透明底＋淺藍描邊與箭頭；hover 時（跟隨父層 .group）圓框填淺藍、
- * 箭頭轉深藍並右移 2px。文字本身的 hover 顏色維持原設定，不受影響。
- * 與文字同在一個連結內，整組可點擊；間距由 Button 既有的 gap-2（8px）提供。
- */
-function ArrowCircle() {
-  return (
-    <span
-      aria-hidden="true"
-      /* -my-1：抵銷圓框比文字高的部分，維持與主要按鈕相同的按鈕高度 */
-      className="-my-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white text-white transition-[background-color,color,transform] duration-150 ease-out group-hover:translate-x-0.5 group-hover:bg-white group-hover:text-black"
-    >
-      <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-        <path d="M13.2 5.6l6.4 6.4-6.4 6.4-1.4-1.4 4-4H4.4v-2h11.4l-4-4z" />
-      </svg>
-    </span>
-  )
-}
-
 function StoryTable() {
   return (
     <svg
@@ -279,10 +258,9 @@ function StaticHero() {
               href={hero.ctaSecondary.href}
               size="lg"
               variant="quiet"
-              className="group text-white transition-colors hover:bg-[#80898E]! hover:text-black! active:bg-[#6f787d]!"
+              className="border border-white py-[calc(0.875rem-1px)]! text-white transition-colors hover:bg-white! hover:text-black! active:bg-white/85!"
             >
               {hero.ctaSecondary.label}
-              <ArrowCircle />
             </Button>
           </div>
         </div>
