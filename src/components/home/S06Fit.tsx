@@ -30,35 +30,6 @@ export function S06Fit() {
             </li>
           ))}
         </ul>
-
-        {/* 玩家階段 */}
-        <div className="mt-10">
-          <p className="text-sm font-semibold text-ink-500">{fit.stagesNote}</p>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {fit.stages.map((stage, i) => (
-              <span key={stage} className="flex items-center gap-2">
-                {i > 0 && <span aria-hidden="true" className="text-ink-400">→</span>}
-                <span className="rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
-                  {stage}
-                </span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* 現階段不主攻 */}
-        <div className="mt-10 rounded-card border border-line bg-white p-6">
-          <p className="text-sm font-semibold text-ink-700">{fit.notYet.lead}</p>
-          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-500">
-            {fit.notYet.items.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-ink-400" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-sm text-ink-500">{fit.notYet.note}</p>
-        </div>
       </div>
     </section>
   )
