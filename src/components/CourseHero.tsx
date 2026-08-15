@@ -27,9 +27,10 @@ export function CourseHero() {
       if (compensating.current) return
       setCollapsed((prev) => {
         if (prev) return window.scrollY > 60
-        // 展開狀態下 offsetHeight 即自然高度
-        const half = (innerRef.current?.offsetHeight ?? 0) / 2
-        return half > 0 && window.scrollY > half
+        // 展開狀態下 offsetHeight 即自然高度；完全捲過 Hero 才摺疊，
+        // 此時 Hero 已在視窗外，補償可完全抵銷位移（內容零跳動）
+        const full = innerRef.current?.offsetHeight ?? 0
+        return full > 0 && window.scrollY > full
       })
     }
     onScroll()
