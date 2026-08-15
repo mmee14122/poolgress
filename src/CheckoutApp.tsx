@@ -262,7 +262,11 @@ export default function CheckoutApp() {
 
       {phase === 'processing' && <ProcessingOverlay />}
 
-      <Footer />
+      {/* 結帳頁手機版不顯示頁尾：底部固定購買列已是唯一動線，
+          頁尾連結在此只會拉長捲動距離、分散結帳注意力 */}
+      <div className="hidden lg:block">
+        <Footer />
+      </div>
 
       {/* 底部安全空間放在頁尾之後：避免固定列蓋住頁尾，
           又不會在內容與頁尾之間撐出一段空白（縮短捲到底的距離）。
