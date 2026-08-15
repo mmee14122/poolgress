@@ -24,10 +24,19 @@ export default defineConfig({
         stars: fileURLToPath(new URL('./stars.html', import.meta.url)),
         orders: fileURLToPath(new URL('./orders.html', import.meta.url)),
         invite: fileURLToPath(new URL('./invite.html', import.meta.url)),
-        // 尚未建置頁面的「敬請期待」佔位頁
-        games: fileURLToPath(new URL('./games.html', import.meta.url)),
+        // 課程列表／實戰闖關／學習頁
+        courses: fileURLToPath(new URL('./courses.html', import.meta.url)),
+        challenges: fileURLToPath(new URL('./challenges.html', import.meta.url)),
+        learn: fileURLToPath(new URL('./learn.html', import.meta.url)),
+        // 支援頁（coach／faq／contact 共用 info-entry）
         coach: fileURLToPath(new URL('./coach.html', import.meta.url)),
+        faq: fileURLToPath(new URL('./faq.html', import.meta.url)),
+        contact: fileURLToPath(new URL('./contact.html', import.meta.url)),
+        // 舊網址轉址與 404（純靜態，仍需列入才會複製到 dist）
+        games: fileURLToPath(new URL('./games.html', import.meta.url)),
+        notFound: fileURLToPath(new URL('./404.html', import.meta.url)),
         venues: fileURLToPath(new URL('./venues.html', import.meta.url)),
+        purchaseSuccess: fileURLToPath(new URL('./purchase-success.html', import.meta.url)),
         terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
         privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
       },

@@ -37,7 +37,7 @@ function GuestBindBlock({ email }: { email: string }) {
         建立帳號後，即可永久保存課程、學習進度與購買紀錄。
       </p>
       <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
-        <Button href="./course.html">立即開始學習</Button>
+        <Button href="./my-courses.html">開始學習</Button>
         <Button
           variant="secondary"
           href={`./register.html?email=${encodeURIComponent(email)}`}
@@ -68,14 +68,22 @@ export function SuccessView({ order, isGuest }: ResultProps) {
         訂單編號 <span className="font-semibold text-ink-900 tabular-nums">{order.id}</span>
       </p>
 
+      {/* ⚠️ 金流尚未串接，明確標示不可誤解為真實付款 */}
+      <p className="mx-auto mt-4 max-w-md rounded-lg bg-brass-400/15 px-4 py-2.5 text-xs leading-relaxed text-brass-700 ring-1 ring-brass-400/40 ring-inset">
+        本次為前端示範流程，未實際完成付款。金流串接後，此頁將顯示真實交易結果。
+      </p>
+
       {isGuest ? (
         <GuestBindBlock email={order.email} />
       ) : (
         <div className="mt-8">
-          <p className="text-sm text-ink-500">課程已加入你的帳號，可在會員中心查看訂單與發票。</p>
-          <div className="mt-5 flex justify-center">
-            <Button href="./course.html" size="lg">
-              立即開始學習
+          <p className="text-sm text-ink-500">課程已加入你的帳號，可在「我的課程」查看進度。</p>
+          <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button href="./my-courses.html" size="lg">
+              開始學習
+            </Button>
+            <Button href="./orders.html" size="lg" variant="secondary">
+              查看訂單
             </Button>
           </div>
         </div>

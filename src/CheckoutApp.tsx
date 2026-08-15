@@ -12,6 +12,7 @@ import {
   OrderCreatedView,
 } from './components/checkout/ResultViews'
 import { cart, useCart, formatNT } from './lib/cart'
+import { library } from './lib/library'
 import { couponDiscount, type Coupon } from './content/catalog'
 import {
   validateCheckout,
@@ -134,10 +135,24 @@ export default function CheckoutApp() {
           setPhase('failed')
           return // 失敗保留購物車
         }
+        /* 寫入學習庫：課程立刻出現在「我的課程」、產生訂單紀錄
+           （目前為前端示範，後端串接後由付款回呼觸發） */
+        library.completePurchase(
+          items.map((i) => ({ id: i.id, title: i.title, price: i.price })),
+          total,
+          method,
+          true,
+        )
         setOrder(placed)
         setPhase('success')
         cart.clear()
       } else {
+        library.completePurchase(
+          items.map((i) => ({ id: i.id, title: i.title, price: i.price })),
+          total,
+          method,
+          false,
+        )
         setOrder(placed)
         setPhase('order')
         cart.clear()

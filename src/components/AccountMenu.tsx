@@ -8,25 +8,22 @@ import {
 } from '../lib/session'
 import { Avatar } from './Avatar'
 import { Button } from '../ui/Button'
+import { totalStars, currentUserMeta } from '../data/user'
 
-/** 選單項目；路徑皆為相對路徑，子資料夾部署也正確 */
+/**
+ * 選單項目（依產品規格只保留：個人檔案／我的課程／登出＋摘要與星星卡片；
+ * 不放收藏、商城、邀請好友、訂單、通知等）。路徑皆為相對路徑。
+ */
 const items = [
   {
     label: '個人檔案',
     href: './account.html',
     icon: 'M12 12a5 5 0 10-5-5 5 5 0 005 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z',
   },
-  /* 「我的課程」不放在此清單：導覽列（購物車左方）已有同一個入口
-     「我的星星」也不放：頂端的星星徽章已是同一個入口 */
   {
-    label: '我的訂單',
-    href: './orders.html',
-    icon: 'M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z',
-  },
-  {
-    label: '邀請朋友',
-    href: './invite.html',
-    icon: 'M15 12a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h16v-3c0-2.7-5.3-4-8-4zM6 9V6H4v3H1v2h3v3h2v-3h3V9z',
+    label: '我的課程',
+    href: './my-courses.html',
+    icon: 'M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z',
   },
 ]
 
@@ -237,18 +234,44 @@ export function AccountMenu({ user }: { user: Session }) {
                     <span className="sr-only">（更改顯示名稱）</span>
                   </button>
                 )}
-                {/* 星星數（實際數值待後端） */}
-                <a
-                  href="./stars.html"
-                  className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brass-400/15 px-3 py-1 text-sm font-semibold text-brass-700 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/25"
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 fill-brass-600">
-                    <path d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z" />
-                  </svg>
-                  <span className="tabular-nums">0</span>
-                </a>
+                {/* 等級（規則待確認，值來自 data/user.ts） */}
+                <p className="mt-0.5 text-xs font-semibold text-ink-500">
+                  Lv.{currentUserMeta.level}
+                </p>
               </div>
+
+              {/* 前往個人檔案 */}
+              <a
+                href="./account.html"
+                aria-label="前往個人檔案"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ivory-100 hover:text-brand-700"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">
+                  <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
+                </svg>
+              </a>
             </div>
+
+            {/* 實戰星星卡片：金色細線星星＋數量＋右箭頭 → 我的星星 */}
+            <a
+              href="./stars.html"
+              className="mt-3 flex items-center gap-3 rounded-xl bg-brass-400/10 px-4 py-3 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/20"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0">
+                <path
+                  d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z"
+                  fill="none"
+                  stroke="var(--color-brass-600)"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="flex-1 text-sm font-semibold text-brass-700">實戰星星</span>
+              <span className="text-base font-bold text-brass-700 tabular-nums">{totalStars}</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brass-600">
+                <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
+              </svg>
+            </a>
 
             <input
               ref={fileRef}

@@ -10,10 +10,10 @@ export const site = {
   brandName: 'Poolgress',
   tagline: 'AI 撞球教育平台',
 
-  /** 主導覽。games／coach／venues 目前為「敬請期待」佔位頁，正式頁完成後整頁替換 */
+  /** 主導覽。venues 目前為「敬請期待」佔位頁，正式頁完成後整頁替換 */
   nav: [
-    { label: '線上課程', href: './course.html' },
-    { label: '遊戲闖關', href: './games.html' },
+    { label: '線上課程', href: './courses.html' },
+    { label: '實戰闖關', href: './challenges.html' },
     { label: '關於教練', href: './coach.html' },
     { label: '合作場館', href: './venues.html' },
   ] as NavLink[],
@@ -44,10 +44,11 @@ export const site = {
 
   contactEmail: 'hello@poolgress.com',
 
-  /* 全部使用相對路徑；退費政策與聯絡我們頁面尚未建置，先指向服務條款佔位頁 */
+  /* 全部使用相對路徑（子資料夾部署也正確） */
   footerLinks: [
+    { label: '常見問題', href: './faq.html' },
     { label: '服務條款', href: './terms.html' },
     { label: '隱私權政策', href: './privacy.html' },
-    { label: '聯絡我們', href: `mailto:hello@poolgress.com` },
+    { label: '聯絡我們', href: './contact.html' },
   ] as NavLink[],
 } as const

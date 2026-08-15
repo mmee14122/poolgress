@@ -11,15 +11,18 @@ import {
   MAX_NAME_LENGTH,
   type Session,
 } from './lib/session'
+import { useLibrary, totalStarsOf, type Library } from './lib/library'
+import { courseById, flatLessons } from './data/courses'
+import { currentUserMeta } from './data/user'
 
 export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
 
+/* 依產品規格個人區只保留這四個分頁（邀請朋友頁面保留但不列入導覽） */
 const tabs: { key: AccountPage; label: string; href: string }[] = [
   { key: 'profile', label: '個人檔案', href: './account.html' },
   { key: 'courses', label: '我的課程', href: './my-courses.html' },
   { key: 'stars', label: '我的星星', href: './stars.html' },
   { key: 'orders', label: '我的訂單', href: './orders.html' },
-  { key: 'invite', label: '邀請朋友', href: './invite.html' },
 ]
 
 /**
@@ -31,8 +34,11 @@ const tabs: { key: AccountPage; label: string; href: string }[] = [
  */
 export default function AccountApp({ page }: { page: AccountPage }) {
   const user = useSession()
+  const lib = useLibrary()
 
   if (!user) return <SignedOutView />
+
+  const stars = totalStarsOf(lib)
 
   return (
     <>
@@ -44,6 +50,9 @@ export default function AccountApp({ page }: { page: AccountPage }) {
           <div className="min-w-0 flex-1">
             <NameEditor user={user} />
             <p className="truncate text-sm text-ink-500">{user.email}</p>
+            <p className="mt-1 text-xs font-semibold text-ink-500">
+              Lv.{currentUserMeta.level}・已完成 {completedCount(lib)} 堂課程
+            </p>
           </div>
           <a
             href="./stars.html"
@@ -52,7 +61,7 @@ export default function AccountApp({ page }: { page: AccountPage }) {
             <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-brass-600">
               <path d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z" />
             </svg>
-            <span className="tabular-nums">0</span>
+            <span className="tabular-nums">{stars}</span>
           </a>
         </div>
 
@@ -89,38 +98,154 @@ export default function AccountApp({ page }: { page: AccountPage }) {
 
 /* ------------------------------------------------------------------ */
 
-/** 我的課程：已購買課程與觀看進度 */
+/** 已完成課程數（進度 100%） */
+function completedCount(lib: Library) {
+  return lib.courses.filter((c) => {
+    const total = flatLessons(c.courseId).length
+    return total > 0 && c.completedLessons.length >= total
+  }).length
+}
+
+/**
+ * 我的課程：已購買課程與觀看進度。
+ * 資料來源：lib/library.ts（結帳成功即寫入）＋ data/courses.ts 的課程目錄。
+ */
 function CoursesPanel() {
+  const lib = useLibrary()
+  const list = lib.courses
+    .map((c) => {
+      const info = courseById(c.courseId)
+      const total = flatLessons(c.courseId).length
+      const progress = total ? Math.round((c.completedLessons.length / total) * 100) : 0
+      return { c, info, progress }
+    })
+    .filter((x) => x.info)
+
+  if (list.length === 0) {
+    return (
+      <Card title="我的課程">
+        <EmptyState
+          icon="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z"
+          title="還沒有已購買的課程"
+          description="購買後這裡會顯示課程與觀看進度。"
+          action={
+            <Button href="./courses.html" size="lg">
+              探索線上課程
+            </Button>
+          }
+        />
+      </Card>
+    )
+  }
+
   return (
     <Card title="我的課程">
-      <EmptyState
-        icon="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z"
-        title="還沒有已購買的課程"
-        description="購買後這裡會顯示課程與觀看進度。"
-        action={
-          <Button href="./course.html" size="lg">
-            探索線上課程
-          </Button>
-        }
-      />
+      <ul className="space-y-4">
+        {list.map(({ c, info, progress }) => (
+          <li
+            key={c.courseId}
+            className="flex flex-col gap-4 rounded-xl border border-line p-4 sm:flex-row sm:items-center"
+          >
+            {/* 封面（無圖時漸層佔位） */}
+            <div className="flex aspect-video w-full shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-brand-900 to-brand-600 sm:w-44">
+              <svg viewBox="0 0 48 24" aria-hidden="true" className="h-8 w-16 opacity-70">
+                <circle cx="12" cy="12" r="6" fill="#fbf9f5" />
+                <circle cx="34" cy="12" r="6" fill="#d9a441" />
+              </svg>
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-ink-900">{info!.title}</p>
+              <p className="mt-1 text-xs text-ink-500">
+                {progress >= 100
+                  ? '已完成 🎉'
+                  : c.lastLessonId
+                    ? `上次學到：單元 ${c.lastLessonId}`
+                    : '尚未開始'}
+              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <span
+                  role="progressbar"
+                  aria-valuenow={progress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${info!.title} 學習進度`}
+                  className="h-2 flex-1 overflow-hidden rounded-full bg-ivory-100"
+                >
+                  <span
+                    className="block h-full rounded-full bg-brand-600"
+                    style={{ width: `${progress}%` }}
+                  />
+                </span>
+                <span className="text-xs font-semibold text-ink-700 tabular-nums">{progress}%</span>
+              </div>
+            </div>
+
+            <Button
+              href={`./learn.html?course=${c.courseId}${c.lastLessonId ? `&lesson=${c.lastLessonId}` : ''}`}
+              className="shrink-0"
+            >
+              {!c.lastLessonId ? '開始學習' : progress >= 100 ? '再看一次' : '繼續學習'}
+            </Button>
+          </li>
+        ))}
+      </ul>
     </Card>
   )
 }
 
-/** 我的訂單：訂單與發票紀錄 */
+/** 我的訂單：來自 lib/library.ts（結帳成功即產生） */
 function OrdersPanel() {
+  const lib = useLibrary()
+
+  if (lib.orders.length === 0) {
+    return (
+      <Card title="我的訂單">
+        <EmptyState
+          icon="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z"
+          title="還沒有訂單"
+          description="完成購買後，訂單編號、金額與發票資訊會顯示在這裡。"
+          action={
+            <Button href="./courses.html" size="lg" variant="secondary">
+              探索線上課程
+            </Button>
+          }
+        />
+      </Card>
+    )
+  }
+
   return (
     <Card title="我的訂單">
-      <EmptyState
-        icon="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z"
-        title="還沒有訂單"
-        description="完成購買後，訂單編號、金額與發票資訊會顯示在這裡。"
-        action={
-          <Button href="./course.html" size="lg" variant="secondary">
-            探索線上課程
-          </Button>
-        }
-      />
+      <ul className="divide-y divide-line">
+        {lib.orders.map((o) => (
+          <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
+            <div className="min-w-0">
+              <p className="font-semibold text-ink-900 tabular-nums">{o.id}</p>
+              <p className="mt-0.5 truncate text-xs text-ink-500">
+                {new Date(o.date).toLocaleDateString('zh-TW')}・{o.items.map((i) => i.title).join('、')}
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                  o.status === '已完成'
+                    ? 'bg-pulse-100 text-pulse-700'
+                    : o.status === '待繳費'
+                      ? 'bg-brass-400/15 text-brass-700'
+                      : 'bg-ivory-100 text-ink-500'
+                }`}
+              >
+                {o.status}
+              </span>
+              <span className="font-semibold text-ink-900 tabular-nums">NT${o.total.toLocaleString()}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-4 text-xs text-ink-400">
+        ⚠️ 目前為前端示範訂單（未實際付款），金流串接後改由後端提供。
+      </p>
     </Card>
   )
 }
@@ -312,6 +437,9 @@ function AvatarPicker({ user }: { user: Session }) {
 
 /** 我的星星：累積數量與取得方式（規則待補，不自行定義） */
 function StarsPanel() {
+  const lib = useLibrary()
+  const total = totalStarsOf(lib)
+
   return (
     <div className="space-y-8">
       <Card title="目前星星數">
@@ -322,8 +450,8 @@ function StarsPanel() {
             </svg>
           </span>
           <div>
-            <p className="text-3xl font-bold text-ink-900 tabular-nums">0</p>
-            <p className="text-sm text-ink-500">完成課程單元與遊戲闖關可以獲得星星。</p>
+            <p className="text-3xl font-bold text-ink-900 tabular-nums">{total}</p>
+            <p className="text-sm text-ink-500">完成課程單元與實戰闖關可以獲得星星。</p>
           </div>
         </div>
       </Card>
@@ -347,16 +475,37 @@ function StarsPanel() {
       </Card>
 
       <Card title="星星紀錄">
-        <EmptyState
-          icon="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z"
-          title="還沒有星星紀錄"
-          description="開始上課或挑戰闖關後，取得與使用紀錄會顯示在這裡。"
-          action={
-            <Button href="./course.html" size="lg" variant="secondary">
-              查看課程
-            </Button>
-          }
-        />
+        {lib.stars.length === 0 ? (
+          <EmptyState
+            icon="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z"
+            title="還沒有星星紀錄"
+            description="開始上課或挑戰闖關後，取得與使用紀錄會顯示在這裡。"
+            action={
+              <Button href="./challenges.html" size="lg" variant="secondary">
+                查看實戰闖關
+              </Button>
+            }
+          />
+        ) : (
+          <ul className="divide-y divide-line">
+            {lib.stars.map((s, i) => (
+              <li key={`${s.date}-${i}`} className="flex items-center justify-between gap-3 py-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm text-ink-900">{s.source}</p>
+                  <p className="text-xs text-ink-400 tabular-nums">
+                    {new Date(s.date).toLocaleDateString('zh-TW')}
+                  </p>
+                </div>
+                <span className="flex shrink-0 items-center gap-1 font-semibold text-brass-700 tabular-nums">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-brass-600">
+                    <path d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z" />
+                  </svg>
+                  +{s.amount}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </Card>
     </div>
   )

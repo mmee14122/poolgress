@@ -89,14 +89,8 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
           </nav>
         </div>
 
-        {/* 右：我的課程（登入後）、購物車、頭像／登入、語言 */}
+        {/* 右：購物車、頭像（登入後；我的課程改由頭像選單提供）／登入、語言 */}
         <div className="hidden items-center gap-1 lg:flex">
-          {user && (
-            <a href="./my-courses.html" className={navLinkClass(dark)}>
-              我的課程
-            </a>
-          )}
-
           {/* 桌機：hover 展開 mini cart */}
           <CartHover />
 
@@ -153,15 +147,7 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
                 {item.label}
               </a>
             ))}
-            {/* 已登入時個人相關入口由頭像選單負責，這裡只補「我的課程」 */}
-            {user && (
-              <a
-                href="./my-courses.html"
-                className="block rounded-lg px-3 py-3 text-base font-medium text-ink-900 transition-colors hover:bg-ivory-100"
-              >
-                我的課程
-              </a>
-            )}
+            {/* 已登入時個人相關入口（含我的課程）由頭像選單負責 */}
             {!user && (
               <a
                 href={site.loginUrl}

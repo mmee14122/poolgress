@@ -6,6 +6,7 @@ import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S04One } from './components/home/S04One'
 import { S05Pillars } from './components/home/S05Pillars'
 import { S06Fit } from './components/home/S06Fit'
+import { S06bFeatured } from './components/home/S06bFeatured'
 import { S07VisionEntry } from './components/home/S07VisionEntry'
 
 /**
@@ -28,6 +29,8 @@ export default function HomeApp() {
         <S04One />
         <S05Pillars />
         <S06Fit />
+        {/* 精選課程 × 實戰闖關 × 教練：從「為什麼」進到具體入口 */}
+        <S06bFeatured />
         <S07VisionEntry />
       </main>
       <Footer />
