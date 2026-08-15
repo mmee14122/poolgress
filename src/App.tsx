@@ -45,13 +45,9 @@ export default function App() {
             <SideNav active={active} />
           </div>
 
-          {/* 中欄：課程簡介六區段（課名與定位由 Hero 呈現） */}
+          {/* 中欄：課程簡介六區段（課名與定位由 Hero 呈現）。
+              手機版不放內容流購買卡，購買動線由底部固定列（MobileCtaBar）承擔 */}
           <main className="min-w-0 divide-y divide-line">
-            {/* 手機：購買卡改為一般內容區塊（桌機由右欄 sticky 呈現） */}
-            <div id="purchase" className="scroll-mt-32 py-8 lg:hidden">
-              <CourseCard />
-            </div>
-
             <Problem />
             <HowYouLearn />
             <Gains />

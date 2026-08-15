@@ -1,5 +1,9 @@
 import { course, courseStats } from '../content/course'
+import { products } from '../content/catalog'
+import { cart } from '../lib/cart'
 import { Button } from '../ui/Button'
+
+const product = products[0]
 
 /**
  * 課程頁 Hero：位於三欄版面之前，橫跨主內容寬度。
@@ -10,13 +14,18 @@ import { Button } from '../ui/Button'
 export function CourseHero() {
   const { hero } = course
 
-  /** 立即購買：平滑捲動到目前可見的購買卡（桌機右欄／手機內容區塊） */
+  /**
+   * 立即購買：
+   * 桌機平滑捲動到右欄固定購買卡；
+   * 手機沒有內容流購買卡，直接加入購物車並前往結帳。
+   */
   const scrollToBuy = () => {
-    const target =
-      window.innerWidth >= 1024
-        ? document.getElementById('buy-card')
-        : document.getElementById('purchase')
-    target?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (window.innerWidth >= 1024) {
+      document.getElementById('buy-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    } else {
+      cart.add(product)
+      location.href = './checkout.html'
+    }
   }
 
   return (
