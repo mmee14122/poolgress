@@ -42,7 +42,7 @@ export function PromoBar() {
       buyCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
     } else {
       // 手機無右欄購買卡：捲到內容區，讓底部固定購買列現身
-      document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      document.getElementById('stuck')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 

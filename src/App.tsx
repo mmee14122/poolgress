@@ -6,11 +6,12 @@ import { SideNav } from './components/SideNav'
 import { CourseCard } from './components/CourseCard'
 import { MobileCtaBar } from './components/MobileCtaBar'
 import { Footer } from './components/Footer'
-import { Problem } from './components/sections/Problem'
-import { HowYouLearn } from './components/sections/HowYouLearn'
-import { Gains } from './components/sections/Gains'
-import { FitFor } from './components/sections/FitFor'
-import { Features } from './components/sections/Features'
+import { CourseInfo } from './components/sections/CourseInfo'
+import { Stuck } from './components/sections/Stuck'
+import { Outcomes } from './components/sections/Outcomes'
+import { HowSteps } from './components/sections/HowSteps'
+import { ChallengeSection } from './components/sections/ChallengeSection'
+import { FitCheck } from './components/sections/FitCheck'
 import { Chapters } from './components/sections/Chapters'
 import { Reviews } from './components/sections/Reviews'
 import { CoachSection } from './components/sections/CoachSection'
@@ -51,11 +52,12 @@ export default function App() {
           {/* 中欄：課程簡介六區段（課名與定位由 Hero 呈現）。
               手機版不放內容流購買卡，購買動線由底部固定列（MobileCtaBar）承擔 */}
           <main className="min-w-0 divide-y divide-line">
-            <Problem />
-            <HowYouLearn />
-            <Gains />
-            <FitFor />
-            <Features />
+            <CourseInfo />
+            <Stuck />
+            <Outcomes />
+            <HowSteps />
+            <ChallengeSection />
+            <FitCheck />
             <Chapters />
             <Reviews />
             <CoachSection />

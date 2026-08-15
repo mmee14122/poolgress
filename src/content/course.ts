@@ -15,20 +15,22 @@
  */
 
 export type SectionId =
-  | 'problem'
+  | 'stuck'
+  | 'outcomes'
   | 'how'
-  | 'gains'
+  | 'challenge'
   | 'fit'
-  | 'features'
   | 'chapters'
   | 'reviews'
   | 'coach'
   | 'faq'
 
-export type FlowStage = {
-  name: string
-  body: string
-}
+/** 帶粗體標記的文案行，保留原文的強調節奏 */
+export type RichLine = { text: string; bold?: boolean }
+
+export type StuckCard = { title: string; lines: RichLine[] }
+export type OutcomeCard = { title: string; lines: RichLine[] }
+export type HowStep = { no: string; name: string; lines: RichLine[]; quote?: string }
 
 export type LessonType = 'video' | 'game'
 
@@ -102,22 +104,30 @@ export type CourseIntro = {
   /** 一句話說明這堂課處理什麼 */
   tagline: string
   hero: HeroInfo
-  problem: {
-    /** 這堂課要解決的具體問題（非首頁的大問題） */
-    lines: string[]
+  /** 課程簡介六區塊（SECTION 01–06）的完整文案 */
+  intro: {
+    /** 課程資訊列（【＿＿】為待確認占位符） */
+    info: { students: string; level: string; access: string }
+    /** 02｜你可能正卡在這裡 */
+    stuck: { eyebrow: string; title: string; cards: StuckCard[]; closing: string }
+    /** 03｜學完後，你會有什麼不同？ */
+    outcomes: { title: string; sub: string; cards: OutcomeCard[] }
+    /** 04｜這堂課怎麼學？ */
+    how: { title: string; sub: string; steps: HowStep[] }
+    /** 05｜球桌 Challenge */
+    challenge: {
+      eyebrow: string
+      title: string
+      lines: string[]
+      quote: string
+      features: string[]
+      punch: string
+      ctaPrimary: { label: string; href: string }
+      ctaSecondary: { label: string; href: string }
+    }
+    /** 06｜這堂課適合你嗎？ */
+    fit: { title: string; sub: string; items: string[]; nudge: string }
   }
-  flow: FlowStage[]
-  gains: {
-    understand: string
-    challenge: string
-    outcome: string
-  }
-  fit: {
-    items: string[]
-    /** 有前置課程時顯示；null 表示無 */
-    prereq: string | null
-  }
-  features: string[]
   chapters: Chapter[]
   reviews: Review[]
   coach: CoachInfo
@@ -142,50 +152,173 @@ export const course: CourseIntro = {
     level: '新手入門',
   },
 
-  /* 01｜你現在可能卡在哪裡？ */
-  problem: {
-    lines: [
-      '你可能已經可以把球打出去，',
-      '但瞄準還大量靠感覺。',
-      '有時候進，有時候偏，',
-      '卻不知道差別在哪。',
-    ],
+  /* 課程簡介六區塊文案（【＿＿待確認】占位符不可自行捏造） */
+  intro: {
+    info: { students: '＿＿', level: '新手入門', access: '無限制' },
+
+    /* 02｜你可能正卡在這裡 */
+    stuck: {
+      eyebrow: '你可能正卡在這裡',
+      title: '有時候會進，下一球卻又不知道怎麼打？',
+      cards: [
+        {
+          title: '球進了，但不知道為什麼',
+          lines: [
+            { text: '有時候打得進，下一次遇到差不多的球，結果卻完全不同。' },
+            { text: '你知道成功了，卻不知道自己做對了什麼。' },
+          ],
+        },
+        {
+          title: '球歪了，也不知道該改哪裡',
+          lines: [
+            { text: '是瞄準？' },
+            { text: '運桿？' },
+            { text: '還是動作根本沒有做到自己以為的樣子？' },
+            { text: '如果不知道問題在哪，下一球通常只能再試一次。' },
+          ],
+        },
+        {
+          title: '聽懂技巧，到了球桌卻用不出來',
+          lines: [
+            { text: '別人可能跟你說：' },
+            { text: '「瞄這裡。」' },
+            { text: '「運桿直一點。」' },
+            { text: '「多打就會了。」' },
+            { text: '但真正站上球桌，你還是會想：' },
+            { text: '「所以我現在到底要注意什麼？」', bold: true },
+          ],
+        },
+        {
+          title: '打了一陣子，卻看不出自己有沒有進步',
+          lines: [
+            { text: '到底會了什麼？' },
+            { text: '哪裡進步了？' },
+            { text: '下一步該練什麼？' },
+            { text: '如果沒有方向，進步很容易只剩下感覺。' },
+          ],
+        },
+      ],
+      closing: '如果這些狀況很像你，這堂課就從這裡開始。',
+    },
+
+    /* 03｜學完後，你會有什麼不同？ */
+    outcomes: {
+      title: '學完後，你會有什麼不同？',
+      sub: '從「再試一次看看」，到知道自己正在做什麼。',
+      cards: [
+        {
+          title: '你會理解',
+          lines: [
+            { text: '看懂球路軌跡，以及球桌上的碰撞如何影響球的結果。' },
+            { text: '不只記住打法，而是知道：' },
+            { text: '為什麼要這樣做。', bold: true },
+          ],
+        },
+        {
+          title: '你會做到',
+          lines: [
+            { text: '將腦海的想像帶到真正的球桌上。' },
+            { text: '最後不是只有：' },
+            { text: '「我看懂了。」' },
+            { text: '而是：' },
+            { text: '「我真的做得出來。」', bold: true },
+          ],
+        },
+        {
+          title: '你會知道',
+          lines: [
+            { text: '當結果不如預期，你開始知道可以從哪裡找問題。' },
+            { text: '也更清楚：' },
+            { text: '我現在會什麼？', bold: true },
+            { text: '下一步要練什麼？', bold: true },
+          ],
+        },
+      ],
+    },
+
+    /* 04｜這堂課怎麼學？ */
+    how: {
+      title: '這堂課怎麼學？',
+      sub: '先看懂，再親手做一次。',
+      steps: [
+        {
+          no: '01',
+          name: '理解',
+          lines: [
+            { text: '先弄懂這堂課最重要的觀念。' },
+            { text: '回答：' },
+            { text: '「我現在到底要注意什麼？」', bold: true },
+          ],
+        },
+        {
+          no: '02',
+          name: '觀察',
+          lines: [
+            { text: '看實際示範，找出不同打法造成的差異。' },
+            { text: '不只看球有沒有進。' },
+            { text: '而是看：' },
+            { text: '哪裡不一樣？', bold: true },
+          ],
+        },
+        {
+          no: '03',
+          name: '實踐',
+          lines: [
+            { text: '接著到球桌上自己試。' },
+            { text: '腦袋知道怎麼做，手還是需要真的練過。' },
+          ],
+          quote: '理解讓練習有方向，練習讓理解變成能力。',
+        },
+        {
+          no: '04',
+          name: '挑戰',
+          lines: [
+            { text: '完成【本堂 Challenge 待確認】。' },
+            { text: '看看自己能不能把剛剛學到的東西真正做出來。' },
+          ],
+        },
+        {
+          no: '05',
+          name: '確認',
+          lines: [
+            { text: '最後確認一件事：' },
+            { text: '「我是真的會了，還是這次剛好成功？」', bold: true },
+            { text: '【真實確認方式待確認】' },
+          ],
+        },
+      ],
+    },
+
+    /* 05｜球桌 Challenge */
+    challenge: {
+      eyebrow: '球桌 Challenge',
+      title: '看懂了，換你試。',
+      lines: [
+        '真正的學習，不是影片播完的那一刻。',
+        '而是你站到球桌前，親手把它做出來。',
+        '然後心裡冒出一句：',
+      ],
+      quote: '「靠，我居然做到了。」',
+      features: ['【Challenge 練習題】', '下載 Poolgress App', '透過 AI 影像辨識，進行球桌實戰挑戰'],
+      punch: '你將開始掌控整張球桌。',
+      ctaPrimary: { label: '下載 Poolgress App', href: '#' }, // ⚠️ App 商店連結待補
+      ctaSecondary: { label: '了解實戰闖關如何進行', href: '/games' },
+    },
+
+    /* 06｜這堂課適合你嗎？ */
+    fit: {
+      title: '這堂課適合你嗎？',
+      sub: '適合你，如果你：',
+      items: [
+        '打過幾次撞球，但還不知道該從哪裡開始學。',
+        '有時候會進球，卻不知道自己為什麼成功。',
+        '球打歪時，很難判斷問題在哪。',
+        '聽過一些技巧，但到了球桌還是不知道怎麼做。',
+        '想知道自己現在該練什麼，而不是一直靠感覺摸索。',
+      ],
+      nudge: '如果你想讓每一次練習不再只是碰運氣，這堂課會帶你從看懂開始。',
+    },
   },
-
-  /* 02｜這堂課會怎麼帶你學？ */
-  flow: [
-    { name: '理解', body: '理解這堂課最重要的原理。' },
-    { name: '示範', body: '看懂實際操作方式。' },
-    { name: '實踐', body: '到球桌親手嘗試。' },
-    { name: '闖關', body: '完成指定挑戰。' },
-    { name: '確認', body: '知道自己是不是真的做到。' },
-  ],
-
-  /* 03｜上完課＋完成闖關，你能得到什麼？ */
-  gains: {
-    understand: '課程成果待補（一個核心原理）',
-    challenge: '球桌挑戰待補（球桌上實際要完成的任務）',
-    outcome: '能理解＿＿，並完成＿＿。',
-  },
-
-  /* 04｜這堂課適合誰？ */
-  fit: {
-    items: [
-      '第一次認真學這個技巧的人',
-      '娛樂玩家',
-      '初階玩家',
-    ],
-    prereq: null, // 有前置課程時改為：'建議先完成＿＿課程。'
-  },
-
-  /* 05｜這堂課的特色（只講這一堂） */
-  features: [
-    '這堂課的理解方式待補',
-    '這堂課的特殊練習待補',
-    '這堂課的球桌挑戰待補',
-    '如何判斷是否成功待補',
-    '與上一堂／下一堂課程的關係待補',
-  ],
 
   /* 06｜課程內容
      單元數與時數由資料自動計算；Chapter 03、04 的單元名稱與
@@ -382,7 +515,7 @@ export const courseStats = (() => {
  * 捲動到章節之前，「課程簡介」都維持高亮。
  */
 export const sections: { id: SectionId; label: string }[] = [
-  { id: 'problem', label: '課程簡介' },
+  { id: 'stuck', label: '課程簡介' },
   { id: 'chapters', label: '課程章節' },
   { id: 'reviews', label: '學員評價' },
   { id: 'coach', label: '關於教練' },
