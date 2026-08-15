@@ -64,6 +64,22 @@ export default function CheckoutApp() {
   /** 送出鎖：同步生效（早於 state 更新），防止快速連點送出兩次 */
   const submitting = useRef(false)
 
+  /* 手機底部固定列的實際高度 → 頁尾之後預留同高空白，剛好不遮住頁尾 */
+  const barRef = useRef<HTMLDivElement>(null)
+  const [barHeight, setBarHeight] = useState(0)
+  useEffect(() => {
+    const el = barRef.current
+    if (!el) {
+      setBarHeight(0)
+      return
+    }
+    const ro = new ResizeObserver(([entry]) => {
+      setBarHeight(entry.target.getBoundingClientRect().height)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  })
+
   useEffect(() => {
     return () => {
       if (timer.current) clearTimeout(timer.current)
@@ -217,14 +233,8 @@ export default function CheckoutApp() {
 
       {/* 手機／平板（lg 以下）唯一的購買入口；桌機以 lg:hidden 完全移除（display:none） */}
       {(phase === 'form' || phase === 'processing') && items.length > 0 && (
-        <>
-          {/* 底部安全空間：固定列高度 + iPhone 安全區 + 餘裕，避免遮住明細與條款 */}
-          <div
-            className="lg:hidden"
-            aria-hidden="true"
-            style={{ height: 'calc(5rem + env(safe-area-inset-bottom) + 1rem)' }}
-          />
-          <div
+        <div
+            ref={barRef}
             className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white lg:hidden"
             style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
           >
@@ -248,12 +258,18 @@ export default function CheckoutApp() {
               </Button>
             </div>
           </div>
-        </>
       )}
 
       {phase === 'processing' && <ProcessingOverlay />}
 
       <Footer />
+
+      {/* 底部安全空間放在頁尾之後：避免固定列蓋住頁尾，
+          又不會在內容與頁尾之間撐出一段空白（縮短捲到底的距離）。
+          高度取實際列高（含安全區與未完成提示行），不多留也不少留 */}
+      {(phase === 'form' || phase === 'processing') && items.length > 0 && (
+        <div className="lg:hidden" aria-hidden="true" style={{ height: barHeight }} />
+      )}
     </>
   )
 }
