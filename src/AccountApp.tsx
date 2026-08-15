@@ -229,11 +229,22 @@ function NameEditor({ user }: { user: Session }) {
   return (
     /* 整個名稱就是編輯入口；鉛筆圖示保留作為可編輯的視覺提示 */
     <h1 className="text-2xl sm:text-3xl">
+      {/* 桌機點兩下進入編輯；觸控裝置維持點一下（雙擊在手機很難操作）；
+          鍵盤 Enter／空白鍵同樣可進入 */}
       <button
         type="button"
-        onClick={start}
-        title="更改顯示名稱"
-        className="group flex max-w-full items-center gap-2 rounded-lg text-left transition-colors hover:text-brand-700"
+        onDoubleClick={start}
+        onPointerUp={(e) => {
+          if (e.pointerType !== 'mouse') start()
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            start()
+          }
+        }}
+        title="點兩下更改顯示名稱"
+        className="group flex max-w-full items-center gap-2 rounded-lg text-left transition-colors select-none hover:text-brand-700"
       >
         <span className="truncate">{displayNameOf(user)}</span>
         <span
@@ -244,7 +255,7 @@ function NameEditor({ user }: { user: Session }) {
             <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
           </svg>
         </span>
-        <span className="sr-only">（點擊更改顯示名稱）</span>
+        <span className="sr-only">（更改顯示名稱）</span>
       </button>
     </h1>
   )

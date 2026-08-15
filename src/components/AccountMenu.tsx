@@ -210,9 +210,18 @@ export function AccountMenu({ user }: { user: Session }) {
                   /* 整個名稱就是編輯入口；鉛筆圖示保留作為視覺提示 */
                   <button
                     type="button"
-                    onClick={startEditName}
-                    title="更改顯示名稱"
-                    className="group flex max-w-full items-center gap-1 rounded-lg text-left"
+                    onDoubleClick={startEditName}
+                    onPointerUp={(e) => {
+                      if (e.pointerType !== 'mouse') startEditName()
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        startEditName()
+                      }
+                    }}
+                    title="點兩下更改顯示名稱"
+                    className="group flex max-w-full items-center gap-1 rounded-lg text-left select-none"
                   >
                     <span className="truncate font-semibold text-ink-900 transition-colors group-hover:text-brand-700">
                       {displayNameOf(user)}
@@ -225,7 +234,7 @@ export function AccountMenu({ user }: { user: Session }) {
                         <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
                       </svg>
                     </span>
-                    <span className="sr-only">（點擊更改顯示名稱）</span>
+                    <span className="sr-only">（更改顯示名稱）</span>
                   </button>
                 )}
                 {/* 星星數（實際數值待後端） */}
