@@ -5,8 +5,8 @@ import { Button } from '../../ui/Button'
 /**
  * SECTION 01｜Hero：Scroll Story（五幕）
  *
- * 桌機：舞台 sticky 釘住，外層 .hs-story 以 spacer 提供 25vh 停留距離
- * （外層總高約 117vh，滾輪約兩下即完成退場）；
+ * 桌機：舞台 sticky 釘住，外層 .hs-story 以 spacer 提供 300px 停留距離
+ * （Chrome 一格滾輪約 100px，三下滾動完成退場）；
  * 手機：不釘住的普通 Hero，效果在最初 40vh 內完成，一次滑動即見下一區。
  * 進度 --story-p 直接對應捲動位置：
  *   SCENE 01 0–18%   品牌主標（載入時一次性淡入）

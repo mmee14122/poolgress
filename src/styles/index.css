@@ -123,7 +123,8 @@
 
 /* 進度來源：scroll timeline（範圍＝spacer 高度）；JS 後援於元件內。
    手機不釘住（普通 Hero），效果在最初 40vh 內完成；
-   桌機停留距離僅 25vh（外層總高約 117vh），滾輪約兩下即完成退場。 */
+   桌機停留距離固定 300px——Chrome 一格滾輪約 100px，
+   剛好三下滾動完成退場（用 px 而非 vh，各種螢幕高度手感一致）。 */
 @supports (animation-timeline: scroll()) {
   html.home-hero-scroll {
     animation: story-progress linear both;
@@ -131,7 +132,7 @@
     animation-range: 0px 40vh;
   }
   @media (min-width: 1024px) {
-    html.home-hero-scroll { animation-range: 0px 25vh; }
+    html.home-hero-scroll { animation-range: 0px 300px; }
   }
 }
 
@@ -152,7 +153,7 @@
   }
   .hs-spacer {
     display: block;
-    height: 25vh;
+    height: 300px;
   }
 }
 
