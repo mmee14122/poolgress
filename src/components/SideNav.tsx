@@ -6,7 +6,8 @@ import { sections } from '../content/course'
  */
 export function SideNav({ active }: { active: string }) {
   return (
-    <nav aria-label="課程內容導覽" className="sticky top-24 hidden lg:block">
+    /* sticky 由 App.tsx 的格線欄容器負責 */
+    <nav aria-label="課程內容導覽">
       <p className="mb-3 px-3 text-xs font-semibold tracking-widest text-ink-500 uppercase">
         本頁內容
       </p>
