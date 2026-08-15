@@ -10,14 +10,18 @@ import { Gains } from './components/sections/Gains'
 import { FitFor } from './components/sections/FitFor'
 import { Features } from './components/sections/Features'
 import { Chapters } from './components/sections/Chapters'
+import { Reviews } from './components/sections/Reviews'
+import { CoachSection } from './components/sections/CoachSection'
+import { Faq } from './components/sections/Faq'
 import { course, sections } from './content/course'
 import { useScrollSpy } from './hooks/useScrollSpy'
 
 const sectionIds = sections.map((s) => s.id)
 
 /**
- * 課程簡介頁（獨立模板）。回答六件事：
- * 卡在哪 → 怎麼學 → 得到什麼 → 適合誰 → 這堂的特色 → 章節
+ * 課程簡介頁（獨立模板）。
+ * 課程簡介（卡在哪 → 怎麼學 → 得到什麼 → 適合誰 → 特色）
+ * → 章節 → 學員評價 → 關於教練 → FAQ
  *
  * 桌機：左錨點導覽｜中內容｜右 sticky 課程卡
  * 手機：錨點導覽變橫向標籤列，底部固定 CTA 列。
@@ -48,12 +52,20 @@ export default function App() {
               <p className="mt-3 text-lg text-ink-500">{course.tagline}</p>
             </header>
 
+            {/* 手機：購買卡改為一般內容區塊（桌機由右欄 sticky 呈現） */}
+            <div id="purchase" className="scroll-mt-32 py-8 lg:hidden">
+              <CourseCard />
+            </div>
+
             <Problem />
             <HowYouLearn />
             <Gains />
             <FitFor />
             <Features />
             <Chapters />
+            <Reviews />
+            <CoachSection />
+            <Faq />
           </main>
 
           {/* 右欄：桌機 sticky 課程卡 */}

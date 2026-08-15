@@ -19,6 +19,8 @@
   --color-brass-300: #e6c478;
   --color-brass-400: #d9a441;
   --color-brass-600: #9a6f1f;
+  /* 深色文字用：淡金底（brass-400/15）上仍需過 AA */
+  --color-brass-700: #7c5813;
 
   /* 巧克藍，用於「遊戲闖關」這類功能性標記 */
   --color-chalk-100: #dfe9f5;

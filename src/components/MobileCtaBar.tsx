@@ -1,20 +1,36 @@
-import { useEffect, useState } from 'react'
-import { course } from '../content/course'
+import { useEffect, useRef, useState } from 'react'
+import { products } from '../content/catalog'
+import { cart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 
+const product = products[0]
+
 /**
- * 手機底部固定 CTA 列。捲過頁首後才出現。
- * 不顯示價格——價格資料尚未確認。
+ * 手機底部固定購買列。捲過頁首後才出現。
+ * 「立即購買」加入購物車後導向結帳頁（與購買卡一致）。
  */
 export function MobileCtaBar() {
   const [visible, setVisible] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const timer = useRef<number | null>(null)
 
   useEffect(() => {
     const update = () => setVisible(window.scrollY > 420)
     update()
     window.addEventListener('scroll', update, { passive: true })
-    return () => window.removeEventListener('scroll', update)
+    return () => {
+      window.removeEventListener('scroll', update)
+      if (timer.current) clearTimeout(timer.current)
+    }
   }, [])
+
+  const buyNow = () => {
+    setBusy(true)
+    cart.add(product)
+    timer.current = window.setTimeout(() => {
+      location.href = './checkout.html'
+    }, 350)
+  }
 
   return (
     <div
@@ -25,9 +41,21 @@ export function MobileCtaBar() {
       inert={!visible}
     >
       <div className="flex items-center gap-3 px-4 py-3">
-        <p className="min-w-0 flex-1 truncate text-sm font-semibold text-ink-900">{course.name}</p>
-        <Button href={course.startUrl} size="lg" className="shrink-0">
-          {course.ctaLabel}
+        <div className="min-w-0 flex-1">
+          <p className="flex items-baseline gap-2">
+            <span className="text-lg font-bold text-ink-900 tabular-nums">
+              {formatNT(product.price)}
+            </span>
+            {product.originalPrice && (
+              <span className="text-sm text-ink-400 line-through tabular-nums">
+                {formatNT(product.originalPrice)}
+              </span>
+            )}
+          </p>
+          <p className="truncate text-xs text-ink-400">＊示範價格</p>
+        </div>
+        <Button size="lg" className="shrink-0" onClick={buyNow} disabled={busy}>
+          {busy ? '處理中…' : '立即購買'}
         </Button>
       </div>
     </div>
