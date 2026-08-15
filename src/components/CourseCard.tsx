@@ -137,36 +137,38 @@ export function CourseCard() {
                 {buyState === 'idle' ? '立即購買' : buyState === 'loading' ? '處理中…' : '前往結帳…'}
               </Button>
 
-              {/* 右：小塊購物車圖示，hover 顯示「加入購物車」提示 */}
-              <span className="group relative shrink-0">
-                <button
-                  type="button"
-                  onClick={addToCart}
-                  disabled={addState === 'loading'}
-                  aria-label="加入購物車"
-                  className="flex h-full w-[3.25rem] items-center justify-center rounded-full bg-white text-felt-700 ring-1 ring-felt-200 transition-colors hover:bg-felt-50 active:bg-felt-100 disabled:cursor-not-allowed"
-                >
-                  {addState === 'loading' ? (
-                    <Spinner />
-                  ) : (
-                    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+              {/* 右：購物車圖示鈕。hover 時方塊展開、圖示淡出換成「加入購物車」字樣 */}
+              <button
+                type="button"
+                onClick={addToCart}
+                disabled={addState === 'loading'}
+                aria-label="加入購物車"
+                className={`group relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-felt-700 ring-1 ring-felt-200 transition-[width,background-color] duration-200 ease-out active:bg-felt-100 disabled:cursor-not-allowed ${
+                  addState === 'loading'
+                    ? 'w-[3.25rem]'
+                    : 'w-[3.25rem] hover:w-[8.5rem] hover:bg-felt-50'
+                }`}
+              >
+                {addState === 'loading' ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className="h-5 w-5 fill-current transition-opacity duration-150 group-hover:opacity-0"
+                    >
                       <path d="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z" />
                     </svg>
-                  )}
-                </button>
-
-                {/* 提示氣泡 */}
-                <span
-                  role="tooltip"
-                  className="pointer-events-none absolute -top-9 right-0 rounded-lg bg-ink-900 px-2.5 py-1.5 text-xs whitespace-nowrap text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                >
-                  加入購物車
-                  <span
-                    aria-hidden="true"
-                    className="absolute -bottom-1 right-5 h-2 w-2 rotate-45 bg-ink-900"
-                  />
-                </span>
-              </span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center justify-center text-sm font-semibold whitespace-nowrap opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                    >
+                      加入購物車
+                    </span>
+                  </>
+                )}
+              </button>
             </div>
           )}
         </div>
