@@ -76,12 +76,17 @@ export function CourseCard() {
           <p className="mb-3 text-sm font-semibold text-ink-900">課程包含以下內容</p>
           <ul className="space-y-2.5 text-sm text-ink-500">
             <li className="flex items-center gap-2.5">
+              <Icon d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6l5 3 1-1.7-4-2.3z" />
+              <span>
+                課程長度約{' '}
+                <strong className="font-semibold text-ink-900">{purchase.totalHours}</strong> 小時
+              </span>
+            </li>
+            <li className="flex items-center gap-2.5">
               <Icon d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z" />
               <span>
                 <strong className="font-semibold text-ink-900">{purchase.lessonCount}</strong>
-                個課程單元、
-                <strong className="font-semibold text-ink-900">{purchase.chapterCount}</strong>
-                章節
+                個課程單元
               </span>
             </li>
             <li className="flex items-center gap-2.5">

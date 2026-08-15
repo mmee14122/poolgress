@@ -62,8 +62,8 @@ export type Faq = { q: string; a: string }
 
 export type PurchaseInfo = {
   studentCount: string
+  totalHours: string
   lessonCount: string
-  chapterCount: string
   gameCount: string
   /** 優惠／早鳥／組合文案；null 時不顯示該區 */
   offerNote: string | null
@@ -243,8 +243,8 @@ export const course: CourseIntro = {
   /* 右欄購買卡資訊（⚠️ 待補） */
   purchase: {
     studentCount: '＿＿',
+    totalHours: '＿＿',
     lessonCount: '＿＿',
-    chapterCount: '＿＿',
     gameCount: '＿＿',
     offerNote: '早鳥優惠文案待補｜組合優惠說明待補',
   },
