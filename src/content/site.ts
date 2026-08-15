@@ -1,35 +1,51 @@
 /**
- * 全站設定。所有對外連結集中在這裡 —— UI 端不需要知道金流是哪一家，
- * 換平台時只要改 checkoutUrl 一行。
+ * 全站設定：導覽、促銷列、對外連結。
+ * 站台層級的東西都放這裡，元件不寫死任何文案或網址。
  */
+
+export type NavLink = { label: string; href: string }
+export type Language = { code: string; label: string }
+
 export const site = {
-  brandName: '課程工作室',
+  brandName: 'Poolgress',
+  tagline: 'AI 撞球教育平台',
 
-  /** 主 CTA 目的地：填你的收款頁（Teachify / 綠界 / 藍新 / 表單皆可） */
-  checkoutUrl: 'https://example.com/checkout',
-  /** 次要 CTA：免費試看、索取大綱 */
-  previewUrl: 'https://example.com/preview',
+  /** 主導覽 —— 目前為佔位路徑，之後接上實際頁面即可 */
+  nav: [
+    { label: '線上課程', href: '/courses' },
+    { label: '關於教練', href: '/coach' },
+  ] as NavLink[],
 
-  contactEmail: 'hello@example.com',
+  cartUrl: '/cart',
+  loginUrl: '/login',
+  signupUrl: '/signup',
 
-  social: [
-    { label: 'Instagram', href: 'https://instagram.com/example' },
-    { label: 'YouTube', href: 'https://youtube.com/@example' },
-  ],
+  /** 購物車數量，之後改由狀態管理或 API 提供 */
+  cartCount: 2,
 
-  /** 頁尾法遵連結 —— 台灣線上課程建議至少備齊這三項 */
-  legal: [
+  languages: [
+    { code: 'zh-Hant', label: '繁中' },
+    { code: 'en', label: 'English' },
+  ] as Language[],
+
+  /**
+   * 頂部促銷列。
+   * endsAt 設為 null 時倒數會顯示「＿＿天＿＿時＿＿分」佔位符；
+   * 填入 ISO 時間字串則顯示實際倒數，過期後整條促銷列自動隱藏。
+   */
+  promo: {
+    label: '限時優惠倒數',
+    endsAt: '2026-09-30T23:59:59+08:00' as string | null,
+    linkLabel: '查看特別優惠組合',
+    linkHref: '/offers',
+  },
+
+  contactEmail: 'hello@poolgress.com',
+
+  footerLinks: [
     { label: '服務條款', href: '/terms' },
     { label: '隱私權政策', href: '/privacy' },
     { label: '退費政策', href: '/refund' },
-  ],
-
-  /** 導覽列錨點 */
-  nav: [
-    { label: '課程內容', href: '#curriculum' },
-    { label: '講師', href: '#instructor' },
-    { label: '學員成果', href: '#testimonials' },
-    { label: '方案', href: '#pricing' },
-    { label: '常見問題', href: '#faq' },
-  ],
+    { label: '聯絡我們', href: '/contact' },
+  ] as NavLink[],
 } as const

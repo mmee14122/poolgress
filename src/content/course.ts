@@ -1,279 +1,270 @@
 /**
- * 課程資料。以下型別就是之後接後端時的介面 ——
- * API 回傳只要符合 Course，UI 一行都不用改。
+ * 課程詳情頁資料。
+ *
+ * 最上方的型別即為之後接後端時的介面：API 回傳符合這些型別，
+ * 把下方的 course 常數換成 fetch 結果即可，元件一行都不用改。
+ * 新增課程 = 多一筆同型別資料，不需要動版面。
+ *
+ * ⚠️ 以下皆為範例文案，「＿＿」為待填佔位符。
  */
+
+/** 左欄錨點導覽的區段。id 同時是 DOM 錨點與 scroll spy 的依據 */
+export type SectionId = 'overview' | 'chapters' | 'reviews' | 'coach' | 'faq'
+
+export type LessonStatus = 'free' | 'unlocked' | 'game'
+
+export type Lesson = {
+  title: string
+  duration: string
+  status?: LessonStatus
+}
 
 export type Chapter = {
   title: string
-  duration: string
-  lessons: string[]
+  /** 本章學習目標，顯示在展開後的最上方 */
+  goal: string
+  lessons: Lesson[]
 }
 
-export type Plan = {
+export type Review = {
   name: string
-  price: number
-  originalPrice?: number
-  /** 標記「最多人選」，一次只給一個方案 */
-  featured?: boolean
-  description: string
-  includes: string[]
-  ctaLabel: string
-}
-
-export type Testimonial = {
-  name: string
+  /** 學員身分或程度，例如「業餘三年」 */
   title: string
-  /** 具體成效比形容詞有說服力 */
+  rating: number
+  /** 具體學習成果，比形容詞更有說服力 */
   result: string
-  quote: string
-  avatar?: string
+  comment: string
 }
 
-export type Faq = {
-  q: string
-  a: string
-}
+export type Faq = { q: string; a: string }
 
 export type Course = {
   title: string
-  subtitle: string
-  /** Hero 底下的三個信任數字 */
-  stats: { value: string; label: string }[]
-  painPoints: string[]
+  /** 一句話核心價值，放在課名下方 */
+  hook: string
+  intro: string[]
+  /** 適合對象 */
+  audience: string[]
+  /** 學完後能做到什麼 */
   outcomes: { title: string; description: string }[]
-  curriculum: Chapter[]
-  instructor: {
+  /** 課程亮點卡片 */
+  highlights: { label: string; value: string; note: string }[]
+  chapters: Chapter[]
+  reviews: Review[]
+  coach: {
     name: string
     title: string
+    philosophy: string
     bio: string[]
     credentials: string[]
+    stats: { value: string; label: string }[]
   }
-  testimonials: Testimonial[]
-  plans: Plan[]
   faqs: Faq[]
-  guarantee: { title: string; description: string }
+  purchase: {
+    studentCount: string
+    totalHours: string
+    lessonCount: string
+    gameCount: string
+    /** 優惠說明，未設定時不顯示該區塊 */
+    offerNote: string | null
+    originalPrice: number
+    salePrice: number
+  }
 }
 
 export const course: Course = {
-  title: '從零打造你的第一套線上課程',
-  subtitle:
-    '12 週實戰課程，帶你走完選題、錄製、上架到售出第一筆訂單的完整流程。沒有拍片經驗、沒有名氣也能開始。',
+  title: '＿＿撞球課程名稱＿＿：從基礎到穩定進球',
+  hook: '把「有時候打得進」練成「每次都打得進」——用可重複的方法取代手感。',
 
-  stats: [
-    { value: '12 週', label: '完整課程長度' },
-    { value: '48 支', label: '影片單元' },
-    { value: '1,200+', label: '學員已完成' },
+  intro: [
+    '這門課把撞球拆解成可以逐項練習的技術模組：站姿、瞄準、母球控制、走位與防守。每個模組都有明確的判斷標準，你會知道自己這一桿為什麼進、為什麼不進，而不是打完只能歸因於手感。',
+    '課程搭配 Poolgress 的遊戲闖關系統，每學完一個技術模組就有對應的關卡驗收。練習不再是漫無目的地打球，而是有目標、有回饋、看得見進步。',
   ],
 
-  painPoints: [
-    '有專業，但不知道該把課程主題訂在哪裡，怕做出來沒人買',
-    '看過一堆拍片教學，設備買了卻遲遲沒開拍',
-    '課程錄完躺在硬碟裡，不知道要放上哪個平台、怎麼收錢',
-    '想開課但沒有社群聲量，擔心「零粉絲等於零銷售」',
+  audience: [
+    '完全沒接觸過撞球，想有系統地入門的新手',
+    '打了一段時間但成績起伏很大，想穩定下來的人',
+    '想理解走位與佈局，不只是把球打進的進階玩家',
+    '希望有明確練習方法、不想再靠感覺瞎練的球友',
   ],
 
   outcomes: [
     {
-      title: '一句話說清楚你的課要賣給誰',
-      description:
-        '用選題驗證表在開拍前確認需求，避免花三個月做出沒人要的課。',
+      title: '建立穩定且可重複的擊球姿勢',
+      description: '從站位、握桿到出桿節奏都有檢查點，任何時候走樣都能自己修正回來。',
     },
     {
-      title: '用手邊設備錄出能收費的品質',
-      description:
-        '手機 + 一盞燈的拍攝配置、講稿結構與剪輯流程，第一支影片當週就能產出。',
+      title: '看懂母球走位，而不只是打進當下這顆',
+      description: '學會用分離角與加塞控制母球落點，開始能想到後面兩三顆。',
     },
     {
-      title: '把課程完整上架並開始收款',
-      description:
-        '平台選擇、定價策略、金流設定逐步操作，結業時你的課已經能被購買。',
+      title: '面對難球有判斷依據',
+      description: '知道什麼時候該進攻、什麼時候該防守，減少送機會給對手。',
     },
     {
-      title: '零粉絲也跑得動的招生流程',
-      description:
-        '預售名單、開賣信件與銷售頁文案模板，不靠廣告預算也能賣出第一批。',
+      title: '擁有一套可長期執行的練習菜單',
+      description: '結業後知道每次上桌該練什麼，而不是隨便打兩小時。',
     },
   ],
 
-  curriculum: [
+  highlights: [
+    { label: '技術模組', value: '＿＿', note: '個可獨立練習的單元' },
+    { label: '遊戲闖關', value: '＿＿', note: '關卡驗收學習成果' },
+    { label: '練習菜單', value: '＿＿', note: '份可下載的練習表' },
+  ],
+
+  chapters: [
     {
-      title: '第 1 週 — 選題與需求驗證',
-      duration: '3 小時 20 分',
+      title: '第一章　基礎架構：站姿、握桿與瞄準',
+      goal: '建立一套每次都能重現的擊球準備動作。',
       lessons: [
-        '找出你能教、而且有人願意付錢的交集',
-        '用 30 份問卷驗證主題的實際做法',
-        '競品課程拆解：定價、大綱、差異化切角',
-        '課堂作業：完成你的課程一句話定位',
+        { title: '課程導覽與學習地圖', duration: '08:24', status: 'free' },
+        { title: '站姿與重心分配', duration: '14:10', status: 'free' },
+        { title: '握桿與手架的三種選擇', duration: '12:35' },
+        { title: '瞄準系統：從假想球到重合法', duration: '18:02' },
+        { title: '闖關：直球連續進球挑戰', duration: '互動關卡', status: 'game' },
       ],
     },
     {
-      title: '第 2–3 週 — 課程架構設計',
-      duration: '4 小時 05 分',
+      title: '第二章　出桿品質與母球控制',
+      goal: '讓母球停在你想要的位置，而不是它想去的位置。',
       lessons: [
-        '從學習成果反推章節，而不是從你會什麼開始寫',
-        '單元切分原則：為什麼一支影片不該超過 12 分鐘',
-        '作業與練習設計，讓完課率翻倍',
+        { title: '出桿直線性與跟隨動作', duration: '15:48' },
+        { title: '高低桿：跟球與縮球的力道對應', duration: '20:16' },
+        { title: '加塞原理與偏移補正', duration: '22:40' },
+        { title: '闖關：母球停位精準度測驗', duration: '互動關卡', status: 'game' },
       ],
     },
     {
-      title: '第 4–6 週 — 錄製與後製',
-      duration: '6 小時 40 分',
+      title: '第三章　走位與線路規劃',
+      goal: '從打進一顆，變成安排出一整局的順序。',
       lessons: [
-        '三種預算的拍攝配置：手機 / 微單 / 全套',
-        '打光與收音：最容易被忽略、卻最影響質感的兩件事',
-        '講稿寫法與提詞流程，減少 NG 次數',
-        '剪輯範本與批次輸出設定',
+        { title: '分離角的基本規則', duration: '16:55' },
+        { title: '一庫走位與角度換算', duration: '19:30' },
+        { title: '排列順序：先解決麻煩球', duration: '17:12' },
+        { title: '實戰拆解：一局清檯的思路', duration: '24:08' },
+        { title: '闖關：三顆球連續走位', duration: '互動關卡', status: 'game' },
       ],
     },
     {
-      title: '第 7–9 週 — 上架與定價',
-      duration: '4 小時 15 分',
+      title: '第四章　防守與比賽心理',
+      goal: '知道什麼時候不該進攻，比會進攻更重要。',
       lessons: [
-        '自架 vs. 平台：抽成、流量與掌控權的取捨',
-        '定價心理學與三方案設計',
-        '金流串接與發票流程實務',
-        '銷售頁版面拆解與文案模板',
+        { title: '安全球的三種基本型', duration: '18:45' },
+        { title: '風險評估：這一桿值不值得打', duration: '15:20' },
+        { title: '比賽節奏與失誤後的心理重整', duration: '13:38' },
+        { title: '闖關：攻守選擇判斷測驗', duration: '互動關卡', status: 'game' },
       ],
     },
     {
-      title: '第 10–12 週 — 招生與長期經營',
-      duration: '5 小時 30 分',
+      title: '第五章　建立你的長期練習系統',
+      goal: '把課程內容轉成每週可執行的練習計畫。',
       lessons: [
-        '預售名單從 0 到 300 的操作流程',
-        '開賣七日的信件節奏與內容',
-        '學員回饋蒐集與課程改版',
-        '第二門課該做什麼：產品線規劃',
+        { title: '如何自我診斷技術弱點', duration: '14:02' },
+        { title: '練習菜單設計與紀錄方式', duration: '16:30' },
+        { title: '結業：接下來三個月的路線圖', duration: '11:15' },
       ],
     },
   ],
 
-  instructor: {
-    name: '王小明',
-    title: '線上課程製作顧問',
+  /** ⚠️ 範例評價，上線前必須換成真實學員回饋 */
+  reviews: [
+    {
+      name: '陳＿＿',
+      title: '球齡兩年',
+      rating: 5,
+      result: '母球停位準確度明顯提升',
+      comment:
+        '以前打球全憑感覺，好的時候很好、壞的時候完全找不回來。上完第二章之後我終於知道自己出桿哪裡跑掉，可以當場修正。這是我覺得最有價值的地方。',
+    },
+    {
+      name: '林＿＿',
+      title: '完全新手',
+      rating: 5,
+      result: '兩個月從不會握桿到能清半檯',
+      comment:
+        '本來很擔心新手跟不上，結果第一章講得非常細，連腳要站哪裡都有畫線示範。闖關關卡也讓我知道自己到底練到什麼程度了。',
+    },
+    {
+      name: '黃＿＿',
+      title: '業餘比賽選手',
+      rating: 4,
+      result: '比賽勝率提升',
+      comment:
+        '走位那一章對我幫助最大。以前我只會想下一顆，現在會想到三顆之後的排列。防守章節也讓我少送很多機會給對手。',
+    },
+    {
+      name: '張＿＿',
+      title: '球齡半年',
+      rating: 5,
+      result: '練習變得有方向',
+      comment:
+        '最實用的是練習菜單。以前上桌就是隨便打，現在每次去球館都知道今天要練什麼、練到什麼標準算過關。',
+    },
+  ],
+
+  coach: {
+    name: '＿＿教練姓名＿＿',
+    title: 'Poolgress 首席教練',
+    philosophy:
+      '我不相信「手感」這種說法。所有看起來像天賦的東西，拆開來都是可以被描述、被練習、被檢查的具體動作。我的工作就是把那些東西講清楚。',
     bio: [
-      '過去六年協助超過 40 位專業工作者把知識轉成線上課程，累計課程營收破億。',
-      '在成為顧問之前，我自己是那個把課錄完卻不敢上架的人。這門課教的，就是我當年最希望有人直接告訴我的每一步。',
+      '從事撞球教學＿＿年，累計指導超過＿＿位學員，其中＿＿位進入全國賽事前八強。',
+      '教學上堅持「每個動作都要有理由」。與其讓學員模仿我的姿勢，不如讓他們理解為什麼這樣站、這樣握，遇到問題時才有辦法自己找答案。',
     ],
     credentials: [
-      '協助 40+ 位講師完成課程上架',
-      '學員課程累計營收 1.2 億元',
-      '《線上課程實戰手冊》作者',
-      '曾任大型募資平台課程總監',
+      '＿＿年撞球教學經驗',
+      '＿＿協會認證教練資格',
+      '＿＿年全國錦標賽＿＿名',
+      '累計授課時數超過＿＿小時',
+    ],
+    stats: [
+      { value: '＿＿', label: '指導學員數' },
+      { value: '＿＿', label: '教學年資' },
+      { value: '＿＿', label: '賽事獲獎' },
     ],
   },
-
-  testimonials: [
-    {
-      name: '陳怡君',
-      title: '瑜伽老師',
-      result: '首次開課售出 187 份',
-      quote:
-        '我原本以為要先累積到一萬粉絲才能開課。照著預售名單的流程做，開賣前就收到 300 多筆登記，第一週就賣出 187 份。',
-    },
-    {
-      name: '林建志',
-      title: '會計師',
-      result: '三個月做出第一門課',
-      quote:
-        '最有幫助的是講稿結構那一段。我以前錄一支十分鐘的影片要 NG 二十次，現在兩次就過。',
-    },
-    {
-      name: '黃雅雯',
-      title: '插畫家',
-      result: '課程月營收穩定六位數',
-      quote:
-        '定價那堂課直接讓我把方案從一個改成三個，客單價提高了 60%，而且退費率反而下降。',
-    },
-    {
-      name: '張博凱',
-      title: '健身教練',
-      result: '從零到上架只花 10 週',
-      quote:
-        '每週都有明確作業，不會有「上完課還是不知道下一步做什麼」的狀況。這是我上過最不容易半途而廢的課。',
-    },
-  ],
-
-  plans: [
-    {
-      name: '自學方案',
-      price: 4800,
-      originalPrice: 6800,
-      description: '適合能自己安排進度、只需要完整教材的人。',
-      includes: [
-        '48 支課程影片，無限期觀看',
-        '課程講義與作業範本',
-        '銷售頁文案模板',
-        '學員社群討論區',
-      ],
-      ctaLabel: '選擇自學方案',
-    },
-    {
-      name: '陪跑方案',
-      price: 12800,
-      originalPrice: 16800,
-      featured: true,
-      description: '最多人選擇。有人盯進度、有人改作業，完課率最高。',
-      includes: [
-        '自學方案全部內容',
-        '每兩週一次線上團體 Q&A（共 6 場）',
-        '課程大綱與銷售頁一對一書面回饋',
-        '拍攝配置設備清單客製建議',
-        '結業後三個月社群諮詢',
-      ],
-      ctaLabel: '選擇陪跑方案',
-    },
-    {
-      name: '顧問方案',
-      price: 39800,
-      description: '適合已有明確主題、希望壓縮時程直接上架的人。',
-      includes: [
-        '陪跑方案全部內容',
-        '一對一諮詢 4 次（每次 60 分鐘）',
-        '課程全片審閱與修改建議',
-        '開賣期間信件節奏共同規劃',
-      ],
-      ctaLabel: '洽詢顧問方案',
-    },
-  ],
 
   faqs: [
     {
-      q: '我完全沒有拍片經驗，跟得上嗎？',
-      a: '可以。課程第 4 週會從「手機要架在哪裡」這種程度開始教，並提供三種預算的設備配置清單。過去學員中有六成在報名時沒有任何拍攝經驗。',
+      q: '這堂課適合完全新手嗎？',
+      a: '適合。第一章從握桿與站姿開始教起，不需要任何基礎。課程中會標示每個單元的難度，新手可以照順序上，有經驗的學員也能直接跳到需要補強的章節。',
     },
     {
-      q: '課程可以看多久？有觀看期限嗎？',
-      a: '購買後無限期觀看，且日後課程改版更新你都會自動獲得，不需要再付費。',
+      q: '課程購買後可以觀看多久？',
+      a: '購買後可無限期觀看，日後課程更新也會自動取得，不需額外付費。',
     },
     {
-      q: '需要每週固定時間上課嗎？',
-      a: '不需要。所有課程影片都是預錄，可以自行安排進度。陪跑方案的團體 Q&A 為每兩週一次的固定時段，若無法參加會提供錄影回放。',
+      q: '遊戲闖關要如何進行？',
+      a: '每章結束後會有對應的闖關關卡，你在實體球檯上完成指定任務後於平台記錄結果，系統會依據完成度判定是否通過並給出練習建議。闖關不限次數，可以反覆挑戰。',
     },
     {
-      q: '手機和平板可以看嗎？',
-      a: '可以。課程平台支援手機、平板與電腦瀏覽器，並支援倍速播放與字幕。',
+      q: '可以使用手機觀看嗎？',
+      a: '可以。課程支援手機、平板與電腦瀏覽器，並提供倍速播放與字幕。在球館練習時用手機邊看邊對照是常見的使用方式。',
     },
     {
-      q: '如果我還沒想好課程主題呢？',
-      a: '這正是第 1 週在處理的問題。課程提供選題驗證表，帶你從既有專業裡找出有市場需求的切角，不需要報名前就想好。',
-    },
-    {
-      q: '可以退費嗎？',
-      a: '開課後 14 天內，若觀看進度未超過 20%，可申請全額退費，不需要說明理由。詳細條件請見退費政策。',
-    },
-    {
-      q: '提供發票或報帳收據嗎？',
-      a: '提供。結帳時可填寫統一編號，系統會開立電子發票並寄送至你的信箱，可作為公司進修費用報帳。',
-    },
-    {
-      q: '方案之後可以升級嗎？',
-      a: '可以。報名自學方案後 30 天內，補差額即可升級至陪跑方案，來信告知即可協助處理。',
+      q: '如果有問題要如何聯絡？',
+      a: '課程內每個單元下方都有提問區，教練會定期回覆。也可以直接來信 hello@poolgress.com，通常一個工作天內回覆。',
     },
   ],
 
-  guarantee: {
-    title: '14 天無條件退費保證',
-    description:
-      '我知道在看不到完整內容前決定付費並不容易。開課後 14 天內，只要觀看進度未超過 20%，來信就能全額退費，不需要解釋原因。這個風險由我承擔，你只要專心決定要不要開始。',
+  purchase: {
+    studentCount: '＿＿',
+    totalHours: '＿＿',
+    lessonCount: '＿＿',
+    gameCount: '＿＿',
+    offerNote: '早鳥優惠｜含＿＿份練習菜單與闖關系統完整權限',
+    /** ⚠️ 範例價格，請換成實際定價 */
+    originalPrice: 6800,
+    salePrice: 4800,
   },
 }
+
+/** 左欄錨點導覽項目。順序即頁面順序 */
+export const sections: { id: SectionId; label: string }[] = [
+  { id: 'overview', label: '課程簡介' },
+  { id: 'chapters', label: '課程章節' },
+  { id: 'reviews', label: '學員評價' },
+  { id: 'coach', label: '關於教練' },
+  { id: 'faq', label: '課程 FAQ' },
+]
