@@ -157,6 +157,101 @@
 }
 
 /* ------------------------------------------------------------------
+   課程頁 Hero：Sticky Scroll Transition
+   外層提供捲動距離，Hero sticky 釘住；進度 --hero-p（0→1）
+   由 CSS scroll-driven animation 驅動（不支援時 JS 後援），
+   所有效果只動 transform / opacity / filter / 圓角，不動高度。
+   桌機過渡距離 60vh、手機 35vh；snap 用 proximity 且僅桌機。
+   ------------------------------------------------------------------ */
+@property --hero-p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes hero-progress {
+  from { --hero-p: 0; }
+  to { --hero-p: 1; }
+}
+
+/* 結構：外層高度自動＝Hero + spacer；spacer 即桌機停留距離。
+   手機不釘住（保留原生捲動與自然高度，內容不裁切），
+   效果在 Hero 捲出的前 45vh 內漸進完成。 */
+.hero-outer {
+  background: #e4eaf3;
+}
+.hero-spacer {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .hero-sticky {
+    position: sticky;
+    top: 4rem;
+    height: calc(94svh - 4rem);
+    overflow: hidden;
+  }
+  .hero-spacer {
+    display: block;
+    height: 60vh;
+  }
+}
+
+/* 進度來源（優先）：scroll-driven animation，掛在 html 上讓變數全頁繼承 */
+@supports (animation-timeline: scroll()) {
+  html.course-hero-scroll {
+    animation: hero-progress linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px 45vh;
+  }
+  @media (min-width: 1024px) {
+    html.course-hero-scroll { animation-range: 0px 60vh; }
+  }
+}
+
+/* 柔和吸附：僅桌機、proximity（不攔截輸入、不強制換頁） */
+@media (min-width: 1024px) {
+  html.course-hero-scroll { scroll-snap-type: y proximity; }
+  .hero-outer { scroll-snap-align: start; }
+  .hero-next { scroll-snap-align: start; scroll-margin-top: 4rem; }
+}
+
+/* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下 */
+.hero-fx-media {
+  transform: scale(calc(1 + var(--hero-p, 0) * 0.05));
+  filter: brightness(calc(1 - var(--hero-p, 0) * 0.12));
+}
+.hero-fx-title {
+  transform: translateY(calc(var(--hero-p, 0) * -32px));
+}
+.hero-fx-fade {
+  opacity: calc(1 - var(--hero-p, 0) * 1.15);
+}
+.hero-fx-panel {
+  border-bottom-right-radius: calc(var(--hero-p, 0) * 28px);
+  border-bottom-left-radius: calc(var(--hero-p, 0) * 28px);
+  box-shadow: 0 8px 24px rgba(15, 30, 51, calc(var(--hero-p, 0) * 0.12));
+}
+/* 下一區進場：後段（p 0.7→1）淡入；不用 transform——
+   內含 sticky 導覽與購買卡，祖先 transform 會使 sticky 失效，
+   位移感由 sticky 釋放後的自然上滑提供 */
+.hero-next {
+  opacity: clamp(0.4, calc(0.4 + (var(--hero-p, 0) - 0.7) * 2), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fx-media,
+  .hero-fx-title {
+    transform: none !important;
+    filter: none !important;
+  }
+  .hero-fx-panel {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  /* 淡入淡出保留為唯一動態 */
+}
+
+/* ------------------------------------------------------------------
    課程頁 Hero 撞球原理動畫（俯視球檯，5 秒循環）
    時間軸：瞄準線浮現 → 假想球提示 → 母球沿預測線前進 → 撞擊
    → 目標球沿路徑進袋 → 軌跡線停留後淡出 → 淡入重來

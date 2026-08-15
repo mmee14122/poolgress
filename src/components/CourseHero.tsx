@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { course, courseStats } from '../content/course'
 import { products } from '../content/catalog'
 import { cart } from '../lib/cart'
@@ -7,75 +7,54 @@ import { Button } from '../ui/Button'
 const product = products[0]
 
 /**
- * 課程頁 Hero：位於三欄版面之前，橫跨主內容寬度。
- * 左（桌機約 55%）：撞球原理循環動畫——傳達「理解原理，才能真正打進球」。
- * 右：分類標籤、課程大標、核心價值、簡介、規模資訊、CTA。
- * 不重複價格與優惠——那是右欄購買卡的工作。
+ * 課程頁 Hero：Sticky Scroll Transition。
+ * 左（桌機約 55%）：撞球原理循環動畫；右：課程介紹與 CTA。
  *
- * 捲動超過 Hero 一半後整塊平滑摺疊（讓路給內容），
- * 捲回接近頂端時展開；兩個門檻不同以避免臨界點抖動。
+ * 外層（.hero-outer）提供捲動距離（桌機 60vh、手機 35vh），
+ * Hero 本體 sticky 釘住；進度 --hero-p 直接對應實際捲動：
+ *   - 主視覺 scale 1→1.05、亮度微降
+ *   - 標題上移 32px；內文與 CTA 淡出
+ *   - 下緣長出圓角與陰影；下一區在後段淡入並自然上滑銜接
+ * 進度來源：CSS scroll-driven animation；不支援的瀏覽器由此處
+ * 的捲動監聽後援（只寫 CSS 變數，不攔截任何輸入事件）。
  */
 export function CourseHero() {
   const { hero } = course
-  const [collapsed, setCollapsed] = useState(false)
-  const innerRef = useRef<HTMLDivElement>(null)
-  /* 摺疊補償進行中：暫停門檻判斷，避免補償捲動觸發展開造成循環 */
-  const compensating = useRef(false)
+  const outerRef = useRef<HTMLElement>(null)
+  const stickyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const onScroll = () => {
-      if (compensating.current) return
-      setCollapsed((prev) => {
-        if (prev) return window.scrollY > 60
-        // 展開狀態下 offsetHeight 即自然高度；完全捲過 Hero 才摺疊，
-        // 此時 Hero 已在視窗外，補償可完全抵銷位移（內容零跳動）
-        const full = innerRef.current?.offsetHeight ?? 0
-        return full > 0 && window.scrollY > full
-      })
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const root = document.documentElement
+    // 啟用 scroll timeline 與桌機柔和 snap（僅課程頁生效）
+    root.classList.add('course-hero-scroll')
 
-  /*
-   * 摺疊期間逐格補償捲動：Hero 每縮小 d px 就把捲軸上移 d px，
-   * 下方內容在視窗中保持原位，不會被摺疊拉著加速上衝。
-   * 補償下限 80px（高於展開門檻），確保收合完成後狀態穩定。
-   */
-  useEffect(() => {
-    if (!collapsed) return
-    compensating.current = true
-    let raf = 0
-    let prevH = innerRef.current?.offsetHeight ?? 0
-    /* 保險：動畫被跳過（reduced-motion、背景分頁）時也要解除旗標 */
-    const safety = window.setTimeout(() => {
-      compensating.current = false
-    }, 1400)
-
-    const tick = () => {
-      const el = innerRef.current
-      if (!el) return
-      const h = el.offsetHeight
-      const shrink = prevH - h
-      prevH = h
-      if (shrink > 0 && window.scrollY > 80) {
-        window.scrollBy(0, -Math.min(shrink, window.scrollY - 80))
+    let cleanup = () => {}
+    if (!CSS.supports('animation-timeline: scroll()')) {
+      const onScroll = () => {
+        const outer = outerRef.current
+        const sticky = stickyRef.current
+        if (!outer || !sticky) return
+        // 桌機距離＝spacer（外層－sticky）；手機無停留，取 45vh 與 CSS 對齊
+        const spacer = outer.offsetHeight - sticky.offsetHeight
+        const distance = spacer > 0 ? spacer : window.innerHeight * 0.45
+        const p = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 1
+        root.style.setProperty('--hero-p', p.toFixed(4))
       }
-      if (h > 0.5) {
-        raf = requestAnimationFrame(tick)
-      } else {
-        compensating.current = false
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+      window.addEventListener('resize', onScroll)
+      cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        window.removeEventListener('resize', onScroll)
       }
     }
-    raf = requestAnimationFrame(tick)
 
     return () => {
-      clearTimeout(safety)
-      cancelAnimationFrame(raf)
-      compensating.current = false
+      cleanup()
+      root.classList.remove('course-hero-scroll')
+      root.style.removeProperty('--hero-p')
     }
-  }, [collapsed])
+  }, [])
 
   /**
    * 立即購買：
@@ -92,31 +71,29 @@ export function CourseHero() {
   }
 
   return (
-    /* 淺藍灰底與下方內容區隔；grid-rows 過渡實作摺疊 */
-    <section
-      className={`grid border-b border-line bg-[#e4eaf3] transition-[grid-template-rows] duration-1000 ease-in-out ${
-        collapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'
-      }`}
-    >
-      <div ref={innerRef} className="overflow-hidden">
+    <section ref={outerRef} className="hero-outer">
+      {/* sticky 本體：釘在導覽列下；效果只動 transform/opacity/filter/圓角 */}
+      <div ref={stickyRef} className="hero-sticky hero-fx-panel flex items-center bg-[#e4eaf3]">
         <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
-        {/* 左：撞球原理動畫（俯視球檯） */}
-        <BilliardsAnimation />
+        {/* 左：撞球原理動畫（俯視球檯），隨進度微放大、亮度微降 */}
+        <div className="hero-fx-media">
+          <BilliardsAnimation />
+        </div>
 
         {/* 右：課程介紹 */}
         <div>
-          <p className="inline-flex rounded-full bg-brand-50 px-3.5 py-1 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
+          <p className="hero-fx-fade inline-flex rounded-full bg-brand-50 px-3.5 py-1 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
             {hero.category}
           </p>
 
-          <h1 className="mt-4 text-3xl leading-[1.3] sm:text-4xl">{hero.title}</h1>
+          <h1 className="hero-fx-title mt-4 text-3xl leading-[1.3] sm:text-4xl">{hero.title}</h1>
 
-          <p className="mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
+          <p className="hero-fx-fade mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
 
-          <p className="mt-4 text-sm leading-relaxed text-ink-500 sm:text-base">{hero.intro}</p>
+          <p className="hero-fx-fade mt-4 text-sm leading-relaxed text-ink-500 sm:text-base">{hero.intro}</p>
 
           {/* 課程規模：手機 2×2、桌機同樣兩欄 */}
-          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-ink-700">
+          <ul className="hero-fx-fade mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-ink-700">
             <li className="flex items-center gap-2">
               <StatIcon d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z" />
               共 <strong className="font-semibold text-ink-900">{courseStats.units}</strong>
@@ -140,7 +117,7 @@ export function CourseHero() {
             </li>
           </ul>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="hero-fx-fade mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button size="lg" onClick={scrollToBuy} className="w-full sm:w-auto">
               立即購買
             </Button>
@@ -154,6 +131,8 @@ export function CourseHero() {
         </div>
         </div>
       </div>
+      {/* 桌機停留距離（60vh）；手機隱藏 */}
+      <div className="hero-spacer" aria-hidden="true" />
     </section>
   )
 }
