@@ -61,6 +61,8 @@ export default function CheckoutApp() {
   const [phase, setPhase] = useState<Phase>('form')
   const [order, setOrder] = useState<OrderInfo | null>(null)
   const timer = useRef<number | null>(null)
+  /** 送出鎖：同步生效（早於 state 更新），防止快速連點送出兩次 */
+  const submitting = useRef(false)
 
   useEffect(() => {
     return () => {
@@ -95,8 +97,14 @@ export default function CheckoutApp() {
   const subtotal = items.reduce((s, i) => s + i.price, 0)
   const total = subtotal - (coupon ? couponDiscount(coupon, subtotal) : 0)
 
+  /**
+   * 桌機（明細卡）與手機（底部固定列）唯一共用的送出函式：
+   * 驗證、金額、loading 狀態、API 呼叫、錯誤處理都只有這一份。
+   * submitting ref 在 state 更新前就先上鎖，快速連點不會送出兩次訂單。
+   */
   const confirm = () => {
-    if (!canConfirm) return
+    if (!canConfirm || submitting.current) return
+    submitting.current = true
 
     setPhase('processing')
     const placed = createDemoOrder(method as PaymentMethod, buyerEmail, total)
@@ -106,6 +114,7 @@ export default function CheckoutApp() {
       if (method === 'card' || method === 'installment') {
         const forceFail = new URLSearchParams(location.search).get('demo') === 'fail'
         if (forceFail) {
+          submitting.current = false // 失敗可重試
           setPhase('failed')
           return // 失敗保留購物車
         }
@@ -184,38 +193,8 @@ export default function CheckoutApp() {
                     errors={errors}
                   />
 
-                  {/* 表單底部的確認區：填完資料不必捲回右側明細卡 */}
-                  <div className="mt-10 rounded-card border border-line bg-white p-6">
-                    <div className="flex items-baseline justify-between">
-                      <span className="font-semibold text-ink-900">訂單總計</span>
-                      <span className="text-2xl font-bold text-ink-900 tabular-nums">
-                        {formatNT(total)}
-                      </span>
-                    </div>
-
-                    <Button
-                      block
-                      size="lg"
-                      className="mt-4"
-                      onClick={confirm}
-                      disabled={!canConfirm || phase === 'processing'}
-                    >
-                      {phase === 'processing' ? '處理中…' : '確認購買'}
-                    </Button>
-
-                    {!canConfirm && missingSummary(errors).length > 0 && (
-                      <p className="mt-3 text-xs text-red-700">
-                        尚未完成：{missingSummary(errors).join('、')}
-                      </p>
-                    )}
-
-                    <p className="mt-4 text-xs leading-relaxed text-ink-400">
-                      點擊「確認購買」，即表示同意
-                      <a href="./terms.html" className="underline underline-offset-2">服務條款</a>、
-                      <a href="./terms.html" className="underline underline-offset-2">退款政策</a>與
-                      <a href="./privacy.html" className="underline underline-offset-2">隱私權政策</a>。
-                    </p>
-                  </div>
+                  {/* 購買區只存在兩處且互斥：桌機＝右側明細卡內、手機＝底部固定列。
+                      這裡不再放第三個確認區（原本無斷點條件，是重複按鈕來源） */}
                 </div>
 
                 <aside className="mt-10 lg:sticky lg:top-[calc(var(--promo-h)+6rem)] lg:mt-0">
@@ -236,18 +215,28 @@ export default function CheckoutApp() {
           ))}
       </main>
 
-      {/* 手機底部固定：總金額 + 確認購買 */}
+      {/* 手機／平板（lg 以下）唯一的購買入口；桌機以 lg:hidden 完全移除（display:none） */}
       {(phase === 'form' || phase === 'processing') && items.length > 0 && (
         <>
-          <div className="h-20 lg:hidden" aria-hidden="true" />
+          {/* 底部安全空間：固定列高度 + iPhone 安全區 + 餘裕，避免遮住明細與條款 */}
           <div
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur lg:hidden"
+            className="lg:hidden"
+            aria-hidden="true"
+            style={{ height: 'calc(5rem + env(safe-area-inset-bottom) + 1rem)' }}
+          />
+          <div
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white lg:hidden"
             style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
           >
             <div className="flex items-center gap-3 px-4 py-3">
               <div className="min-w-0 flex-1">
                 <p className="text-xs text-ink-500">訂單總計</p>
                 <p className="text-lg font-bold text-ink-900 tabular-nums">{formatNT(total)}</p>
+                {!canConfirm && missingSummary(errors).length > 0 && (
+                  <p className="truncate text-xs text-red-700">
+                    尚未完成：{missingSummary(errors).join('、')}
+                  </p>
+                )}
               </div>
               <Button
                 size="lg"

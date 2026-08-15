@@ -83,15 +83,17 @@ export function SummaryCard({
         <p className="mt-2 text-right text-xs text-brass-600">建立訂單後 3 天內未繳費將自動取消</p>
       )}
 
-      <div className="mt-5">
+      {/* 確認購買僅桌機（lg 以上）顯示；手機由底部固定列負責，兩者互斥。
+          hidden 為 display:none——不占版面、不進 Tab 順序、不攔截點擊 */}
+      <div className="mt-5 hidden lg:block">
         <Button block size="lg" onClick={onConfirm} disabled={!canConfirm || confirming}>
           {confirming ? '處理中…' : '確認購買'}
         </Button>
-      </div>
 
-      {!canConfirm && missing.length > 0 && (
-        <p className="mt-3 text-xs text-red-700">尚未完成：{missing.join('、')}</p>
-      )}
+        {!canConfirm && missing.length > 0 && (
+          <p className="mt-3 text-xs text-red-700">尚未完成：{missing.join('、')}</p>
+        )}
+      </div>
 
       <p className="mt-4 text-xs leading-relaxed text-ink-400">
         點擊「確認購買」，即表示同意
