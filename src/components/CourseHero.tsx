@@ -19,9 +19,12 @@ export function CourseHero() {
   const { hero } = course
   const [collapsed, setCollapsed] = useState(false)
   const innerRef = useRef<HTMLDivElement>(null)
+  /* 摺疊補償進行中：暫停門檻判斷，避免補償捲動觸發展開造成循環 */
+  const compensating = useRef(false)
 
   useEffect(() => {
     const onScroll = () => {
+      if (compensating.current) return
       setCollapsed((prev) => {
         if (prev) return window.scrollY > 60
         // 展開狀態下 offsetHeight 即自然高度
@@ -33,6 +36,45 @@ export function CourseHero() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  /*
+   * 摺疊期間逐格補償捲動：Hero 每縮小 d px 就把捲軸上移 d px，
+   * 下方內容在視窗中保持原位，不會被摺疊拉著加速上衝。
+   * 補償下限 80px（高於展開門檻），確保收合完成後狀態穩定。
+   */
+  useEffect(() => {
+    if (!collapsed) return
+    compensating.current = true
+    let raf = 0
+    let prevH = innerRef.current?.offsetHeight ?? 0
+    /* 保險：動畫被跳過（reduced-motion、背景分頁）時也要解除旗標 */
+    const safety = window.setTimeout(() => {
+      compensating.current = false
+    }, 1400)
+
+    const tick = () => {
+      const el = innerRef.current
+      if (!el) return
+      const h = el.offsetHeight
+      const shrink = prevH - h
+      prevH = h
+      if (shrink > 0 && window.scrollY > 80) {
+        window.scrollBy(0, -Math.min(shrink, window.scrollY - 80))
+      }
+      if (h > 0.5) {
+        raf = requestAnimationFrame(tick)
+      } else {
+        compensating.current = false
+      }
+    }
+    raf = requestAnimationFrame(tick)
+
+    return () => {
+      clearTimeout(safety)
+      cancelAnimationFrame(raf)
+      compensating.current = false
+    }
+  }, [collapsed])
 
   /**
    * 立即購買：
@@ -51,7 +93,7 @@ export function CourseHero() {
   return (
     /* 淺藍灰底與下方內容區隔；grid-rows 過渡實作摺疊 */
     <section
-      className={`grid border-b border-line bg-[#e4eaf3] transition-[grid-template-rows] duration-500 ease-out ${
+      className={`grid border-b border-line bg-[#e4eaf3] transition-[grid-template-rows] duration-1000 ease-in-out ${
         collapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'
       }`}
     >
