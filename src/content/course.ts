@@ -115,12 +115,13 @@ export const course: CourseIntro = {
   ctaLabel: '開始課程',
 }
 
-/** 左欄錨點導覽項目。順序即頁面順序 */
+/**
+ * 錨點導覽項目（左欄與手機標籤列共用）。
+ * 選單刻意精簡：前五段（卡在哪→怎麼學→得到什麼→適合誰→特色）
+ * 統一歸在「課程簡介」，錨點指向第一段；「課程章節」獨立。
+ * 捲動到章節之前，「課程簡介」都維持高亮。
+ */
 export const sections: { id: SectionId; label: string }[] = [
-  { id: 'problem', label: '你卡在哪裡' },
-  { id: 'how', label: '怎麼帶你學' },
-  { id: 'gains', label: '你能得到什麼' },
-  { id: 'fit', label: '適合誰' },
-  { id: 'features', label: '這堂課的特色' },
+  { id: 'problem', label: '課程簡介' },
   { id: 'chapters', label: '課程章節' },
 ]
