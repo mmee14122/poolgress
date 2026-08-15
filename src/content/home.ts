@@ -22,6 +22,10 @@ export const home = {
     cta: { label: '探索 Poolgress', href: '#struggle' },
     /* 遊戲闖關獨立頁面上線後，href 改為實際頁面路徑 */
     ctaSecondary: { label: 'App 遊戲闖關', href: '#pillars' },
+    /* SCENE 03 唯一提示句 */
+    sceneHint: '知道自己在做什麼。',
+    /* SCENE 04 高潮句（不含引號版本，配合動畫排版） */
+    sceneQuote: '靠，我居然做到了。',
   },
 
   /* ---------------- SECTION 02｜困境：只描述問題，不解決 ---------------- */

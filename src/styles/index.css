@@ -97,6 +97,137 @@
 }
 
 /* ------------------------------------------------------------------
+   首頁 Hero：Scroll Story（五幕，Apple 式敘事）
+   .hs-story 提供捲動距離（spacer），.hs-stage sticky 釘住 100svh 舞台；
+   進度 --story-p（0→1）＝捲動位置，五幕以分段線性映射驅動，
+   只動 transform / opacity，倒捲即倒放，全程不攔截原生捲動。
+   幕界：01 品牌句 0–18%｜02 轉焦與瞄準線 18–38%｜03 出桿（球隨捲動）
+   38–62%｜04 進袋與金句 62–80%｜05 銜接下一區 80–100%
+   ------------------------------------------------------------------ */
+@property --story-p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes story-progress {
+  from { --story-p: 0; }
+  to { --story-p: 1; }
+}
+
+/* 進度來源：scroll timeline（範圍＝spacer 高度）；JS 後援於元件內 */
+@supports (animation-timeline: scroll()) {
+  html.home-hero-scroll {
+    animation: story-progress linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px 140vh;
+  }
+  @media (min-width: 1024px) {
+    html.home-hero-scroll { animation-range: 0px 200vh; }
+  }
+}
+
+.hs-stage {
+  position: sticky;
+  top: 6rem;
+  height: calc(100svh - 6rem);
+  overflow: hidden;
+}
+.hs-spacer {
+  height: 140vh;
+}
+@media (min-width: 1024px) {
+  .hs-spacer { height: 200vh; }
+}
+
+/* 分段進度（供子元素取用） */
+.hs-stage {
+  --p: var(--story-p, 0);
+  /* 18–38%：品牌句退場、鏡頭推進、瞄準線畫出 */
+  --s-out: clamp(0, calc((var(--p) - 0.18) / 0.2), 1);
+  /* 38–62%：母球沿線前進（與捲動一一對應） */
+  --s-ball: clamp(0, calc((var(--p) - 0.38) / 0.24), 1);
+  /* 62–72%：目標球進袋 */
+  --s-pot: clamp(0, calc((var(--p) - 0.62) / 0.1), 1);
+  /* 70–80%：金句浮現 */
+  --s-quote: clamp(0, calc((var(--p) - 0.7) / 0.1), 1);
+  /* 80–100%：金句上移、副標接棒、銜接下一區 */
+  --s-exit: clamp(0, calc((var(--p) - 0.8) / 0.2), 1);
+}
+
+/* SCENE 01 載入動畫（一次性，非捲動驅動） */
+@keyframes hs-enter {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); filter: blur(8px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes hs-enter-bg {
+  from { transform: scale(1.04); }
+  to { transform: scale(1); }
+}
+.hs-enter { animation: hs-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hs-enter-bg { animation: hs-enter-bg 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* SCENE 02：品牌句組退場 */
+.hs-headline {
+  opacity: calc(1 - var(--s-out));
+  transform: translate3d(0, calc(var(--s-out) * -50px), 0) scale(calc(1 - var(--s-out) * 0.04));
+  will-change: transform, opacity;
+}
+/* 鏡頭輕微推進 */
+.hs-visual {
+  transform: scale(calc(1 + var(--s-out) * 0.08));
+  transform-origin: 62% 38%;
+  will-change: transform;
+}
+/* 瞄準線兩段：母球→假想球（前 60%）、假想球→袋口（後 50% 重疊接續） */
+.hs-line1 {
+  stroke-dasharray: 300;
+  stroke-dashoffset: calc(300 * (1 - clamp(0, calc(var(--s-out) / 0.6), 1)));
+}
+.hs-line2 {
+  stroke-dasharray: 260;
+  stroke-dashoffset: calc(260 * (1 - clamp(0, calc((var(--s-out) - 0.5) / 0.5), 1)));
+}
+.hs-ghost {
+  opacity: calc(clamp(0, calc((var(--s-out) - 0.7) / 0.3), 1) * 0.7);
+}
+
+/* SCENE 03：母球位置直接綁定捲動（倒捲即倒退） */
+.hs-cue {
+  transform: translate3d(calc(var(--s-ball) * 205px), calc(var(--s-ball) * -170px), 0);
+  will-change: transform;
+}
+.hs-hint {
+  opacity: calc(min(calc(var(--s-ball) * 3), 1) * (1 - var(--s-quote)));
+}
+
+/* SCENE 04：目標球進袋、背景微暗、金句浮現 */
+.hs-obj {
+  transform: translate3d(calc(var(--s-pot) * 150px), calc(var(--s-pot) * -145px), 0);
+  opacity: calc(1 - clamp(0, calc((var(--s-pot) - 0.85) / 0.15), 1));
+  will-change: transform, opacity;
+}
+.hs-pocket-glow {
+  opacity: calc(var(--s-quote) * 0.6);
+}
+.hs-dim {
+  opacity: calc(var(--s-quote) * 0.35);
+}
+.hs-quote {
+  opacity: var(--s-quote);
+  transform: translate3d(0, calc(var(--s-exit) * -64px), 0) scale(calc(0.96 + var(--s-quote) * 0.04));
+  letter-spacing: calc(0.08em - var(--s-quote) * 0.06em);
+  text-shadow: 0 0 32px rgba(144, 230, 48, calc(var(--s-quote) * 0.25));
+  will-change: transform, opacity;
+}
+
+/* SCENE 05：副標接棒 */
+.hs-sub {
+  opacity: var(--s-exit);
+  transform: translate3d(0, calc((1 - var(--s-exit)) * 24px), 0);
+}
+
+/* ------------------------------------------------------------------
    首頁 SECTION 04「The One」進球動畫
    時間軸：瞄準線浮現 → 母球出發 → 子球入袋 → 金句浮現
    .one-play 加在容器上時開始播放；reduced-motion 下瞬間到達結束狀態
