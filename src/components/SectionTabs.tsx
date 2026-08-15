@@ -9,8 +9,21 @@ export function SectionTabs({ active }: { active: string }) {
   const listRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
-    const el = listRef.current?.querySelector<HTMLElement>(`[data-tab="${active}"]`)
-    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    const list = listRef.current
+    const el = list?.querySelector<HTMLElement>(`[data-tab="${active}"]`)
+    if (!list || !el) return
+
+    /*
+     * 只捲動標籤列本身，不用 scrollIntoView——
+     * scrollIntoView 會連帶捲動視窗去對齊 sticky 標籤列，
+     * 與使用者的滾輪捲動互相打架，導致頁面無法正常下滑。
+     */
+    const listRect = list.getBoundingClientRect()
+    const elRect = el.getBoundingClientRect()
+    const target =
+      list.scrollLeft + (elRect.left - listRect.left) - (listRect.width - elRect.width) / 2
+
+    list.scrollTo({ left: Math.max(0, target), behavior: 'smooth' })
   }, [active])
 
   return (
