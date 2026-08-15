@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import { session, displayNameOf, readAvatarFile, type Session } from '../lib/session'
+import {
+  session,
+  displayNameOf,
+  readAvatarFile,
+  MAX_NAME_LENGTH,
+  type Session,
+} from '../lib/session'
 import { Avatar } from './Avatar'
+import { Button } from '../ui/Button'
 
 /** 選單項目；路徑皆為相對路徑，子資料夾部署也正確 */
 const items = [
@@ -38,14 +45,48 @@ export function AccountMenu({ user }: { user: Session }) {
   const fileRef = useRef<HTMLInputElement>(null)
   const closeTimer = useRef<number | null>(null)
 
+  /* 顯示名稱編輯（與個人檔案頁同一套規則） */
+  const [editingName, setEditingName] = useState(false)
+  const [nameValue, setNameValue] = useState('')
+  const [nameError, setNameError] = useState<string | null>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+
+  const startEditName = () => {
+    setNameValue(displayNameOf(user))
+    setNameError(null)
+    setEditingName(true)
+    requestAnimationFrame(() => nameRef.current?.select())
+  }
+
+  const saveName = () => {
+    const next = nameValue.trim()
+    if (!next) {
+      setNameError('請輸入顯示名稱')
+      return
+    }
+    if (next.length > MAX_NAME_LENGTH) {
+      setNameError(`顯示名稱最多 ${MAX_NAME_LENGTH} 個字`)
+      return
+    }
+    session.setName(next)
+    setEditingName(false)
+  }
+
   const openNow = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
     setOpen(true)
   }
   const scheduleClose = () => {
+    // 編輯名稱時不因滑鼠移開而收起，避免輸入到一半消失
+    if (editingName) return
     if (closeTimer.current) clearTimeout(closeTimer.current)
     closeTimer.current = window.setTimeout(() => setOpen(false), 250)
   }
+
+  // 選單收起時一併結束編輯狀態，下次展開回到乾淨畫面
+  useEffect(() => {
+    if (!open) setEditingName(false)
+  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -128,8 +169,61 @@ export function AccountMenu({ user }: { user: Session }) {
                 </span>
               </button>
 
-              <div className="min-w-0">
-                <p className="truncate font-semibold text-ink-900">{displayNameOf(user)}</p>
+              <div className="min-w-0 flex-1">
+                {editingName ? (
+                  <div>
+                    <input
+                      ref={nameRef}
+                      value={nameValue}
+                      onChange={(e) => {
+                        setNameValue(e.target.value)
+                        setNameError(null)
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') saveName()
+                        if (e.key === 'Escape') setEditingName(false)
+                      }}
+                      maxLength={MAX_NAME_LENGTH}
+                      aria-label="顯示名稱"
+                      aria-invalid={nameError ? true : undefined}
+                      className={`w-full rounded-lg border bg-white px-2.5 py-1.5 text-sm font-semibold text-ink-900 focus:outline-2 focus:outline-offset-1 ${
+                        nameError
+                          ? 'border-red-400 focus:outline-red-600'
+                          : 'border-line focus:outline-brand-600'
+                      }`}
+                    />
+                    <div className="mt-2 flex gap-2">
+                      <Button size="sm" onClick={saveName}>
+                        儲存
+                      </Button>
+                      <Button size="sm" variant="secondary" onClick={() => setEditingName(false)}>
+                        取消
+                      </Button>
+                    </div>
+                    {nameError && (
+                      <p role="alert" className="mt-1 text-xs text-red-700">
+                        {nameError}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="flex items-center gap-1">
+                    <span className="truncate font-semibold text-ink-900">
+                      {displayNameOf(user)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={startEditName}
+                      aria-label="更改顯示名稱"
+                      title="更改顯示名稱"
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ivory-100 hover:text-brand-700"
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 fill-current">
+                        <path d="M3 17.2V21h3.8L17.8 10 14 6.2zm17.7-12.9a1 1 0 000-1.4L18.1.3a1 1 0 00-1.4 0l-1.8 1.8L18.7 6z" />
+                      </svg>
+                    </button>
+                  </p>
+                )}
                 {/* 星星數（實際數值待後端） */}
                 <a
                   href="./stars.html"
