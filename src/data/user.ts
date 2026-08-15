@@ -36,26 +36,25 @@ export type OrderRecord = {
   status: '已完成' | '待繳費' | '已取消'
 }
 
-/** demo：一筆進行中的課程，讓我的課程／學習頁可展示（上線前清空） */
-export const enrollments: Enrollment[] = [
-  {
-    courseId: 'course-tbd-1',
-    progress: 22,
-    lastLessonId: '1-2',
-    status: 'in-progress',
-  },
-]
+/**
+ * 首次進站的預設已購課程。
+ *
+ * 預設為空 → 新訪客的「我的課程」是空狀態，購買後才會出現課程，
+ * 完整展示「購買 → 我的課程 → 開始學習」動線。
+ *
+ * 若要在展示時直接看到有進度的課程（不用先跑一次購買），
+ * 在這裡加一筆即可，例如：
+ *   { courseId: 'course-tbd-1', progress: 22, lastLessonId: '1-2', status: 'in-progress' }
+ */
+export const enrollments: Enrollment[] = []
 
-/** demo：星星紀錄（清空陣列即顯示空狀態；正式數字由 App／後端提供） */
-export const starHistory: StarRecord[] = [
-  { source: '完成課程單元（示範資料）', date: '2026-08-10', amount: 1 },
-  { source: '完成實戰闖關（示範資料）', date: '2026-08-12', amount: 2 },
-]
+/** 首次進站的預設星星紀錄；預設為空＝星星頁顯示空狀態 */
+export const starHistory: StarRecord[] = []
 
-/** 星星總數＝紀錄加總 */
+/** 星星總數＝紀錄加總（實際顯示以 lib/library.ts 為準） */
 export const totalStars = starHistory.reduce((sum, r) => sum + r.amount, 0)
 
-/** 訂單（預設空＝顯示空狀態） */
+/** 訂單（實際訂單由 lib/library.ts 於結帳後產生） */
 export const orders: OrderRecord[] = []
 
 /** 顯示用等級（規則【待確認】，先固定 Lv.1） */

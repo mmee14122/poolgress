@@ -18,8 +18,13 @@ import { CoachSection } from './components/sections/CoachSection'
 import { Faq } from './components/sections/Faq'
 import { sections } from './data/course-detail'
 import { useScrollSpy } from './hooks/useScrollSpy'
+import { courseById } from './data/courses'
+import { Button } from './ui/Button'
 
 const sectionIds = sections.map((s) => s.id)
+
+/** 目前有完整詳情內容的課程（其餘課程需先在 data/ 補齊章節與文案） */
+const DETAIL_COURSE_ID = 'course-tbd-1'
 
 /**
  * 課程簡介頁（獨立模板）。
@@ -31,6 +36,14 @@ const sectionIds = sections.map((s) => s.id)
  */
 export default function App() {
   const active = useScrollSpy(sectionIds)
+
+  /* 網址帶了其他課程 id 時，不要顯示主課程內容誤導使用者。
+     未來要開第二堂課的詳情頁：在 data/ 補齊該課程的章節與六段文案後，
+     把各區塊改為接收 courseId 參數即可。 */
+  const requestedId = new URLSearchParams(location.search).get('id')
+  if (requestedId && requestedId !== DETAIL_COURSE_ID) {
+    return <CourseNotReady id={requestedId} />
+  }
 
   return (
     <>
@@ -80,6 +93,28 @@ export default function App() {
 
       <Footer />
       <MobileCtaBar />
+    </>
+  )
+}
+
+/** 課程存在於目錄、但詳情內容尚未建立時的畫面 */
+function CourseNotReady({ id }: { id: string }) {
+  const info = courseById(id)
+  return (
+    <>
+      <Navbar />
+      <main className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-24 text-center sm:px-6">
+        <h1 className="text-2xl sm:text-3xl">{info ? info.title : '找不到這堂課程'}</h1>
+        <p className="mt-3 text-ink-500">
+          {info ? '這堂課的詳細介紹正在準備中。' : '課程可能已下架或網址有誤。'}
+        </p>
+        <div className="mt-8 w-full">
+          <Button href="./courses.html" size="lg" block>
+            查看所有課程
+          </Button>
+        </div>
+      </main>
+      <Footer />
     </>
   )
 }
