@@ -93,7 +93,7 @@ export function S06bFeatured() {
                   key={ch.id}
                   className="rounded-xl border border-white/15 bg-white/5 p-4 text-center"
                 >
-                  <span className="font-logo text-2xl font-semibold text-white/30">
+                  <span aria-hidden="true" className="font-logo text-2xl font-semibold text-white/40">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <p className="mt-1 truncate text-xs text-white/60">{ch.level}</p>

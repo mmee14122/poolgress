@@ -193,7 +193,7 @@ function ChallengeImage({
         tall ? 'aspect-[21/9]' : 'aspect-video'
       }`}
     >
-      <span className="font-logo text-3xl font-semibold text-white/25">
+      <span aria-hidden="true" className="font-logo text-3xl font-semibold text-white/35">
         {String(index + 1).padStart(2, '0')}
       </span>
     </div>
@@ -214,7 +214,7 @@ function AppPromo() {
             App Store
           </Button>
         ) : (
-          <span className="rounded-full bg-ivory-100 px-5 py-2.5 text-sm font-semibold text-ink-400">
+          <span className="rounded-full bg-ivory-100 px-5 py-2.5 text-sm font-semibold text-ink-500">
             App Store（即將上架）
           </span>
         )}
@@ -223,7 +223,7 @@ function AppPromo() {
             Google Play
           </Button>
         ) : (
-          <span className="rounded-full bg-ivory-100 px-5 py-2.5 text-sm font-semibold text-ink-400">
+          <span className="rounded-full bg-ivory-100 px-5 py-2.5 text-sm font-semibold text-ink-500">
             Google Play（即將上架）
           </span>
         )}

@@ -34,7 +34,7 @@ export function S02Struggle() {
               <li key={item} className="flex items-center gap-3 text-ink-500">
                 <span
                   aria-hidden="true"
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ivory-100 text-sm font-bold text-ink-400"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ivory-100 text-sm font-bold text-ink-500"
                 >
                   ?
                 </span>
