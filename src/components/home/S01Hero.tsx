@@ -186,7 +186,7 @@ function ArrowCircle() {
     <span
       aria-hidden="true"
       /* -my-1：抵銷圓框比文字高的部分，維持與主要按鈕相同的按鈕高度 */
-      className="-my-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-200 text-brand-200 transition-[background-color,color,transform] duration-150 ease-out group-hover:translate-x-0.5 group-hover:bg-brand-200 group-hover:text-brand-950"
+      className="-my-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white text-white transition-[background-color,color,transform] duration-150 ease-out group-hover:translate-x-0.5 group-hover:bg-white group-hover:text-black"
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
         <path d="M13.2 5.6l6.4 6.4-6.4 6.4-1.4-1.4 4-4H4.4v-2h11.4l-4-4z" />
