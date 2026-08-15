@@ -95,9 +95,9 @@ export function SummaryCard({
 
       <p className="mt-4 text-xs leading-relaxed text-ink-400">
         點擊「確認購買」，即表示同意
-        <a href="/terms" className="underline underline-offset-2">服務條款</a>、
-        <a href="/refund" className="underline underline-offset-2">退款政策</a>與
-        <a href="/privacy" className="underline underline-offset-2">隱私權政策</a>。
+        <a href="./terms.html" className="underline underline-offset-2">服務條款</a>、
+        <a href="./terms.html" className="underline underline-offset-2">退款政策</a>與
+        <a href="./privacy.html" className="underline underline-offset-2">隱私權政策</a>。
       </p>
     </div>
   )

@@ -2,6 +2,9 @@
 
 export const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
 
+/** 密碼長度下限（登入／註冊共用） */
+export const MIN_PASSWORD_LENGTH = 8
+
 /** 台灣手機號碼 */
 export const isPhoneTW = (v: string) => /^09\d{8}$/.test(v.trim())
 

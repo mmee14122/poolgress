@@ -16,10 +16,14 @@ export default defineConfig({
         cart: fileURLToPath(new URL('./cart.html', import.meta.url)),
         checkout: fileURLToPath(new URL('./checkout.html', import.meta.url)),
         register: fileURLToPath(new URL('./register.html', import.meta.url)),
+        // 登入／註冊／忘記密碼（同頁切換狀態）
+        login: fileURLToPath(new URL('./login.html', import.meta.url)),
         // 尚未建置頁面的「敬請期待」佔位頁
         games: fileURLToPath(new URL('./games.html', import.meta.url)),
         coach: fileURLToPath(new URL('./coach.html', import.meta.url)),
         venues: fileURLToPath(new URL('./venues.html', import.meta.url)),
+        terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
+        privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
       },
     },
   },

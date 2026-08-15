@@ -19,8 +19,9 @@ export const site = {
   ] as NavLink[],
 
   cartUrl: './cart.html',
-  loginUrl: '/login',
-  signupUrl: '/signup',
+  /* 相對路徑：GitHub Pages 部署在 /poolgress/ 子路徑下也不會 404 */
+  loginUrl: './login.html',
+  signupUrl: './login.html?mode=register',
 
   /** 購物車數量，之後由狀態管理或 API 提供；0 時不顯示徽章 */
   cartCount: 0,
@@ -43,10 +44,10 @@ export const site = {
 
   contactEmail: 'hello@poolgress.com',
 
+  /* 全部使用相對路徑；退費政策與聯絡我們頁面尚未建置，先指向服務條款佔位頁 */
   footerLinks: [
-    { label: '服務條款', href: '/terms' },
-    { label: '隱私權政策', href: '/privacy' },
-    { label: '退費政策', href: '/refund' },
-    { label: '聯絡我們', href: '/contact' },
+    { label: '服務條款', href: './terms.html' },
+    { label: '隱私權政策', href: './privacy.html' },
+    { label: '聯絡我們', href: `mailto:hello@poolgress.com` },
   ] as NavLink[],
 } as const
