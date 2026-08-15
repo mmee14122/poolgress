@@ -19,14 +19,15 @@ function CartIcon() {
 }
 
 /**
- * 桌機版購物車：hover 展開 mini cart 浮層。
- * 游標離開圖示與浮層後延遲 250ms 收起，讓游標能跨過間隙移向浮層。
- * 點擊圖示直接前往購物車頁。
+ * 桌機版購物車：hover 或點擊圖示展開 mini cart 浮層。
+ * 游標離開圖示與浮層後延遲 250ms 收起，讓游標能跨過間隙移向浮層；
+ * 點擊在觸控裝置上也能開啟預覽。前往購物車頁由浮層內按鈕負責。
  */
 export function CartHover() {
   const count = useCart().length
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<number | null>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
 
   const openNow = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -37,6 +38,23 @@ export function CartHover() {
     closeTimer.current = window.setTimeout(() => setOpen(false), 250)
   }
 
+  // 點擊外部或 Esc 關閉（點擊開啟時 hover 離開不一定會發生）
+  useEffect(() => {
+    if (!open) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open])
+
   useEffect(() => {
     return () => {
       if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -44,10 +62,16 @@ export function CartHover() {
   }, [])
 
   return (
-    <div className="relative" onMouseEnter={openNow} onMouseLeave={scheduleClose}>
-      <a href="./cart.html" aria-label={`購物車，${count} 件商品`} className="block">
+    <div ref={rootRef} className="relative" onMouseEnter={openNow} onMouseLeave={scheduleClose}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={`購物車，${count} 件商品`}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+      >
         <CartIcon />
-      </a>
+      </button>
 
       {/* 浮層：淡入 + 輕微向下展開 */}
       <div
