@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Navbar } from './components/Navbar'
+import { PromoBar } from './components/PromoBar'
 import { Footer } from './components/Footer'
 import { BuyerSection } from './components/checkout/BuyerSection'
 import { PaymentSection } from './components/checkout/PaymentSection'
@@ -124,6 +125,7 @@ export default function CheckoutApp() {
 
   return (
     <>
+      <PromoBar />
       <Navbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
@@ -218,7 +220,7 @@ export default function CheckoutApp() {
                   </div>
                 </div>
 
-                <aside className="mt-10 lg:sticky lg:top-24 lg:mt-0">
+                <aside className="mt-10 lg:sticky lg:top-32 lg:mt-0">
                   <SummaryCard
                     items={items}
                     coupon={coupon}

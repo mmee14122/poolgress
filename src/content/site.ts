@@ -29,6 +29,17 @@ export const site = {
     { code: 'en', label: 'English' },
   ] as Language[],
 
+  /**
+   * 頂部限時優惠倒數列。
+   * endsAt 為活動結束時間（ISO 字串，可設定，不寫死數字）；
+   * 倒數結束後顯示 endedText。
+   */
+  promo: {
+    label: '限時優惠活動',
+    endsAt: '2026-08-31T23:59:59+08:00',
+    endedText: '本次限時優惠已結束',
+  },
+
   contactEmail: 'hello@poolgress.com',
 
   footerLinks: [

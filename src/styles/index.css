@@ -186,8 +186,8 @@
 @media (min-width: 1024px) {
   .hero-sticky {
     position: sticky;
-    top: 4rem;
-    height: calc(94svh - 4rem);
+    top: 6rem;
+    height: calc(94svh - 6rem);
     overflow: hidden;
   }
   .hero-spacer {
@@ -212,7 +212,7 @@
 @media (min-width: 1024px) {
   html.course-hero-scroll { scroll-snap-type: y proximity; }
   .hero-outer { scroll-snap-align: start; }
-  .hero-next { scroll-snap-align: start; scroll-margin-top: 4rem; }
+  .hero-next { scroll-snap-align: start; scroll-margin-top: 6rem; }
 }
 
 /* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下 */

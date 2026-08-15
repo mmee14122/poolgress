@@ -32,7 +32,7 @@ export function S04One() {
     <section
       ref={sectionRef}
       id="one"
-      className="scroll-mt-24 overflow-hidden bg-brand-950 py-16 text-white lg:py-24"
+      className="scroll-mt-32 overflow-hidden bg-brand-950 py-16 text-white lg:py-24"
     >
       <div className="mx-auto w-full max-w-4xl px-5 text-center sm:px-8">
         <h2 className="text-2xl text-white sm:text-4xl">

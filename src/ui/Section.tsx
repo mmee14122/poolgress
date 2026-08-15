@@ -14,7 +14,7 @@ type Props = {
  */
 export function Section({ id, title, description, children }: Props) {
   return (
-    <section id={id} className="scroll-mt-32 py-10 lg:scroll-mt-24 lg:py-14">
+    <section id={id} className="scroll-mt-40 py-10 lg:scroll-mt-32 lg:py-14">
       <h2 className="text-2xl sm:text-3xl">{title}</h2>
       {description && <p className="mt-3 text-ink-500">{description}</p>}
       <div className="mt-6 lg:mt-8">{children}</div>

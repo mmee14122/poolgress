@@ -8,7 +8,7 @@ export function S02Struggle() {
   const { struggle } = home
 
   return (
-    <section id="struggle" className="scroll-mt-24 bg-ivory-50 py-16 lg:py-24">
+    <section id="struggle" className="scroll-mt-32 bg-ivory-50 py-16 lg:py-24">
       <div className="mx-auto w-full max-w-3xl px-5 sm:px-8">
         <h2 className="text-2xl sm:text-4xl">
           {struggle.titleLines.map((line) => (

@@ -1,4 +1,5 @@
 import { Navbar } from './components/Navbar'
+import { PromoBar } from './components/PromoBar'
 import { CourseHero } from './components/CourseHero'
 import { SectionTabs } from './components/SectionTabs'
 import { SideNav } from './components/SideNav'
@@ -32,6 +33,7 @@ export default function App() {
 
   return (
     <>
+      <PromoBar />
       <Navbar />
       {/* Hero 位於三欄版面之前；下一區包在 .hero-next 隨進度淡入並吸附 */}
       <CourseHero />
@@ -42,7 +44,7 @@ export default function App() {
         <div className="lg:grid lg:grid-cols-[11rem_minmax(0,1fr)_21rem] lg:items-start lg:gap-8 xl:grid-cols-[13rem_minmax(0,1fr)_23rem] xl:gap-12">
           {/* 左欄：桌機專用錨點導覽。sticky 必須放在格線欄本身，
               內層元素會因 items-start 讓欄高縮成內容高而失效 */}
-          <div className="sticky top-24 hidden pt-10 lg:block">
+          <div className="sticky top-32 hidden pt-10 lg:block">
             <SideNav active={active} />
           </div>
 
@@ -61,7 +63,7 @@ export default function App() {
           </main>
 
           {/* 右欄：桌機 sticky 課程卡（id 供 Hero 的立即購買捲動定位） */}
-          <aside id="buy-card" className="sticky top-24 hidden scroll-mt-24 pt-10 lg:block">
+          <aside id="buy-card" className="sticky top-32 hidden scroll-mt-32 pt-10 lg:block">
             <CourseCard />
           </aside>
         </div>
