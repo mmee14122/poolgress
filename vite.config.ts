@@ -20,7 +20,9 @@ export default defineConfig({
         login: fileURLToPath(new URL('./login.html', import.meta.url)),
         // 登入後的個人頁面
         account: fileURLToPath(new URL('./account.html', import.meta.url)),
+        myCourses: fileURLToPath(new URL('./my-courses.html', import.meta.url)),
         stars: fileURLToPath(new URL('./stars.html', import.meta.url)),
+        orders: fileURLToPath(new URL('./orders.html', import.meta.url)),
         invite: fileURLToPath(new URL('./invite.html', import.meta.url)),
         // 尚未建置頁面的「敬請期待」佔位頁
         games: fileURLToPath(new URL('./games.html', import.meta.url)),

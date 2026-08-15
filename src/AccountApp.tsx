@@ -1,14 +1,23 @@
-import type { ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
+import { Avatar } from './components/Avatar'
 import { Button } from './ui/Button'
-import { useSession, displayNameOf, initialOf } from './lib/session'
+import {
+  useSession,
+  displayNameOf,
+  readAvatarFile,
+  session,
+  type Session,
+} from './lib/session'
 
-export type AccountPage = 'profile' | 'stars' | 'invite'
+export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
 
 const tabs: { key: AccountPage; label: string; href: string }[] = [
   { key: 'profile', label: '個人檔案', href: './account.html' },
+  { key: 'courses', label: '我的課程', href: './my-courses.html' },
   { key: 'stars', label: '我的星星', href: './stars.html' },
+  { key: 'orders', label: '我的訂單', href: './orders.html' },
   { key: 'invite', label: '邀請朋友', href: './invite.html' },
 ]
 
@@ -28,15 +37,22 @@ export default function AccountApp({ page }: { page: AccountPage }) {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:py-12">
-        {/* 身分列 */}
+        {/* 身分列：頭像可直接點擊更換，右側顯示星星數 */}
         <div className="flex items-center gap-4">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xl font-bold text-white">
-            {initialOf(user)}
-          </span>
+          <AvatarPicker user={user} />
           <div className="min-w-0">
             <h1 className="truncate text-2xl sm:text-3xl">{displayNameOf(user)}</h1>
             <p className="truncate text-sm text-ink-500">{user.email}</p>
           </div>
+          <a
+            href="./stars.html"
+            className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brass-400/15 px-3 py-1.5 text-sm font-semibold text-brass-700 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/25"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-brass-600">
+              <path d="M12 2l2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 6 20.5l1.3-6.8-5-4.6 6.8-.8z" />
+            </svg>
+            <span className="tabular-nums">0</span>
+          </a>
         </div>
 
         {/* 分頁切換（各自獨立頁面，維持可分享的網址） */}
@@ -59,7 +75,9 @@ export default function AccountApp({ page }: { page: AccountPage }) {
 
         <div className="mt-8">
           {page === 'profile' && <ProfilePanel email={user.email} />}
+          {page === 'courses' && <CoursesPanel />}
           {page === 'stars' && <StarsPanel />}
+          {page === 'orders' && <OrdersPanel />}
           {page === 'invite' && <InvitePanel />}
         </div>
       </main>
@@ -70,23 +88,46 @@ export default function AccountApp({ page }: { page: AccountPage }) {
 
 /* ------------------------------------------------------------------ */
 
-/** 個人檔案：我的課程 + 帳號設定 */
+/** 我的課程：已購買課程與觀看進度 */
+function CoursesPanel() {
+  return (
+    <Card title="我的課程">
+      <EmptyState
+        icon="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z"
+        title="還沒有已購買的課程"
+        description="購買後這裡會顯示課程與觀看進度。"
+        action={
+          <Button href="./course.html" size="lg">
+            探索線上課程
+          </Button>
+        }
+      />
+    </Card>
+  )
+}
+
+/** 我的訂單：訂單與發票紀錄 */
+function OrdersPanel() {
+  return (
+    <Card title="我的訂單">
+      <EmptyState
+        icon="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z"
+        title="還沒有訂單"
+        description="完成購買後，訂單編號、金額與發票資訊會顯示在這裡。"
+        action={
+          <Button href="./course.html" size="lg" variant="secondary">
+            探索線上課程
+          </Button>
+        }
+      />
+    </Card>
+  )
+}
+
+/** 個人檔案：帳號設定 */
 function ProfilePanel({ email }: { email: string }) {
   return (
     <div className="space-y-8">
-      <Card title="我的課程">
-        <EmptyState
-          icon="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z"
-          title="還沒有已購買的課程"
-          description="購買後這裡會顯示課程與觀看進度。"
-          action={
-            <Button href="./course.html" size="lg">
-              探索線上課程
-            </Button>
-          }
-        />
-      </Card>
-
       <Card title="帳號設定">
         <dl className="divide-y divide-line">
           <Row label="電子信箱" value={email} />
@@ -101,14 +142,55 @@ function ProfilePanel({ email }: { email: string }) {
           />
         </dl>
       </Card>
+    </div>
+  )
+}
 
-      <Card title="訂單紀錄">
-        <EmptyState
-          icon="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z"
-          title="還沒有訂單"
-          description="完成購買後，訂單與發票資訊會顯示在這裡。"
-        />
-      </Card>
+/** 頭像上傳：點擊選檔，瀏覽器端裁切縮圖後存入 session */
+function AvatarPicker({ user }: { user: Session }) {
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const pick = async (file?: File) => {
+    if (!file) return
+    setError(null)
+    try {
+      session.setAvatar(await readAvatarFile(file))
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '頭像更換失敗')
+    }
+  }
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => fileRef.current?.click()}
+        aria-label="更換頭像"
+        className="group relative rounded-full"
+      >
+        <Avatar user={user} className="h-16 w-16 text-xl" />
+        <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/45 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-white">
+            <path d="M9 3l-1.7 2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.3L15 3zm3 5a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z" />
+          </svg>
+        </span>
+      </button>
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        className="sr-only"
+        onChange={(e) => {
+          pick(e.target.files?.[0])
+          e.target.value = ''
+        }}
+      />
+      {error && (
+        <p role="alert" className="mt-1 text-xs text-red-700">
+          {error}
+        </p>
+      )}
     </div>
   )
 }

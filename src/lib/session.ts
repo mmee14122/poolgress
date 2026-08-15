@@ -12,6 +12,8 @@ export type Session = {
   email: string
   /** 顯示名稱；未設定時 UI 以 Email 前綴代替 */
   name?: string
+  /** 頭像：縮成 160px 的 data URL；未設定時顯示名稱首字 */
+  avatar?: string
 }
 
 const KEY = 'poolgress.session.v1'
@@ -50,6 +52,11 @@ export const session = {
   signOut() {
     commit(null)
   },
+  /** 更新頭像（data URL）；傳 null 清除 */
+  setAvatar(avatar: string | null) {
+    if (!cache) return
+    commit({ ...cache, avatar: avatar ?? undefined })
+  },
   subscribe(listener: () => void) {
     listeners.add(listener)
     return () => listeners.delete(listener)
@@ -79,4 +86,52 @@ export function initialOf(s: Session): string {
 /** 顯示名稱：未設定名稱時用 Email 的 @ 前綴 */
 export function displayNameOf(s: Session): string {
   return s.name?.trim() || s.email.split('@')[0]
+}
+
+/** 頭像上限邊長；縮圖後存 localStorage，避免超過容量 */
+const AVATAR_SIZE = 160
+
+/**
+ * 讀取使用者選的圖片，置中裁成正方形並縮到 160px 後回傳 data URL。
+ * 只在瀏覽器端處理，不上傳（後端串接後改為上傳並存回傳的網址）。
+ */
+export function readAvatarFile(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('請選擇圖片檔'))
+      return
+    }
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const canvas = document.createElement('canvas')
+      canvas.width = AVATAR_SIZE
+      canvas.height = AVATAR_SIZE
+      const ctx = canvas.getContext('2d')
+      if (!ctx) {
+        reject(new Error('無法處理圖片'))
+        return
+      }
+      // 置中裁切成正方形，避免變形
+      const side = Math.min(img.width, img.height)
+      ctx.drawImage(
+        img,
+        (img.width - side) / 2,
+        (img.height - side) / 2,
+        side,
+        side,
+        0,
+        0,
+        AVATAR_SIZE,
+        AVATAR_SIZE,
+      )
+      resolve(canvas.toDataURL('image/jpeg', 0.85))
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('圖片讀取失敗'))
+    }
+    img.src = url
+  })
 }
