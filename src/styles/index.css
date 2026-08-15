@@ -82,6 +82,66 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   首頁 SECTION 04「The One」進球動畫
+   時間軸：瞄準線浮現 → 母球出發 → 子球入袋 → 金句浮現
+   .one-play 加在容器上時開始播放；reduced-motion 下瞬間到達結束狀態
+   ------------------------------------------------------------------ */
+@keyframes one-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes one-cue {
+  to {
+    transform: translate(196px, -108px);
+  }
+}
+@keyframes one-obj {
+  80% {
+    transform: translate(221px, -121px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(221px, -121px) scale(0.2);
+    opacity: 0;
+  }
+}
+@keyframes one-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.one-line {
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+}
+.one-quote,
+.one-landed {
+  opacity: 0;
+}
+.one-play .one-line {
+  animation: one-draw 0.7s ease-out 0.3s forwards;
+}
+.one-play .one-cue {
+  animation: one-cue 0.4s cubic-bezier(0.35, 0, 0.7, 1) 1.2s forwards;
+}
+.one-play .one-obj {
+  animation: one-obj 0.8s cubic-bezier(0.25, 0, 0.6, 1) 1.55s forwards;
+}
+.one-play .one-landed {
+  animation: one-pop 0.5s ease-out 2.3s forwards;
+}
+.one-play .one-quote {
+  animation: one-pop 0.7s ease-out 2.9s forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

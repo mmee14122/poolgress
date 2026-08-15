@@ -12,7 +12,8 @@ export const site = {
 
   /** 主導覽 —— 目前為佔位路徑，之後接上實際頁面即可 */
   nav: [
-    { label: '線上課程', href: '/courses' },
+    /* 課程列表頁尚未建立，先導向首頁的課程區塊 */
+    { label: '線上課程', href: './#courses' },
     { label: '遊戲闖關', href: '/games' },
     { label: '關於教練', href: '/coach' },
   ] as NavLink[],

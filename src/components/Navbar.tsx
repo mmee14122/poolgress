@@ -4,7 +4,8 @@ import { LanguageMenu } from './LanguageMenu'
 
 function Logo() {
   return (
-    <a href="/" className="flex shrink-0 items-center gap-2 py-2">
+    // 相對路徑：部署在子資料夾（github.io/poolgress/）時也能正確回首頁
+    <a href="./" className="flex shrink-0 items-center gap-2 py-2">
       {/* 母球與撞擊線，兼作 favicon 的雛形 */}
       <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-felt-900">
         <span className="h-3.5 w-3.5 rounded-full bg-ivory-50" />
