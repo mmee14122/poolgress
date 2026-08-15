@@ -93,7 +93,6 @@ export default function CartApp() {
                     探索其他線上課程
                   </a>
                 </p>
-                <p className="mt-3 text-center text-xs text-ink-400">＊金額為示範資料</p>
               </div>
             </aside>
           </div>

@@ -52,7 +52,7 @@ export function MobileCtaBar() {
               </span>
             )}
           </p>
-          <p className="truncate text-xs text-ink-400">＊示範價格</p>
+          <p className="truncate text-xs text-felt-700">預購六折優惠中</p>
         </div>
         <Button size="lg" className="shrink-0" onClick={buyNow} disabled={busy}>
           {busy ? '處理中…' : '立即購買'}

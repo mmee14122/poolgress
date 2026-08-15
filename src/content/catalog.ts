@@ -1,9 +1,11 @@
 /**
  * 商品目錄與優惠券。
  *
- * ⚠️ 全部為示範資料：課程名稱與正式價格尚未確認（待補），
- *    金額只為了讓購物車／結帳流程可以運作與驗證。
- *    正式資料到位後直接替換此檔即可。
+ * 價格為 2026-08 確認的定價：
+ *   免費：體驗課程｜付費：NT$4,900／一套課程
+ *   預購：NT$2,940（六折）｜活動：NT$4,900 贈一堂教練課
+ * 結帳價採預購價，原價 4,900 作為劃線價。
+ * ⚠️ 課程名稱與優惠券仍為待補／示範資料。
  */
 
 export type Product = {
@@ -11,7 +13,7 @@ export type Product = {
   title: string
   /** 商品類型標籤，例如「課程」 */
   type: string
-  /** ⚠️ 示範價格 */
+  /** 實際結帳價（目前為預購六折價） */
   price: number
   originalPrice?: number
 }
@@ -21,8 +23,8 @@ export const products: Product[] = [
     id: 'course-tbd-1',
     title: '課程名稱待補',
     type: '課程',
-    price: 1800,
-    originalPrice: 2400,
+    price: 2940,
+    originalPrice: 4900,
   },
 ]
 

@@ -99,7 +99,6 @@ export function SummaryCard({
         <a href="/refund" className="underline underline-offset-2">退款政策</a>與
         <a href="/privacy" className="underline underline-offset-2">隱私權政策</a>。
       </p>
-      <p className="mt-2 text-xs text-ink-400">＊金額為示範資料</p>
     </div>
   )
 }

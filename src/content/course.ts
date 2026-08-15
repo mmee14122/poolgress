@@ -246,7 +246,7 @@ export const course: CourseIntro = {
     totalHours: '＿＿',
     lessonCount: '＿＿',
     gameCount: '＿＿',
-    offerNote: '早鳥優惠文案待補｜組合優惠說明待補',
+    offerNote: '預購六折優惠中｜活動方案：NT$4,900 加贈一堂教練課',
   },
 
   startUrl: '#', // ⚠️ 課程平台連結待補

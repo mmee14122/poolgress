@@ -187,7 +187,13 @@ export function CourseCard() {
           {buyState === 'done' ? '即將前往結帳' : addState === 'done' ? '已加入購物車' : ''}
         </p>
 
-        <p className="mt-4 text-center text-xs text-ink-400">＊金額為示範資料，正式價格待補</p>
+        {/* 免費體驗課程入口：平台連結確定後替換 href */}
+        <p className="mt-4 text-center text-xs text-ink-500">
+          不確定嗎？先試試
+          <a href="#" className="font-semibold text-felt-700 underline underline-offset-4">
+            免費體驗課程
+          </a>
+        </p>
       </div>
     </div>
   )
