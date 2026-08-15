@@ -4,69 +4,83 @@ import { RichLines } from './RichLines'
 
 /**
  * SECTION 04｜這堂課怎麼學？
- * 五步驟：理解 → 觀察 → 實踐 → 挑戰 → 確認。
- * 桌機橫向五欄、手機垂直；末端以循環箭頭示意
- * 「理解 → 練習 → 確認」是不斷重複的迴圈，而非單向時間軸。
+ * 垂直學習路徑：五個寬版步驟卡由上而下，左側大節點與連線串接。
+ * 桌機圖文左右交錯（01 文左圖右、02 圖左文右…），
+ * 手機單欄：編號 → 圖片 → 標題與文字。
+ * 每步驟預留 aspect-video 大型圖像位，之後可直接替換素材。
  */
 export function HowSteps() {
   const { how } = course.intro
 
   return (
     <Section id="how" title={how.title} description={how.sub}>
-      <ol className="grid gap-4 lg:grid-cols-5 lg:gap-3">
+      <ol>
         {how.steps.map((step, i) => {
           const last = i === how.steps.length - 1
+          /* 偶數步驟（02、04）桌機圖左文右 */
+          const flip = i % 2 === 1
           return (
-            <li key={step.no} className="relative flex gap-4 rounded-card border border-line bg-white p-5 lg:flex-col lg:gap-0">
-              {/* 手機：左側連接線 */}
-              {!last && (
+            <li key={step.no} className="relative flex gap-5 pb-8 last:pb-0">
+              {/* 左：流程節點與垂直連線（手機收進卡片內以放寬圖片區） */}
+              <div className="relative hidden w-12 shrink-0 justify-center sm:flex">
                 <span
-                  aria-hidden="true"
-                  className="absolute top-14 left-[2.1rem] -bottom-4 w-px bg-brand-100 lg:hidden"
-                />
-              )}
-
-              <div className="relative flex shrink-0 items-center lg:mb-3">
-                <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold ${
+                  className={`z-10 flex h-12 w-12 items-center justify-center rounded-full text-base font-bold ${
                     last ? 'bg-brass-400 text-brand-950' : 'bg-brand-600 text-white'
                   }`}
                 >
                   {step.no}
                 </span>
-                {/* 桌機：右向連接箭頭；最後一步改為循環箭頭 */}
-                {!last ? (
-                  <svg
-                    viewBox="0 0 20 20"
+                {!last && (
+                  <span
                     aria-hidden="true"
-                    className="ml-2 hidden h-4 w-4 fill-brand-200 lg:block"
-                  >
-                    <path d="M7 4l6 6-6 6V4z" />
-                  </svg>
-                ) : (
-                  <svg
-                    viewBox="0 0 20 20"
-                    aria-hidden="true"
-                    className="ml-2 hidden h-4 w-4 fill-brass-400 lg:block"
-                  >
-                    <path d="M10 3a7 7 0 016.32 4H14v2h6V3h-2v2.1A9 9 0 001.1 9h2.03A7 7 0 0110 3zm6.87 8A7 7 0 013.68 13H6v-2H0v6h2v-2.1A9 9 0 0018.9 11h-2.03z" />
-                  </svg>
+                    className="absolute top-12 -bottom-8 w-px bg-brand-200"
+                  />
                 )}
               </div>
 
-              <div className="min-w-0">
-                <h3 className="text-base">{step.name}</h3>
-                <RichLines lines={step.lines} className="mt-2" />
-                {step.quote && (
-                  <p className="mt-3 rounded-lg bg-brand-50 px-3 py-2 text-xs leading-relaxed font-semibold text-brand-700">
-                    {step.quote}
-                  </p>
-                )}
+              {/* 寬版步驟卡：手機順序為編號 → 圖片 → 文字 */}
+              <div className="min-w-0 flex-1 rounded-card border border-line bg-white p-5 sm:p-6">
+                {/* 手機版編號 */}
+                <span
+                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold sm:hidden ${
+                    last ? 'bg-brass-400 text-brand-950' : 'bg-brand-600 text-white'
+                  }`}
+                >
+                  {step.no}
+                </span>
+
+                <div className="grid gap-5 lg:grid-cols-2 lg:items-center lg:gap-8">
+                  <div className={flip ? 'lg:order-1' : 'lg:order-2'}>
+                    <StepVisual name={step.name} />
+                  </div>
+
+                  <div className={flip ? 'lg:order-2' : 'lg:order-1'}>
+                    <h3 className="text-xl">{step.name}</h3>
+                    <RichLines lines={step.lines} className="mt-3" />
+                    {step.quote && (
+                      <p className="mt-4 rounded-lg bg-brand-50 px-4 py-3 text-sm leading-relaxed font-semibold text-brand-700">
+                        {step.quote}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             </li>
           )
         })}
       </ol>
     </Section>
+  )
+}
+
+/** 大型圖像素材佔位：確定素材後以 <img> 取代（保留 aspect-video 防位移） */
+function StepVisual({ name }: { name: string }) {
+  return (
+    <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-200 bg-brand-50/60">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-9 w-9 fill-brand-200">
+        <path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2zm0 2v10.6l4-4 4.5 4.5 3-3L21 17.6V5zm3.5 2A1.8 1.8 0 116.7 8.8 1.8 1.8 0 018.5 7z" />
+      </svg>
+      <p className="text-xs text-ink-500">「{name}」步驟圖像素材待補</p>
+    </div>
   )
 }
