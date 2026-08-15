@@ -61,7 +61,7 @@ export function InvoiceSection(props: Props) {
                   name="carrier"
                   checked={props.carrier === c.value}
                   onChange={() => props.onCarrier(c.value)}
-                  className="h-4 w-4 accent-felt-600"
+                  className="h-4 w-4 accent-brand-600"
                 />
                 {c.label}
               </label>
@@ -119,7 +119,7 @@ export function InvoiceSection(props: Props) {
                   id={id}
                   value={props.donateTarget}
                   onChange={(e) => props.onDonateTarget(e.target.value)}
-                  className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-ink-900 focus:outline-2 focus:outline-offset-1 focus:outline-felt-600"
+                  className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-ink-900 focus:outline-2 focus:outline-offset-1 focus:outline-brand-600"
                 >
                   {donationTargets.map((t) => (
                     <option key={t.value} value={t.value}>

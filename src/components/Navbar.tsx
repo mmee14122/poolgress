@@ -7,12 +7,24 @@ function Logo() {
   return (
     // 相對路徑：部署在子資料夾（github.io/poolgress/）時也能正確回首頁
     <a href="./" className="flex shrink-0 items-center gap-2 py-2">
-      {/* 母球與撞擊線，兼作 favicon 的雛形 */}
-      <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-felt-900">
-        <span className="h-3.5 w-3.5 rounded-full bg-ivory-50" />
-        <span className="absolute right-1 bottom-1.5 h-1.5 w-1.5 rounded-full bg-brass-400" />
-      </span>
-      <span className="text-lg font-bold tracking-tight text-ink-900">{site.brandName}</span>
+      {/* Poolgress 標誌：四葉十字 + 準星圓心（深藍） */}
+      <svg viewBox="0 0 48 48" aria-hidden="true" className="h-9 w-9">
+        <g fill="var(--color-brand-900)">
+          <circle cx="24" cy="10" r="9.5" />
+          <circle cx="24" cy="38" r="9.5" />
+          <circle cx="10" cy="24" r="9.5" />
+          <circle cx="38" cy="24" r="9.5" />
+          <rect x="12" y="12" width="24" height="24" rx="7" />
+        </g>
+        <circle cx="24" cy="24" r="8.5" fill="white" />
+        <g stroke="var(--color-brand-900)" strokeWidth="2.2" strokeLinecap="round">
+          <line x1="24" y1="16.5" x2="24" y2="19.8" />
+          <line x1="24" y1="28.2" x2="24" y2="31.5" />
+          <line x1="16.5" y1="24" x2="19.8" y2="24" />
+          <line x1="28.2" y1="24" x2="31.5" y2="24" />
+        </g>
+      </svg>
+      <span className="text-lg font-bold tracking-tight text-brand-900">{site.brandName}</span>
     </a>
   )
 }

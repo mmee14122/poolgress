@@ -41,13 +41,13 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
 
   if (applied) {
     return (
-      <div className="flex items-center justify-between rounded-lg bg-felt-50 px-4 py-3 ring-1 ring-felt-200">
+      <div className="flex items-center justify-between rounded-lg bg-brand-50 px-4 py-3 ring-1 ring-brand-200">
         <div className="min-w-0 text-sm">
-          <p className="font-semibold text-felt-700">{applied.code}</p>
+          <p className="font-semibold text-brand-700">{applied.code}</p>
           <p className="truncate text-xs text-ink-500">{applied.label}</p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-sm font-bold text-felt-700 tabular-nums">
+          <span className="text-sm font-bold text-brand-700 tabular-nums">
             −{formatNT(couponDiscount(applied, subtotal))}
           </span>
           <button
@@ -76,7 +76,7 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
           aria-label="優惠碼"
           aria-invalid={!!error || undefined}
           className={`min-w-0 flex-1 rounded-lg border bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:outline-2 focus:outline-offset-1 ${
-            error ? 'border-red-400 focus:outline-red-600' : 'border-line focus:outline-felt-600'
+            error ? 'border-red-400 focus:outline-red-600' : 'border-line focus:outline-brand-600'
           }`}
         />
         <button
@@ -98,7 +98,7 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
         type="button"
         onClick={() => setPickerOpen((v) => !v)}
         aria-expanded={pickerOpen}
-        className="mt-2 text-xs text-felt-700 underline underline-offset-2"
+        className="mt-2 text-xs text-brand-700 underline underline-offset-2"
       >
         選擇可用優惠券
       </button>
@@ -113,7 +113,7 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
           {availableCoupons.map((c) => (
             <li
               key={c.code}
-              className="flex items-center justify-between gap-3 rounded-lg border border-dashed border-felt-200 bg-white px-4 py-2.5"
+              className="flex items-center justify-between gap-3 rounded-lg border border-dashed border-brand-200 bg-white px-4 py-2.5"
             >
               <div className="min-w-0 text-sm">
                 <p className="font-semibold text-ink-900">{c.code}</p>
@@ -123,7 +123,7 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
                 type="button"
                 onClick={() => apply(c.code)}
                 disabled={applying}
-                className="shrink-0 text-sm font-semibold text-felt-700 underline underline-offset-2 disabled:opacity-50"
+                className="shrink-0 text-sm font-semibold text-brand-700 underline underline-offset-2 disabled:opacity-50"
               >
                 套用
               </button>

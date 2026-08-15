@@ -34,13 +34,13 @@ export function S05Pillars() {
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:gap-5">
           {pillars.items.map((item, i) => (
             <li key={item.no} className="flex gap-5 rounded-card border border-line bg-ivory-50 p-6 sm:p-7">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card bg-felt-600">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card bg-brand-600">
                 <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-white">
                   <path d={icons[i]} />
                 </svg>
               </span>
               <div>
-                <p className="text-xs font-bold tracking-widest text-felt-600">{item.no}</p>
+                <p className="text-xs font-bold tracking-widest text-brand-600">{item.no}</p>
                 <h3 className="mt-1 text-lg">{item.name}</h3>
                 <p className="mt-2 text-sm text-ink-500">{item.body}</p>
               </div>

@@ -16,7 +16,7 @@ export function ProcessingOverlay() {
           <path
             d="M12 3a9 9 0 019 9"
             fill="none"
-            stroke="var(--color-felt-600)"
+            stroke="var(--color-brand-600)"
             strokeWidth="3"
             strokeLinecap="round"
           />
@@ -58,8 +58,8 @@ type ResultProps = {
 export function SuccessView({ order, isGuest }: ResultProps) {
   return (
     <div className="mx-auto max-w-xl py-14 text-center">
-      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-felt-50 ring-1 ring-felt-200">
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-felt-600">
+      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-200">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-brand-600">
           <path d="M9.1 17.2L4 12.1l1.7-1.7 3.4 3.4 9.2-9.2L20 6.3z" />
         </svg>
       </span>
@@ -115,8 +115,8 @@ export function OrderCreatedView({ order, isGuest }: ResultProps) {
   return (
     <div className="mx-auto max-w-xl py-14">
       <div className="text-center">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-felt-50 ring-1 ring-felt-200">
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-felt-600">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-200">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-brand-600">
             <path d="M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2zm0 4v2h16V9zm2 5v2h6v-2z" />
           </svg>
         </span>

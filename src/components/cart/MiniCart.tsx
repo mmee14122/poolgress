@@ -6,7 +6,7 @@ export function CourseThumb({ className = 'h-14 w-20' }: { className?: string })
   return (
     <span
       aria-hidden="true"
-      className={`relative block shrink-0 overflow-hidden rounded-lg bg-[radial-gradient(ellipse_at_45%_35%,var(--color-felt-700),var(--color-felt-950))] ${className}`}
+      className={`relative block shrink-0 overflow-hidden rounded-lg bg-[radial-gradient(ellipse_at_45%_35%,var(--color-brand-700),var(--color-brand-950))] ${className}`}
     >
       <span className="absolute top-[55%] left-[28%] h-2.5 w-2.5 rounded-full bg-ivory-50" />
       <span className="absolute top-[38%] left-[55%] h-2.5 w-2.5 rounded-full bg-brass-400" />
@@ -43,7 +43,7 @@ export function MiniCart() {
           <li key={item.id} className="flex items-center gap-3 py-3">
             <CourseThumb />
             <div className="min-w-0 flex-1">
-              <span className="inline-block rounded-full bg-felt-50 px-2 py-0.5 text-xs font-semibold text-felt-700 ring-1 ring-felt-200">
+              <span className="inline-block rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-200">
                 {item.type}
               </span>
               <p className="mt-1 truncate text-sm font-semibold text-ink-900">{item.title}</p>

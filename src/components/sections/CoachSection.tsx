@@ -14,8 +14,8 @@ export function CoachSection() {
       <div className="overflow-hidden rounded-card border border-line bg-white">
         <div className="grid sm:grid-cols-[13rem_1fr]">
           {/* 形象照佔位：鎖高度避免圖片載入時位移 */}
-          <div className="aspect-[4/5] bg-felt-900 sm:aspect-auto">
-            <div className="flex h-full min-h-52 items-center justify-center bg-[radial-gradient(ellipse_at_50%_30%,var(--color-felt-700),var(--color-felt-950))] text-sm text-white/70">
+          <div className="aspect-[4/5] bg-brand-900 sm:aspect-auto">
+            <div className="flex h-full min-h-52 items-center justify-center bg-[radial-gradient(ellipse_at_50%_30%,var(--color-brand-700),var(--color-brand-950))] text-sm text-white/70">
               教練形象照
             </div>
           </div>
@@ -51,7 +51,7 @@ export function CoachSection() {
           {coach.stats.map((stat) => (
             <div key={stat.label} className="px-4 py-5 text-center">
               <dt className="text-xs text-ink-500">{stat.label}</dt>
-              <dd className="mt-1 text-2xl font-bold text-felt-700">{stat.value}</dd>
+              <dd className="mt-1 text-2xl font-bold text-brand-700">{stat.value}</dd>
             </div>
           ))}
         </dl>

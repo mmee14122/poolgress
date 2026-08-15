@@ -18,7 +18,7 @@ export function Footer() {
               key={item.href}
               href={item.href}
               /* inline-block + py 讓行動裝置上的觸控區域夠大 */
-              className="inline-block py-2.5 text-ink-500 transition-colors hover:text-felt-700"
+              className="inline-block py-2.5 text-ink-500 transition-colors hover:text-brand-700"
             >
               {item.label}
             </a>

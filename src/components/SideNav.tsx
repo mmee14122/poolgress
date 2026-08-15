@@ -21,7 +21,7 @@ export function SideNav({ active }: { active: string }) {
                 aria-current={isActive ? 'true' : undefined}
                 className={`group relative flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   isActive
-                    ? 'bg-felt-50 font-semibold text-felt-700'
+                    ? 'bg-brand-50 font-semibold text-brand-700'
                     : 'text-ink-500 hover:bg-ivory-100 hover:text-ink-900'
                 }`}
               >
@@ -29,7 +29,7 @@ export function SideNav({ active }: { active: string }) {
                 <span
                   aria-hidden="true"
                   className={`absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full transition-colors ${
-                    isActive ? 'bg-felt-600' : 'bg-transparent group-hover:bg-line'
+                    isActive ? 'bg-brand-600' : 'bg-transparent group-hover:bg-line'
                   }`}
                 />
                 {section.label}

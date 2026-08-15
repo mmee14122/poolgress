@@ -19,7 +19,7 @@ export function Faq() {
         還有其他問題？寫信到{' '}
         <a
           href={`mailto:${site.contactEmail}`}
-          className="font-semibold text-felt-700 underline underline-offset-4"
+          className="font-semibold text-brand-700 underline underline-offset-4"
         >
           {site.contactEmail}
         </a>

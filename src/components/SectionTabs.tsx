@@ -40,7 +40,7 @@ export function SectionTabs({ active }: { active: string }) {
                 /* py-3 讓觸控目標達到 44px */
                 className={`block rounded-full px-4 py-3 text-sm whitespace-nowrap transition-colors ${
                   isActive
-                    ? 'bg-felt-600 font-semibold text-white'
+                    ? 'bg-brand-600 font-semibold text-white'
                     : 'bg-white text-ink-500 ring-1 ring-line'
                 }`}
               >

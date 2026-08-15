@@ -46,8 +46,8 @@ export function PaymentSection({ method, onMethod, bank, onBank, terms, onTerms 
                         aria-pressed={bank === b}
                         className={`rounded-full px-4 py-2 text-sm font-medium ring-1 transition-colors ${
                           bank === b
-                            ? 'bg-felt-600 text-white ring-felt-600'
-                            : 'bg-white text-ink-700 ring-line hover:ring-felt-200'
+                            ? 'bg-brand-600 text-white ring-brand-600'
+                            : 'bg-white text-ink-700 ring-line hover:ring-brand-200'
                         }`}
                       >
                         {b}
@@ -67,8 +67,8 @@ export function PaymentSection({ method, onMethod, bank, onBank, terms, onTerms 
                         aria-pressed={terms === t}
                         className={`rounded-full px-4 py-2 text-sm font-medium ring-1 transition-colors ${
                           terms === t
-                            ? 'bg-felt-600 text-white ring-felt-600'
-                            : 'bg-white text-ink-700 ring-line hover:ring-felt-200'
+                            ? 'bg-brand-600 text-white ring-brand-600'
+                            : 'bg-white text-ink-700 ring-line hover:ring-brand-200'
                         }`}
                       >
                         {t} 期

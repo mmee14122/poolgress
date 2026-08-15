@@ -10,11 +10,11 @@ export function S01Hero() {
   const { hero } = home
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-felt-950 text-white">
+    <section id="hero" className="relative overflow-hidden bg-brand-950 text-white">
       {/* 檯面光暈 */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_20%,rgba(34,133,92,0.35),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_20%,rgba(56,126,217,0.35),transparent)]"
       />
 
       <div className="relative mx-auto grid w-full max-w-[80rem] gap-12 px-5 pt-16 pb-20 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:pt-24 lg:pb-28">
@@ -47,7 +47,7 @@ export function S01Hero() {
             {/* 檯面一角 */}
             <path d="M40 360 L40 80 Q40 40 80 40 L360 40" fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="24" strokeLinecap="round" />
             {/* 袋口 */}
-            <circle cx="72" cy="72" r="34" fill="#04120b" />
+            <circle cx="72" cy="72" r="34" fill="#060d1a" />
             <circle cx="72" cy="72" r="34" fill="none" stroke="rgba(230,196,120,0.55)" strokeWidth="3" />
             {/* 軌跡殘影 */}
             <line x1="320" y1="300" x2="110" y2="106" stroke="rgba(255,255,255,0.22)" strokeWidth="3" strokeDasharray="2 14" strokeLinecap="round" />

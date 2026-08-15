@@ -32,7 +32,7 @@ export function S04One() {
     <section
       ref={sectionRef}
       id="one"
-      className="scroll-mt-24 overflow-hidden bg-felt-950 py-16 text-white lg:py-24"
+      className="scroll-mt-24 overflow-hidden bg-brand-950 py-16 text-white lg:py-24"
     >
       <div className="mx-auto w-full max-w-4xl px-5 text-center sm:px-8">
         <h2 className="text-2xl text-white sm:text-4xl">
@@ -62,10 +62,10 @@ export function S04One() {
         <div key={run} className={`relative mx-auto mt-10 max-w-2xl ${run > 0 ? 'one-play' : ''}`}>
           <svg viewBox="0 0 800 430" className="w-full" aria-hidden="true">
             {/* 檯面 */}
-            <rect x="24" y="24" width="752" height="382" rx="20" fill="#0c2a1c" />
-            <rect x="44" y="44" width="712" height="342" rx="10" fill="#135238" />
+            <rect x="24" y="24" width="752" height="382" rx="20" fill="#16294d" />
+            <rect x="44" y="44" width="712" height="342" rx="10" fill="#1e4276" />
             {/* 袋口（右上） */}
-            <circle cx="742" cy="58" r="24" fill="#04120b" stroke="rgba(230,196,120,0.5)" strokeWidth="2.5" />
+            <circle cx="742" cy="58" r="24" fill="#060d1a" stroke="rgba(230,196,120,0.5)" strokeWidth="2.5" />
             {/* 瞄準線：母球 → 子球 → 袋口 */}
             <line
               className="one-line"

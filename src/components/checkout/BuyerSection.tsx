@@ -95,7 +95,7 @@ export function BuyerSection({
         >
           {memberLoggedIn ? (
             <p className="flex items-center gap-2 text-sm text-ink-700">
-              <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5 fill-felt-600">
+              <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5 fill-brand-600">
                 <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm-1.2 11.4L5.6 10.2 7 8.8l1.8 1.8 4-4 1.4 1.4z" />
               </svg>
               目前登入帳號：<strong className="font-semibold text-ink-900">{memberEmail}</strong>

@@ -4,18 +4,18 @@
  */
 export function CourseCover({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-card bg-felt-900">
+    <div className="relative aspect-video w-full overflow-hidden rounded-card bg-brand-900">
       {/* 檯面質感：綠絨底 + 邊緣暗角 */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,var(--color-felt-700),var(--color-felt-950))]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,var(--color-brand-700),var(--color-brand-950))]"
       />
 
       {/* 球檯上的三顆球，純裝飾 */}
       <div aria-hidden="true" className="absolute inset-0">
         <span className="absolute top-[58%] left-[22%] h-6 w-6 rounded-full bg-ivory-50 shadow-lg" />
         <span className="absolute top-[46%] left-[46%] h-6 w-6 rounded-full bg-brass-400 shadow-lg" />
-        <span className="absolute top-[66%] left-[62%] h-6 w-6 rounded-full bg-chalk-500 shadow-lg" />
+        <span className="absolute top-[66%] left-[62%] h-6 w-6 rounded-full bg-pulse-500 shadow-lg" />
         <span className="absolute top-[61%] left-[25%] h-px w-[38%] origin-left -rotate-6 bg-white/25" />
       </div>
 

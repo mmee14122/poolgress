@@ -50,8 +50,8 @@ export function S03Viewpoint() {
           </div>
 
           {/* 有方向：逐步變清晰（透明度遞增），終點亮起 */}
-          <div className="rounded-card border-2 border-felt-200 bg-felt-50/60 p-6 sm:p-7">
-            <p className="text-sm font-semibold tracking-widest text-felt-700 uppercase">
+          <div className="rounded-card border-2 border-brand-200 bg-brand-50/60 p-6 sm:p-7">
+            <p className="text-sm font-semibold tracking-widest text-brand-700 uppercase">
               {guided.title}
             </p>
             <ol className="mt-5 space-y-1">
@@ -60,7 +60,7 @@ export function S03Viewpoint() {
                 return (
                   <li
                     key={step}
-                    className="flex items-center gap-3 font-medium text-felt-700"
+                    className="flex items-center gap-3 font-medium text-brand-700"
                     /* 遞增下限 0.8：淡化效果不可讓文字對比低於 WCAG AA */
                     style={{ opacity: 0.8 + (i / (guided.steps.length - 1)) * 0.2 }}
                   >
@@ -81,7 +81,7 @@ export function S03Viewpoint() {
         </div>
 
         <div className="mt-14 text-center">
-          <p className="text-sm font-semibold tracking-widest text-felt-600 uppercase">我們相信</p>
+          <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">我們相信</p>
           <p className="mt-4 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
             {viewpoint.belief.map((line) => (
               <span key={line} className="block">

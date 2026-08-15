@@ -17,12 +17,12 @@ export function Field({ label, required, error, hint, children }: FieldProps) {
       <label htmlFor={id} className="block text-sm font-semibold text-ink-900">
         {label}
         {required && (
-          <span className="ml-1 text-felt-600" aria-hidden="true">
+          <span className="ml-1 text-brand-600" aria-hidden="true">
             *
           </span>
         )}
       </label>
-      {/* ink-500：hint 可能落在 felt-50 等淡色底上，ink-400 會低於 AA */}
+      {/* ink-500：hint 可能落在 brand-50 等淡色底上，ink-400 會低於 AA */}
       {hint && <p className="mt-1 text-xs text-ink-500">{hint}</p>}
       <div className="mt-1.5">{children(id, !!error)}</div>
       {error && (
@@ -44,7 +44,7 @@ export function TextInput({ invalid = false, className = '', ...rest }: TextInpu
       className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:outline-2 focus:outline-offset-1 ${
         invalid
           ? 'border-red-400 focus:outline-red-600'
-          : 'border-line focus:outline-felt-600'
+          : 'border-line focus:outline-brand-600'
       } ${className}`}
     />
   )
@@ -76,7 +76,7 @@ export function ChoiceCard({
   return (
     <label
       className={`block cursor-pointer rounded-card border-2 p-4 transition-colors sm:p-5 ${
-        checked ? 'border-felt-600 bg-felt-50/50' : 'border-line bg-white hover:border-felt-200'
+        checked ? 'border-brand-600 bg-brand-50/50' : 'border-line bg-white hover:border-brand-200'
       }`}
     >
       <span className="flex items-start gap-3">
@@ -91,10 +91,10 @@ export function ChoiceCard({
         <span
           aria-hidden="true"
           className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-            checked ? 'border-felt-600' : 'border-ink-400'
+            checked ? 'border-brand-600' : 'border-ink-400'
           }`}
         >
-          {checked && <span className="h-2.5 w-2.5 rounded-full bg-felt-600" />}
+          {checked && <span className="h-2.5 w-2.5 rounded-full bg-brand-600" />}
         </span>
         <span className="min-w-0">
           <span className="block font-semibold text-ink-900">{title}</span>

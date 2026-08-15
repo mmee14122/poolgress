@@ -66,12 +66,12 @@ export function LanguageMenu({ className = '' }: { className?: string }) {
                   setOpen(false)
                 }}
                 className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition-colors hover:bg-ivory-50 ${
-                  lang.code === current.code ? 'font-semibold text-felt-700' : 'text-ink-700'
+                  lang.code === current.code ? 'font-semibold text-brand-700' : 'text-ink-700'
                 }`}
               >
                 {lang.label}
                 {lang.code === current.code && (
-                  <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-felt-600">
+                  <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-brand-600">
                     <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
                   </svg>
                 )}

@@ -35,7 +35,7 @@ export function Reviews() {
               {/* 頭像佔位：換成 <img> 時保留相同尺寸避免版面位移 */}
               <span
                 aria-hidden="true"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-felt-100 text-sm font-semibold text-felt-700"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700"
               >
                 {review.name.slice(0, 1)}
               </span>
@@ -50,7 +50,7 @@ export function Reviews() {
               </span>
             </div>
 
-            <p className="mt-4 text-sm font-semibold text-felt-700">{review.result}</p>
+            <p className="mt-4 text-sm font-semibold text-brand-700">{review.result}</p>
             <p className="mt-2 text-sm leading-relaxed text-ink-500">{review.comment}</p>
           </li>
         ))}

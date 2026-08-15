@@ -36,13 +36,13 @@ export function CourseHero() {
 
         {/* 右：課程介紹 */}
         <div>
-          <p className="inline-flex rounded-full bg-felt-50 px-3.5 py-1 text-sm font-semibold text-felt-700 ring-1 ring-felt-200">
+          <p className="inline-flex rounded-full bg-brand-50 px-3.5 py-1 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
             {hero.category}
           </p>
 
           <h1 className="mt-4 text-3xl leading-[1.3] sm:text-4xl">{hero.title}</h1>
 
-          <p className="mt-4 text-lg font-semibold text-felt-700">{hero.value}</p>
+          <p className="mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
 
           <p className="mt-4 text-sm leading-relaxed text-ink-500 sm:text-base">{hero.intro}</p>
 
@@ -75,7 +75,7 @@ export function CourseHero() {
             <Button size="lg" onClick={scrollToBuy} className="w-full sm:w-auto">
               立即購買
             </Button>
-            <Button href="#chapters" variant="quiet" size="lg" className="w-full text-felt-700 sm:w-auto">
+            <Button href="#chapters" variant="quiet" size="lg" className="w-full text-brand-700 sm:w-auto">
               查看課程章節
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">
                 <path d="M5.3 7.3l4.7 4.7 4.7-4.7 1.4 1.4-6.1 6.1-6.1-6.1z" />
@@ -90,7 +90,7 @@ export function CourseHero() {
 
 function StatIcon({ d }: { d: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-felt-600">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brand-600">
       <path d={d} />
     </svg>
   )
@@ -106,19 +106,19 @@ function BilliardsAnimation() {
     <div className="overflow-hidden rounded-card shadow-sm">
       <svg viewBox="0 0 720 460" className="block w-full" aria-hidden="true">
         {/* 外框（木邊）與庫邊 */}
-        <rect x="0" y="0" width="720" height="460" rx="26" fill="#0c2a1c" />
-        <rect x="14" y="14" width="692" height="432" rx="18" fill="#135238" />
+        <rect x="0" y="0" width="720" height="460" rx="26" fill="#16294d" />
+        <rect x="14" y="14" width="692" height="432" rx="18" fill="#1e4276" />
         {/* 檯面 */}
-        <rect x="40" y="40" width="640" height="380" rx="10" fill="#1a6b4a" />
+        <rect x="40" y="40" width="640" height="380" rx="10" fill="#2b66b4" />
         {/* 檯面光澤 */}
-        <ellipse cx="360" cy="180" rx="330" ry="150" fill="#22855c" opacity="0.35" />
+        <ellipse cx="360" cy="180" rx="330" ry="150" fill="#387ed9" opacity="0.35" />
 
         {/* 六個袋口 */}
         {[
           [48, 48], [360, 40], [672, 48],
           [48, 412], [360, 420], [672, 412],
         ].map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r="17" fill="#04120b" />
+          <circle key={i} cx={x} cy={y} r="17" fill="#060d1a" />
         ))}
         {/* 目標袋口微光 */}
         <circle cx="672" cy="48" r="17" fill="none" stroke="rgba(230,196,120,0.5)" strokeWidth="2" />

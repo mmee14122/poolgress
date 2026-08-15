@@ -21,12 +21,12 @@ export function HowYouLearn() {
               {!last && (
                 <span
                   aria-hidden="true"
-                  className="absolute top-11 left-[1.2rem] bottom-0 w-px bg-felt-200"
+                  className="absolute top-11 left-[1.2rem] bottom-0 w-px bg-brand-200"
                 />
               )}
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                  last ? 'bg-brass-400 text-felt-950' : 'bg-felt-600 text-white'
+                  last ? 'bg-brass-400 text-brand-950' : 'bg-brand-600 text-white'
                 }`}
               >
                 {last ? (

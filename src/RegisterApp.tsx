@@ -178,8 +178,8 @@ export default function RegisterApp() {
 
         {step === 'done' && (
           <div className="text-center">
-            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-felt-50 ring-1 ring-felt-200">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-felt-600">
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-200">
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-brand-600">
                 <path d="M9.1 17.2L4 12.1l1.7-1.7 3.4 3.4 9.2-9.2L20 6.3z" />
               </svg>
             </span>

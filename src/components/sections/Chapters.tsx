@@ -66,7 +66,7 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold text-felt-600">{state.chapterName}</p>
+            <p className="text-xs font-semibold text-brand-600">{state.chapterName}</p>
             <h3 className="mt-1 text-lg">{lesson.title}</h3>
           </div>
           <button
@@ -88,7 +88,7 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
             {lesson.videoUrl ? (
               <video src={lesson.videoUrl} controls className="aspect-video w-full rounded-xl bg-ink-900" />
             ) : (
-              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-[radial-gradient(ellipse_at_50%_35%,var(--color-felt-700),var(--color-felt-950))]">
+              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-[radial-gradient(ellipse_at_50%_35%,var(--color-brand-700),var(--color-brand-950))]">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30">
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="ml-1 h-6 w-6 fill-white">
                     <path d="M8 5v14l11-7z" />
@@ -106,7 +106,7 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
         {/* 付費單元：鎖定縮圖 + 內容重點 + 購買 CTA */}
         {!isTrial && !isGame && (
           <div className="mt-5">
-            <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-[radial-gradient(ellipse_at_50%_35%,var(--color-felt-700),var(--color-felt-950))]">
+            <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-[radial-gradient(ellipse_at_50%_35%,var(--color-brand-700),var(--color-brand-950))]">
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30">
                 <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-white">
                   <path d="M12 2a5 5 0 015 5v3h1a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2 0 012-2h1V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v3h6V7a3 3 0 00-3-3zm0 9a2 2 0 00-1 3.73V19h2v-2.27A2 2 0 0012 13z" />
@@ -118,7 +118,7 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
               <ul className="mt-4 space-y-2">
                 {lesson.points.slice(0, 3).map((point, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-ink-700">
-                    <svg viewBox="0 0 20 20" aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 fill-felt-600">
+                    <svg viewBox="0 0 20 20" aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 fill-brand-600">
                       <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
                     </svg>
                     {point}
@@ -140,12 +140,12 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
         {/* 遊戲闖關：目標與能力，不需播放器 */}
         {isGame && (
           <div className="mt-5 space-y-4">
-            <div className="rounded-xl bg-chalk-100 p-4">
-              <p className="text-xs font-bold tracking-widest text-chalk-700 uppercase">闖關目標</p>
+            <div className="rounded-xl bg-pulse-100 p-4">
+              <p className="text-xs font-bold tracking-widest text-pulse-700 uppercase">闖關目標</p>
               <p className="mt-1.5 text-sm text-ink-700">{lesson.goal ?? '闖關目標待補'}</p>
             </div>
-            <div className="rounded-xl bg-felt-50 p-4">
-              <p className="text-xs font-bold tracking-widest text-felt-700 uppercase">
+            <div className="rounded-xl bg-brand-50 p-4">
+              <p className="text-xs font-bold tracking-widest text-brand-700 uppercase">
                 完成後你能獲得
               </p>
               <p className="mt-1.5 text-sm text-ink-700">{lesson.ability ?? '完成後能力待補'}</p>
@@ -201,7 +201,7 @@ export function Chapters() {
                   <path d="M5.3 7.3l4.7 4.7 4.7-4.7 1.4 1.4-6.1 6.1-6.1-6.1z" />
                 </svg>
                 <span className="min-w-0 flex-1">
-                  <span className="text-xs font-bold tracking-widest text-felt-600 uppercase">
+                  <span className="text-xs font-bold tracking-widest text-brand-600 uppercase">
                     {chapterNo}
                   </span>
                   <span className="mt-0.5 block font-semibold text-ink-900">{chapter.name}</span>
@@ -231,7 +231,7 @@ export function Chapters() {
                           className="flex min-h-12 w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-ivory-50 sm:px-5"
                         >
                           {lesson.type === 'game' ? (
-                            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-chalk-500">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-pulse-500">
                               <path d="M17 5a5 5 0 014.9 6l-1.6 8A3 3 0 0117.4 22a3 3 0 01-2.5-1.4L13.4 18h-2.8l-1.5 2.6A3 3 0 016.6 22a3 3 0 01-2.9-3l-1.6-8A5 5 0 017 5zM9 9H7v2H5v2h2v2h2v-2h2v-2H9zm7 0a1.2 1.2 0 101.2 1.2A1.2 1.2 0 0016 9zm2.5 3a1.2 1.2 0 101.2 1.2 1.2 1.2 0 00-1.2-1.2z" />
                             </svg>
                           ) : (
@@ -243,12 +243,12 @@ export function Chapters() {
                           <span className="min-w-0 flex-1 text-sm text-ink-700">
                             {lesson.title}
                             {lesson.type === 'game' && (
-                              <span className="ml-2 text-xs text-chalk-700">遊戲闖關</span>
+                              <span className="ml-2 text-xs text-pulse-700">遊戲闖關</span>
                             )}
                           </span>
 
                           {lesson.free && (
-                            <span className="shrink-0 rounded-full bg-felt-50 px-2.5 py-0.5 text-xs font-semibold text-felt-700 ring-1 ring-felt-200">
+                            <span className="shrink-0 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-200">
                               試看
                             </span>
                           )}

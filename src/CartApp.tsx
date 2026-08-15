@@ -29,7 +29,7 @@ export default function CartApp() {
                   <CourseThumb className="h-16 w-24 sm:h-20 sm:w-32" />
 
                   <div className="min-w-0 flex-1">
-                    <span className="inline-block rounded-full bg-felt-50 px-2 py-0.5 text-xs font-semibold text-felt-700 ring-1 ring-felt-200">
+                    <span className="inline-block rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-200">
                       {item.type}
                     </span>
                     <p className="mt-1.5 font-semibold text-ink-900">{item.title}</p>
@@ -88,7 +88,7 @@ export default function CartApp() {
                   想學更多嗎？
                   <a
                     href="./course.html"
-                    className="font-semibold text-felt-700 underline underline-offset-4"
+                    className="font-semibold text-brand-700 underline underline-offset-4"
                   >
                     探索其他線上課程
                   </a>
@@ -133,11 +133,11 @@ function EmptyCart() {
       {/* 空狀態插圖：散落的球 */}
       <svg viewBox="0 0 120 80" aria-hidden="true" className="w-40">
         <ellipse cx="60" cy="66" rx="44" ry="8" className="fill-ivory-100" />
-        <circle cx="44" cy="46" r="14" className="fill-felt-100" />
+        <circle cx="44" cy="46" r="14" className="fill-brand-100" />
         <circle cx="40" cy="42" r="4" className="fill-white" />
         <circle cx="74" cy="52" r="10" className="fill-brass-300" />
         <circle cx="71" cy="49" r="3" className="fill-white/70" />
-        <circle cx="90" cy="38" r="6" className="fill-chalk-100" />
+        <circle cx="90" cy="38" r="6" className="fill-pulse-100" />
       </svg>
       <p className="mt-5 text-lg text-ink-500">購物車目前是空的</p>
       <Button href="./course.html" size="lg" className="mt-6">

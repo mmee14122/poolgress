@@ -10,7 +10,7 @@ function CartIcon() {
         <path d="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z" />
       </svg>
       {count > 0 && (
-        <span className="absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-felt-600 px-1 text-[0.6875rem] font-bold text-white tabular-nums">
+        <span className="absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-brand-600 px-1 text-[0.6875rem] font-bold text-white tabular-nums">
           {count}
         </span>
       )}

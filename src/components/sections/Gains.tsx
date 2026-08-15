@@ -17,7 +17,7 @@ export function Gains() {
       <div className="space-y-4">
         {layers.map((layer, i) => (
           <div key={layer.key} className="flex gap-5 rounded-card border border-line bg-white p-6">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-felt-50 text-sm font-bold text-felt-700 ring-1 ring-felt-200">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-bold text-brand-700 ring-1 ring-brand-200">
               {i + 1}
             </span>
             <div>

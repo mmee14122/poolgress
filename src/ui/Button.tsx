@@ -24,9 +24,9 @@ type Props = Common &
 
 const variants: Record<Variant, string> = {
   primary:
-    'bg-felt-600 text-white shadow-sm hover:bg-felt-700 active:bg-felt-900 active:scale-[0.99]',
+    'bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-900 active:scale-[0.99]',
   secondary:
-    'bg-white text-felt-700 ring-1 ring-felt-200 hover:bg-felt-50 active:bg-felt-100 active:scale-[0.99]',
+    'bg-white text-brand-700 ring-1 ring-brand-200 hover:bg-brand-50 active:bg-brand-100 active:scale-[0.99]',
   quiet: 'text-ink-700 hover:bg-ivory-100 active:bg-ivory-200',
 }
 

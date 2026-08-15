@@ -65,7 +65,7 @@ export function CourseCard() {
 
       <div className="px-5 pb-5">
         <p className="flex items-center gap-2 text-sm text-ink-500">
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-felt-600">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brand-600">
             <path d="M16 11a4 4 0 10-4-4 4 4 0 004 4zm-8 0a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h9.5a6 6 0 01-.5-2.4c0-1.6.7-3 1.8-4.1A14 14 0 008 13zm8 0a6 6 0 100 12 6 6 0 000-12z" />
           </svg>
           已有 <strong className="font-semibold text-ink-900">{purchase.studentCount}</strong>
@@ -121,7 +121,7 @@ export function CourseCard() {
             </span>
           )}
           {discount > 0 && (
-            <span className="text-sm font-semibold text-felt-600">省 {discount}%</span>
+            <span className="text-sm font-semibold text-brand-600">省 {discount}%</span>
           )}
         </div>
 
@@ -152,10 +152,10 @@ export function CourseCard() {
                 onClick={addToCart}
                 disabled={addState === 'loading'}
                 aria-label="加入購物車"
-                className={`group relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-felt-700 ring-1 ring-felt-200 transition-[width,background-color] duration-200 ease-out active:bg-felt-100 disabled:cursor-not-allowed ${
+                className={`group relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-brand-700 ring-1 ring-brand-200 transition-[width,background-color] duration-200 ease-out active:bg-brand-100 disabled:cursor-not-allowed ${
                   addState === 'loading'
                     ? 'w-[3.25rem]'
-                    : 'w-[3.25rem] hover:w-[8.5rem] hover:bg-felt-50'
+                    : 'w-[3.25rem] hover:w-[8.5rem] hover:bg-brand-50'
                 }`}
               >
                 {addState === 'loading' ? (
@@ -190,7 +190,7 @@ export function CourseCard() {
         {/* 免費體驗課程入口：平台連結確定後替換 href */}
         <p className="mt-4 text-center text-xs text-ink-500">
           不確定嗎？先試試
-          <a href="#" className="font-semibold text-felt-700 underline underline-offset-4">
+          <a href="#" className="font-semibold text-brand-700 underline underline-offset-4">
             免費體驗課程
           </a>
         </p>

@@ -58,7 +58,7 @@ export function SummaryCard({
         {discount > 0 && (
           <div className="flex justify-between">
             <dt className="text-ink-500">優惠折抵</dt>
-            <dd className="font-semibold text-felt-700 tabular-nums">−{formatNT(discount)}</dd>
+            <dd className="font-semibold text-brand-700 tabular-nums">−{formatNT(discount)}</dd>
           </div>
         )}
       </dl>

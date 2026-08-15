@@ -2,30 +2,39 @@
 
 /* ------------------------------------------------------------------
    設計 token — 要換整站風格只改這一段
-   色系取自撞球：檯面絨布綠 + 巧克藍 + 象牙白 + 銅金
+   品牌色系（2026-08 定稿）：
+     主色 流暢藍 Flowy Blue #387ED9（logo 深藍為 900 段）
+     輔色 脈動綠 Pulse Green #90E630（遊戲闖關／成功標記）
+     輔色 火花紅 Spark Red #FB3B3B（警示重點）
+     銅金 brass 保留給星等與優惠徽章
+   球檯視覺同步採藍色檯布（賽事常見），與品牌主色一致。
    ------------------------------------------------------------------ */
 @theme {
-  /* 主色：檯面綠。felt-600 以上才可承載白字（對比 ≥ 4.5:1） */
-  --color-felt-50: #eef7f2;
-  --color-felt-100: #d6ece0;
-  --color-felt-200: #a9d6c0;
-  --color-felt-500: #22855c;
-  --color-felt-600: #1a6b4a;
-  --color-felt-700: #135238;
-  --color-felt-900: #0c2a1c;
-  --color-felt-950: #061810;
+  /* 主色：流暢藍。brand-600 以上才可承載白字（對比 ≥ 4.5:1） */
+  --color-brand-50: #eef4fc;
+  --color-brand-100: #dbe9f9;
+  --color-brand-200: #b7d3f2;
+  --color-brand-500: #387ed9;
+  --color-brand-600: #2b66b4;
+  --color-brand-700: #23528f;
+  --color-brand-900: #1f3c6a;
+  --color-brand-950: #0f1e33;
 
-  /* 強調：銅金，用於徽章、星等、深色底上的重點 */
+  /* 強調:銅金，用於徽章、星等、深色底上的重點 */
   --color-brass-300: #e6c478;
   --color-brass-400: #d9a441;
   --color-brass-600: #9a6f1f;
   /* 深色文字用：淡金底（brass-400/15）上仍需過 AA */
   --color-brass-700: #7c5813;
 
-  /* 巧克藍，用於「遊戲闖關」這類功能性標記 */
-  --color-chalk-100: #dfe9f5;
-  --color-chalk-500: #3b6ea5;
-  --color-chalk-700: #2a5079;
+  /* 脈動綠：「遊戲闖關」等功能性標記（700 供淺底文字） */
+  --color-pulse-100: #e8f9d3;
+  --color-pulse-500: #6cbb1e;
+  --color-pulse-700: #3f7a0e;
+
+  /* 火花紅：警示（文字用 700） */
+  --color-spark-500: #fb3b3b;
+  --color-spark-700: #c22222;
 
   /* 中性：象牙底 + 墨字 */
   --color-ivory-50: #fbf9f5;
@@ -70,7 +79,7 @@
   }
 
   :focus-visible {
-    @apply outline-felt-600 outline-2 outline-offset-2;
+    @apply outline-brand-600 outline-2 outline-offset-2;
   }
 }
 
