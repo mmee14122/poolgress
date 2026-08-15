@@ -205,8 +205,13 @@
   stroke-dasharray: 260;
   stroke-dashoffset: calc(260 * (1 - clamp(0, calc((var(--s-out) - 0.5) / 0.5), 1)));
 }
+/* 假想球只是「撞擊點提示」：母球一開始前進就淡出（--s-ball），
+   否則母球抵達後會停在虛線圈上，邊緣疊出毛邊看起來像模糊 */
 .hs-ghost {
-  opacity: calc(clamp(0, calc((var(--s-out) - 0.7) / 0.3), 1) * 0.7);
+  opacity: calc(
+    clamp(0, calc((var(--s-out) - 0.7) / 0.3), 1) * 0.7 *
+      (1 - clamp(0, calc(var(--s-ball) / 0.35), 1))
+  );
 }
 
 /* SCENE 03：母球位置直接綁定捲動（倒捲即倒退） */
