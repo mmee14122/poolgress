@@ -297,8 +297,10 @@
    課程頁 Hero：Sticky Scroll Transition
    外層提供捲動距離，Hero sticky 釘住；進度 --hero-p（0→1）
    由 CSS scroll-driven animation 驅動（不支援時 JS 後援），
-   所有效果只動 transform / opacity / filter / 圓角，不動高度。
-   桌機過渡距離 60vh、手機 35vh；snap 用 proximity 且僅桌機。
+   所有效果只動 transform / opacity（合成層屬性），不動高度與 paint。
+   桌機過渡距離 22vh（外層總高約 105–110vh，快速離場）、手機 30vh。
+   不使用 scroll-snap：proximity 吸附會在交界處把捲動位置拉走，
+   造成購買卡按鈕搆不到與快速捲動跳動。
    ------------------------------------------------------------------ */
 @property --hero-p {
   syntax: '<number>';
@@ -329,7 +331,7 @@
   }
   .hero-spacer {
     display: block;
-    height: 60vh;
+    height: 22vh;
   }
 }
 
@@ -338,35 +340,33 @@
   html.course-hero-scroll {
     animation: hero-progress linear both;
     animation-timeline: scroll(root);
-    animation-range: 0px 45vh;
+    animation-range: 0px 30vh;
   }
   @media (min-width: 1024px) {
-    html.course-hero-scroll { animation-range: 0px 60vh; }
+    html.course-hero-scroll { animation-range: 0px 22vh; }
   }
 }
 
-/* 柔和吸附：僅桌機、proximity（不攔截輸入、不強制換頁） */
-@media (min-width: 1024px) {
-  html.course-hero-scroll { scroll-snap-type: y proximity; }
-  .hero-outer { scroll-snap-align: start; }
-  .hero-next { scroll-snap-align: start; scroll-margin-top: calc(4rem + var(--promo-h, 0px)); }
-}
-
-/* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下 */
+/* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下。
+   左影片、右文字、標題同節奏退場（輕微縮小＋上移＋淡出），
+   只動 transform / opacity；不再動 filter 與 box-shadow（避免逐幀 paint） */
 .hero-fx-media {
-  transform: scale(calc(1 + var(--hero-p, 0) * 0.05));
-  filter: brightness(calc(1 - var(--hero-p, 0) * 0.12));
+  transform: translate3d(0, calc(var(--hero-p, 0) * -12px), 0)
+    scale(calc(1 - var(--hero-p, 0) * 0.02));
+  opacity: calc(1 - var(--hero-p, 0) * 0.45);
+  will-change: transform, opacity;
 }
 .hero-fx-title {
-  transform: translateY(calc(var(--hero-p, 0) * -32px));
+  transform: translate3d(0, calc(var(--hero-p, 0) * -24px), 0);
+  opacity: calc(1 - var(--hero-p, 0));
+  will-change: transform, opacity;
 }
 .hero-fx-fade {
-  opacity: calc(1 - var(--hero-p, 0) * 1.15);
+  opacity: calc(1 - var(--hero-p, 0));
 }
 .hero-fx-panel {
   border-bottom-right-radius: calc(var(--hero-p, 0) * 28px);
   border-bottom-left-radius: calc(var(--hero-p, 0) * 28px);
-  box-shadow: 0 8px 24px rgba(15, 30, 51, calc(var(--hero-p, 0) * 0.12));
 }
 /* 下一區進場：後段（p 0.7→1）淡入；不用 transform——
    內含 sticky 導覽與購買卡，祖先 transform 會使 sticky 失效，
@@ -377,15 +377,24 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-fx-media,
-  .hero-fx-title {
+  .hero-fx-title,
+  .hero-fx-fade {
     transform: none !important;
     filter: none !important;
+    opacity: 1 !important;
+    will-change: auto !important;
   }
   .hero-fx-panel {
     border-radius: 0 !important;
     box-shadow: none !important;
   }
-  /* 淡入淡出保留為唯一動態 */
+  .hero-next {
+    opacity: 1 !important;
+  }
+  /* 不需要停留距離：Hero 正常顯示並直接銜接下一區 */
+  .hero-spacer {
+    display: none !important;
+  }
 }
 
 /* ------------------------------------------------------------------

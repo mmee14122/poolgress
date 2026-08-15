@@ -30,22 +30,44 @@ export function CourseHero() {
 
     let cleanup = () => {}
     if (!CSS.supports('animation-timeline: scroll()')) {
-      const onScroll = () => {
+      /* JS 後援：尺寸只在 resize 時量測（避免每次捲動讀 offsetHeight
+         造成 forced reflow）；scroll 事件只排一個 rAF，每幀統一寫入
+         CSS 變數，不觸發 React 重新渲染 */
+      let distance = 0
+      let ticking = false
+      let lastP = -1
+      const measure = () => {
         const outer = outerRef.current
         const sticky = stickyRef.current
         if (!outer || !sticky) return
-        // 桌機距離＝spacer（外層－sticky）；手機無停留，取 45vh 與 CSS 對齊
+        // 桌機距離＝spacer（外層－sticky）；手機無停留，取 30vh 與 CSS 對齊
         const spacer = outer.offsetHeight - sticky.offsetHeight
-        const distance = spacer > 0 ? spacer : window.innerHeight * 0.45
+        distance = spacer > 0 ? spacer : window.innerHeight * 0.3
+      }
+      const apply = () => {
+        ticking = false
         const p = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 1
+        // Hero 已完全離場且進度未變時不再寫入，離開可視範圍即停止計算
+        if (p === lastP) return
+        lastP = p
         root.style.setProperty('--hero-p', p.toFixed(4))
       }
-      onScroll()
+      const onScroll = () => {
+        if (ticking) return
+        ticking = true
+        requestAnimationFrame(apply)
+      }
+      const onResize = () => {
+        measure()
+        onScroll()
+      }
+      measure()
+      apply()
       window.addEventListener('scroll', onScroll, { passive: true })
-      window.addEventListener('resize', onScroll)
+      window.addEventListener('resize', onResize)
       cleanup = () => {
         window.removeEventListener('scroll', onScroll)
-        window.removeEventListener('resize', onScroll)
+        window.removeEventListener('resize', onResize)
       }
     }
 
@@ -86,7 +108,15 @@ export function CourseHero() {
             {hero.category}
           </p>
 
-          <h1 className="hero-fx-title mt-4 text-3xl leading-[1.3] sm:text-4xl">{hero.title}</h1>
+          {/* 標題以 \n 分段，每段 inline-block 整塊換行——
+              「建立」等詞不會被拆到兩行；空間夠時仍可併成一行 */}
+          <h1 className="hero-fx-title mt-4 text-3xl leading-[1.3] sm:text-4xl">
+            {hero.title.split('\n').map((seg) => (
+              <span key={seg} className="inline-block">
+                {seg}
+              </span>
+            ))}
+          </h1>
 
           <p className="hero-fx-fade mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
 

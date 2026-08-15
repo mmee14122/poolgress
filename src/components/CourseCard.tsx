@@ -53,17 +53,18 @@ export function CourseCard() {
   }
 
   const { purchase } = course
-  const discount = product.originalPrice
-    ? Math.round((1 - product.price / product.originalPrice) * 100)
-    : 0
+  const saving = product.originalPrice ? product.originalPrice - product.price : 0
 
   return (
-    <div className="overflow-hidden rounded-card border border-line bg-white shadow-sm">
+    /* 視窗高度不足（如瀏覽器縮放 110%/125%）時：上半內容可在卡片內捲動，
+       底部價格與購買操作固定可見，按鈕永遠不會被視窗裁切 */
+    <div className="flex min-h-0 flex-col overflow-hidden rounded-card border border-line bg-white shadow-sm">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
       <div className="p-4">
         <CourseCover compact />
       </div>
 
-      <div className="px-5 pb-5">
+      <div className="px-5 pb-4">
         <p className="flex items-center gap-2 text-sm text-ink-500">
           <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brand-600">
             <path d="M16 11a4 4 0 10-4-4 4 4 0 004 4zm-8 0a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h9.5a6 6 0 01-.5-2.4c0-1.6.7-3 1.8-4.1A14 14 0 008 13zm8 0a6 6 0 100 12 6 6 0 000-12z" />
@@ -102,30 +103,36 @@ export function CourseCard() {
           </ul>
         </div>
 
-        {purchase.offerNote && (
-          <p className="mt-4 flex items-start gap-2 text-sm">
-            <span className="inline-flex shrink-0 items-center rounded-full bg-brass-400/15 px-2.5 py-0.5 text-xs font-semibold text-brass-700 ring-1 ring-brass-400/40 ring-inset">
-              優惠
-            </span>
-            <span className="pt-0.5 text-ink-500">{purchase.offerNote}</span>
+        {purchase.giftNote && (
+          /* 加贈優惠獨立呈現：淡金徽章＋禮物圖示 */
+          <p className="mt-4 flex items-center gap-2 rounded-lg bg-brass-400/15 px-3 py-2 text-sm font-semibold text-brass-700 ring-1 ring-brass-400/40 ring-inset">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brass-600">
+              <path d="M20 7h-1.2A3 3 0 0016 3c-1.5 0-2.6.8-4 2.4C10.6 3.8 9.5 3 8 3a3 3 0 00-2.8 4H4a2 2 0 00-2 2v2h9V7h2v4h9V9a2 2 0 00-2-2zM8 5c.9 0 1.7.6 2.9 2H8a1 1 0 010-2zm8 0a1 1 0 010 2h-2.9c1.2-1.4 2-2 2.9-2zM2 13v6a2 2 0 002 2h7v-8zm11 8h7a2 2 0 002-2v-6h-9z" />
+            </svg>
+            {purchase.giftNote}
           </p>
         )}
+      </div>
+      </div>
 
-        <div className="mt-4 flex items-baseline gap-2.5">
+      {/* 底部固定購買區：價格三層結構（預購價最醒目→原價與現省→操作） */}
+      <div className="border-t border-line px-5 pt-4 pb-5">
+        <div className="flex items-baseline gap-2.5">
+          <span className="text-sm font-semibold text-brand-700">{purchase.priceLabel}</span>
           <span className="text-3xl font-bold text-ink-900 tabular-nums">
             {formatNT(product.price)}
           </span>
-          {product.originalPrice && (
-            <span className="text-base text-ink-400 line-through tabular-nums">
-              {formatNT(product.originalPrice)}
-            </span>
-          )}
-          {discount > 0 && (
-            <span className="text-sm font-semibold text-brand-600">省 {discount}%</span>
-          )}
         </div>
+        {product.originalPrice && (
+          <p className="mt-1 text-sm text-ink-500">
+            原價{' '}
+            <span className="line-through tabular-nums">{formatNT(product.originalPrice)}</span>
+            ，現省{' '}
+            <span className="font-semibold text-brand-600 tabular-nums">{formatNT(saving)}</span>
+          </p>
+        )}
 
-        <div className="mt-5">
+        <div className="mt-4">
           {inCart && addState !== 'loading' ? (
             /* 已加入後整塊顯示狀態，點擊前往購物車 */
             <Button block variant="secondary" size="lg" href="./cart.html">

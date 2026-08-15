@@ -14,7 +14,12 @@ export function useScrollSpy(ids: readonly string[], offset = 140) {
   const [active, setActive] = useState(ids[0])
 
   useEffect(() => {
+    /* rAF 節流：多次 scroll 事件同幀只算一次；量測（getBoundingClientRect）
+       集中在同一幀內完成後才 setState，且值相同時 React 會自動略過重渲染 */
+    let ticking = false
+
     const update = () => {
+      ticking = false
       let current = ids[0]
 
       for (const id of ids) {
@@ -31,12 +36,18 @@ export function useScrollSpy(ids: readonly string[], offset = 140) {
       setActive(current)
     }
 
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(update)
+    }
+
     update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
     return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
     }
   }, [ids, offset])
 

@@ -65,8 +65,13 @@ export default function App() {
           </main>
 
           {/* 右欄：桌機 sticky 課程卡（id 供 Hero 的立即購買捲動定位） */}
-          {/* top 取 promo+4rem（導覽列底）：加上 pt-10（2.5rem）後，卡片與導覽列保留 2.5rem 空隙 */}
-          <aside id="buy-card" className="sticky top-[calc(var(--promo-h)+4rem)] hidden scroll-mt-[calc(var(--promo-h)+4rem)] pt-10 lg:block">
+          {/* top 取 promo+4rem（導覽列底）：加上 pt-10（2.5rem）後，卡片與導覽列保留 2.5rem 空隙。
+              max-h 依視窗可用高度計算：瀏覽器縮放 110%/125% 或矮視窗時卡片不超出畫面，
+              超出的內容改在卡片內捲動（見 CourseCard），購買按鈕永遠可見 */}
+          <aside
+            id="buy-card"
+            className="sticky top-[calc(var(--promo-h)+4rem)] hidden max-h-[calc(100dvh-var(--promo-h)-4.5rem)] flex-col scroll-mt-[calc(var(--promo-h)+4rem)] pt-10 pb-2 lg:flex"
+          >
             <CourseCard />
           </aside>
         </div>
