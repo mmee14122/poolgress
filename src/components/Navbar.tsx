@@ -100,9 +100,11 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
           {/* 桌機：hover 展開 mini cart */}
           <CartHover />
 
-          {/* 登入後改顯示頭像選單 */}
+          {/* 登入後改顯示頭像選單；ml-3 讓頭像與購物車拉開距離 */}
           {user ? (
-            <AccountMenu user={user} />
+            <div className="ml-3">
+              <AccountMenu user={user} />
+            </div>
           ) : (
             <a href={site.loginUrl} className={navLinkClass(dark)}>
               登入／註冊
@@ -114,7 +116,11 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
 
         {/* 手機：頭像（登入後）＋購物車抽屜 + 漢堡選單 */}
         <div className="flex items-center gap-1 lg:hidden">
-          {user && <AccountMenu user={user} />}
+          {user && (
+            <div className="mr-2">
+              <AccountMenu user={user} />
+            </div>
+          )}
           <CartDrawerButton />
           <button
             type="button"
