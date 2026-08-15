@@ -5,7 +5,6 @@ import { S02Struggle } from './components/home/S02Struggle'
 import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S04One } from './components/home/S04One'
 import { S05Pillars } from './components/home/S05Pillars'
-import { S06Fit } from './components/home/S06Fit'
 import { S07VisionEntry } from './components/home/S07VisionEntry'
 
 /**
@@ -26,7 +25,6 @@ export default function HomeApp() {
         <S03Viewpoint />
         <S04One />
         <S05Pillars />
-        <S06Fit />
         <S07VisionEntry />
       </main>
       <Footer />
