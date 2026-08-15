@@ -116,29 +116,58 @@ export function CourseCard() {
           )}
         </div>
 
-        <div className="mt-5 space-y-2.5">
-          <Button block size="lg" onClick={buyNow} disabled={buyState !== 'idle'}>
-            {buyState === 'loading' && <Spinner />}
-            {buyState === 'done' && <Check />}
-            {buyState === 'idle' ? '立即購買' : buyState === 'loading' ? '處理中…' : '前往結帳…'}
-          </Button>
-
-          {inCart && addState === 'idle' ? (
+        <div className="mt-5">
+          {inCart && addState !== 'loading' ? (
+            /* 已加入後整塊顯示狀態，點擊前往購物車 */
             <Button block variant="secondary" size="lg" href="./cart.html">
-              已在購物車，查看購物車
+              <Check />
+              已加入購物車
             </Button>
           ) : (
-            <Button
-              block
-              variant="secondary"
-              size="lg"
-              onClick={addToCart}
-              disabled={addState !== 'idle'}
-            >
-              {addState === 'loading' && <Spinner />}
-              {addState === 'done' && <Check />}
-              {addState === 'idle' ? '加入購物車' : addState === 'loading' ? '加入中…' : '已加入購物車'}
-            </Button>
+            <div className="flex items-stretch gap-2.5">
+              {/* 左：大塊立即購買 */}
+              <Button
+                size="lg"
+                onClick={buyNow}
+                disabled={buyState !== 'idle'}
+                className="min-w-0 flex-1"
+              >
+                {buyState === 'loading' && <Spinner />}
+                {buyState === 'done' && <Check />}
+                {buyState === 'idle' ? '立即購買' : buyState === 'loading' ? '處理中…' : '前往結帳…'}
+              </Button>
+
+              {/* 右：小塊購物車圖示，hover 顯示「加入購物車」提示 */}
+              <span className="group relative shrink-0">
+                <button
+                  type="button"
+                  onClick={addToCart}
+                  disabled={addState === 'loading'}
+                  aria-label="加入購物車"
+                  className="flex h-full w-[3.25rem] items-center justify-center rounded-full bg-white text-felt-700 ring-1 ring-felt-200 transition-colors hover:bg-felt-50 active:bg-felt-100 disabled:cursor-not-allowed"
+                >
+                  {addState === 'loading' ? (
+                    <Spinner />
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+                      <path d="M7 18a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4zM6.2 6h14.4l-2.1 7.3a2 2 0 01-1.9 1.4H8.6a2 2 0 01-1.9-1.4L4.3 4.6H1.8V2.6h4l.4 1.4z" />
+                    </svg>
+                  )}
+                </button>
+
+                {/* 提示氣泡 */}
+                <span
+                  role="tooltip"
+                  className="pointer-events-none absolute -top-9 right-0 rounded-lg bg-ink-900 px-2.5 py-1.5 text-xs whitespace-nowrap text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                >
+                  加入購物車
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-1 right-5 h-2 w-2 rotate-45 bg-ink-900"
+                  />
+                </span>
+              </span>
+            </div>
           )}
         </div>
 
