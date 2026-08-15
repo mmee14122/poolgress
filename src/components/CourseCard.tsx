@@ -77,18 +77,22 @@ export function CourseCard() {
           <ul className="space-y-2.5 text-sm text-ink-500">
             <li className="flex items-center gap-2.5">
               <Icon d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z" />
-              <strong className="font-semibold text-ink-900">{purchase.lessonCount}</strong>
-              個課程單元
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Icon d="M6 2h13a1 1 0 011 1v18a1 1 0 01-1 1H6a2 2 0 01-2-2V4a2 2 0 012-2zm0 16a.5.5 0 000 1h12v-1zm2-11h8v2H8z" />
-              <strong className="font-semibold text-ink-900">{purchase.chapterCount}</strong>
-              章節
+              <span>
+                <strong className="font-semibold text-ink-900">{purchase.lessonCount}</strong>
+                個課程單元、
+                <strong className="font-semibold text-ink-900">{purchase.chapterCount}</strong>
+                章節
+              </span>
             </li>
             <li className="flex items-center gap-2.5">
               <Icon d="M17 4a5 5 0 014.9 6l-1.6 8A3 3 0 0117.4 21a3 3 0 01-2.5-1.4L13.4 17h-2.8l-1.5 2.6A3 3 0 016.6 21a3 3 0 01-2.9-3l-1.6-8A5 5 0 017 4zM9 8H7v2H5v2h2v2h2v-2h2v-2H9zm7 0a1.2 1.2 0 100 2.4A1.2 1.2 0 0016 8zm2.5 3a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" />
               <strong className="font-semibold text-ink-900">{purchase.gameCount}</strong>
               個遊戲練習題
+            </li>
+            <li className="flex items-center gap-2.5">
+              {/* 無限符號 */}
+              <Icon d="M6.2 8A4.8 4.8 0 0111 10.6 4.8 4.8 0 0115.8 8a4.3 4.3 0 010 8.6 4.8 4.8 0 01-4.8-2.6 4.8 4.8 0 01-4.8 2.6 4.3 4.3 0 010-8.6zm0 2.2a2.1 2.1 0 000 4.2c1.3 0 2.4-.9 3.1-2.1-.7-1.2-1.8-2.1-3.1-2.1zm9.6 0c-1.3 0-2.4.9-3.1 2.1.7 1.2 1.8 2.1 3.1 2.1a2.1 2.1 0 000-4.2z" />
+              無限次觀看
             </li>
           </ul>
         </div>
