@@ -35,12 +35,12 @@ export function S01Hero() {
             <Button href={hero.cta.href} size="lg">
               {hero.cta.label}
             </Button>
-            {/* 常駐底色 #80898E + 深色字；hover／按下時再加深（! 蓋過 quiet variant 預設） */}
+            {/* hover：淺藍灰底 #80898E + 深色字（! 確保蓋過 quiet variant 的 hover 底色） */}
             <Button
               href={hero.ctaSecondary.href}
               size="lg"
               variant="quiet"
-              className="bg-[#80898E]! text-black! transition-colors hover:bg-[#6f787d]! active:bg-[#657077]!"
+              className="text-white transition-colors hover:bg-[#80898E]! hover:text-black! active:bg-[#6f787d]!"
             >
               {hero.ctaSecondary.label}
             </Button>
