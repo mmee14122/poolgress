@@ -65,7 +65,8 @@ export default function App() {
           </main>
 
           {/* 右欄：桌機 sticky 課程卡（id 供 Hero 的立即購買捲動定位） */}
-          <aside id="buy-card" className="sticky top-[calc(var(--promo-h)+6rem)] hidden scroll-mt-[calc(var(--promo-h)+6rem)] pt-10 lg:block">
+          {/* top 取 promo+1.5rem：加上 pt-10（2.5rem）後，卡片可見上緣貼齊導覽列（4rem）底部 */}
+          <aside id="buy-card" className="sticky top-[calc(var(--promo-h)+1.5rem)] hidden scroll-mt-[calc(var(--promo-h)+1.5rem)] pt-10 lg:block">
             <CourseCard />
           </aside>
         </div>
