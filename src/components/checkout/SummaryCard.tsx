@@ -83,7 +83,7 @@ export function SummaryCard({
         <p className="mt-2 text-right text-xs text-brass-600">建立訂單後 3 天內未繳費將自動取消</p>
       )}
 
-      <div className="mt-5 hidden lg:block">
+      <div className="mt-5">
         <Button block size="lg" onClick={onConfirm} disabled={!canConfirm || confirming}>
           {confirming ? '處理中…' : '確認購買'}
         </Button>

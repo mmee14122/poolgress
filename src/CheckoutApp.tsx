@@ -183,6 +183,39 @@ export default function CheckoutApp() {
                     buyerEmail={buyerEmail}
                     errors={errors}
                   />
+
+                  {/* 表單底部的確認區：填完資料不必捲回右側明細卡 */}
+                  <div className="mt-10 rounded-card border border-line bg-white p-6">
+                    <div className="flex items-baseline justify-between">
+                      <span className="font-semibold text-ink-900">訂單總計</span>
+                      <span className="text-2xl font-bold text-ink-900 tabular-nums">
+                        {formatNT(total)}
+                      </span>
+                    </div>
+
+                    <Button
+                      block
+                      size="lg"
+                      className="mt-4"
+                      onClick={confirm}
+                      disabled={!canConfirm || phase === 'processing'}
+                    >
+                      {phase === 'processing' ? '處理中…' : '確認購買'}
+                    </Button>
+
+                    {!canConfirm && missingSummary(errors).length > 0 && (
+                      <p className="mt-3 text-xs text-red-700">
+                        尚未完成：{missingSummary(errors).join('、')}
+                      </p>
+                    )}
+
+                    <p className="mt-4 text-xs leading-relaxed text-ink-400">
+                      點擊「確認購買」，即表示同意
+                      <a href="/terms" className="underline underline-offset-2">服務條款</a>、
+                      <a href="/refund" className="underline underline-offset-2">退款政策</a>與
+                      <a href="/privacy" className="underline underline-offset-2">隱私權政策</a>。
+                    </p>
+                  </div>
                 </div>
 
                 <aside className="mt-10 lg:sticky lg:top-24 lg:mt-0">
