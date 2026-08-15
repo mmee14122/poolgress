@@ -47,8 +47,6 @@ export function S05Pillars() {
             </li>
           ))}
         </ul>
-
-        <p className="mt-10 text-center text-lg font-semibold text-ink-900">{pillars.close}</p>
       </div>
     </section>
   )
