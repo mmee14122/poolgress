@@ -4,23 +4,17 @@ import { S01Hero } from './components/home/S01Hero'
 import { S02Struggle } from './components/home/S02Struggle'
 import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S04One } from './components/home/S04One'
-import { S05Steps } from './components/home/S05Steps'
-import { S06Gains } from './components/home/S06Gains'
-import { S07Fit } from './components/home/S07Fit'
-import { S08Why } from './components/home/S08Why'
-import { S09Bridge } from './components/home/S09Bridge'
-import { S10Courses } from './components/home/S10Courses'
-import { Vision } from './components/home/Vision'
+import { S05Pillars } from './components/home/S05Pillars'
+import { S06Fit } from './components/home/S06Fit'
+import { S07VisionEntry } from './components/home/S07VisionEntry'
 
 /**
- * Poolgress 官網首頁：十個區塊的敘事流。
+ * Poolgress 官網首頁：七個品牌區塊。
  *
- * 心理路徑：共鳴 → 好奇 → 理解 → 想像成功 → 看懂產品
- *          → 確認適合自己 → 建立信任 → 開始課程
+ * 首頁只回答「Poolgress 是什麼？為什麼跟我有關？」
+ * 敘事順序：共鳴 → 問題 → 觀點 → One → 產品價值 → 適合誰 → 願景＋課程入口
  *
- * 第一幕｜這就是我        S01 品牌核心 → S02 困境 → S03 觀點 → S04 轉折
- * 第二幕｜Poolgress 怎麼幫我 S05 步驟 → S06 成果 → S07 適合誰 → S08 特色
- * 第三幕｜我要開始了      S09 銜接 → S10 課程 →（願景）
+ * 課程步驟、章節、闖關細節屬於課程簡介頁（course.html），不放這裡。
  */
 export default function HomeApp() {
   return (
@@ -31,13 +25,9 @@ export default function HomeApp() {
         <S02Struggle />
         <S03Viewpoint />
         <S04One />
-        <S05Steps />
-        <S06Gains />
-        <S07Fit />
-        <S08Why />
-        <S09Bridge />
-        <S10Courses />
-        <Vision />
+        <S05Pillars />
+        <S06Fit />
+        <S07VisionEntry />
       </main>
       <Footer />
     </>

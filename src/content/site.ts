@@ -1,5 +1,5 @@
 /**
- * 全站設定：導覽、促銷列、對外連結。
+ * 全站設定：導覽與對外連結。
  * 站台層級的東西都放這裡，元件不寫死任何文案或網址。
  */
 
@@ -10,10 +10,9 @@ export const site = {
   brandName: 'Poolgress',
   tagline: 'AI 撞球教育平台',
 
-  /** 主導覽 —— 目前為佔位路徑，之後接上實際頁面即可 */
+  /** 主導覽。/games 與 /coach 為佔位路徑，頁面建立後接上 */
   nav: [
-    /* 課程列表頁尚未建立，先導向首頁的課程區塊 */
-    { label: '線上課程', href: './#courses' },
+    { label: '線上課程', href: './course.html' },
     { label: '遊戲闖關', href: '/games' },
     { label: '關於教練', href: '/coach' },
   ] as NavLink[],
@@ -22,25 +21,13 @@ export const site = {
   loginUrl: '/login',
   signupUrl: '/signup',
 
-  /** 購物車數量，之後改由狀態管理或 API 提供 */
-  cartCount: 2,
+  /** 購物車數量，之後由狀態管理或 API 提供；0 時不顯示徽章 */
+  cartCount: 0,
 
   languages: [
     { code: 'zh-Hant', label: '繁中' },
     { code: 'en', label: 'English' },
   ] as Language[],
-
-  /**
-   * 頂部促銷列。
-   * endsAt 設為 null 時倒數會顯示「＿＿天＿＿時＿＿分」佔位符；
-   * 填入 ISO 時間字串則顯示實際倒數，過期後整條促銷列自動隱藏。
-   */
-  promo: {
-    label: '限時優惠倒數',
-    endsAt: '2026-09-30T23:59:59+08:00' as string | null,
-    linkLabel: '查看特別優惠組合',
-    linkHref: '/offers',
-  },
 
   contactEmail: 'hello@poolgress.com',
 

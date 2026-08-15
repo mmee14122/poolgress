@@ -2,7 +2,7 @@ import { home } from '../../content/home'
 
 /**
  * SECTION 02｜困境
- * 任務只有一個：讓使用者覺得「對，這就是我」。不給答案。
+ * 只負責描述問題，不解決。使用者看完應該想：「對，我就是這樣。」
  */
 export function S02Struggle() {
   const { struggle } = home
@@ -24,24 +24,33 @@ export function S02Struggle() {
           ))}
         </div>
 
-        {/* 進了／沒進 對照 */}
-        <div className="mt-10 grid grid-cols-2 gap-4">
-          <div className="rounded-card border border-line bg-white p-6 text-center">
-            <p className="text-sm text-ink-500">{struggle.contrast.left.title}</p>
-            <p className="mt-2 text-2xl font-bold text-felt-600">{struggle.contrast.left.text}</p>
-          </div>
-          <div className="rounded-card border border-line bg-white p-6 text-center">
-            <p className="text-sm text-ink-500">{struggle.contrast.right.title}</p>
-            <p className="mt-2 text-2xl font-bold text-ink-400">{struggle.contrast.right.text}</p>
-          </div>
+        <p className="mt-6 text-lg text-ink-700">{struggle.quote}</p>
+
+        {/* 連自己哪裡有問題都不知道 */}
+        <div className="mt-8 rounded-card border border-line bg-white p-6 sm:p-7">
+          <p className="text-ink-700">{struggle.unknowns.lead}</p>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {struggle.unknowns.items.map((item) => (
+              <li key={item} className="flex items-center gap-3 text-ink-500">
+                <span
+                  aria-hidden="true"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ivory-100 text-sm font-bold text-ink-400"
+                >
+                  ?
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-ink-700">{struggle.unknowns.close}</p>
         </div>
 
-        <p className="mt-10 text-lg text-ink-500">所以打了一次又一次，最後還是：</p>
-        <p className="mt-2 text-xl font-semibold text-ink-900">{struggle.ending}</p>
-
-        <p className="mt-12 border-l-4 border-brass-400 pl-5 text-2xl font-bold text-ink-900 sm:text-3xl">
-          {struggle.question}
-        </p>
+        <div className="mt-10">
+          <p className="text-lg text-ink-500">{struggle.ending[0]}</p>
+          <p className="mt-2 border-l-4 border-brass-400 pl-5 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
+            {struggle.ending[1]}
+          </p>
+        </div>
       </div>
     </section>
   )
