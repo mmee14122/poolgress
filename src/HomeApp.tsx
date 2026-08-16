@@ -4,13 +4,14 @@ import { S01Hero } from './components/home/S01Hero'
 import { S02Struggle } from './components/home/S02Struggle'
 import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S05Pillars } from './components/home/S05Pillars'
+import { S05bAppTeaser } from './components/home/S05bAppTeaser'
 import { S06Entry } from './components/home/S06Entry'
 
 /**
- * Poolgress 官網首頁：五個品牌區塊。
+ * Poolgress 官網首頁：六個品牌區塊。
  *
  * 首頁只回答「Poolgress 是什麼？為什麼跟我有關？」
- * 敘事順序：共鳴 → 問題 → 觀點 → 產品價值 → 課程入口
+ * 敘事順序：共鳴 → 問題 → 觀點 → 產品價值 → App 預告 → 課程入口
  *
  * 課程步驟、章節、闖關細節屬於課程簡介頁（course.html），不放這裡。
  */
@@ -24,6 +25,7 @@ export default function HomeApp() {
         <S02Struggle />
         <S03Viewpoint />
         <S05Pillars />
+        <S05bAppTeaser />
         <S06Entry />
       </main>
       <Footer theme="dark" />

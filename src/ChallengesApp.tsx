@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Button } from './ui/Button'
 import { challenges, challengeById, appLinks, type Challenge } from './data/challenges'
+import { AppFlow } from './components/challenges/AppFlow'
 
 /**
  * 實戰闖關：課程延伸到真實球桌的 App 實戰任務（非遊戲介面）。
@@ -67,6 +68,7 @@ function ChallengeList() {
         ))}
       </ul>
 
+      <AppFlow />
       <AppPromo />
     </>
   )

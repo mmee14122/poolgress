@@ -98,3 +98,24 @@ export const appLinks = {
   appStore: site.appDownload.appStore,
   googlePlay: site.appDownload.googlePlay,
 }
+
+/**
+ * App 學習流程（實戰闖關頁）：四個步驟串成「從一關到下一關」的成長路徑。
+ *
+ * ⚠️ image 為 App 實機畫面截圖，目前待補。放進
+ * public/assets/challenges/ 後，把檔名填進 image 即可（版面不用改）：
+ *   image: './assets/challenges/flow-01.png'
+ * 截圖請維持原始比例（直式手機畫面），不要事先加背景或箭頭——
+ * 箭頭由網頁繪製，背景沿用頁面本身的暖白底。
+ */
+export const appFlow = {
+  eyebrow: 'POOLGRESS APP',
+  title: '接住初生的興趣，用遊戲闖關引導學習',
+  body: '從「我只是來玩」到「這是我能學會的運動」。撞球可以透過理解、練習，而持續進步。',
+  steps: [
+    { no: '01', name: '選擇關卡', image: null as string | null, alt: 'App 關卡地圖畫面' },
+    { no: '02', name: '看懂目標並開始挑戰', image: null as string | null, alt: 'App 關卡說明與開始遊戲畫面' },
+    { no: '03', name: '查看闖關結算', image: null as string | null, alt: 'App 通關結算與星星畫面' },
+    { no: '04', name: '解鎖下一個學習地圖', image: null as string | null, alt: 'App 解鎖下一關的地圖畫面' },
+  ],
+}
