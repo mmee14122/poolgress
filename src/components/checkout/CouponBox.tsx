@@ -1,17 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
-import { availableCoupons, findCoupon, couponDiscount, type Coupon } from '../../data/catalog'
+import {
+  availableCoupons,
+  couponDiscount,
+  validateCoupon,
+  couponIssueCopy,
+  type Coupon,
+  type CouponIssue,
+} from '../../data/catalog'
+import { StatusIllustration } from '../StatusIllustration'
 import { formatNT } from '../../lib/cart'
 
 type Props = {
   subtotal: number
   applied: Coupon | null
   onApply: (c: Coupon | null) => void
+  /** 購物車內的商品 id，判斷是否可與此券併用 */
+  productIds: string[]
 }
 
 /** 折扣券區塊：輸入優惠碼或從清單選擇，含套用中／無效／已套用狀態 */
-export function CouponBox({ subtotal, applied, onApply }: Props) {
+export function CouponBox({ subtotal, applied, onApply, productIds }: Props) {
   const [input, setInput] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [issue, setIssue] = useState<CouponIssue | null>(null)
   const [applying, setApplying] = useState(false)
   const [pickerOpen, setPickerOpen] = useState(false)
   const timer = useRef<number | null>(null)
@@ -23,17 +33,17 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
   }, [])
 
   const apply = (code: string) => {
-    setError(null)
+    setIssue(null)
     setApplying(true)
-    // 模擬向後端驗證優惠碼
+    // 模擬向後端驗證優惠碼（正式版改呼叫 POST /coupons/validate）
     timer.current = window.setTimeout(() => {
       setApplying(false)
-      const coupon = findCoupon(code)
-      if (!coupon) {
-        setError('優惠碼無效或已過期')
+      const result = validateCoupon(code, subtotal, productIds)
+      if (!result.ok) {
+        setIssue(result.issue)
         return
       }
-      onApply(coupon)
+      onApply(result.coupon)
       setInput('')
       setPickerOpen(false)
     }, 400)
@@ -70,13 +80,13 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
           value={input}
           onChange={(e) => {
             setInput(e.target.value.toUpperCase())
-            setError(null)
+            setIssue(null)
           }}
           placeholder="輸入優惠碼"
           aria-label="優惠碼"
-          aria-invalid={!!error || undefined}
+          aria-invalid={!!issue || undefined}
           className={`min-w-0 flex-1 rounded-lg border bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:outline-2 focus:outline-offset-1 ${
-            error ? 'border-red-400 focus:outline-red-600' : 'border-line focus:outline-brand-600'
+            issue ? 'border-[#B5645A] focus:outline-[#9A4A41]' : 'border-line focus:outline-brand-600'
           }`}
         />
         <button
@@ -88,10 +98,25 @@ export function CouponBox({ subtotal, applied, onApply }: Props) {
           {applying ? '套用中…' : '套用'}
         </button>
       </div>
-      {error && (
-        <p role="alert" className="mt-1.5 text-sm text-red-700">
-          {error}
-        </p>
+      {/* 失效原因：說明「為什麼不能用」與「下一步」，過期另附狀態插圖 */}
+      {issue && (
+        <div
+          role="alert"
+          className="mt-2 rounded-lg bg-[#B5645A]/[0.07] px-3 py-3 ring-1 ring-[#B5645A]/25 ring-inset"
+        >
+          {issue === 'expired' && <StatusIllustration status="coupon-expired" className="mb-2 w-20!" />}
+          <p className="text-sm leading-relaxed text-ink-700">{couponIssueCopy[issue]}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setIssue(null)
+              setPickerOpen(true)
+            }}
+            className="mt-2 text-sm font-semibold text-brand-700 underline underline-offset-2"
+          >
+            查看可用優惠券
+          </button>
+        </div>
       )}
 
       <button

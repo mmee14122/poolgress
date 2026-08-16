@@ -12,6 +12,8 @@ type Props = {
   guest: { email: string; name: string; phone: string }
   onGuest: (g: { email: string; name: string; phone: string }) => void
   errors: FieldErrors
+  /** 是否已按過確認購買 */
+  attempted: boolean
 }
 
 /** 結帳第一步：會員購買或非會員購買，兩張卡片擇一，選中高亮 */
@@ -24,9 +26,13 @@ export function BuyerSection({
   guest,
   onGuest,
   errors,
+  attempted,
 }: Props) {
   /* 格式錯誤在欄位有內容時立即顯示；「必填未填」由訂單明細的缺漏摘要提示 */
-  const err = (k: string, value: string) => (value.trim() ? (errors[k] ?? null) : null)
+  /* 未填欄位在使用者按下確認購買（attempted）後也要顯示錯誤，
+     否則空欄位沒有任何提示，也無法被捲動聚焦 */
+  const err = (k: string, value: string) =>
+    attempted || value.trim() ? (errors[k] ?? null) : null
 
   return (
     <section aria-labelledby="buyer-heading">

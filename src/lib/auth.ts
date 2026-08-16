@@ -12,12 +12,38 @@
 export type AuthErrorCode =
   /** 帳密不符（後端回 401 時使用） */
   | 'invalid_credentials'
+  /** 此信箱尚未註冊 */
+  | 'email_not_found'
   /** 信箱已被註冊 */
   | 'email_taken'
+  /** 第三方登入被使用者取消（關閉授權視窗） */
+  | 'provider_cancelled'
+  /** 第三方登入失敗（授權被拒、憑證交換失敗…） */
+  | 'provider_failed'
+  /** 重設密碼連結失效或已過期 */
+  | 'reset_link_invalid'
+  /** 登入 session 已過期 */
+  | 'session_expired'
+  /** 網路中斷或請求逾時 */
+  | 'network_error'
   /** 服務尚未接上後端 */
   | 'not_configured'
-  /** 其他（網路錯誤、5xx…） */
+  /** 其他（5xx…） */
   | 'unknown'
+
+/**
+ * 開發用：以 ?auth=<code> 模擬各種登入失敗，方便驗收畫面。
+ * 例：./login.html?auth=invalid_credentials
+ * 後端接上後這個函式回傳 null，一切以 API 回應為準。
+ */
+export function mockAuthError(): AuthErrorCode | null {
+  try {
+    const code = new URLSearchParams(location.search).get('auth')
+    return (code as AuthErrorCode) || null
+  } catch {
+    return null
+  }
+}
 
 export type AuthResult = { ok: true } | { ok: false; code: AuthErrorCode }
 

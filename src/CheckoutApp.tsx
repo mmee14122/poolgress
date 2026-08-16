@@ -85,6 +85,9 @@ export default function CheckoutApp() {
   const [checking, setChecking] = useState(false)
   const [attempts, setAttempts] = useState(0)
   const [provisioned, setProvisioned] = useState(false)
+  /** 按過確認購買的次數：決定未填欄位要不要顯示錯誤，並觸發捲動聚焦 */
+  const [attemptSeq, setAttemptSeq] = useState(0)
+  const attempted = attemptSeq > 0
   const timer = useRef<number | null>(null)
   /** 送出鎖：同步生效（早於 state 更新），連點／雙擊／Enter 都只會送出一次 */
   const submitting = useRef(false)
@@ -168,8 +171,29 @@ export default function CheckoutApp() {
    * 桌機（明細卡）與手機（底部固定列）唯一共用的送出函式。
    * submitting ref 在 state 更新前就先上鎖，快速連點不會送出兩筆訂單。
    */
+  /**
+   * 捲到第一個錯誤欄位並聚焦。
+   * 手機底部有固定 CTA 列，因此捲到畫面中央而非頂端，錯誤提示不會被蓋住。
+   */
+  const focusFirstError = () => {
+    const el = document.querySelector<HTMLElement>('[aria-invalid="true"]')
+    if (!el) return
+    /* 先 focus（瀏覽器會自動捲入畫面），再置中；
+       手機底部有固定 CTA 列，置中才不會被蓋住 */
+    el.focus()
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+  /* 錯誤訊息渲染完成後才捲動聚焦（在 render 之前找不到 aria-invalid 的欄位） */
+  useEffect(() => {
+    if (attemptSeq > 0 && !canConfirm) focusFirstError()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attemptSeq])
+
   const confirm = () => {
-    if (!canConfirm || submitting.current) return
+    if (submitting.current) return
+    setAttemptSeq((n) => n + 1)
+    if (!canConfirm) return
     /* 已有處理中／已付款的訂單就不再建立第二筆 */
     const existing = orderLock.read()
     if (existing) {
@@ -401,6 +425,7 @@ export default function CheckoutApp() {
                       guest={guest}
                       onGuest={setGuest}
                       errors={errors}
+                      attempted={attempted}
                     />
 
                     <PaymentSection
@@ -429,6 +454,7 @@ export default function CheckoutApp() {
                       onCompany={setCompany}
                       buyerEmail={buyerEmail}
                       errors={errors}
+                      attempted={attempted}
                     />
 
                     {/* 購買區只存在兩處且互斥：桌機＝右側明細卡內、手機＝底部固定列 */}
@@ -470,7 +496,15 @@ export default function CheckoutApp() {
                 </p>
               )}
             </div>
-            <Button size="lg" className="shrink-0" onClick={confirm} disabled={!canConfirm || busy}>
+            {/* 不因欄位未填而停用：點下去會帶使用者到第一個要修的欄位，
+                比一顆點不下去的按鈕更清楚下一步 */}
+            <Button
+              size="lg"
+              className="shrink-0"
+              onClick={confirm}
+              disabled={busy}
+              aria-disabled={!canConfirm || undefined}
+            >
               {busy ? '正在處理付款…' : '確認購買'}
             </Button>
           </div>

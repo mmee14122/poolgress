@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Logo } from './components/Logo'
+import { StatusIllustration } from './components/StatusIllustration'
 import { Button } from './ui/Button'
 import { isEmail, MIN_PASSWORD_LENGTH } from './lib/validate'
 import { session } from './lib/session'
@@ -10,6 +11,7 @@ import {
   signInWithProvider,
   signUpWithPassword,
   type AuthResult,
+  mockAuthError,
   type OAuthProvider,
 } from './lib/auth'
 
@@ -38,10 +40,31 @@ const copy: Record<Mode, { title: string; sub: string; submit: string; busy: str
 
 /** 表單層級錯誤訊息（不透露帳號是否存在） */
 const formErrorText: Record<string, string> = {
-  invalid_credentials: '電子信箱或密碼錯誤',
-  email_taken: '這個電子信箱已經註冊過了',
+  invalid_credentials: '電子信箱或密碼錯誤，請確認後再試一次。',
+  email_not_found: '這個電子信箱還沒有註冊過，可以先建立帳號。',
+  email_taken: '這個電子信箱已經註冊過了，直接登入即可。',
+  provider_cancelled: '你取消了這次登入，沒有任何資料被送出。',
+  provider_failed: '第三方登入沒有完成，可以再試一次或改用電子信箱登入。',
+  reset_link_invalid: '這個重設密碼連結已失效或過期，請重新申請一次。',
+  session_expired: '登入已逾時，請重新登入後繼續。',
+  network_error: '連線中斷，尚未能完成登入。請確認網路後再試一次。',
   not_configured: '登入服務尚未開通（後端串接中），暫時無法送出。',
-  unknown: '登入失敗，請稍後再試',
+  unknown: '登入失敗，請稍後再試。',
+}
+
+/** 第三方登入的訊息：主詞是服務名稱，讀起來才順 */
+function providerErrorText(name: string, code: string): string {
+  if (code === 'provider_cancelled') return `${name} 登入已取消，沒有任何資料被送出。`
+  if (code === 'provider_failed') return `${name} 登入沒有完成，可以再試一次，或改用電子信箱登入。`
+  return `${name} 登入失敗，請稍後再試。`
+}
+
+/** 各錯誤對應的下一步（顯示在錯誤訊息下方，讓使用者知道要做什麼） */
+const formErrorAction: Record<string, { label: string; mode?: 'login' | 'register' | 'forgot' } | undefined> = {
+  email_not_found: { label: '建立新帳號', mode: 'register' },
+  email_taken: { label: '改用這個信箱登入', mode: 'login' },
+  invalid_credentials: { label: '忘記密碼？', mode: 'forgot' },
+  reset_link_invalid: { label: '重新申請重設連結', mode: 'forgot' },
 }
 
 /**
@@ -67,6 +90,8 @@ export default function AuthApp() {
   const [attempted, setAttempted] = useState(false)
   const [busy, setBusy] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  /** 目前錯誤的代碼，用來決定要給哪一個「下一步」按鈕 */
+  const [errorCode, setErrorCode] = useState<string | null>(null)
   const [sent, setSent] = useState(false)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const agreeId = useId()
@@ -84,6 +109,7 @@ export default function AuthApp() {
     setMode(next)
     setAttempted(false)
     setFormError(null)
+    setErrorCode(null)
     setSent(false)
     setBusy(false)
     if (next !== 'register') setConfirm('')
@@ -121,9 +147,18 @@ export default function AuthApp() {
     e.preventDefault()
     setAttempted(true)
     setFormError(null)
+    setErrorCode(null)
     if (!valid || busy) return
 
     setBusy(true)
+    /* 開發用：?auth=<code> 直接模擬各種失敗，方便驗收畫面 */
+    const mocked = mockAuthError()
+    if (mocked) {
+      setBusy(false)
+      setErrorCode(mocked)
+      setFormError(formErrorText[mocked] ?? formErrorText.unknown)
+      return
+    }
     let result: AuthResult
     if (mode === 'login') result = await signInWithPassword(email, password)
     else if (mode === 'register') result = await signUpWithPassword(email, password)
@@ -141,6 +176,7 @@ export default function AuthApp() {
       setSent(true)
       return
     }
+    setErrorCode(result.code)
     setFormError(formErrorText[result.code] ?? formErrorText.unknown)
   }
 
@@ -157,12 +193,22 @@ export default function AuthApp() {
 
   const onProvider = async (provider: OAuthProvider) => {
     setFormError(null)
+    setErrorCode(null)
+    const name = provider === 'apple' ? 'Apple' : 'Google'
+    /* 開發用模擬：?auth=provider_cancelled｜?auth=provider_failed */
+    const mocked = mockAuthError()
+    if (mocked === 'provider_cancelled' || mocked === 'provider_failed') {
+      setErrorCode(mocked)
+      setFormError(providerErrorText(name, mocked))
+      return
+    }
     const result = await signInWithProvider(provider)
     if (!result.ok) {
+      setErrorCode(result.code)
       setFormError(
         result.code === 'not_configured'
-          ? `${provider === 'apple' ? 'Apple' : 'Google'} 登入尚未開通（OAuth 串接中）。`
-          : formErrorText.unknown,
+          ? `${name} 登入尚未開通（OAuth 串接中）。`
+          : providerErrorText(name, result.code),
       )
     }
   }
@@ -299,19 +345,31 @@ export default function AuthApp() {
                 )}
 
                 {formError && (
-                  <p
+                  <div
                     role="alert"
-                    className="mt-5 flex items-start gap-2 rounded-lg bg-red-50 px-3.5 py-2.5 text-sm text-red-700 ring-1 ring-red-200 ring-inset"
+                    className="mt-5 rounded-lg bg-[#B5645A]/[0.07] px-4 py-3.5 text-sm ring-1 ring-[#B5645A]/25 ring-inset"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      className="mt-0.5 h-4 w-4 shrink-0 fill-current"
-                    >
-                      <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2zm0-4h-2V7h2z" />
-                    </svg>
-                    {formError}
-                  </p>
+                    {/* 失敗＝差一點，不是嚴重錯誤；session 逾時另用沙漏 */}
+                    <StatusIllustration
+                      status={errorCode === 'session_expired' ? 'timeout' : 'failed'}
+                      className="mb-2 w-20!"
+                    />
+                    <p className="leading-relaxed text-ink-700">{formError}</p>
+                    {errorCode && formErrorAction[errorCode] && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const next = formErrorAction[errorCode]?.mode
+                          setFormError(null)
+                          setErrorCode(null)
+                          if (next) switchTo(next)
+                        }}
+                        className="mt-2 font-semibold text-brand-700 underline underline-offset-2"
+                      >
+                        {formErrorAction[errorCode]?.label}
+                      </button>
+                    )}
+                  </div>
                 )}
 
                 {/* min-w 由固定寬度文字容器維持，切換文字時按鈕不跳動 */}

@@ -1,6 +1,8 @@
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { CourseThumb } from './components/cart/MiniCart'
+import { CartItemIssue } from './components/cart/CartItemIssue'
+import { StatusIllustration } from './components/StatusIllustration'
 import { cart, useCart, formatNT } from './lib/cart'
 import { Button } from './ui/Button'
 
@@ -25,7 +27,8 @@ export default function CartApp() {
             {/* 左：商品清單 */}
             <ul className="divide-y divide-line rounded-card border border-line bg-white px-5 sm:px-6">
               {items.map((item) => (
-                <li key={item.id} className="flex items-center gap-4 py-5">
+                <li key={item.id} className="py-5">
+                  <div className="flex items-center gap-4">
                   <CourseThumb className="h-16 w-24 sm:h-20 sm:w-32" />
 
                   <div className="min-w-0 flex-1">
@@ -55,6 +58,9 @@ export default function CartApp() {
                       <path d="M9 3h6l1 2h4v2H4V5h4zM6 8h12l-.9 12.1a2 2 0 01-2 1.9H8.9a2 2 0 01-2-1.9zM10 10v9h1.6v-9zm2.4 0v9H14v-9z" />
                     </svg>
                   </button>
+                  </div>
+                  {/* 下架／改價／優惠到期：說明原因並給對應動作 */}
+                  <CartItemIssue item={item} />
                 </li>
               ))}
             </ul>
@@ -130,16 +136,9 @@ export default function CartApp() {
 function EmptyCart() {
   return (
     <div className="mt-8 flex flex-col items-center rounded-card border border-line bg-white px-6 py-16 text-center">
-      {/* 空狀態插圖：散落的球 */}
-      <svg viewBox="0 0 120 80" aria-hidden="true" className="w-40">
-        <ellipse cx="60" cy="66" rx="44" ry="8" className="fill-ivory-100" />
-        <circle cx="44" cy="46" r="14" className="fill-brand-100" />
-        <circle cx="40" cy="42" r="4" className="fill-white" />
-        <circle cx="74" cy="52" r="10" className="fill-brass-300" />
-        <circle cx="71" cy="49" r="3" className="fill-white/70" />
-        <circle cx="90" cy="38" r="6" className="fill-pulse-100" />
-      </svg>
-      <p className="mt-5 text-lg text-ink-500">購物車目前是空的</p>
+      <StatusIllustration status="empty-cart" />
+      <p className="mt-5 text-lg font-semibold text-ink-900">球桌還在等第一球。</p>
+      <p className="mt-2 text-ink-500">購物車目前是空的，先挑一門課開始吧。</p>
       <Button href="./course.html" size="lg" className="mt-6">
         探索線上課程
       </Button>

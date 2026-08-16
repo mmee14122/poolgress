@@ -64,7 +64,12 @@ export function SummaryCard({
       </dl>
 
       <div className="mt-4">
-        <CouponBox subtotal={subtotal} applied={coupon} onApply={onCoupon} />
+        <CouponBox
+          subtotal={subtotal}
+          applied={coupon}
+          onApply={onCoupon}
+          productIds={items.map((i) => i.id)}
+        />
       </div>
 
       <div className="mt-4 flex items-baseline justify-between border-t border-line pt-4">
@@ -86,7 +91,13 @@ export function SummaryCard({
       {/* 確認購買僅桌機（lg 以上）顯示；手機由底部固定列負責，兩者互斥。
           hidden 為 display:none——不占版面、不進 Tab 順序、不攔截點擊 */}
       <div className="mt-5 hidden lg:block">
-        <Button block size="lg" onClick={onConfirm} disabled={!canConfirm || confirming}>
+        <Button
+          block
+          size="lg"
+          onClick={onConfirm}
+          disabled={confirming}
+          aria-disabled={!canConfirm || undefined}
+        >
           {confirming ? '處理中…' : '確認購買'}
         </Button>
 

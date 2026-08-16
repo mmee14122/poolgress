@@ -24,6 +24,8 @@ type Props = {
   /** 結帳 Email（會員載具顯示用） */
   buyerEmail: string
   errors: FieldErrors
+  /** 是否已按過確認購買 */
+  attempted: boolean
 }
 
 const carrierOptions: { value: Carrier; label: string }[] = [
@@ -33,9 +35,12 @@ const carrierOptions: { value: Carrier; label: string }[] = [
 ]
 
 export function InvoiceSection(props: Props) {
-  const { invoiceType, onInvoiceType, errors } = props
+  const { invoiceType, onInvoiceType, errors, attempted } = props
   /* 格式錯誤在欄位有內容時立即顯示；必填缺漏由訂單明細摘要提示 */
-  const err = (k: string, value: string) => (value.trim() ? (errors[k] ?? null) : null)
+  /* 未填欄位在使用者按下確認購買（attempted）後也要顯示錯誤，
+     否則空欄位沒有任何提示，也無法被捲動聚焦 */
+  const err = (k: string, value: string) =>
+    attempted || value.trim() ? (errors[k] ?? null) : null
 
   return (
     <section aria-labelledby="invoice-heading" className="mt-10">
