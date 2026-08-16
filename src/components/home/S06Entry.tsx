@@ -31,21 +31,12 @@ export function S06Entry() {
             </p>
           </div>
 
-          {/* 右：兩個行動入口。桌機直向排列，兩顆等寬好點擊 */}
-          <div className="flex flex-col gap-3 sm:gap-4 lg:ml-auto lg:w-full lg:max-w-sm">
+          {/* 右：單一行動入口＋一句補充語 */}
+          <div className="lg:ml-auto lg:w-full lg:max-w-sm">
             <Button href={entry.cta.href} size="lg" block>
               {entry.cta.label}
             </Button>
-            <Button
-              href={entry.ctaSecondary.href}
-              size="lg"
-              variant="quiet"
-              block
-              /* 減 1px 補回邊框厚度，兩顆按鈕等高 */
-              className="border border-white/30 py-[calc(0.875rem-1px)]! text-white! hover:bg-white/10! active:bg-white/15!"
-            >
-              {entry.ctaSecondary.label}
-            </Button>
+            <p className="mt-3 text-center text-sm text-white/70">{entry.ctaNote}</p>
           </div>
         </div>
       </div>

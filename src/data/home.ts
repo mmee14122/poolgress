@@ -100,7 +100,8 @@ export const home = {
     title: '想知道自己可以從哪裡開始？',
     body: ['從適合初學者的 Poolgress 課程開始，', '一步一步把看懂變成做得到。'],
     cta: { label: '探索線上課程', href: './course.html' },
-    ctaSecondary: { label: '認識實戰闖關', href: './challenges.html' },
+    /** 按鈕下方的補充語（不是連結） */
+    ctaNote: '前往你的第一堂課',
   },
 
   /* ---------------- 關於 Poolgress（about.html） ---------------- */
