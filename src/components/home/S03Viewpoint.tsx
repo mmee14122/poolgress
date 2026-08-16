@@ -10,9 +10,9 @@ export function S03Viewpoint() {
   const { blind, guided } = viewpoint.paths
 
   return (
-    <section id="viewpoint" className="scroll-mt-24 bg-white py-16 lg:py-24">
+    <section id="viewpoint" className="scroll-mt-24 bg-brand-950 py-16 text-white lg:py-24">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
-        <h2 className="text-2xl sm:text-4xl">
+        <h2 className="text-2xl text-white sm:text-4xl">
           {viewpoint.titleLines.map((line) => (
             <span key={line} className="block">
               {line}
@@ -20,7 +20,7 @@ export function S03Viewpoint() {
           ))}
         </h2>
 
-        <div className="mt-6 max-w-2xl space-y-2 text-lg text-ink-700">
+        <div className="mt-6 max-w-2xl space-y-2 text-lg text-white/70">
           {viewpoint.lead.map((line) => (
             <p key={line}>{line}</p>
           ))}
@@ -29,20 +29,20 @@ export function S03Viewpoint() {
         {/* 兩條路徑 */}
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {/* 無方向：整體灰階、末端繞回起點 */}
-          <div className="rounded-card border border-line bg-ivory-50 p-6 sm:p-7">
-            <p className="text-sm font-semibold tracking-widest text-ink-500 uppercase">
+          <div className="rounded-card border border-white/12 bg-white/5 p-6 sm:p-7">
+            <p className="text-sm font-semibold tracking-widest text-white/60 uppercase">
               {blind.title}
             </p>
             <ol className="mt-5 space-y-1">
               {blind.steps.map((step, i) => (
-                <li key={step} className="flex items-center gap-3 text-ink-500">
-                  {i > 0 && <span aria-hidden="true" className="text-ink-400/60">↓</span>}
+                <li key={step} className="flex items-center gap-3 text-white/60">
+                  {i > 0 && <span aria-hidden="true" className="text-white/40">↓</span>}
                   <span className={i > 0 ? '' : 'ml-6'}>{step}</span>
                 </li>
               ))}
             </ol>
-            <p className="mt-4 flex items-center gap-2 text-sm text-ink-500">
-              <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-ink-400">
+            <p className="mt-4 flex items-center gap-2 text-sm text-white/60">
+              <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-white/50">
                 <path d="M10 3a7 7 0 016.32 4H14v2h6V3h-2v2.1A9 9 0 001.1 9h2.03A7 7 0 0110 3zm6.87 8A7 7 0 013.68 13H6v-2H0v6h2v-2.1A9 9 0 0018.9 11h-2.03z" />
               </svg>
               回到原點，再來一次
@@ -50,8 +50,8 @@ export function S03Viewpoint() {
           </div>
 
           {/* 有方向：逐步變清晰（透明度遞增），終點亮起 */}
-          <div className="rounded-card border-2 border-brand-200 bg-brand-50/60 p-6 sm:p-7">
-            <p className="text-sm font-semibold tracking-widest text-brand-700 uppercase">
+          <div className="rounded-card border-2 border-brass-300/40 bg-brand-900/60 p-6 sm:p-7">
+            <p className="text-sm font-semibold tracking-widest text-brass-300 uppercase">
               {guided.title}
             </p>
             <ol className="mt-5 space-y-1">
@@ -60,7 +60,7 @@ export function S03Viewpoint() {
                 return (
                   <li
                     key={step}
-                    className="flex items-center gap-3 font-medium text-brand-700"
+                    className="flex items-center gap-3 font-medium text-white"
                     /* 遞增下限 0.8：淡化效果不可讓文字對比低於 WCAG AA */
                     style={{ opacity: 0.8 + (i / (guided.steps.length - 1)) * 0.2 }}
                   >
