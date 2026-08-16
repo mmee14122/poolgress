@@ -342,20 +342,68 @@
 .one-landed {
   opacity: 0;
 }
-.one-play .one-line {
-  animation: one-draw 0.7s ease-out 0.3s forwards;
+
+/* 6 秒循環：畫線 → 出桿 → 進袋 → 文字浮現 → 停留 → 淡出重來。
+   .one-play 只在區塊進入視窗時掛上，離開視窗即移除（不在畫面外空轉）。
+   百分比對照：5%≈0.3s、20%≈1.2s、26%≈1.6s、39%≈2.3s、48%≈2.9s、83%≈5s */
+@keyframes one-draw-loop {
+  0%, 5% { stroke-dashoffset: 520; opacity: 1; }
+  17% { stroke-dashoffset: 0; opacity: 1; }
+  83% { stroke-dashoffset: 0; opacity: 1; }
+  92%, 100% { stroke-dashoffset: 0; opacity: 0; }
 }
-.one-play .one-cue {
-  animation: one-cue 0.4s cubic-bezier(0.35, 0, 0.7, 1) 1.2s forwards;
+@keyframes one-cue-loop {
+  0%, 20% { transform: none; opacity: 1; }
+  27%, 83% { transform: translate(196px, -108px); opacity: 1; }
+  92% { transform: translate(196px, -108px); opacity: 0; }
+  93% { transform: none; opacity: 0; }
+  97%, 100% { transform: none; opacity: 1; }
 }
-.one-play .one-obj {
-  animation: one-obj 0.8s cubic-bezier(0.25, 0, 0.6, 1) 1.55s forwards;
+@keyframes one-obj-loop {
+  0%, 26% { transform: none; opacity: 1; }
+  39% { transform: translate(221px, -121px) scale(1); opacity: 1; }
+  43% { transform: translate(221px, -121px) scale(0.2); opacity: 0; }
+  93% { transform: none; opacity: 0; }
+  97%, 100% { transform: none; opacity: 1; }
 }
-.one-play .one-landed {
-  animation: one-pop 0.5s ease-out 2.3s forwards;
+@keyframes one-landed-loop {
+  0%, 38% { opacity: 0; transform: translateY(14px); }
+  46%, 83% { opacity: 1; transform: none; }
+  92%, 100% { opacity: 0; transform: none; }
 }
-.one-play .one-quote {
-  animation: one-pop 0.7s ease-out 2.9s forwards;
+@keyframes one-quote-loop {
+  0%, 48% { opacity: 0; transform: translateY(14px); }
+  56%, 83% { opacity: 1; transform: none; }
+  92%, 100% { opacity: 0; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .one-play .one-line {
+    animation: one-draw-loop 6s ease-in-out infinite;
+  }
+  .one-play .one-cue {
+    animation: one-cue-loop 6s cubic-bezier(0.35, 0, 0.7, 1) infinite;
+  }
+  .one-play .one-obj {
+    animation: one-obj-loop 6s cubic-bezier(0.25, 0, 0.6, 1) infinite;
+  }
+  .one-play .one-landed {
+    animation: one-landed-loop 6s ease-out infinite;
+  }
+  .one-play .one-quote {
+    animation: one-quote-loop 6s ease-out infinite;
+  }
+}
+
+/* 關閉動畫時：直接顯示完成狀態（球路畫好、文字可見），不做循環 */
+@media (prefers-reduced-motion: reduce) {
+  .one-line {
+    stroke-dashoffset: 0;
+  }
+  .one-quote,
+  .one-landed {
+    opacity: 1;
+  }
 }
 
 /* ------------------------------------------------------------------
