@@ -238,3 +238,8 @@ export function useLibrary(): Library {
 export function totalStarsOf(lib: Library): number {
   return lib.stars.reduce((sum, s) => sum + s.amount, 0)
 }
+
+/** 是否已擁有某課程（重複購買保護：課程頁改顯示「開始學習」） */
+export function ownsCourse(lib: Library, courseId: string): boolean {
+  return lib.courses.some((c) => c.courseId === courseId)
+}

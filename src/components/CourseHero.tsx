@@ -1,6 +1,7 @@
 import { course, courseStats } from '../data/course-detail'
 import { products } from '../data/catalog'
 import { cart } from '../lib/cart'
+import { useLibrary, ownsCourse } from '../lib/library'
 import { Button } from '../ui/Button'
 
 const product = products[0]
@@ -15,6 +16,7 @@ const product = products[0]
  */
 export function CourseHero() {
   const { hero } = course
+  const owned = ownsCourse(useLibrary(), product.id)
   /** 立即購買：桌機與手機一致——加入購物車後直接前往結帳 */
   const buyNow = () => {
     cart.add(product)
@@ -75,9 +77,16 @@ export function CourseHero() {
           </ul>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
-              立即購買
-            </Button>
+            {owned ? (
+              /* 已擁有此課程：不再顯示購買（重複購買保護） */
+              <Button size="lg" href="./my-courses.html" className="w-full sm:w-auto">
+                開始學習
+              </Button>
+            ) : (
+              <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
+                立即購買
+              </Button>
+            )}
             <Button href="#info" variant="quiet" size="lg" className="w-full text-brand-700 sm:w-auto">
               查看課程資訊
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">

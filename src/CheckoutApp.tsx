@@ -5,14 +5,22 @@ import { BuyerSection } from './components/checkout/BuyerSection'
 import { PaymentSection } from './components/checkout/PaymentSection'
 import { InvoiceSection } from './components/checkout/InvoiceSection'
 import { SummaryCard } from './components/checkout/SummaryCard'
+import { ProcessingOverlay, SuccessView, OrderCreatedView } from './components/checkout/ResultViews'
 import {
-  ProcessingOverlay,
-  SuccessView,
-  FailedView,
-  OrderCreatedView,
-} from './components/checkout/ResultViews'
+  PaymentFailedView,
+  PendingConfirmationView,
+  AlreadyPaidView,
+  AlreadyOwnedView,
+  ProvisioningView,
+  NetworkErrorView,
+  RequiresActionView,
+  CancelledView,
+  SessionExpiredView,
+  EmptyCartView,
+} from './components/checkout/StateViews'
+import { PaymentDebugPanel } from './components/dev/PaymentDebugPanel'
 import { cart, useCart, formatNT } from './lib/cart'
-import { library } from './lib/library'
+import { library, useLibrary } from './lib/library'
 import { couponDiscount, type Coupon } from './data/catalog'
 import {
   validateCheckout,
@@ -24,19 +32,30 @@ import {
   type Carrier,
   type OrderInfo,
 } from './lib/checkout'
+import {
+  orderLock,
+  currentScenario,
+  resolveScenario,
+  loginUrlForCheckout,
+  type TxStatus,
+  type FailureReason,
+  type OrderLock,
+} from './lib/payment'
 import { Button } from './ui/Button'
-
-type Phase = 'form' | 'processing' | 'success' | 'failed' | 'order'
 
 /**
  * 結帳頁。左：購買方式／付款／發票；右：sticky 訂單明細 + 確認購買。
- * 手機單欄，底部固定「確認購買」。
+ * 手機單欄，底部固定「確認購買」（桌機 lg:hidden 完全移除，全站同時只有一顆主要送出按鈕）。
  *
- * 付款為前端模擬：信用卡 → 處理中 → 成功（網址帶 ?demo=fail 可看失敗態）；
- * ATM／超商 → 建立訂單並顯示繳費代碼與期限。
+ * 付款為前端模擬，但流程與正式金流一致：
+ *   驗證 → 建立訂單並上鎖 → 送出 → 依回傳狀態進入對應畫面。
+ * 訂單鎖存在 localStorage，重新整理或按上一頁回來都讀得到，
+ * 因此「處理中／已付款」不會退回成可再次付款的表單。
+ * 可模擬的結果見 lib/payment.ts；開發模式右下角有情境切換面板。
  */
 export default function CheckoutApp() {
   const items = useCart()
+  const lib = useLibrary()
 
   // 購買方式
   const [mode, setMode] = useState<BuyerMode>('guest')
@@ -57,13 +76,29 @@ export default function CheckoutApp() {
   const [donateCode, setDonateCode] = useState('')
   const [company, setCompany] = useState({ name: '', taxId: '', address: '' })
 
-  // 優惠券與流程狀態
+  // 優惠券與交易狀態
   const [coupon, setCoupon] = useState<Coupon | null>(null)
-  const [phase, setPhase] = useState<Phase>('form')
+  const [status, setStatus] = useState<TxStatus>('idle')
+  const [reason, setReason] = useState<FailureReason>('card_declined')
+  const [lock, setLock] = useState<OrderLock | null>(null)
   const [order, setOrder] = useState<OrderInfo | null>(null)
+  const [checking, setChecking] = useState(false)
+  const [attempts, setAttempts] = useState(0)
+  const [provisioned, setProvisioned] = useState(false)
   const timer = useRef<number | null>(null)
-  /** 送出鎖：同步生效（早於 state 更新），防止快速連點送出兩次 */
+  /** 送出鎖：同步生效（早於 state 更新），連點／雙擊／Enter 都只會送出一次 */
   const submitting = useRef(false)
+
+  /* 掛載時讀訂單鎖：重新整理或上一頁回到結帳頁時，
+     處理中的訂單不可再付一次，已付款的直接顯示完成狀態 */
+  useEffect(() => {
+    const existing = orderLock.read()
+    if (!existing) return
+    setLock(existing)
+    if (existing.status === 'paid') setStatus('already_paid')
+    else if (existing.status === 'pending_confirmation') setStatus('pending_confirmation')
+    else setStatus('pending_confirmation') // processing 中途離開：一律以待確認呈現，不可重付
+  }, [])
 
   /* 手機底部固定列的實際高度 → 頁尾之後預留同高空白，剛好不遮住頁尾 */
   const barRef = useRef<HTMLDivElement>(null)
@@ -88,6 +123,7 @@ export default function CheckoutApp() {
   }, [])
 
   const buyerEmail = mode === 'member' ? member.email : guest.email
+  const titles = useMemo(() => items.map((i) => i.title), [items])
 
   const errors = useMemo(
     () =>
@@ -114,181 +150,345 @@ export default function CheckoutApp() {
   const subtotal = items.reduce((s, i) => s + i.price, 0)
   const total = subtotal - (coupon ? couponDiscount(coupon, subtotal) : 0)
 
+  /** 交易處理中：欄位、優惠碼、付款方式一律鎖住，避免中途被改動 */
+  const busy = status === 'validating' || status === 'processing'
+  const inForm = status === 'idle' || busy
+
+  /** 寫入學習庫（後端串接後改由付款回呼觸發） */
+  const grantCourses = (paid: boolean) => {
+    library.completePurchase(
+      items.map((i) => ({ id: i.id, title: i.title, price: i.price })),
+      total,
+      method as PaymentMethod,
+      paid,
+    )
+  }
+
   /**
-   * 桌機（明細卡）與手機（底部固定列）唯一共用的送出函式：
-   * 驗證、金額、loading 狀態、API 呼叫、錯誤處理都只有這一份。
-   * submitting ref 在 state 更新前就先上鎖，快速連點不會送出兩次訂單。
+   * 桌機（明細卡）與手機（底部固定列）唯一共用的送出函式。
+   * submitting ref 在 state 更新前就先上鎖，快速連點不會送出兩筆訂單。
    */
   const confirm = () => {
     if (!canConfirm || submitting.current) return
+    /* 已有處理中／已付款的訂單就不再建立第二筆 */
+    const existing = orderLock.read()
+    if (existing) {
+      setLock(existing)
+      setStatus(existing.status === 'paid' ? 'already_paid' : 'pending_confirmation')
+      return
+    }
+    /* 已擁有課程：不重複販售 */
+    if (items.some((i) => lib.courses.some((c) => c.courseId === i.id))) {
+      setStatus('already_owned')
+      return
+    }
+
     submitting.current = true
+    setStatus('processing')
 
-    setPhase('processing')
     const placed = createDemoOrder(method as PaymentMethod, buyerEmail, total)
+    const newLock: OrderLock = {
+      orderId: placed.id,
+      status: 'processing',
+      total,
+      method: method as string,
+      email: buyerEmail,
+      createdAt: new Date().toLocaleString('zh-TW', { hour12: false }),
+    }
+    orderLock.write(newLock)
+    setLock(newLock)
 
-    // 模擬金流處理；正式版在此導向第三方付款
+    // 模擬金流；正式版在此呼叫建立訂單 API 並依回傳狀態分流
     timer.current = window.setTimeout(() => {
-      if (method === 'card' || method === 'installment') {
-        const forceFail = new URLSearchParams(location.search).get('demo') === 'fail'
-        if (forceFail) {
-          submitting.current = false // 失敗可重試
-          setPhase('failed')
-          return // 失敗保留購物車
-        }
-        /* 寫入學習庫：課程立刻出現在「我的課程」、產生訂單紀錄
-           （目前為前端示範，後端串接後由付款回呼觸發） */
-        library.completePurchase(
-          items.map((i) => ({ id: i.id, title: i.title, price: i.price })),
-          total,
-          method,
-          true,
-        )
+      const resolved = resolveScenario(currentScenario())
+
+      /* ATM／超商不吃卡片情境，一律走「建立訂單、等待繳費」 */
+      if ((method === 'atm' || method === 'cvs') && resolved.status === 'succeeded') {
+        grantCourses(false)
+        orderLock.clear()
         setOrder(placed)
-        setPhase('success')
+        setStatus('idle')
+        setPhaseOrder(placed)
         cart.clear()
-      } else {
-        library.completePurchase(
-          items.map((i) => ({ id: i.id, title: i.title, price: i.price })),
-          total,
-          method,
-          false,
-        )
-        setOrder(placed)
-        setPhase('order')
-        cart.clear()
+        submitting.current = false
+        return
       }
+
+      switch (resolved.status) {
+        case 'succeeded':
+          grantCourses(true)
+          orderLock.update({ status: 'paid' })
+          setLock(orderLock.read())
+          setOrder(placed)
+          setStatus('succeeded')
+          cart.clear()
+          break
+        case 'succeeded_provisioning':
+          /* 已扣款但權限尚未寫入：不清購物車鎖，避免使用者以為沒買到 */
+          orderLock.update({ status: 'paid' })
+          setLock(orderLock.read())
+          setOrder(placed)
+          setStatus('succeeded_provisioning')
+          break
+        case 'pending_confirmation':
+          orderLock.update({ status: 'pending_confirmation' })
+          setLock(orderLock.read())
+          setStatus('pending_confirmation')
+          break
+        case 'requires_action':
+          setStatus('requires_action')
+          break
+        case 'network_error':
+          orderLock.update({ status: 'pending_confirmation' })
+          setLock(orderLock.read())
+          setStatus('network_error')
+          break
+        case 'already_owned':
+          orderLock.clear()
+          setStatus('already_owned')
+          break
+        case 'session_expired':
+          orderLock.clear()
+          setStatus('session_expired')
+          break
+        case 'cancelled':
+          orderLock.clear()
+          setStatus('cancelled')
+          break
+        default:
+          /* 失敗：解鎖可重試，購物車與已填資料全部保留 */
+          orderLock.clear()
+          setReason(resolved.reason ?? 'card_declined')
+          setStatus('failed')
+      }
+      submitting.current = false
     }, 1400)
   }
 
+  /* ATM／超商建立訂單後的畫面沿用既有 OrderCreatedView */
+  const [orderCreated, setPhaseOrder] = useState<OrderInfo | null>(null)
+
+  /** 重新確認付款狀態：依目前情境給出成功／失敗／仍待確認 */
+  const recheck = () => {
+    setChecking(true)
+    setAttempts((n) => n + 1)
+    timer.current = window.setTimeout(() => {
+      setChecking(false)
+      const scenario = currentScenario()
+      /* 情境仍設定為待確認時就一直等，讓「持續待確認」也能被驗收 */
+      if (scenario === 'pending_confirmation' || scenario === 'network_error') return
+      const resolved = resolveScenario(scenario)
+      if (resolved.status === 'failed') {
+        orderLock.clear()
+        setReason(resolved.reason ?? 'card_declined')
+        setStatus('failed')
+        return
+      }
+      grantCourses(true)
+      orderLock.update({ status: 'paid' })
+      setLock(orderLock.read())
+      setStatus('succeeded')
+      cart.clear()
+    }, 1200)
+  }
+
+  /** 權限開通輪詢：第二次以後回報開通完成 */
+  const refreshEntitlement = () => {
+    setChecking(true)
+    setAttempts((n) => n + 1)
+    timer.current = window.setTimeout(() => {
+      setChecking(false)
+      if (attempts >= 1) {
+        grantCourses(true)
+        cart.clear()
+        setProvisioned(true)
+      }
+    }, 1200)
+  }
+
+  const retryForm = () => {
+    submitting.current = false
+    setStatus('idle')
+  }
+
   const isGuest = mode === 'guest'
+  const showForm = inForm && !order && !orderCreated
 
   return (
     <>
       <Navbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-        {phase === 'success' && order && <SuccessView order={order} isGuest={isGuest} />}
-        {phase === 'order' && order && <OrderCreatedView order={order} isGuest={isGuest} />}
-        {phase === 'failed' && <FailedView onRetry={() => setPhase('form')} />}
+        {status === 'succeeded' && order && <SuccessView order={order} isGuest={isGuest} />}
+        {orderCreated && <OrderCreatedView order={orderCreated} isGuest={isGuest} />}
 
-        {(phase === 'form' || phase === 'processing') &&
+        {status === 'failed' && (
+          <PaymentFailedView reason={reason} lock={lock} titles={titles} onRetry={retryForm} />
+        )}
+        {status === 'pending_confirmation' && lock && (
+          <PendingConfirmationView
+            lock={lock}
+            titles={titles}
+            onRecheck={recheck}
+            checking={checking}
+            attempts={attempts}
+          />
+        )}
+        {status === 'network_error' && (
+          <NetworkErrorView lock={lock} titles={titles} onRetry={recheck} />
+        )}
+        {status === 'requires_action' && lock && (
+          <RequiresActionView
+            lock={lock}
+            titles={titles}
+            onComplete={() => {
+              grantCourses(true)
+              orderLock.update({ status: 'paid' })
+              setLock(orderLock.read())
+              setOrder(createDemoOrder(method as PaymentMethod, buyerEmail, total))
+              setStatus('succeeded')
+              cart.clear()
+            }}
+            onCancel={() => {
+              orderLock.clear()
+              setStatus('cancelled')
+            }}
+          />
+        )}
+        {status === 'cancelled' && <CancelledView onRetry={retryForm} />}
+        {status === 'already_paid' && lock && <AlreadyPaidView lock={lock} titles={titles} />}
+        {status === 'already_owned' && <AlreadyOwnedView />}
+        {status === 'succeeded_provisioning' && lock && (
+          <ProvisioningView
+            lock={lock}
+            titles={titles}
+            onRefresh={refreshEntitlement}
+            refreshing={checking}
+            done={provisioned}
+            attempts={attempts}
+          />
+        )}
+        {status === 'session_expired' && (
+          <SessionExpiredView redirect={loginUrlForCheckout()} />
+        )}
+
+        {showForm &&
           (items.length === 0 ? (
-            <div className="flex flex-col items-center py-20 text-center">
-              <p className="text-lg text-ink-500">購物車目前是空的，無法結帳</p>
-              <Button href="./course.html" size="lg" className="mt-6">
-                探索線上課程
-              </Button>
-            </div>
+            <EmptyCartView />
           ) : (
             <>
               <h1 className="text-2xl sm:text-3xl">結帳</h1>
 
-              <div className="mt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start lg:gap-10">
-                <div className="min-w-0">
-                  <BuyerSection
-                    mode={mode}
-                    onMode={setMode}
-                    memberLoggedIn={member.loggedIn}
-                    memberEmail={member.email}
-                    onDemoLogin={() => setMember({ loggedIn: true, email: 'demo@poolgress.com' })}
-                    guest={guest}
-                    onGuest={setGuest}
-                    errors={errors}
-                  />
+              {busy && (
+                <p
+                  role="status"
+                  className="mt-4 rounded-card bg-brand-50 px-4 py-3 text-sm text-brand-800 ring-1 ring-brand-200 ring-inset"
+                >
+                  正在確認付款結果，請勿重新整理或關閉此頁面。
+                </p>
+              )}
 
-                  <PaymentSection
-                    method={method}
-                    onMethod={setMethod}
-                    bank={bank}
-                    onBank={setBank}
-                    terms={terms}
-                    onTerms={setTerms}
-                  />
+              {/* 交易處理期間鎖住整組欄位：購物車、優惠碼、付款方式都不可改 */}
+              <fieldset disabled={busy} className="contents">
+                <div className="mt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start lg:gap-10">
+                  <div className="min-w-0">
+                    <BuyerSection
+                      mode={mode}
+                      onMode={setMode}
+                      memberLoggedIn={member.loggedIn}
+                      memberEmail={member.email}
+                      onDemoLogin={() => setMember({ loggedIn: true, email: 'demo@poolgress.com' })}
+                      guest={guest}
+                      onGuest={setGuest}
+                      errors={errors}
+                    />
 
-                  <InvoiceSection
-                    invoiceType={invoiceType}
-                    onInvoiceType={setInvoiceType}
-                    carrier={carrier}
-                    onCarrier={setCarrier}
-                    mobileCode={mobileCode}
-                    onMobileCode={setMobileCode}
-                    certCode={certCode}
-                    onCertCode={setCertCode}
-                    donateTarget={donateTarget}
-                    onDonateTarget={setDonateTarget}
-                    donateCode={donateCode}
-                    onDonateCode={setDonateCode}
-                    company={company}
-                    onCompany={setCompany}
-                    buyerEmail={buyerEmail}
-                    errors={errors}
-                  />
+                    <PaymentSection
+                      method={method}
+                      onMethod={setMethod}
+                      bank={bank}
+                      onBank={setBank}
+                      terms={terms}
+                      onTerms={setTerms}
+                    />
 
-                  {/* 購買區只存在兩處且互斥：桌機＝右側明細卡內、手機＝底部固定列。
-                      這裡不再放第三個確認區（原本無斷點條件，是重複按鈕來源） */}
+                    <InvoiceSection
+                      invoiceType={invoiceType}
+                      onInvoiceType={setInvoiceType}
+                      carrier={carrier}
+                      onCarrier={setCarrier}
+                      mobileCode={mobileCode}
+                      onMobileCode={setMobileCode}
+                      certCode={certCode}
+                      onCertCode={setCertCode}
+                      donateTarget={donateTarget}
+                      onDonateTarget={setDonateTarget}
+                      donateCode={donateCode}
+                      onDonateCode={setDonateCode}
+                      company={company}
+                      onCompany={setCompany}
+                      buyerEmail={buyerEmail}
+                      errors={errors}
+                    />
+
+                    {/* 購買區只存在兩處且互斥：桌機＝右側明細卡內、手機＝底部固定列 */}
+                  </div>
+
+                  <aside className="mt-10 lg:sticky lg:top-[calc(var(--promo-h)+6rem)] lg:mt-0">
+                    <SummaryCard
+                      items={items}
+                      coupon={coupon}
+                      onCoupon={setCoupon}
+                      method={method}
+                      terms={terms}
+                      canConfirm={canConfirm}
+                      missing={missingSummary(errors)}
+                      onConfirm={confirm}
+                      confirming={busy}
+                    />
+                  </aside>
                 </div>
-
-                <aside className="mt-10 lg:sticky lg:top-[calc(var(--promo-h)+6rem)] lg:mt-0">
-                  <SummaryCard
-                    items={items}
-                    coupon={coupon}
-                    onCoupon={setCoupon}
-                    method={method}
-                    terms={terms}
-                    canConfirm={canConfirm}
-                    missing={missingSummary(errors)}
-                    onConfirm={confirm}
-                    confirming={phase === 'processing'}
-                  />
-                </aside>
-              </div>
+              </fieldset>
             </>
           ))}
       </main>
 
-      {/* 手機／平板（lg 以下）唯一的購買入口；桌機以 lg:hidden 完全移除（display:none） */}
-      {(phase === 'form' || phase === 'processing') && items.length > 0 && (
+      {/* 手機／平板（lg 以下）唯一的購買入口；桌機以 lg:hidden 完全移除 */}
+      {showForm && items.length > 0 && (
         <div
-            ref={barRef}
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white lg:hidden"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-          >
-            <div className="flex items-center gap-3 px-4 py-3">
-              <div className="min-w-0 flex-1">
-                <p className="text-xs text-ink-500">訂單總計</p>
-                <p className="text-lg font-bold text-ink-900 tabular-nums">{formatNT(total)}</p>
-                {!canConfirm && missingSummary(errors).length > 0 && (
-                  <p className="truncate text-xs text-red-700">
-                    尚未完成：{missingSummary(errors).join('、')}
-                  </p>
-                )}
-              </div>
-              <Button
-                size="lg"
-                className="shrink-0"
-                onClick={confirm}
-                disabled={!canConfirm || phase === 'processing'}
-              >
-                {phase === 'processing' ? '處理中…' : '確認購買'}
-              </Button>
+          ref={barRef}
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white lg:hidden"
+          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
+          <div className="flex items-center gap-3 px-4 py-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-ink-500">訂單總計</p>
+              <p className="text-lg font-bold text-ink-900 tabular-nums">{formatNT(total)}</p>
+              {!canConfirm && missingSummary(errors).length > 0 && (
+                <p className="truncate text-xs text-[#9A4A41]">
+                  尚未完成：{missingSummary(errors).join('、')}
+                </p>
+              )}
             </div>
+            <Button size="lg" className="shrink-0" onClick={confirm} disabled={!canConfirm || busy}>
+              {busy ? '正在處理付款…' : '確認購買'}
+            </Button>
           </div>
+        </div>
       )}
 
-      {phase === 'processing' && <ProcessingOverlay />}
+      {busy && <ProcessingOverlay />}
 
-      {/* 結帳頁手機版不顯示頁尾：底部固定購買列已是唯一動線，
-          頁尾連結在此只會拉長捲動距離、分散結帳注意力 */}
+      {/* 結帳頁手機版不顯示頁尾：底部固定購買列已是唯一動線 */}
       <div className="hidden lg:block">
         <Footer />
       </div>
 
-      {/* 底部安全空間放在頁尾之後：避免固定列蓋住頁尾，
-          又不會在內容與頁尾之間撐出一段空白（縮短捲到底的距離）。
-          高度取實際列高（含安全區與未完成提示行），不多留也不少留 */}
-      {(phase === 'form' || phase === 'processing') && items.length > 0 && (
+      {showForm && items.length > 0 && (
         <div className="lg:hidden" aria-hidden="true" style={{ height: barHeight }} />
       )}
+
+      <PaymentDebugPanel />
     </>
   )
 }

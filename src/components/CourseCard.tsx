@@ -5,6 +5,7 @@ import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 import { CourseCover } from './CourseCover'
 import { toast } from '../ui/Toast'
+import { useLibrary, ownsCourse } from '../lib/library'
 
 /** 這一頁對應的商品（⚠️ 價格為示範資料） */
 const product = products[0]
@@ -17,6 +18,7 @@ type BuyState = 'idle' | 'loading' | 'done'
  * 兩者皆有 loading／成功狀態，並以 aria-live 播報。
  */
 export function CourseCard() {
+  const owned = ownsCourse(useLibrary(), product.id)
   const inCart = useCart().some((i) => i.id === product.id)
   const [buyState, setBuyState] = useState<BuyState>('idle')
   const [addState, setAddState] = useState<BuyState>('idle')
@@ -139,7 +141,18 @@ export function CourseCard() {
         )}
 
         <div className="mt-4">
-          {inCart && addState !== 'loading' ? (
+          {owned ? (
+            /* 已擁有：不再顯示購買，改為進入課程（重複購買保護） */
+            <>
+              <p className="mb-3 flex items-center justify-center gap-2 rounded-lg bg-[#5B9E8F]/10 px-3 py-2 text-sm font-semibold text-[#3F7A6C]">
+                <Check />
+                你已擁有此課程
+              </p>
+              <Button block size="lg" href="./my-courses.html">
+                開始學習
+              </Button>
+            </>
+          ) : inCart && addState !== 'loading' ? (
             /* 已加入後整塊顯示狀態，點擊前往購物車 */
             <Button block variant="secondary" size="lg" href="./cart.html">
               <Check />

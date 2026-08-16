@@ -482,3 +482,69 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   狀態插圖動畫（StatusIllustration）
+   每個動畫只播一次、800–1200ms，結束後停在最終狀態；
+   prefers-reduced-motion 時全部不播，圖示維持靜態。
+   ------------------------------------------------------------------ */
+@keyframes pg-nudge {
+  0% { transform: translate(0, 0); }
+  55% { transform: translate(10px, -5px); }
+  75% { transform: translate(7px, -3.5px); }
+  100% { transform: translate(8px, -4px); }
+}
+@keyframes pg-wobble {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(1.5px, -1px); }
+  60% { transform: translate(-1px, 0.5px); }
+}
+@keyframes pg-path-fade {
+  0% { opacity: 0; }
+  35% { opacity: 0.75; }
+  100% { opacity: 0.28; }
+}
+@keyframes pg-roll {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(46px, -26px); }
+}
+@keyframes pg-blink {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+@keyframes pg-check {
+  from { stroke-dashoffset: 22; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pg-drop {
+  0% { transform: translate(0, -14px); opacity: 0; }
+  60% { transform: translate(0, 2px); opacity: 1; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+@keyframes pg-track {
+  0% { width: 10px; }
+  100% { width: 62px; }
+}
+
+.pg-illus-ball { animation: pg-nudge 1000ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.pg-illus-ball-2 { animation: pg-wobble 900ms ease-in-out 250ms both; }
+.pg-illus-path { animation: pg-path-fade 1100ms ease-out both; }
+.pg-illus-roll { animation: pg-roll 1200ms ease-in-out both; }
+.pg-illus-blink { animation: pg-blink 1200ms ease-in-out infinite; }
+.pg-illus-check { stroke-dasharray: 22; animation: pg-check 800ms ease-out 200ms both; }
+.pg-illus-drop { animation: pg-drop 900ms cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+.pg-illus-track { animation: pg-track 1200ms ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-illus-ball,
+  .pg-illus-ball-2,
+  .pg-illus-path,
+  .pg-illus-roll,
+  .pg-illus-blink,
+  .pg-illus-check,
+  .pg-illus-drop,
+  .pg-illus-track {
+    animation: none !important;
+  }
+  .pg-illus-check { stroke-dasharray: none; }
+}

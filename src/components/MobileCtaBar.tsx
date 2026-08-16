@@ -4,6 +4,7 @@ import { course } from '../data/course-detail'
 import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 import { toast } from '../ui/Toast'
+import { useLibrary, ownsCourse } from '../lib/library'
 
 const product = products[0]
 const saving = product.originalPrice ? product.originalPrice - product.price : 0
@@ -13,6 +14,7 @@ const saving = product.originalPrice ? product.originalPrice - product.price : 0
  * 「立即購買」加入購物車後導向結帳頁（與購買卡一致）。
  */
 export function MobileCtaBar() {
+  const owned = ownsCourse(useLibrary(), product.id)
   const [visible, setVisible] = useState(false)
   const [busy, setBusy] = useState(false)
   const [adding, setAdding] = useState(false)
@@ -87,13 +89,20 @@ export function MobileCtaBar() {
             <span className="text-xs text-ink-500">省 {formatNT(saving)}</span>
           </p>
         </div>
-        <Button size="lg" className="shrink-0" onClick={buyNow} disabled={busy}>
-          {busy ? '處理中…' : '立即購買'}
-        </Button>
+        {owned ? (
+          /* 已擁有：不再顯示購買，改為進入課程（與桌機購買卡一致） */
+          <Button size="lg" className="shrink-0" href="./my-courses.html">
+            開始學習
+          </Button>
+        ) : (
+          <Button size="lg" className="shrink-0" onClick={buyNow} disabled={busy}>
+            {busy ? '處理中…' : '立即購買'}
+          </Button>
+        )}
 
         {/* 加入購物車：與桌機購買卡同一組動線，手機以圖示鈕呈現。
             已加入時改為打勾並導向購物車頁 */}
-        {inCart ? (
+        {owned ? null : inCart ? (
           <a
             href="./cart.html"
             aria-label="已加入購物車，前往購物車"
