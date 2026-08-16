@@ -104,7 +104,7 @@ function BrandColumn({ t }: { t: Palette }) {
     <div className="max-w-sm">
       <Logo dark={t.logoDark} className="-ml-1 [&>span]:text-2xl [&>svg]:h-11 [&>svg]:w-11" />
 
-      <address className="mt-5 space-y-3 not-italic">
+      <address className="mt-5 space-y-2.5 not-italic">
         {site.companyAddress && (
           <div>
             <p className={`text-xs font-semibold tracking-wide ${t.label}`}>公司地址</p>
@@ -141,7 +141,7 @@ function AppColumn({ t }: { t: Palette }) {
         {/* QR code：只有一個，指向智慧下載頁（依裝置分流） */}
         <div className="shrink-0">
           <div
-            className={`flex h-32 w-32 items-center justify-center overflow-hidden rounded-lg border ${t.qrFrame}`}
+            className={`flex h-40 w-40 items-center justify-center overflow-hidden rounded-lg border ${t.qrFrame}`}
           >
             {qrCode ? (
               <img
@@ -161,7 +161,7 @@ function AppColumn({ t }: { t: Palette }) {
         </div>
 
         {/* 商店 badge：維持官方比例（約 3.375:1） */}
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-3">
           <StoreBadge
             t={t}
             href={appStore}
@@ -180,7 +180,7 @@ function AppColumn({ t }: { t: Palette }) {
       </div>
 
       {/* 下載區最下方唯一一句文案：小一級、低對比，不是 CTA 也不可點 */}
-      <p className={`mt-auto max-w-[22rem] pt-4 text-sm leading-snug ${t.slogan}`}>{outro}</p>
+      <p className={`mt-7 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
     </div>
   )
 }
@@ -288,7 +288,7 @@ function SocialLinks({ t }: { t: Palette }) {
   ]
 
   return (
-    <ul className="mt-5 flex items-center gap-1.5">
+    <ul className="mt-3 flex items-center gap-1.5">
       {items.map((item) => (
         <li key={item.name}>
           {item.href ? (
