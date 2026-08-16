@@ -106,6 +106,8 @@ export type Coach = {
   challengeIds: string[]
   /** 可預約時段；空物件＝不開放預約，個別教練頁不顯示行事曆 */
   availability: CoachAvailability
+  /** 單堂課費用（新台幣）；null＝【待確認】，付款畫面顯示待補金額 */
+  lessonPrice: number | null
 }
 
 /**
@@ -129,6 +131,8 @@ const featuredCoach: Coach = {
   courseIds: ['course-tbd-1'],
   challengeIds: [],
   availability: demoAvailability(['19:00', '20:00', '21:00']),
+  /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
+  lessonPrice: null,
 }
 
 /**
@@ -152,6 +156,8 @@ const partnerCoaches: Coach[] = [
     courseIds: [],
     challengeIds: [],
     availability: demoAvailability(['10:00', '14:00']),
+    /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
+    lessonPrice: null,
   },
   {
     id: 'coach-3',
@@ -169,6 +175,8 @@ const partnerCoaches: Coach[] = [
     courseIds: [],
     challengeIds: [],
     availability: demoAvailability(['15:00', '19:00']),
+    /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
+    lessonPrice: null,
   },
   {
     id: 'coach-4',
@@ -186,6 +194,8 @@ const partnerCoaches: Coach[] = [
     courseIds: [],
     challengeIds: [],
     availability: demoAvailability(['20:00', '21:00']),
+    /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
+    lessonPrice: null,
   },
 ]
 
