@@ -23,7 +23,7 @@ export const home = {
     cta: { label: '探索 Poolgress', href: '#struggle' },
     /* 遊戲闖關獨立頁面上線後，href 改為實際頁面路徑 */
     /* 次要 CTA 直接前往實戰闖關頁（原為捲到頁內 #pillars 區塊） */
-    ctaSecondary: { label: 'App 遊戲闖關', href: './challenges.html' },
+    ctaSecondary: { label: 'App 免費體驗', href: './challenges.html' },
     /* SCENE 03 唯一提示句 */
     sceneHint: '知道自己在做什麼。',
     /* SCENE 04 高潮句（不含引號版本，配合動畫排版） */
