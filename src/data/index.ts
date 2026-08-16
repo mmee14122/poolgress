@@ -44,8 +44,9 @@ export { currentUserMeta } from './user'
 
 import { course } from './course-detail'
 
-/** 教練清單（目前只有一位主教練；未來多位時改為陣列資料檔） */
-export const coaches = [course.coach]
+/* 教練清單見 data/coaches.ts：coaches（全部）、featured（精選）、partners（合作） */
+export { coaches, featured, partners, coachById, coachHref, coachesIntro, partnersIntro } from './coaches'
+export type { Coach, CoachStat, CoachSocialLinks } from './coaches'
 
 /** 學員評價 ⚠️ 目前為範例文案，上線前必須換成真實回饋 */
 export const testimonials = course.reviews

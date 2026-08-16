@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Button } from './ui/Button'
 import { course } from './data/course-detail'
-import { coaches, coachesIntro } from './data/coaches'
-import { SafeImage } from './ui/SafeImage'
+import { coachById, coachesIntro, featured, partners, partnersIntro } from './data/coaches'
+import { CoachCard } from './components/coach/CoachCard'
+import { CoachProfile } from './components/coach/CoachProfile'
 import { site } from './data/site'
 
 export type InfoPage = 'coach' | 'faq' | 'contact'
@@ -32,14 +33,21 @@ export default function InfoApp({ page }: { page: InfoPage }) {
 
 
 /**
- * 關於教練：教練群列表。
+ * 關於教練。
  *
- * 資料來源 src/data/coaches.ts —— 新增教練只要在該檔的 coaches 陣列
- * 加一筆，此頁自動出現新卡片（單人時為單欄大版，多人時自動排列）。
- * 照片放 public/assets/coach/（建議 800×1066，3:4 直式）。
+ * 同一個進入點兩種畫面：
+ *   coach.html          → 教練群（精選教練完整介紹 ＋ 合作教練 grid）
+ *   coach.html?id=xxx   → 個別教練頁（與精選區共用 CoachProfile 模板）
+ *
+ * 資料來源 src/data/coaches.ts —— 新增教練只要在該檔加一筆，
+ * 卡片與個別頁都自動生效，不必新增檔案。
+ * 照片放 public/assets/coach/（卡片 4:5、介紹區 3:4，缺圖時漸層佔位）。
  */
 function CoachPage() {
-  const multiple = coaches.length > 1
+  const id = useMemo(() => new URLSearchParams(location.search).get('id'), [])
+  const coach = id ? coachById(id) : undefined
+
+  if (id) return <CoachDetailPage coach={coach} />
 
   return (
     <>
@@ -52,117 +60,30 @@ function CoachPage() {
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-500">{coachesIntro.lead}</p>
       </header>
 
-      {/* 教練列表：單人時整頁單欄，多人時每位一張橫向卡片 */}
-      <div className="mt-12 space-y-16">
-        {coaches.map((coach, i) => (
-          <article key={coach.id} id={coach.id} className="scroll-mt-24">
-            {multiple && (
-              <p
-                aria-hidden="true"
-                className="mb-5 font-logo text-sm font-semibold tracking-widest text-ink-400"
-              >
-                {String(i + 1).padStart(2, '0')}
-              </p>
-            )}
+      {/* 精選教練：完整介紹（只突出一位） */}
+      <section id={featured.id} className="mt-12 scroll-mt-24">
+        <p className="mb-5 text-sm font-semibold tracking-widest text-ink-400">精選教練</p>
+        <CoachProfile coach={featured} />
+      </section>
 
-            <div className="grid gap-8 sm:grid-cols-[15rem_minmax(0,1fr)] sm:gap-10">
-              {/* 照片（3:4 直式；無圖時品牌漸層佔位） */}
-              <div className="w-full max-w-[15rem] overflow-hidden rounded-card bg-gradient-to-br from-brand-900 to-brand-600">
-                <div className="aspect-[3/4] w-full">
-                  <SafeImage
-                    src={coach.photo}
-                    alt={`${coach.name} 教練照片`}
-                    className="h-full w-full object-cover"
-                    fallback={
-                      <div className="flex h-full w-full items-center justify-center">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-16 w-16 fill-white/30">
-                          <path d="M12 12a5 5 0 10-5-5 5 5 0 005 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-                        </svg>
-                      </div>
-                    }
-                  />
-                </div>
-              </div>
+      {/* 合作教練：桌機 3 欄，第 4 位以後自動換列；平板 2 欄、手機單欄 */}
+      {partners.length > 0 && (
+        <section id="partners" className="mt-16 scroll-mt-24 border-t border-line pt-12">
+          <p className="text-sm font-semibold tracking-widest text-brand-600">
+            {partnersIntro.eyebrow}
+          </p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">{partnersIntro.title}</h2>
+          <p className="mt-4 max-w-2xl leading-relaxed text-ink-500">{partnersIntro.lead}</p>
 
-              <div className="min-w-0">
-                <p className="text-sm font-semibold tracking-wide text-brand-600">{coach.title}</p>
-                <h2 className="mt-1.5 text-2xl sm:text-3xl">{coach.name}</h2>
-
-                {/* 專長標籤 */}
-                {coach.specialties && coach.specialties.length > 0 && (
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {coach.specialties.map((s) => (
-                      <li
-                        key={s}
-                        className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 ring-1 ring-brand-200"
-                      >
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* 教學理念 */}
-                <blockquote className="mt-6 border-l-4 border-brand-600 pl-4 text-ink-700 italic">
-                  「{coach.philosophy}」
-                </blockquote>
-
-                {coach.instagram && (
-                  <p className="mt-4 text-sm text-ink-500">Instagram：{coach.instagram}</p>
-                )}
-              </div>
-            </div>
-
-            {/* 數據列 */}
-            <dl className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
-              {coach.stats.map((s) => (
-                <div
-                  key={s.label}
-                  className="rounded-card border border-line bg-white px-3 py-5 text-center"
-                >
-                  <dt className="sr-only">{s.label}</dt>
-                  <dd>
-                    <span className="block text-xl font-bold text-ink-900 sm:text-2xl">
-                      {s.value}
-                    </span>
-                    <span className="mt-1 block text-xs text-ink-500">{s.label}</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-
-            {/* 介紹與經歷 */}
-            <div className="mt-8 grid gap-8 lg:grid-cols-2">
-              <div>
-                <h3 className="text-base font-semibold">關於教練</h3>
-                <div className="mt-3 space-y-3 leading-relaxed text-ink-700">
-                  {coach.bio.map((p) => (
-                    <p key={p}>{p}</p>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-base font-semibold">經歷</h3>
-                <ul className="mt-3 space-y-2">
-                  {coach.credentials.map((c) => (
-                    <li key={c} className="flex items-start gap-2.5 text-sm text-ink-700">
-                      <svg
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                        className="mt-0.5 h-4 w-4 shrink-0 fill-brand-600"
-                      >
-                        <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
-                      </svg>
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {partners.map((coach) => (
+              <li key={coach.id}>
+                <CoachCard coach={coach} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* 頁尾 CTA */}
       <div className="mt-16 rounded-card bg-brand-950 p-8 text-center sm:p-10">
@@ -181,6 +102,59 @@ function CoachPage() {
             className="border border-white py-[calc(0.875rem-1px)]! text-white hover:bg-white! hover:text-black!"
           >
             實戰闖關
+          </Button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+
+/**
+ * 個別教練頁（coach.html?id=…）。
+ * 首席與合作教練共用同一份 CoachProfile 結構；沒有資料的欄位整段隱藏。
+ */
+function CoachDetailPage({ coach }: { coach: ReturnType<typeof coachById> }) {
+  if (!coach) {
+    return (
+      <div className="mx-auto max-w-lg py-10 text-center">
+        <h1 className="text-2xl sm:text-3xl">找不到這位教練</h1>
+        <p className="mt-3 leading-relaxed text-ink-500">
+          連結可能已失效，或這位教練尚未公開。
+        </p>
+        <div className="mt-6">
+          <Button href="./coach.html" size="lg">
+            回教練群
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {/* 麵包屑：回教練群 */}
+      <nav aria-label="麵包屑" className="mb-8">
+        <a
+          href="./coach.html"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4"
+        >
+          <span aria-hidden="true">←</span> 教練群
+        </a>
+      </nav>
+
+      <CoachProfile coach={coach} as="h1" />
+
+      {/* CTA */}
+      <div className="mt-16 rounded-card bg-brand-950 p-8 text-center sm:p-10">
+        <h2 className="text-xl text-white sm:text-2xl">想跟著這位教練練習？</h2>
+        <p className="mx-auto mt-3 max-w-md leading-relaxed text-white/70">
+          課程裡的每一個單元，都是照著「把動作講清楚」的方法設計的。
+        </p>
+        <div className="mt-6">
+          <Button href="./course.html" size="lg">
+            查看這位教練的課程
           </Button>
         </div>
       </div>

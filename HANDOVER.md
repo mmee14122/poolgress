@@ -78,7 +78,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | `/register.html` | register-entry | RegisterApp | 訪客訂單綁定帳號 |
 | `/account.html` | account-entry | AccountApp | 個人檔案 |
 | `/my-courses.html` `/stars.html` `/orders.html` `/invite.html` | 同上 | AccountApp | 個人區其他分頁（`data-page` 區分） |
-| `/coach.html` `/faq.html` `/contact.html` | info-entry | InfoApp | 支援頁（`data-page` 區分） |
+| `/coach.html[?id=]` `/faq.html` `/contact.html` | info-entry | InfoApp | 支援頁（`data-page` 區分）；教練頁帶 `id` 即為個別教練頁 |
 | `/venues.html` | venues-entry | VenuesApp | 合作場館 |
 | `/terms.html` `/privacy.html` | coming-soon-entry | ComingSoonApp | 條款佔位頁 |
 | `/games.html` | 純 HTML | — | 舊網址，meta refresh 轉到 challenges |
@@ -101,7 +101,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | `course-detail.ts` | 主課程詳情：Hero、六段文案、章節單元、教練、評價、FAQ、購買卡 |
 | `catalog.ts` | 商品價格與優惠券 |
 | `challenges.ts` | 闖關關卡、App 商店連結 `appLinks` |
-| `coaches.ts` | **教練群**（加一筆就自動出現新卡片） |
+| `coaches.ts` | **教練群**：`featured`（精選）＋ `partners`（合作教練卡片），加一筆就自動生效 |
 | `venues.ts` | 合作場館（目前空陣列＝顯示洽談中） |
 | `user.ts` | 首次進站的預設值（預設全空，購買後才有課程） |
 | `index.ts` | 統一出口，含 `coaches`／`testimonials`／`faqs` 別名 |

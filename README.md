@@ -44,7 +44,8 @@ npm run preview  # 預覽 build 後的結果
 | `/my-courses.html` | 我的課程 | 進度與繼續學習 |
 | `/stars.html` | 我的星星 | 星星紀錄 |
 | `/orders.html` | 我的訂單 | |
-| `/coach.html` | 關於教練 | |
+| `/coach.html` | 教練群 | 精選教練＋合作教練卡片 |
+| `/coach.html?id=` | 個別教練頁 | 與精選區共用同一份結構 |
 | `/challenges.html` ← `/games.html` | 舊網址 | 自動轉址 |
 | `/venues.html` | 合作場館 | |
 | `/faq.html` | 常見問題 | |
@@ -109,7 +110,7 @@ npm run preview  # 預覽 build 後的結果
 - 課程封面 → `courses.ts` 的 `cover`
 - Challenge 情境圖 → `challenges.ts` 的 `image`
 - 場館照片 → `venues.ts` 的 `image`
-- 教練照片 → 目前是漸層佔位，素材備妥後在 `src/InfoApp.tsx` 的 `CoachPage` 換成 `<img>`（已標註位置）
+- 教練照片 → `coaches.ts` 的 `photo`（留 `null` 顯示漸層佔位）
 
 **影片**：在單元資料填 `videoUrl` 就會自動從佔位換成播放器。
 自架檔案填 `/assets/xxx.mp4`；若要用 Vimeo／YouTube 等外部平台，
@@ -140,13 +141,21 @@ App 商店連結填在同一檔案的 `appLinks`。
 
 ### 如何新增／修改教練
 
-**教練群在 `src/data/coaches.ts`**——在 `coaches` 陣列加一筆，教練頁自動出現新卡片
-（單人時單欄大版，多人時自動加上 01／02 編號）。欄位格式與範例都寫在該檔開頭的註解。
+**教練群在 `src/data/coaches.ts`**——在 `partnerCoaches` 陣列加一筆即可：
+教練頁的「合作教練」區自動出現新卡片，個別教練頁（`coach.html?id=…`）也自動可用，
+不必新增任何檔案。欄位格式與範例都寫在該檔開頭的註解。
 
-照片放 `public/assets/coach/`（建議 800×1066，3:4 直式），在該筆的 `photo` 填路徑；
-留 `null` 會顯示品牌漸層佔位，版面不會壞。
+教練頁分兩區：
+- **精選教練**：`featured: true` 的那一位，維持完整大版介紹（只放一位）
+- **合作教練**：其餘教練的卡片，桌機 3 欄、平板 2 欄、手機單欄，第 4 位以後自動換列
 
-第一位主教練的內容沿用 `src/data/course-detail.ts` 的 `coach`，
+照片放 `public/assets/coach/`（卡片 4:5 直式建議 800×1000，介紹區 3:4），
+在該筆的 `photo` 填路徑；留 `null` 會顯示品牌漸層人像佔位，版面不會壞。
+
+沒有資料的欄位（`credentials`、`socialLinks`、`courseIds`、`challengeIds` 等）
+留空陣列或空物件即可，該區塊會整段隱藏，不會出現空白底線。
+
+精選教練的內容沿用 `src/data/course-detail.ts` 的 `coach`，
 課程頁與教練頁共用，改一處兩邊同步。
 
 ### 如何改評價、FAQ
