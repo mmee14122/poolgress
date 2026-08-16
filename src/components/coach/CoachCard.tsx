@@ -41,9 +41,8 @@ export function CoachCard({ coach }: { coach: Coach }) {
             </ul>
           )}
 
-          {coach.shortBio && (
-            <p className="mt-1.5 line-clamp-1 text-sm leading-snug text-ink-500">{coach.shortBio}</p>
-          )}
+          {/* shortBio 刻意不放在卡片上：點進個別教練頁就看得到完整教學理念，
+              卡片留給「角色、姓名、專長、場館」等辨識用資訊，桌機才放得下所有教練 */}
 
           {/* 所在場館：讓人在列表就看得出各教練在哪裡上課 */}
           {coach.venue && (
