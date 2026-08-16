@@ -108,6 +108,20 @@ export type Coach = {
   availability: CoachAvailability
   /** 單堂課費用（新台幣）；null＝【待確認】，付款畫面顯示待補金額 */
   lessonPrice: number | null
+  /** 授課的撞球場館；null＝不顯示這個區塊 */
+  venue: CoachVenue | null
+}
+
+/**
+ * 教練授課的撞球場館。
+ * mapUrl 填 Google Maps 連結後，場館名稱會變成可點的連結並出現「在 Google 地圖開啟」；
+ * 留 null 時只顯示文字，並標示地圖連結待補。
+ */
+export type CoachVenue = {
+  name: string
+  address: string
+  /** Google Maps 連結（例：https://maps.app.goo.gl/xxxx）；null＝待補 */
+  mapUrl: string | null
 }
 
 /**
@@ -133,6 +147,12 @@ const featuredCoach: Coach = {
   availability: demoAvailability(['19:00', '20:00', '21:00']),
   /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
   lessonPrice: null,
+  /* ⚠️ 場館與地址待補；mapUrl 填 Google Maps 連結後即可點擊開啟地圖 */
+  venue: {
+    name: '撞球場館名稱待補',
+    address: '場館地址待補',
+    mapUrl: null,
+  },
 }
 
 /**
@@ -158,6 +178,12 @@ const partnerCoaches: Coach[] = [
     availability: demoAvailability(['10:00', '14:00']),
     /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
     lessonPrice: null,
+    /* ⚠️ 場館與地址待補；mapUrl 填 Google Maps 連結後即可點擊開啟地圖 */
+    venue: {
+      name: '撞球場館名稱待補',
+      address: '場館地址待補',
+      mapUrl: null,
+    },
   },
   {
     id: 'coach-3',
@@ -177,6 +203,12 @@ const partnerCoaches: Coach[] = [
     availability: demoAvailability(['15:00', '19:00']),
     /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
     lessonPrice: null,
+    /* ⚠️ 場館與地址待補；mapUrl 填 Google Maps 連結後即可點擊開啟地圖 */
+    venue: {
+      name: '撞球場館名稱待補',
+      address: '場館地址待補',
+      mapUrl: null,
+    },
   },
   {
     id: 'coach-4',
@@ -196,6 +228,12 @@ const partnerCoaches: Coach[] = [
     availability: demoAvailability(['20:00', '21:00']),
     /* ⚠️ 單堂費用待確認，填數字（如 1200）後付款畫面才會顯示金額 */
     lessonPrice: null,
+    /* ⚠️ 場館與地址待補；mapUrl 填 Google Maps 連結後即可點擊開啟地圖 */
+    venue: {
+      name: '撞球場館名稱待補',
+      address: '場館地址待補',
+      mapUrl: null,
+    },
   },
 ]
 

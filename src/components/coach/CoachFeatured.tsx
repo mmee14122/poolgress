@@ -53,6 +53,16 @@ export function CoachFeatured({ coach }: { coach: Coach }) {
             </p>
           )}
 
+          {/* 所在場館 */}
+          {coach.venue && (
+            <p className="mt-2.5 flex items-center gap-1.5 text-xs text-ink-500">
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 shrink-0 fill-ink-400">
+                <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+              </svg>
+              <span className="truncate">{coach.venue.name}</span>
+            </p>
+          )}
+
           {/* 數據：橫排文字，不做成大方塊，避免佔掉整個畫面高度 */}
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
             {coach.stats.length > 0 && (

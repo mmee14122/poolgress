@@ -120,10 +120,12 @@ export function CoachProfile({ coach, as = 'h2' }: { coach: Coach; as?: 'h1' | '
       )}
 
       {/* 開設／參與的課程 */}
+      {/* 課程與授課場館並排（桌機兩欄，手機上下堆疊） */}
+      <div className="mt-10 grid gap-8 lg:grid-cols-2">
       {courses.length > 0 && (
-        <section className="mt-10">
+        <section>
           <h3 className="text-base font-semibold">開設／參與的課程</h3>
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+          <ul className="mt-4 grid gap-4">
             {courses.map((c) => (
               <li key={c.id}>
                 <a
@@ -152,6 +154,46 @@ export function CoachProfile({ coach, as = 'h2' }: { coach: Coach; as?: 'h1' | '
           </ul>
         </section>
       )}
+
+      {/* 撞球場館地點：Google Maps 連結填了才可點 */}
+      {coach.venue && (
+        <section>
+          <h3 className="text-base font-semibold">撞球場館地點</h3>
+          <div className="mt-4 rounded-card border border-line bg-white p-4">
+            <div className="flex gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50">
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-brand-600">
+                  <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+                </svg>
+              </span>
+              <div className="min-w-0">
+                <p className="font-semibold text-ink-900">{coach.venue.name}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-500">{coach.venue.address}</p>
+              </div>
+            </div>
+
+            {coach.venue.mapUrl ? (
+              <a
+                href={coach.venue.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current">
+                  <path d="M14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3zM5 5h5V3H3v18h18v-7h-2v5H5z" />
+                </svg>
+                在 Google 地圖開啟
+              </a>
+            ) : (
+              /* ⚠️ 連結未提供時不放假網址，只標示待補 */
+              <p className="mt-4 text-xs text-ink-400">
+                Google 地圖連結待補（填入 <code>venue.mapUrl</code> 後這裡會變成可點的連結）
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+      </div>
 
       {/* 對應實戰 Challenge */}
       {challenges.length > 0 && (

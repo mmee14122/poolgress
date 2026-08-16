@@ -179,6 +179,24 @@ availability: {
 - ⚠️ 付款與寄信目前都是**前端示範**：不會實際扣款、不保留時段、確認信也沒有真的寄出；
   串接時改 `CoachBooking.tsx` 的 `handlePay()`，UI 不用改
 
+### 如何設定教練的撞球場館與地圖連結
+
+個別教練頁「開設／參與的課程」旁邊有場館區塊，資料在 `src/data/coaches.ts` 每位教練的 `venue`：
+
+```ts
+venue: {
+  name: '台北○○撞球館',
+  address: '台北市○○區○○路 100 號 2 樓',
+  mapUrl: 'https://maps.app.goo.gl/xxxxx',   // Google 地圖分享連結
+}
+```
+
+- `mapUrl` 填好後會出現「在 Google 地圖開啟」連結（新分頁開啟）
+- 留 `null` 時只顯示名稱與地址，並標示連結待補，**不會放假網址**
+- 整個 `venue` 填 `null`＝這位教練不顯示場館區塊
+
+取得連結的方式：Google 地圖搜尋場館 → 按「分享」→ 複製連結。
+
 ### 如何改評價、FAQ
 
 在 `src/data/course-detail.ts`：`reviews`、`faqs`。課程頁與 FAQ 頁共用。
