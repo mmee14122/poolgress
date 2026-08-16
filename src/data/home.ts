@@ -94,16 +94,13 @@ export const home = {
     ],
   },
 
-  /* ---------------- SECTION 07｜課程入口（願景已移至 about） ---------------- */
-  visionEntry: {
-    entry: {
-      title: '想知道自己可以從哪裡開始？',
-      body: ['從適合初學者的 Poolgress 課程開始。', '不用一次學很多。'],
-      /** 金句在此區不完整重複，改用延續語 */
-      echoLead: '先找到第一個：',
-      echo: '「原來我做得到。」',
-      cta: { label: '探索課程', href: './course.html' },
-    },
+  /* ---------------- SECTION 06｜首頁收尾邀請（願景已移至 about） ---------------- */
+  entry: {
+    eyebrow: 'READY WHEN YOU ARE',
+    title: '想知道自己可以從哪裡開始？',
+    body: ['從適合初學者的 Poolgress 課程開始，', '一步一步把看懂變成做得到。'],
+    cta: { label: '探索線上課程', href: './course.html' },
+    ctaSecondary: { label: '認識實戰闖關', href: './challenges.html' },
   },
 
   /* ---------------- 關於 Poolgress（about.html） ---------------- */

@@ -413,116 +413,14 @@
 }
 
 /* ------------------------------------------------------------------
-   課程頁 Hero：Sticky Scroll Transition
-   外層提供捲動距離，Hero sticky 釘住；進度 --hero-p（0→1）
-   由 CSS scroll-driven animation 驅動（不支援時 JS 後援），
-   所有效果只動 transform / opacity（合成層屬性），不動高度與 paint。
-   桌機過渡距離 22vh（外層總高約 105–110vh，快速離場）、手機 30vh。
-   不使用 scroll-snap：proximity 吸附會在交界處把捲動位置拉走，
-   造成購買卡按鈕搆不到與快速捲動跳動。
+   課程頁 Hero：靜態版（2026-08-17）
+   原本的 sticky scroll transition 已移除——文字在捲動初期就淡出，
+   Hero 卻仍占著整片高度，會出現「文字不見、下一區還沒到」的空白。
+   這是販售頁，資訊清楚優先於 Hero 動畫：
+   Hero 為一般區塊、內容垂直置中，捲過自然高度就接上課程資訊，
+   不用 sticky、不用 spacer、不隨捲動改變 opacity。
+   左側影片區的球路循環動畫（下方 keyframes）保留。
    ------------------------------------------------------------------ */
-@property --hero-p {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-
-@keyframes hero-progress {
-  from { --hero-p: 0; }
-  to { --hero-p: 1; }
-}
-
-/* 結構：外層高度自動＝Hero + spacer；spacer 即桌機停留距離。
-   手機不釘住（保留原生捲動與自然高度，內容不裁切），
-   效果在 Hero 捲出的前 45vh 內漸進完成。 */
-.hero-outer {
-  background: #e4eaf3;
-}
-.hero-spacer {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .hero-sticky {
-    position: sticky;
-    top: calc(4rem + var(--promo-h, 0px));
-    height: calc(94svh - 4rem - var(--promo-h, 0px));
-    overflow: hidden;
-  }
-  .hero-spacer {
-    display: block;
-    height: 22vh;
-  }
-}
-
-/* 進度來源（優先）：scroll-driven animation，掛在 html 上讓變數全頁繼承 */
-@supports (animation-timeline: scroll()) {
-  html.course-hero-scroll {
-    animation: hero-progress linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0px 30vh;
-  }
-  @media (min-width: 1024px) {
-    html.course-hero-scroll { animation-range: 0px 22vh; }
-  }
-}
-
-/* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下。
-   左影片、右文字、標題同節奏退場（輕微縮小＋上移＋淡出），
-   只動 transform / opacity；不再動 filter 與 box-shadow（避免逐幀 paint）。
-
-   ⚠️ 僅限桌機：手機版 Hero 不釘住，內容淡出後區塊仍占著同樣高度，
-   會在捲動時留下一大片空白淺藍色。手機維持完全不透明，Hero 自然捲走即可。 */
-@media (min-width: 1024px) {
-  .hero-fx-media {
-    transform: translate3d(0, calc(var(--hero-p, 0) * -12px), 0)
-      scale(calc(1 - var(--hero-p, 0) * 0.02));
-    opacity: calc(1 - var(--hero-p, 0) * 0.45);
-    will-change: transform, opacity;
-  }
-  .hero-fx-title {
-    transform: translate3d(0, calc(var(--hero-p, 0) * -24px), 0);
-    opacity: calc(1 - var(--hero-p, 0));
-    will-change: transform, opacity;
-  }
-  .hero-fx-fade {
-    opacity: calc(1 - var(--hero-p, 0));
-  }
-  .hero-fx-panel {
-    border-bottom-right-radius: calc(var(--hero-p, 0) * 28px);
-    border-bottom-left-radius: calc(var(--hero-p, 0) * 28px);
-  }
-}
-/* 下一區進場：後段（p 0.7→1）淡入；不用 transform——
-   內含 sticky 導覽與購買卡，祖先 transform 會使 sticky 失效，
-   位移感由 sticky 釋放後的自然上滑提供。
-   同樣僅限桌機：手機沒有 sticky 停留，內容不該一開始就變暗 */
-@media (min-width: 1024px) {
-  .hero-next {
-    opacity: clamp(0.4, calc(0.4 + (var(--hero-p, 0) - 0.7) * 2), 1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-fx-media,
-  .hero-fx-title,
-  .hero-fx-fade {
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
-    will-change: auto !important;
-  }
-  .hero-fx-panel {
-    border-radius: 0 !important;
-    box-shadow: none !important;
-  }
-  .hero-next {
-    opacity: 1 !important;
-  }
-  /* 不需要停留距離：Hero 正常顯示並直接銜接下一區 */
-  .hero-spacer {
-    display: none !important;
-  }
-}
 
 /* ------------------------------------------------------------------
    課程頁 Hero 撞球原理動畫（俯視球檯，5 秒循環）

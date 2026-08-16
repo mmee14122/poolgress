@@ -49,9 +49,9 @@ export default function App() {
     <>
       <PromoBar />
       <Navbar />
-      {/* Hero 位於三欄版面之前；下一區包在 .hero-next 隨進度淡入並吸附 */}
+      {/* Hero 位於三欄版面之前；Hero 為靜態區塊，捲過後直接接上課程資訊 */}
       <CourseHero />
-      <div className="hero-next">
+      <div>
         <SectionTabs active={active} />
 
         <div className="mx-auto w-full max-w-[90rem] px-4 sm:px-6">

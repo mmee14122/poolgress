@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { course, courseStats } from '../data/course-detail'
 import { products } from '../data/catalog'
 import { cart } from '../lib/cart'
@@ -7,77 +6,15 @@ import { Button } from '../ui/Button'
 const product = products[0]
 
 /**
- * 課程頁 Hero：Sticky Scroll Transition。
- * 左（桌機約 55%）：撞球原理循環動畫；右：課程介紹與 CTA。
+ * 課程頁 Hero：靜態版。
+ * 左（桌機約 55%）：課程介紹影片位；右：課程介紹與 CTA，兩側垂直置中。
  *
- * 外層（.hero-outer）提供捲動距離（桌機 60vh、手機 35vh），
- * Hero 本體 sticky 釘住；進度 --hero-p 直接對應實際捲動：
- *   - 主視覺 scale 1→1.05、亮度微降
- *   - 標題上移 32px；內文與 CTA 淡出
- *   - 下緣長出圓角與陰影；下一區在後段淡入並自然上滑銜接
- * 進度來源：CSS scroll-driven animation；不支援的瀏覽器由此處
- * 的捲動監聽後援（只寫 CSS 變數，不攔截任何輸入事件）。
+ * 販售頁以資訊清楚優先，Hero 不隨捲動淡出、不 sticky、不加 spacer：
+ * 標題、介紹、資訊列與 CTA 從進站到捲出畫面都保持完全可讀。
+ * 桌機高度取 min(760px, 視窗高－導覽－促銷列)，捲過後直接接上課程資訊。
  */
 export function CourseHero() {
   const { hero } = course
-  const outerRef = useRef<HTMLElement>(null)
-  const stickyRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const root = document.documentElement
-    // 啟用 scroll timeline 與桌機柔和 snap（僅課程頁生效）
-    root.classList.add('course-hero-scroll')
-
-    let cleanup = () => {}
-    if (!CSS.supports('animation-timeline: scroll()')) {
-      /* JS 後援：尺寸只在 resize 時量測（避免每次捲動讀 offsetHeight
-         造成 forced reflow）；scroll 事件只排一個 rAF，每幀統一寫入
-         CSS 變數，不觸發 React 重新渲染 */
-      let distance = 0
-      let ticking = false
-      let lastP = -1
-      const measure = () => {
-        const outer = outerRef.current
-        const sticky = stickyRef.current
-        if (!outer || !sticky) return
-        // 桌機距離＝spacer（外層－sticky）；手機無停留，取 30vh 與 CSS 對齊
-        const spacer = outer.offsetHeight - sticky.offsetHeight
-        distance = spacer > 0 ? spacer : window.innerHeight * 0.3
-      }
-      const apply = () => {
-        ticking = false
-        const p = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 1
-        // Hero 已完全離場且進度未變時不再寫入，離開可視範圍即停止計算
-        if (p === lastP) return
-        lastP = p
-        root.style.setProperty('--hero-p', p.toFixed(4))
-      }
-      const onScroll = () => {
-        if (ticking) return
-        ticking = true
-        requestAnimationFrame(apply)
-      }
-      const onResize = () => {
-        measure()
-        onScroll()
-      }
-      measure()
-      apply()
-      window.addEventListener('scroll', onScroll, { passive: true })
-      window.addEventListener('resize', onResize)
-      cleanup = () => {
-        window.removeEventListener('scroll', onScroll)
-        window.removeEventListener('resize', onResize)
-      }
-    }
-
-    return () => {
-      cleanup()
-      root.classList.remove('course-hero-scroll')
-      root.style.removeProperty('--hero-p')
-    }
-  }, [])
-
   /** 立即購買：桌機與手機一致——加入購物車後直接前往結帳 */
   const buyNow = () => {
     cart.add(product)
@@ -85,24 +22,22 @@ export function CourseHero() {
   }
 
   return (
-    <section ref={outerRef} className="hero-outer">
-      {/* sticky 本體：釘在導覽列下；效果只動 transform/opacity/filter/圓角 */}
-      <div ref={stickyRef} className="hero-sticky hero-fx-panel flex items-center bg-[#e4eaf3]">
-        <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
-        {/* 左：課程介紹影片位（素材待補），隨進度微放大、亮度微降 */}
-        <div className="hero-fx-media">
+    <section className="flex items-center bg-[#e4eaf3] lg:min-h-[min(760px,calc(100svh-4rem-var(--promo-h,0px)))]">
+      <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 pb-14 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
+        {/* 左：課程介紹影片位（素材待補） */}
+        <div>
           <VideoPlaceholder />
         </div>
 
         {/* 右：課程介紹 */}
         <div>
-          <p className="hero-fx-fade inline-flex rounded-full bg-brand-50 px-3.5 py-1 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
+          <p className="inline-flex rounded-full bg-brand-50 px-3.5 py-1 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
             {hero.category}
           </p>
 
           {/* 標題以 \n 分段，每段 inline-block 整塊換行——
               「建立」等詞不會被拆到兩行；空間夠時仍可併成一行 */}
-          <h1 className="hero-fx-title mt-4 text-3xl leading-[1.3] sm:text-4xl">
+          <h1 className="mt-4 text-3xl leading-[1.3] sm:text-4xl">
             {hero.title.split('\n').map((seg) => (
               <span key={seg} className="inline-block">
                 {seg}
@@ -110,12 +45,12 @@ export function CourseHero() {
             ))}
           </h1>
 
-          <p className="hero-fx-fade mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
+          <p className="mt-4 text-lg font-semibold text-brand-700">{hero.value}</p>
 
-          <p className="hero-fx-fade mt-4 text-sm leading-relaxed text-ink-500 sm:text-base">{hero.intro}</p>
+          <p className="mt-4 text-sm leading-relaxed text-ink-500 sm:text-base">{hero.intro}</p>
 
           {/* 課程規模：手機 2×2、桌機同樣兩欄 */}
-          <ul className="hero-fx-fade mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-ink-700">
+          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-ink-700">
             <li className="flex items-center gap-2">
               <StatIcon d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z" />
               共 <strong className="font-semibold text-ink-900">{courseStats.units}</strong>
@@ -139,7 +74,7 @@ export function CourseHero() {
             </li>
           </ul>
 
-          <div className="hero-fx-fade mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
               立即購買
             </Button>
@@ -151,10 +86,7 @@ export function CourseHero() {
             </Button>
           </div>
         </div>
-        </div>
       </div>
-      {/* 桌機停留距離（60vh）；手機隱藏 */}
-      <div className="hero-spacer" aria-hidden="true" />
     </section>
   )
 }

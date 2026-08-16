@@ -4,7 +4,7 @@ import { S01Hero } from './components/home/S01Hero'
 import { S02Struggle } from './components/home/S02Struggle'
 import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S05Pillars } from './components/home/S05Pillars'
-import { S07VisionEntry } from './components/home/S07VisionEntry'
+import { S06Entry } from './components/home/S06Entry'
 
 /**
  * Poolgress 官網首頁：五個品牌區塊。
@@ -24,7 +24,7 @@ export default function HomeApp() {
         <S02Struggle />
         <S03Viewpoint />
         <S05Pillars />
-        <S07VisionEntry />
+        <S06Entry />
       </main>
       <Footer theme="dark" />
     </>
