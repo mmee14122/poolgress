@@ -10,7 +10,7 @@ import { S07VisionEntry } from './components/home/S07VisionEntry'
  * Poolgress 官網首頁：五個品牌區塊。
  *
  * 首頁只回答「Poolgress 是什麼？為什麼跟我有關？」
- * 敘事順序：共鳴 → 問題 → 觀點 → 產品價值 → 願景＋課程入口
+ * 敘事順序：共鳴 → 問題 → 觀點 → 產品價值 → 課程入口
  *
  * 課程步驟、章節、闖關細節屬於課程簡介頁（course.html），不放這裡。
  */
