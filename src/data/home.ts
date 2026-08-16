@@ -70,7 +70,8 @@ export const home = {
 
   /* ---------------- SECTION 05｜Poolgress 提供什麼：四個產品支柱 ---------------- */
   pillars: {
-    titleLines: ['讓學習撞球，', '有一條看得見的路。'],
+    title: '為什麼選擇 Poolgress？',
+    sub: '讓學習撞球，有一條看得見的路',
     /* href：卡片點擊後的去處；cta 為卡片底部的行動文字。
        成長歷程的 href 由元件依登入狀態決定（未登入→登入頁、已登入→我的星星） */
     items: [
