@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { Button } from '../../ui/Button'
 import { Field, TextInput, ChoiceCard } from '../../ui/Field'
-import { paymentOptions, type PaymentMethod } from '../../lib/checkout'
-import { isEmail } from '../../lib/validate'
+import { paymentOptions, type PaymentMethod, type Carrier } from '../../lib/checkout'
+import { isEmail, isMobileBarcode, isCitizenCert } from '../../lib/validate'
 import { toDateKey, type Coach, type CoachService } from '../../data/coaches'
 
 /**
@@ -32,6 +32,18 @@ const MONTHS_AHEAD = 3
 /** 日期區固定六列，避免切換月份時卡片高度跳動 */
 const CALENDAR_ROWS = 6
 
+/** 教練預約只收信用卡與 ATM 轉帳（不提供分期與超商代碼） */
+const bookingPaymentOptions = paymentOptions.filter(
+  (o) => o.value === 'card' || o.value === 'atm',
+)
+
+/** 發票載具選項（與結帳頁同一套規則） */
+const carrierOptions: { value: Carrier; label: string; hint?: string }[] = [
+  { value: 'member', label: '會員載具（使用上方 Email）' },
+  { value: 'mobile', label: '手機條碼', hint: '斜線開頭共 8 碼，例：/ABC+123' },
+  { value: 'cert', label: '自然人憑證條碼', hint: '2 碼大寫英文 + 14 碼數字' },
+]
+
 export function CoachBooking({ coach }: { coach: Coach }) {
   const today = useMemo(() => {
     const d = new Date()
@@ -49,6 +61,9 @@ export function CoachBooking({ coach }: { coach: Coach }) {
   const [step, setStep] = useState<Step>('select')
   const [email, setEmail] = useState('')
   const [method, setMethod] = useState<PaymentMethod | ''>('')
+  const [carrier, setCarrier] = useState<Carrier>('member')
+  const [mobileCode, setMobileCode] = useState('')
+  const [certCode, setCertCode] = useState('')
   /** 送出後才顯示錯誤，避免使用者還沒填就看到紅字 */
   const [tried, setTried] = useState(false)
   /** 防連點：付款處理中不可重複送出 */
@@ -76,11 +91,23 @@ export function CoachBooking({ coach }: { coach: Coach }) {
 
   const emailError = tried && !isEmail(email) ? '請填寫正確的 Email' : null
   const methodError = tried && !method ? '請選擇付款方式' : null
+  const carrierError =
+    tried && carrier === 'mobile' && !isMobileBarcode(mobileCode)
+      ? '手機條碼格式不正確（斜線開頭共 8 碼）'
+      : tried && carrier === 'cert' && !isCitizenCert(certCode)
+        ? '自然人憑證條碼格式不正確（2 碼大寫英文 + 14 碼數字）'
+        : null
+
+  /** 載具填寫是否完整 */
+  const carrierValid =
+    carrier === 'member' ||
+    (carrier === 'mobile' && isMobileBarcode(mobileCode)) ||
+    (carrier === 'cert' && isCitizenCert(certCode))
 
   /** 付款畫面送出 */
   function handlePay() {
     setTried(true)
-    if (!isEmail(email) || !method || paying.current) return
+    if (!isEmail(email) || !method || !carrierValid || paying.current) return
 
     paying.current = true
     setStep('processing')
@@ -123,6 +150,13 @@ export function CoachBooking({ coach }: { coach: Coach }) {
             method={method}
             onMethod={setMethod}
             methodError={methodError}
+            carrier={carrier}
+            onCarrier={setCarrier}
+            mobileCode={mobileCode}
+            onMobileCode={setMobileCode}
+            certCode={certCode}
+            onCertCode={setCertCode}
+            carrierError={carrierError}
             processing={step === 'processing'}
             onBack={() => {
               setStep('select')
@@ -352,6 +386,13 @@ function BookingPayment({
   method,
   onMethod,
   methodError,
+  carrier,
+  onCarrier,
+  mobileCode,
+  onMobileCode,
+  certCode,
+  onCertCode,
+  carrierError,
   processing,
   onBack,
   onPay,
@@ -366,6 +407,13 @@ function BookingPayment({
   method: PaymentMethod | ''
   onMethod: (m: PaymentMethod) => void
   methodError: string | null
+  carrier: Carrier
+  onCarrier: (c: Carrier) => void
+  mobileCode: string
+  onMobileCode: (v: string) => void
+  certCode: string
+  onCertCode: (v: string) => void
+  carrierError: string | null
   processing: boolean
   onBack: () => void
   onPay: () => void
@@ -408,7 +456,7 @@ function BookingPayment({
           </span>
         </p>
         <div className="mt-2.5 space-y-2">
-          {paymentOptions.map((opt) => (
+          {bookingPaymentOptions.map((opt) => (
             <ChoiceCard
               key={opt.value}
               name="booking-payment"
@@ -423,6 +471,59 @@ function BookingPayment({
         {methodError && (
           <p role="alert" className="mt-2 text-sm text-red-700">
             {methodError}
+          </p>
+        )}
+      </div>
+
+      {/* ── 發票載具（規則與結帳頁一致） ── */}
+      <div className="mt-5">
+        <p className="text-sm font-semibold text-ink-900">發票載具</p>
+        <div className="mt-2.5 space-y-1">
+          {carrierOptions.map((c) => (
+            <div key={c.value}>
+              <label className="flex min-h-11 cursor-pointer items-center gap-2.5 text-sm text-ink-700">
+                <input
+                  type="radio"
+                  name="booking-carrier"
+                  value={c.value}
+                  checked={carrier === c.value}
+                  onChange={() => onCarrier(c.value)}
+                  className="h-4 w-4 shrink-0 accent-brand-600"
+                />
+                {c.label}
+              </label>
+
+              {/* 選到才展開輸入欄，避免卡片被撐高 */}
+              {carrier === c.value && c.value === 'mobile' && (
+                <div className="mt-1 mb-1 pl-6.5">
+                  <TextInput
+                    aria-label="手機條碼"
+                    placeholder="/ABC+123"
+                    value={mobileCode}
+                    invalid={!!carrierError}
+                    onChange={(e) => onMobileCode(e.target.value.toUpperCase())}
+                  />
+                  <p className="mt-1 text-xs text-ink-500">{c.hint}</p>
+                </div>
+              )}
+              {carrier === c.value && c.value === 'cert' && (
+                <div className="mt-1 mb-1 pl-6.5">
+                  <TextInput
+                    aria-label="自然人憑證條碼"
+                    placeholder="AB12345678901234"
+                    value={certCode}
+                    invalid={!!carrierError}
+                    onChange={(e) => onCertCode(e.target.value.toUpperCase())}
+                  />
+                  <p className="mt-1 text-xs text-ink-500">{c.hint}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {carrierError && (
+          <p role="alert" className="mt-1 text-sm text-red-700">
+            {carrierError}
           </p>
         )}
       </div>

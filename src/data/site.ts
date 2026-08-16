@@ -64,33 +64,6 @@ export const site = {
   /** LINE 官方帳號連結；null＝顯示為停用並標示即將公開 */
   lineUrl: null as string | null,
 
-  /* 全部使用相對路徑（子資料夾部署也正確） */
-  footerLinks: [
-    { label: '常見問題', href: './faq.html' },
-    { label: '服務條款', href: './terms.html' },
-    { label: '隱私權政策', href: './privacy.html' },
-    { label: '聯絡我們', href: './contact.html' },
-  ] as NavLink[],
-
-  /**
-   * 頁尾主導覽（第一列）。
-   * href 為 null 代表該頁尚未建立，會顯示為不可點的待補狀態，不會連到錯誤網址。
-   */
-  footerPrimary: [
-    { label: '線上課程', href: './course.html' },
-    { label: '實戰闖關', href: './challenges.html' },
-    { label: '教練群', href: './coach.html' },
-    /* 預約在個別教練頁，這裡指向精選教練 */
-    { label: '預約教練', href: './coach.html?id=coach-1' },
-    /* ⚠️ 尚未有「關於 Poolgress」頁面，建立後把 href 填上即可 */
-    { label: '關於 Poolgress', href: null },
-  ] as { label: string; href: string | null }[],
-
-  /** 頁尾支援連結（第二列） */
-  footerSupport: [
-    { label: '常見問題', href: './faq.html' },
-    { label: '聯絡我們', href: './contact.html' },
-    { label: '使用條款', href: './terms.html' },
-    { label: '隱私權政策', href: './privacy.html' },
-  ] as NavLink[],
+  /** 頁尾標語（比 tagline 完整的一句話） */
+  footerSlogan: '從看懂一球開始，把練習變成真正的進步。',
 } as const

@@ -28,7 +28,7 @@ export default function HomeApp() {
         <S05Pillars />
         <S07VisionEntry />
       </main>
-      <Footer />
+      <Footer theme="dark" />
     </>
   )
 }
