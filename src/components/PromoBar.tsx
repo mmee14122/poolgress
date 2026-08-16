@@ -53,9 +53,9 @@ export function PromoBar() {
   if (dismissed) return null
 
   return (
-    <div className="sticky top-0 z-50 flex h-8 w-full items-stretch bg-[#183D6B] text-[#E8C97A]">
+    <div className="sticky top-0 z-50 flex h-8 w-full items-stretch bg-[#183D6B] text-[#E8C97A] select-none">
       {/* 主內容：點擊捲至購買卡 */}
-      <div className="flex min-w-0 flex-1 items-center justify-center px-10">
+      <div className="pointer-events-none flex min-w-0 flex-1 items-center justify-center px-10">
         <p className="flex items-baseline gap-3 truncate text-xs sm:text-sm">
           <span className="font-semibold whitespace-nowrap">{promo.label}</span>
           {remaining ? (
@@ -82,14 +82,14 @@ export function PromoBar() {
         </p>
       </div>
 
-      {/* 最右側：黑色 X 關閉 */}
+      {/* 最右側：淺藍 X 關閉（此列唯一可點的元素） */}
       <button
         type="button"
         onClick={() => setDismissed(true)}
         aria-label="關閉優惠活動"
         className="flex w-10 shrink-0 items-center justify-center transition-[filter] duration-150 hover:brightness-125"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-black">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-[#BFD6F5]">
           <path d="M6.4 5l12.6 12.6-1.4 1.4L5 6.4z M19 6.4L6.4 19 5 17.6 17.6 5z" />
         </svg>
       </button>
