@@ -13,8 +13,8 @@ import { useLibrary, totalStarsOf } from '../lib/library'
 import { toast } from '../ui/Toast'
 
 /**
- * 選單項目：個人檔案／我的課程／邀請好友＋頂部摘要與星星卡片；
- * 不放收藏、商城、訂單、通知等。路徑皆為相對路徑。
+ * 選單項目：個人檔案／我的課程／我的訂單／邀請好友＋頂部摘要與星星卡片；
+ * 不放收藏、商城、通知等。路徑皆為相對路徑。
  */
 const items = [
   {
@@ -26,6 +26,11 @@ const items = [
     label: '我的課程',
     href: './my-courses.html',
     icon: 'M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z',
+  },
+  {
+    label: '我的訂單',
+    href: './orders.html',
+    icon: 'M7 4h10l1 3h3v2h-1.2l-1.1 11.1A2 2 0 0116.7 22H7.3a2 2 0 01-2-1.9L4.2 9H3V7h3zm2 0l-.4 1h6.8L15 4zm-2.8 5l1 11h9.6l1-11z',
   },
   {
     label: '邀請好友',
