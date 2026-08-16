@@ -11,9 +11,8 @@ import {
   MAX_NAME_LENGTH,
   type Session,
 } from './lib/session'
-import { useLibrary, totalStarsOf, type Library } from './lib/library'
+import { useLibrary, totalStarsOf } from './lib/library'
 import { courseById, flatLessons } from './data/courses'
-import { currentUserMeta } from './data/user'
 import { toast } from './ui/Toast'
 
 export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
@@ -51,9 +50,6 @@ export default function AccountApp({ page }: { page: AccountPage }) {
           <div className="min-w-0 flex-1">
             <NameEditor user={user} />
             <p className="truncate text-sm text-ink-500">{user.email}</p>
-            <p className="mt-1 text-xs font-semibold text-ink-500">
-              Lv.{currentUserMeta.level}・已完成 {completedCount(lib)} 堂課程
-            </p>
           </div>
           <a
             href="./stars.html"
@@ -98,14 +94,6 @@ export default function AccountApp({ page }: { page: AccountPage }) {
 }
 
 /* ------------------------------------------------------------------ */
-
-/** 已完成課程數（進度 100%） */
-function completedCount(lib: Library) {
-  return lib.courses.filter((c) => {
-    const total = flatLessons(c.courseId).length
-    return total > 0 && c.completedLessons.length >= total
-  }).length
-}
 
 /**
  * 我的課程：已購買課程與觀看進度。
