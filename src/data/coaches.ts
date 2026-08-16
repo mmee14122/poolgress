@@ -72,6 +72,8 @@ export function toDateKey(d: Date) {
 }
 
 export type CoachSocialLinks = {
+  /** LINE 加好友連結（例：https://line.me/R/ti/p/@帳號）；未填時個人區顯示為即將開放 */
+  line?: string
   instagram?: string
   youtube?: string
   facebook?: string

@@ -155,6 +155,10 @@ App 商店連結填在同一檔案的 `appLinks`。
 照片放 `public/assets/coach/`（卡片 16:10 橫式建議 800×500，個別頁 3:4 直式建議 800×1066），
 在該筆的 `photo` 填路徑；留 `null` 會顯示品牌漸層人像佔位，版面不會壞。
 
+教練的 LINE 加好友連結填在 `socialLinks.line`（例：`https://line.me/R/ti/p/@帳號`），
+個人區「我的教練課」的「聯絡教練」按鈕會用它；未填時退回 `site.lineUrl`，
+兩者都沒有就顯示為停用並標示「即將開放」。
+
 沒有資料的欄位（`credentials`、`socialLinks`、`courseIds`、`challengeIds` 等）
 留空陣列或空物件即可，該區塊會整段隱藏，不會出現空白底線。
 

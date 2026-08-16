@@ -238,6 +238,7 @@ export function CoachDetails({ coach }: { coach: Coach }) {
 /** 社群連結轉成「標籤：值」清單，未填的欄位不出現 */
 function socialEntries(links: CoachSocialLinks): [string, string][] {
   const labels: Record<keyof CoachSocialLinks, string> = {
+    line: 'LINE',
     instagram: 'Instagram',
     youtube: 'YouTube',
     facebook: 'Facebook',

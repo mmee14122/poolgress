@@ -14,6 +14,8 @@ import {
 import { useLibrary, totalStarsOf, type LibraryBooking } from './lib/library'
 import { loginUrlWithRedirect, currentPageTarget } from './lib/auth'
 import { courseById, flatLessons } from './data/courses'
+import { coachById } from './data/coaches'
+import { site } from './data/site'
 import { toast } from './ui/Toast'
 
 export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
@@ -273,12 +275,7 @@ function CoachLessonsCard() {
                   <Button href={googleCalendarUrl(b)} variant="secondary" className="shrink-0">
                     加入 Google 行事曆
                   </Button>
-                  <a
-                    href={`./coach.html?id=${encodeURIComponent(b.coachId)}`}
-                    className="text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4 sm:text-right"
-                  >
-                    查看教練
-                  </a>
+                  <ContactCoachButton coachId={b.coachId} />
                 </div>
               </div>
             </li>
@@ -290,6 +287,63 @@ function CoachLessonsCard() {
         ⚠️ 目前預約為前端示範，紀錄只存在這台裝置的瀏覽器，尚未串接實際排程系統。
       </p>
     </Card>
+  )
+}
+
+/**
+ * 聯絡教練：以教練的 LINE 連結加好友。
+ *
+ * 連結來自 data/coaches.ts 該位教練的 socialLinks.line；
+ * 未填時退回 site.lineUrl（Poolgress 官方帳號）；
+ * 兩者都沒有就顯示為停用並標示「即將開放」，不放假連結。
+ */
+function ContactCoachButton({ coachId }: { coachId: string }) {
+  const coach = coachById(coachId)
+  const href = coach?.socialLinks.line ?? site.lineUrl
+
+  /* 與網站既有次要按鈕同款：白底、細環、圓角膠囊 */
+  const shape =
+    'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold ring-1 transition-colors'
+
+  const label = (
+    <>
+      <LineIcon />
+      聯絡教練
+    </>
+  )
+
+  if (!href) {
+    return (
+      <span
+        aria-disabled="true"
+        title="LINE 帳號即將開放"
+        className={`${shape} cursor-not-allowed text-ink-400 ring-line`}
+      >
+        {label}
+      </span>
+    )
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`用 LINE 聯絡${coach?.name ?? '教練'}`}
+      title="用 LINE 聯絡教練"
+      className={`${shape} bg-white text-brand-700 ring-brand-200 hover:bg-brand-50`}
+    >
+      {label}
+    </a>
+  )
+}
+
+/** LINE 官方辨識圖形 */
+function LineIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-[#06C755]">
+      <path d="M12 2C6.5 2 2 5.7 2 10.2c0 4 3.6 7.4 8.4 8 .3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.1-.5 6-3.5 8.2-6 1.5-1.6 2.2-3.3 2.2-5C22.5 5.7 18 2 12 2zM7.6 12.9H5.5c-.3 0-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5s.5.2.5.5v3.7h1.6c.3 0 .5.2.5.5s-.2.5-.5.5zm2-.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5s.5.2.5.5v4.2zm4.9 0c0 .2-.1.4-.3.5h-.2c-.2 0-.3-.1-.4-.2l-2-2.7v2.4c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.2c0-.2.1-.4.3-.5h.2c.1 0 .3.1.4.2l2 2.7V8.2c0-.3.2-.5.5-.5s.5.2.5.5v4.2zm3.3-2.6c.3 0 .5.2.5.5s-.2.5-.5.5h-1.6v1h1.6c.3 0 .5.2.5.5s-.2.5-.5.5h-2.1c-.3 0-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5h2.1c.3 0 .5.2.5.5s-.2.5-.5.5h-1.6v1h1.6z" />
+    </svg>
   )
 }
 
