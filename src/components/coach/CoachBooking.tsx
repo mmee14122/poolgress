@@ -187,7 +187,7 @@ export function CoachBooking({ coach }: { coach: Coach }) {
           </div>
 
           {/* ── 時段 ── */}
-          <div className="lg:border-l lg:border-line lg:pl-8">
+          <div className="text-center lg:border-l lg:border-line lg:pl-8">
             {!selectedDate ? (
               <p className="text-sm leading-relaxed text-ink-500">
                 請先在左側選一個開放日期，這裡會顯示當天可預約的時段。
