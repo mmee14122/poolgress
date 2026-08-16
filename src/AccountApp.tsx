@@ -17,16 +17,16 @@ import { toast } from './ui/Toast'
 
 export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
 
-/* 依產品規格個人區只保留這四個分頁（邀請朋友頁面保留但不列入導覽） */
 const tabs: { key: AccountPage; label: string; href: string }[] = [
   { key: 'profile', label: '個人檔案', href: './account.html' },
   { key: 'courses', label: '我的課程', href: './my-courses.html' },
   { key: 'stars', label: '我的星星', href: './stars.html' },
   { key: 'orders', label: '我的訂單', href: './orders.html' },
+  { key: 'invite', label: '邀請好友', href: './invite.html' },
 ]
 
 /**
- * 登入後的個人頁面（個人檔案／我的星星／邀請朋友共用版型）。
+ * 登入後的個人頁面（個人檔案／我的星星／邀請好友共用版型）。
  *
  * ⚠️ 後端尚未串接：所有數字、紀錄與規則一律為空狀態或「待補」，
  * 不虛構學員資料。串接後把各區塊的空狀態換成 API 資料即可。
@@ -502,7 +502,7 @@ function StarsPanel() {
   )
 }
 
-/** 邀請朋友：邀請連結與獎勵（皆待後端與行銷方案確認） */
+/** 邀請好友：邀請連結與獎勵（皆待後端與行銷方案確認） */
 function InvitePanel() {
   return (
     <div className="space-y-8">

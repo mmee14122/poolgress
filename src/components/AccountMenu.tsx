@@ -13,8 +13,8 @@ import { useLibrary, totalStarsOf } from '../lib/library'
 import { toast } from '../ui/Toast'
 
 /**
- * 選單項目（依產品規格只保留：個人檔案／我的課程／登出＋摘要與星星卡片；
- * 不放收藏、商城、邀請好友、訂單、通知等）。路徑皆為相對路徑。
+ * 選單項目：個人檔案／我的課程／邀請好友＋頂部摘要與星星卡片；
+ * 不放收藏、商城、訂單、通知等。路徑皆為相對路徑。
  */
 const items = [
   {
@@ -26,6 +26,11 @@ const items = [
     label: '我的課程',
     href: './my-courses.html',
     icon: 'M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z',
+  },
+  {
+    label: '邀請好友',
+    href: './invite.html',
+    icon: 'M15 12a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h16v-3c0-2.7-5.3-4-8-4zM6 9V6H4v3H1v2h3v3h2v-3h3V9z',
   },
 ]
 
@@ -257,7 +262,7 @@ export function AccountMenu({ user }: { user: Session }) {
               </a>
             </div>
 
-            {/* 實戰星星卡片：金色細線星星＋數量＋右箭頭 → 我的星星 */}
+            {/* 挑戰星星卡片：金色細線星星＋數量＋右箭頭 → 我的星星 */}
             <a
               href="./stars.html"
               className="mt-3 flex items-center gap-3 rounded-xl bg-brass-400/10 px-4 py-3 ring-1 ring-brass-400/40 transition-colors ring-inset hover:bg-brass-400/20"
@@ -271,7 +276,7 @@ export function AccountMenu({ user }: { user: Session }) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="flex-1 text-sm font-semibold text-brass-700">實戰星星</span>
+              <span className="flex-1 text-sm font-semibold text-brass-700">挑戰星星</span>
               <span className="text-base font-bold text-brass-700 tabular-nums">{totalStarsOf(lib)}</span>
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 shrink-0 fill-brass-600">
                 <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
