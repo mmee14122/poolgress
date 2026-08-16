@@ -4,7 +4,7 @@ import { Button } from './ui/Button'
 import { isEmail, MIN_PASSWORD_LENGTH } from './lib/validate'
 import { session } from './lib/session'
 import {
-  AFTER_LOGIN_URL,
+  afterLoginUrl,
   requestPasswordReset,
   signInWithPassword,
   signInWithProvider,
@@ -132,7 +132,7 @@ export default function AuthApp() {
 
     if (result.ok) {
       if (mode === 'forgot') setSent(true)
-      else location.href = AFTER_LOGIN_URL
+      else location.href = afterLoginUrl()
       return
     }
     /* 忘記密碼：即使後端失敗也顯示相同中性訊息，不洩漏信箱是否註冊。
@@ -152,7 +152,7 @@ export default function AuthApp() {
   const demoSignIn = () => {
     const demoEmail = isEmail(email) ? email.trim() : 'demo@poolgress.com'
     session.signIn({ email: demoEmail })
-    location.href = AFTER_LOGIN_URL
+    location.href = afterLoginUrl()
   }
 
   const onProvider = async (provider: OAuthProvider) => {

@@ -23,8 +23,47 @@ export type AuthResult = { ok: true } | { ok: false; code: AuthErrorCode }
 
 const NOT_CONFIGURED: AuthResult = { ok: false, code: 'not_configured' }
 
-/** 登入成功後的導向位置（相對路徑，子資料夾部署適用） */
+/** 登入成功後的預設導向位置（相對路徑，子資料夾部署適用） */
 export const AFTER_LOGIN_URL = './account.html'
+
+/** 帶回原頁面用的網址參數名稱 */
+export const REDIRECT_PARAM = 'redirect'
+
+/**
+ * 只允許站內的相對頁面，例如 `./my-courses.html` 或 `./coach.html?id=coach-1`。
+ * 擋掉絕對網址、協定與 `//`，避免被拿來做開放轉址（open redirect）。
+ */
+function isSafeRedirect(value: string) {
+  if (!value.startsWith('./')) return false
+  if (value.includes('//') || value.includes(':') || value.includes('\\')) return false
+  return /^\.\/[A-Za-z0-9_-]+\.html(\?[A-Za-z0-9_\-=&%.]*)?(#[A-Za-z0-9_-]*)?$/.test(value)
+}
+
+/**
+ * 產生「登入後回到原頁面」的登入頁網址。
+ * 例：在我的教練課被擋下時 → ./login.html?redirect=.%2Fmy-courses.html
+ */
+export function loginUrlWithRedirect(target: string, mode?: 'register' | 'forgot') {
+  const params = new URLSearchParams()
+  if (mode) params.set('mode', mode)
+  if (isSafeRedirect(target)) params.set(REDIRECT_PARAM, target)
+  const query = params.toString()
+  return query ? `./login.html?${query}` : './login.html'
+}
+
+/** 目前頁面的相對網址（含 query），供 loginUrlWithRedirect 使用 */
+export function currentPageTarget() {
+  const file = location.pathname.split('/').pop() || 'index.html'
+  return `./${file}${location.search}`
+}
+
+/**
+ * 登入成功後要去哪裡：有安全的 redirect 參數就回原頁，否則用預設。
+ */
+export function afterLoginUrl() {
+  const raw = new URLSearchParams(location.search).get(REDIRECT_PARAM)
+  return raw && isSafeRedirect(raw) ? raw : AFTER_LOGIN_URL
+}
 
 /** Email + 密碼登入 */
 export async function signInWithPassword(_email: string, _password: string): Promise<AuthResult> {

@@ -12,6 +12,7 @@ import {
   type Session,
 } from './lib/session'
 import { useLibrary, totalStarsOf, type LibraryBooking } from './lib/library'
+import { loginUrlWithRedirect, currentPageTarget } from './lib/auth'
 import { courseById, flatLessons } from './data/courses'
 import { toast } from './ui/Toast'
 
@@ -706,8 +707,9 @@ function InvitePanel() {
 
 /* ------------------------------------------------------------------ */
 
-/** 未登入時的引導畫面（不暴露個人區塊） */
+/** 未登入時的引導畫面（不暴露個人區塊）；登入後會回到原本要看的分頁 */
 function SignedOutView() {
+  const loginHref = loginUrlWithRedirect(currentPageTarget())
   return (
     <>
       <Navbar />
@@ -720,7 +722,7 @@ function SignedOutView() {
         <h1 className="mt-6 text-2xl sm:text-3xl">請先登入</h1>
         <p className="mt-3 text-ink-500">登入後即可查看個人檔案、星星與邀請紀錄。</p>
         <div className="mt-8 w-full">
-          <Button href="./login.html" size="lg" block>
+          <Button href={loginHref} size="lg" block>
             前往登入
           </Button>
         </div>

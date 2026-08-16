@@ -215,7 +215,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | 要接什麼 | 改哪裡 |
 |---|---|
 | 登入／註冊／忘記密碼 | `lib/auth.ts` 四個函式（介面已定義好，UI 不用改） |
-| 登入後導向 | `lib/auth.ts` `AFTER_LOGIN_URL` |
+| 登入後導向 | `lib/auth.ts`：預設 `AFTER_LOGIN_URL`；有 `?redirect=` 時回原頁（`afterLoginUrl()`，僅接受站內相對路徑） |
 | Apple／Google 登入 | `lib/auth.ts` `signInWithProvider` |
 | 金流 | `CheckoutApp.tsx` 的 `confirm()`（目前 setTimeout 模擬） |
 | 教練預約付款與寄確認信 | `components/coach/CoachBooking.tsx` 的 `handlePay()`（目前 setTimeout 模擬，成功畫面明確標示未扣款、未寄信） |
