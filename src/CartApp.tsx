@@ -93,10 +93,10 @@ export default function CartApp() {
                 <p className="mt-4 text-center text-xs text-ink-500">
                   想學更多嗎？
                   <a
-                    href="./course.html"
+                    href="./coach.html"
                     className="font-semibold text-brand-700 underline underline-offset-4"
                   >
-                    探索其他線上課程
+                    探索專屬教練課
                   </a>
                 </p>
               </div>

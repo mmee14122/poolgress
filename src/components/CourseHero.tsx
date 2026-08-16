@@ -1,6 +1,6 @@
 import { course, courseStats } from '../data/course-detail'
 import { products } from '../data/catalog'
-import { cart } from '../lib/cart'
+import { cart, useCart } from '../lib/cart'
 import { useLibrary, ownsCourse } from '../lib/library'
 import { useSession } from '../lib/session'
 import { Button } from '../ui/Button'
@@ -18,6 +18,8 @@ const product = products[0]
 export function CourseHero() {
   const { hero } = course
   const owned = ownsCourse(useLibrary(), product.id, !!useSession())
+  /* 與右側購買卡同一組狀態：加入購物車後兩邊一起變成「已加入購物車」 */
+  const inCart = useCart().some((i) => i.id === product.id)
   /** 立即購買：桌機與手機一致——加入購物車後直接前往結帳 */
   const buyNow = () => {
     cart.add(product)
@@ -82,6 +84,19 @@ export function CourseHero() {
               /* 已擁有此課程：不再顯示購買（重複購買保護） */
               <Button size="lg" href="./my-courses.html" className="w-full sm:w-auto">
                 開始學習
+              </Button>
+            ) : inCart ? (
+              /* 已在購物車：與購買卡一致，改為前往購物車 */
+              <Button
+                size="lg"
+                variant="secondary"
+                href="./cart.html"
+                className="w-full sm:w-auto"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5 fill-current">
+                  <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
+                </svg>
+                已加入購物車
               </Button>
             ) : (
               <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
