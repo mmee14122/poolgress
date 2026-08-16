@@ -21,35 +21,18 @@ export function FitCheck() {
         ))}
       </ul>
 
-      {/* 承接段：把讀者帶往下一段「課程章節」，不是導向購買。
-          左側直條與向下箭頭都在暗示「繼續往下看」 */}
-      <a
-        href="#chapters"
-        className="group mt-8 flex items-center gap-4 rounded-card border border-line border-l-4 border-l-brand-600 bg-white px-5 py-5 transition-colors hover:bg-brand-50/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:px-6"
-      >
-        <div className="min-w-0 flex-1">
-          <p className="text-sm leading-relaxed text-ink-700">{fit.nudge}</p>
-          <p className="mt-2.5 flex items-center gap-1.5 text-sm font-semibold text-brand-700">
-            {fit.nudgeCta}
-            <svg
-              viewBox="0 0 20 20"
-              aria-hidden="true"
-              className="h-4 w-4 fill-current transition-transform duration-150 group-hover:translate-x-0.5"
-            >
-              <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
-            </svg>
-          </p>
-        </div>
-        {/* 向下箭頭：視覺上提示接下來的內容在下方 */}
-        <span
-          aria-hidden="true"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 transition-transform duration-150 group-hover:translate-y-0.5"
-        >
-          <svg viewBox="0 0 20 20" className="h-5 w-5 fill-current">
-            <path d="M10 14.5L4.3 8.8l1.4-1.4L10 11.7l4.3-4.3 1.4 1.4z" />
-          </svg>
-        </span>
-      </a>
+      {/* 結尾標語：純視覺、非互動（無連結、無按鈕、無 hover、不可聚焦）。
+          作為「適合對象」的收尾，同時以大量留白自然帶到下一段課程章節。
+          上下各一道極淡細線與小圓點作過場，不搶走文字。 */}
+      <div className="mt-14 flex flex-col items-center gap-6 px-4 pb-4 text-center lg:mt-20">
+        <span aria-hidden="true" className="h-px w-12 bg-brass-400/40" />
+
+        <p className="max-w-xl text-lg leading-loose font-semibold text-brass-700 sm:text-xl">
+          {fit.nudge}
+        </p>
+
+        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-brass-400/50" />
+      </div>
     </Section>
   )
 }

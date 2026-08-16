@@ -133,7 +133,7 @@ export type CourseIntro = {
       qrCode: string | null
     }
     /** 06｜這堂課適合你嗎？ */
-    fit: { title: string; sub: string; items: string[]; nudge: string; nudgeCta: string }
+    fit: { title: string; sub: string; items: string[]; nudge: string }
   }
   chapters: Chapter[]
   reviews: Review[]
@@ -328,9 +328,8 @@ export const course: CourseIntro = {
         '聽過一些技巧，但到了球桌還是不知道怎麼做。',
         '想知道自己現在該練什麼，而不是一直靠感覺摸索。',
       ],
-      nudge: '如果你想讓每一次練習不再只是碰運氣，這堂課會帶你從看懂開始。',
-      /* 引導往下看課程章節的行動文字 */
-      nudgeCta: '看看課程章節怎麼安排',
+      /* 適合對象段落的結尾標語（純視覺呈現，非 CTA） */
+      nudge: '如果你想讓每一次練習不再只是碰運氣，這堂課會帶你從看懂開始',
     },
   },
 
