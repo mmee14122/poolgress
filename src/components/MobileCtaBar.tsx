@@ -56,6 +56,7 @@ export function MobileCtaBar() {
         <div className="min-w-0 flex-1">
           <p className="flex items-baseline gap-1.5">
             <span className="text-xs font-semibold text-brand-700">
+              {course.purchase.priceDeadline ? `${course.purchase.priceDeadline}前` : ''}
               {course.purchase.priceLabel}
             </span>
             <span className="text-lg font-bold text-ink-900 tabular-nums">

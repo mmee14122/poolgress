@@ -160,7 +160,7 @@ function LessonModal({ state, onClose }: { state: ModalState; onClose: () => voi
 /* ---------- 課程內容主區塊 ---------- */
 
 /**
- * 06｜課程內容：課綱展示（販售頁，非購後學習介面）。
+ * 06｜課程章節：課綱展示（販售頁，非購後學習介面）。標題與左側索引一致。
  * 互斥 accordion——同一時間只展開一個章節，第一章預設展開；
  * 展開收合用 grid-rows 過渡做平滑動畫。
  */
@@ -172,7 +172,7 @@ export function Chapters() {
     <section id="chapters" className="scroll-mt-[calc(var(--promo-h)+8rem)] py-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:py-14">
       {/* 標題列：左標題、右總規模 */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h2 className="text-2xl sm:text-3xl">課程內容</h2>
+        <h2 className="text-2xl sm:text-3xl">課程章節</h2>
         <p className="text-sm text-ink-500">
           共 <strong className="font-semibold text-ink-900">{courseStats.units}</strong> 個單元
           <span aria-hidden="true" className="mx-2 text-ink-400">·</span>

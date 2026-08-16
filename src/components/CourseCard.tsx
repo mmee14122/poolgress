@@ -120,7 +120,11 @@ export function CourseCard() {
       {/* 底部固定購買區：價格三層結構（預購價最醒目→原價與現省→操作） */}
       <div className="border-t border-line px-5 pt-4 pb-5">
         <div className="flex items-baseline gap-2.5">
-          <span className="text-sm font-semibold text-brand-700">{purchase.priceLabel}</span>
+          {/* 有預購截止日時顯示為「X月X日前預購價」 */}
+          <span className="text-sm font-semibold text-brand-700">
+            {purchase.priceDeadline ? `${purchase.priceDeadline}前` : ''}
+            {purchase.priceLabel}
+          </span>
           <span className="text-3xl font-bold text-ink-900 tabular-nums">
             {formatNT(product.price)}
           </span>

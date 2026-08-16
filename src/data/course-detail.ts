@@ -97,6 +97,8 @@ export type PurchaseInfo = {
   studentCount: string
   /** 主要價格的名稱（例：預購價），顯示在價格旁 */
   priceLabel: string
+  /** 預購截止日（顯示為「X月X日前預購價」）；null 時只顯示 priceLabel */
+  priceDeadline: string | null
   /** 加贈優惠說明（獨立淡金徽章呈現）；null 時不顯示 */
   giftNote: string | null
 }
@@ -110,7 +112,7 @@ export type CourseIntro = {
   /** 課程簡介六區塊（SECTION 01–06）的完整文案 */
   intro: {
     /** 課程資訊列（【＿＿】為待確認占位符） */
-    info: { students: string; level: string; access: string }
+    info: { students: string; level: string; access: string; startDate: string }
     /** 02｜你可能正卡在這裡 */
     stuck: { eyebrow: string; title: string; cards: StuckCard[]; closing: string }
     /** 03｜學完後，你會有什麼不同？ */
@@ -127,9 +129,11 @@ export type CourseIntro = {
       punch: string
       ctaPrimary: { label: string; href: string }
       ctaSecondary: { label: string; href: string }
+      /** App 下載 QR code 圖片路徑；null＝顯示佔位框 */
+      qrCode: string | null
     }
     /** 06｜這堂課適合你嗎？ */
-    fit: { title: string; sub: string; items: string[]; nudge: string }
+    fit: { title: string; sub: string; items: string[]; nudge: string; nudgeCta: string }
   }
   chapters: Chapter[]
   reviews: Review[]
@@ -158,7 +162,8 @@ export const course: CourseIntro = {
 
   /* 課程簡介六區塊文案（【＿＿待確認】占位符不可自行捏造） */
   intro: {
-    info: { students: '＿＿', level: '新手入門', access: '無限制' },
+    /* startDate：開課時間（待確認實際日期，先以占位符呈現） */
+    info: { students: '＿＿', level: '新手入門', access: '無限制', startDate: '＿月＿日' },
 
     /* 02｜你可能正卡在這裡 */
     stuck: {
@@ -306,7 +311,10 @@ export const course: CourseIntro = {
       features: ['【Challenge 練習題】', '下載 Poolgress App', '透過 AI 影像辨識，進行球桌實戰挑戰'],
       punch: '你將開始掌控整張球桌。',
       ctaPrimary: { label: '下載 Poolgress App', href: '#' }, // ⚠️ App 商店連結待補
-      ctaSecondary: { label: '了解實戰闖關如何進行', href: '/games' },
+      /* 下載 QR code 圖片：放 public/assets/og 或 challenges 後填路徑
+         （建議 512×512 去背 PNG）；null 時顯示待補佔位框 */
+      qrCode: null,
+      ctaSecondary: { label: '了解實戰闖關如何進行', href: './challenges.html' },
     },
 
     /* 06｜這堂課適合你嗎？ */
@@ -321,6 +329,8 @@ export const course: CourseIntro = {
         '想知道自己現在該練什麼，而不是一直靠感覺摸索。',
       ],
       nudge: '如果你想讓每一次練習不再只是碰運氣，這堂課會帶你從看懂開始。',
+      /* 引導往下看課程章節的行動文字 */
+      nudgeCta: '看看課程章節怎麼安排',
     },
   },
 
@@ -485,6 +495,8 @@ export const course: CourseIntro = {
   purchase: {
     studentCount: '＿＿',
     priceLabel: '預購價',
+    /* 預購截止日待確認，先以占位符呈現 */
+    priceDeadline: '＿月＿日',
     giftNote: '預購期間加贈 1 堂教練課',
   },
 

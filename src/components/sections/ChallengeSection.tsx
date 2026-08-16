@@ -56,16 +56,37 @@ export function ChallengeSection() {
 
           <p className="mt-5 text-lg font-bold text-white">{challenge.punch}</p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button href={challenge.ctaPrimary.href} size="lg">
-              {challenge.ctaPrimary.label}
-            </Button>
-            <a
-              href={challenge.ctaSecondary.href}
-              className="text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
-            >
-              {challenge.ctaSecondary.label}
-            </a>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            {/* App 下載 QR code：素材備妥後在 data/course-detail.ts 填 qrCode 路徑，
+                此處自動換成圖片（建議 512×512）；未提供時顯示待補佔位框 */}
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/20">
+              {challenge.qrCode ? (
+                <img
+                  src={challenge.qrCode}
+                  alt="下載 Poolgress App 的 QR code"
+                  className="h-full w-full object-contain p-1.5"
+                />
+              ) : (
+                <span className="flex flex-col items-center gap-1.5 px-1 text-center">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-white/40">
+                    <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
+                  </svg>
+                  <span className="text-[0.625rem] leading-tight text-white/50">QR code 待補</span>
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button href={challenge.ctaPrimary.href} size="lg">
+                {challenge.ctaPrimary.label}
+              </Button>
+              <a
+                href={challenge.ctaSecondary.href}
+                className="text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+              >
+                {challenge.ctaSecondary.label}
+              </a>
+            </div>
           </div>
         </div>
       </div>

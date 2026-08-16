@@ -43,6 +43,12 @@ export function CourseInfo() {
       label: '觀看期限',
       value: info.access,
     },
+    {
+      /* 日曆圖示 */
+      icon: 'M7 2v2h10V2h2v2h1a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V2zm13 8H4v10h16zM6 12h5v4H6z',
+      label: '開課時間',
+      value: info.startDate,
+    },
   ]
 
   return (
