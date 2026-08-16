@@ -58,11 +58,39 @@ export const site = {
     youtube: null as string | null,
   },
 
+  /** ⚠️ 客服信箱【待確認】；與上方 contactEmail 之後應統一為同一個 */
+  supportEmail: 'support@poolgress.com',
+
+  /** LINE 官方帳號連結；null＝顯示為停用並標示即將公開 */
+  lineUrl: null as string | null,
+
   /* 全部使用相對路徑（子資料夾部署也正確） */
   footerLinks: [
     { label: '常見問題', href: './faq.html' },
     { label: '服務條款', href: './terms.html' },
     { label: '隱私權政策', href: './privacy.html' },
     { label: '聯絡我們', href: './contact.html' },
+  ] as NavLink[],
+
+  /**
+   * 頁尾主導覽（第一列）。
+   * href 為 null 代表該頁尚未建立，會顯示為不可點的待補狀態，不會連到錯誤網址。
+   */
+  footerPrimary: [
+    { label: '線上課程', href: './course.html' },
+    { label: '實戰闖關', href: './challenges.html' },
+    { label: '教練群', href: './coach.html' },
+    /* 預約在個別教練頁，這裡指向精選教練 */
+    { label: '預約教練', href: './coach.html?id=coach-1' },
+    /* ⚠️ 尚未有「關於 Poolgress」頁面，建立後把 href 填上即可 */
+    { label: '關於 Poolgress', href: null },
+  ] as { label: string; href: string | null }[],
+
+  /** 頁尾支援連結（第二列） */
+  footerSupport: [
+    { label: '常見問題', href: './faq.html' },
+    { label: '聯絡我們', href: './contact.html' },
+    { label: '使用條款', href: './terms.html' },
+    { label: '隱私權政策', href: './privacy.html' },
   ] as NavLink[],
 } as const

@@ -2,72 +2,80 @@ import type { ReactNode } from 'react'
 import { site } from '../data/site'
 
 /**
- * 全站頁尾：品牌、聯絡資訊、頁尾導覽與社群追蹤入口。
+ * 集中式極簡頁尾：深藍黑底、暖白字、全部置中，多列橫向文字連結。
  *
- * 地址與社群網址都來自 data/site.ts：
- *   companyAddress 留空字串 → 該行不顯示
- *   social.* 留 null        → icon 以停用狀態呈現，tooltip「即將公開」，不連到錯誤網址
+ * 四列：主導覽 → 支援連結 → 公司聯絡 → 版權＋社群 icon。
+ * 寬螢幕橫向一列，窄螢幕自動換行仍維持置中。
+ *
+ * 資料都在 data/site.ts：
+ *   footerPrimary／footerSupport  兩列連結（href 為 null＝頁面待補，不可點）
+ *   companyAddress／supportEmail／lineUrl  第三列
+ *   social.*                      社群連結（null＝停用並顯示「即將公開」）
  */
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-white">
-      <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-8 px-4 py-10 sm:px-6 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <p className="font-bold text-ink-900">{site.brandName}</p>
-          <p className="mt-1 text-sm text-ink-400">{site.tagline}</p>
-
-          {/* 聯絡資訊 */}
-          <address className="mt-4 space-y-1.5 text-sm not-italic text-ink-500">
-            {site.companyAddress && (
-              <p className="flex items-start gap-2">
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  className="mt-0.5 h-4 w-4 shrink-0 fill-ink-400"
-                >
-                  <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
-                </svg>
-                {site.companyAddress}
-              </p>
-            )}
-            <p className="flex items-start gap-2">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                className="mt-0.5 h-4 w-4 shrink-0 fill-ink-400"
-              >
-                <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm8 7L4 6v12h16V6zm0 2.3L20 8v-.7l-8 5-8-5V8z" />
-              </svg>
-              <a
-                href={`mailto:${site.contactEmail}`}
-                className="transition-colors hover:text-brand-700"
-              >
-                {site.contactEmail}
-              </a>
-            </p>
-          </address>
-
-          <p className="mt-4 text-sm text-ink-400">
-            © {new Date().getFullYear()} {site.brandName}. All rights reserved.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-6 lg:items-end">
-          <nav aria-label="頁尾導覽" className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
-            {site.footerLinks.map((item) => (
-              <a
-                key={item.href}
+    <footer className="bg-brand-950 text-ivory-50">
+      <div className="mx-auto w-full max-w-3xl px-4 py-12 text-center sm:px-6">
+        {/* 第一列：主導覽 */}
+        <nav aria-label="頁尾主導覽">
+          <Row separatorClass="text-white/25">
+            {site.footerPrimary.map((item) => (
+              <FooterLink
+                key={item.label}
                 href={item.href}
-                /* inline-block + py 讓行動裝置上的觸控區域夠大 */
-                className="inline-block py-2.5 text-ink-500 transition-colors hover:text-brand-700"
+                className="text-base font-semibold text-ivory-50 hover:text-brass-300"
               >
                 {item.label}
-              </a>
+              </FooterLink>
             ))}
-          </nav>
+          </Row>
+        </nav>
 
-          <SocialLinks />
-        </div>
+        {/* 第二列：支援連結 */}
+        <nav aria-label="頁尾支援連結" className="mt-2">
+          <Row separatorClass="text-white/20">
+            {site.footerSupport.map((item) => (
+              <FooterLink
+                key={item.label}
+                href={item.href}
+                className="text-sm text-white/70 hover:text-white"
+              >
+                {item.label}
+              </FooterLink>
+            ))}
+          </Row>
+        </nav>
+
+        {/* 第三列：公司聯絡 */}
+        <address className="mt-2 not-italic">
+          <Row separatorClass="text-white/20">
+            {site.companyAddress && (
+              <span className="inline-block py-2 text-sm text-white/60">
+                {site.companyAddress}
+              </span>
+            )}
+            <a
+              href={`mailto:${site.supportEmail}`}
+              className="inline-block py-2 text-sm text-white/60 transition-colors hover:text-white"
+            >
+              {site.supportEmail}
+            </a>
+            <FooterLink
+              href={site.lineUrl}
+              external
+              className="text-sm text-white/60 hover:text-white"
+            >
+              LINE 官方帳號
+            </FooterLink>
+          </Row>
+        </address>
+
+        {/* 版權與社群 */}
+        <p className="mt-6 text-xs text-white/55">
+          © {new Date().getFullYear()} {site.brandName}. All rights reserved.
+        </p>
+
+        <SocialLinks />
       </div>
 
       {/* 手機底部購買列的讓位空間 */}
@@ -79,12 +87,83 @@ export function Footer() {
 /* ------------------------------------------------------------------ */
 
 /**
+ * 一列置中的橫向連結，項目之間插入細直線分隔符號。
+ * 窄螢幕會自動換行，分隔符號跟著留在行內，不影響置中。
+ */
+function Row({
+  children,
+  separatorClass,
+}: {
+  children: ReactNode
+  separatorClass: string
+}) {
+  const items = Array.isArray(children) ? children.filter(Boolean) : [children]
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-0">
+      {items.map((child, i) => (
+        <span key={i} className="inline-flex items-center">
+          {child}
+          {i < items.length - 1 && (
+            <span aria-hidden="true" className={`px-1.5 ${separatorClass}`}>
+              ｜
+            </span>
+          )}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * 頁尾連結。
+ * href 為 null＝該頁／帳號尚未建立，顯示為不可點的低對比文字並標示待補，
+ * 不會連到錯誤網址。
+ */
+function FooterLink({
+  href,
+  children,
+  className,
+  external = false,
+}: {
+  href: string | null
+  children: ReactNode
+  className: string
+  external?: boolean
+}) {
+  /* py-2 讓行動裝置的觸控區域夠大 */
+  if (!href) {
+    return (
+      <span
+        aria-disabled="true"
+        title="即將公開"
+        className={`inline-block cursor-not-allowed py-2 opacity-45 ${className}`}
+      >
+        {children}
+      </span>
+    )
+  }
+
+  return (
+    <a
+      href={href}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      className={`inline-block py-2 transition-colors ${className}`}
+    >
+      {children}
+    </a>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+
+/**
  * 社群追蹤入口：只有官方辨識 icon，不放平台名稱文字、不加標籤。
  *
- * ・觸控區 44×44px，視覺 icon 20px（外框與 icon 大小分離）
+ * ・觸控區 44×44px，視覺 icon 20px
  * ・hover 只做顏色變化，不加框、不放大、不彈跳
- * ・手機同樣是橫向排列（不隨斷點改成直式）
- * ・網址未填時為 <span aria-disabled>，有 tooltip「即將公開」，不會連出去
+ * ・手機同樣橫向排列
+ * ・網址未填時為 aria-disabled 的 span，tooltip「即將公開」，不會連出去
  */
 function SocialLinks() {
   const items: { name: string; href: string | null; icon: ReactNode }[] = [
@@ -94,37 +173,34 @@ function SocialLinks() {
   ]
 
   return (
-    <div>
-      <p className="text-xs font-semibold tracking-wide text-ink-400 lg:text-right">追蹤我們</p>
-      <ul className="mt-1 flex items-center gap-1 lg:justify-end">
-        {items.map((item) => (
-          <li key={item.name}>
-            {item.href ? (
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={item.name}
-                title={item.name}
-                className="flex h-11 w-11 items-center justify-center text-ink-400 transition-colors hover:text-brand-700"
-              >
-                {item.icon}
-              </a>
-            ) : (
-              <span
-                role="link"
-                aria-disabled="true"
-                aria-label={`${item.name}：即將公開`}
-                title="即將公開"
-                className="flex h-11 w-11 cursor-not-allowed items-center justify-center text-ink-400/40"
-              >
-                {item.icon}
-              </span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="mt-3 flex items-center justify-center gap-1">
+      {items.map((item) => (
+        <li key={item.name}>
+          {item.href ? (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={item.name}
+              title={item.name}
+              className="flex h-11 w-11 items-center justify-center text-white/60 transition-colors hover:text-white"
+            >
+              {item.icon}
+            </a>
+          ) : (
+            <span
+              role="link"
+              aria-disabled="true"
+              aria-label={`${item.name}：即將公開`}
+              title="即將公開"
+              className="flex h-11 w-11 cursor-not-allowed items-center justify-center text-white/25"
+            >
+              {item.icon}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
   )
 }
 
