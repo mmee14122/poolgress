@@ -12,7 +12,7 @@ export const site = {
 
   /** 主導覽。venues 目前為「敬請期待」佔位頁，正式頁完成後整頁替換 */
   nav: [
-    { label: '線上課程', href: './courses.html' },
+    { label: '線上課程', href: './course.html' },
     { label: '實戰闖關', href: './challenges.html' },
     { label: '關於教練', href: './coach.html' },
     { label: '合作場館', href: './venues.html' },

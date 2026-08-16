@@ -47,7 +47,7 @@ export default function LearnApp() {
             {!user ? '登入後即可繼續你的學習進度。' : '購買課程後即可開始學習。'}
           </p>
           <div className="mt-8 w-full">
-            <Button href={!user ? './login.html' : './courses.html'} size="lg" block>
+            <Button href={!user ? './login.html' : './course.html'} size="lg" block>
               {!user ? '前往登入' : '探索線上課程'}
             </Button>
           </div>

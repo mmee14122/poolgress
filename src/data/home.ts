@@ -79,7 +79,7 @@ export const home = {
         no: '01',
         name: '循序線上課程',
         body: '從初學開始，建立一條清楚的學習方向。不用自己在網路上拼湊零散技巧。',
-        href: './courses.html',
+        href: './course.html',
         cta: '查看線上課程',
       },
       {

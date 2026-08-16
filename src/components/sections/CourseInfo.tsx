@@ -57,7 +57,8 @@ export function CourseInfo() {
       id="info"
       className="scroll-mt-[calc(var(--promo-h)+8rem)] pt-8 pb-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:pt-12"
     >
-      <h2 className="flex items-center gap-2.5 text-lg">
+      {/* 字級與「課程章節」主標題共用同一組 class（h2 基底樣式全域一致） */}
+      <h2 className="flex items-center gap-2.5 text-2xl sm:text-3xl">
         <span aria-hidden="true" className="h-5 w-1 rounded-full bg-brand-600" />
         課程資訊
       </h2>
@@ -73,8 +74,9 @@ export function CourseInfo() {
               </svg>
             </span>
             <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
-              <dt className="text-xs text-ink-500 sm:text-sm">{row.label}</dt>
-              <dd className="text-xs font-semibold text-ink-900 sm:text-sm">
+              {/* 標籤＝章節區統計文字規格；數值＝章節名稱規格（含 tabular-nums） */}
+              <dt className="text-sm leading-[1.9] text-ink-500">{row.label}</dt>
+              <dd className="font-semibold text-ink-900 tabular-nums">
                 {row.value}
                 {row.unit && <span className="ml-0.5 font-normal text-ink-500">{row.unit}</span>}
               </dd>

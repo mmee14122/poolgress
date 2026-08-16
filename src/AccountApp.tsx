@@ -118,7 +118,7 @@ function CoursesPanel() {
           title="還沒有已購買的課程"
           description="購買後這裡會顯示課程與觀看進度。"
           action={
-            <Button href="./courses.html" size="lg">
+            <Button href="./course.html" size="lg">
               探索線上課程
             </Button>
           }
@@ -195,7 +195,7 @@ function OrdersPanel() {
           title="還沒有訂單"
           description="完成購買後，訂單編號、金額與發票資訊會顯示在這裡。"
           action={
-            <Button href="./courses.html" size="lg" variant="secondary">
+            <Button href="./course.html" size="lg" variant="secondary">
               探索線上課程
             </Button>
           }

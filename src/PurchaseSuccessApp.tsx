@@ -27,7 +27,7 @@ export default function PurchaseSuccessApp() {
             <h1 className="text-2xl sm:text-3xl">找不到這筆訂單</h1>
             <p className="mt-3 text-ink-500">訂單可能已過期，或這個裝置沒有購買紀錄。</p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button href="./courses.html" size="lg">
+              <Button href="./course.html" size="lg">
                 探索線上課程
               </Button>
               <Button href="./orders.html" size="lg" variant="secondary">

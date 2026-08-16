@@ -171,7 +171,7 @@ function CoachPage() {
           課程裡的每一個單元，都是照著這套「講清楚」的方法設計的。
         </p>
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button href="./courses.html" size="lg">
+          <Button href="./course.html" size="lg">
             查看線上課程
           </Button>
           <Button

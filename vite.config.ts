@@ -25,7 +25,6 @@ export default defineConfig({
         orders: fileURLToPath(new URL('./orders.html', import.meta.url)),
         invite: fileURLToPath(new URL('./invite.html', import.meta.url)),
         // 課程列表／實戰闖關／學習頁
-        courses: fileURLToPath(new URL('./courses.html', import.meta.url)),
         challenges: fileURLToPath(new URL('./challenges.html', import.meta.url)),
         learn: fileURLToPath(new URL('./learn.html', import.meta.url)),
         // 支援頁（coach／faq／contact 共用 info-entry）

@@ -63,12 +63,11 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 
 ---
 
-## 3. 頁面地圖（23 個 HTML）
+## 3. 頁面地圖（22 個 HTML）
 
 | 網址 | 進入點 | App | 說明 |
 |---|---|---|---|
 | `/` | index.html | HomeApp | 首頁（6 區塊） |
-| `/courses.html` | courses-entry | CoursesApp | 課程列表（篩選＋搜尋） |
 | `/course.html` | course.tsx | App | 課程詳情／販售頁（主戰場） |
 | `/learn.html?course=&lesson=` | learn-entry | LearnApp | 學習頁（播放器＋章節） |
 | `/challenges.html[?id=]` | challenges-entry | ChallengesApp | 實戰闖關列表／詳情 |

@@ -109,7 +109,7 @@ function CourseNotReady({ id }: { id: string }) {
           {info ? '這堂課的詳細介紹正在準備中。' : '課程可能已下架或網址有誤。'}
         </p>
         <div className="mt-8 w-full">
-          <Button href="./courses.html" size="lg" block>
+          <Button href="./course.html" size="lg" block>
             查看所有課程
           </Button>
         </div>
