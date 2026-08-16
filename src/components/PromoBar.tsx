@@ -22,6 +22,9 @@ const pad = (n: number) => String(n).padStart(2, '0')
  * 深藍底 #183D6B、淺金字 #E8C97A；每秒更新，結束後顯示結束訊息。
  * 掛載時在 html 加 has-promo（--promo-h: 2rem），全站 sticky 偏移
  * 以該變數計算；按最右側 X 關閉後變數歸零，版面自動收合。
+ *
+ * ⚠️ 這一條只是訊息，不是連結：閱讀課程內容時誤觸整條會被捲到購買卡，
+ * 因此移除點擊捲動；唯一可點的是右側關閉鈕。
  */
 export function PromoBar() {
   const { promo } = site
@@ -49,25 +52,10 @@ export function PromoBar() {
 
   if (dismissed) return null
 
-  const scrollToBuy = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const buyCard = document.getElementById('buy-card')
-    if (!buyCard) return
-    e.preventDefault()
-    if (window.innerWidth >= 1024) {
-      buyCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    } else {
-      document.getElementById('stuck')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
-
   return (
     <div className="sticky top-0 z-50 flex h-8 w-full items-stretch bg-[#183D6B] text-[#E8C97A]">
       {/* 主內容：點擊捲至購買卡 */}
-      <a
-        href="./course.html#buy-card"
-        onClick={scrollToBuy}
-        className="flex min-w-0 flex-1 items-center justify-center px-10 transition-[filter] duration-150 hover:brightness-110"
-      >
+      <div className="flex min-w-0 flex-1 items-center justify-center px-10">
         <p className="flex items-baseline gap-3 truncate text-xs sm:text-sm">
           <span className="font-semibold whitespace-nowrap">{promo.label}</span>
           {remaining ? (
@@ -92,7 +80,7 @@ export function PromoBar() {
             <span className="whitespace-nowrap">{promo.endedText}</span>
           )}
         </p>
-      </a>
+      </div>
 
       {/* 最右側：黑色 X 關閉 */}
       <button
