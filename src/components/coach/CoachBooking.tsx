@@ -4,6 +4,8 @@ import { Field, TextInput, ChoiceCard } from '../../ui/Field'
 import { paymentOptions, type PaymentMethod, type Carrier } from '../../lib/checkout'
 import { isEmail, isMobileBarcode, isCitizenCert } from '../../lib/validate'
 import { library } from '../../lib/library'
+import { useSession } from '../../lib/session'
+import { loginUrlWithRedirect } from '../../lib/auth'
 import { toDateKey, type Coach, type CoachService } from '../../data/coaches'
 
 /**
@@ -593,6 +595,11 @@ function BookingResult({
   email: string
   onReset: () => void
 }) {
+  const user = useSession()
+  const myLessonsHref = user
+    ? './my-courses.html'
+    : loginUrlWithRedirect('./my-courses.html')
+
   return (
     <div className="text-center">
       <Steps current={3} />
@@ -623,8 +630,9 @@ function BookingResult({
       </p>
 
       <div className="mt-4 space-y-2">
-        {/* 這筆預約已寫入個人區，直接給一個入口過去看 */}
-        <Button href="./my-courses.html" block>
+        {/* 這筆預約已寫入個人區，直接給一個入口過去看。
+            訪客（未登入）直接送到登入頁，登入完成後回到我的教練課 */}
+        <Button href={myLessonsHref} block>
           前往我的教練課
         </Button>
         <Button onClick={onReset} variant="secondary" block>

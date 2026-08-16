@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Avatar } from './components/Avatar'
@@ -780,29 +780,19 @@ function InvitePanel() {
 
 /* ------------------------------------------------------------------ */
 
-/** 未登入時的引導畫面（不暴露個人區塊）；登入後會回到原本要看的分頁 */
+/**
+ * 未登入時直接導向登入頁（帶 redirect，登入後回到原本要看的分頁）。
+ *
+ * 原本這裡是「請先登入 ＋ 前往登入」的攔截畫面，等於多按一次；
+ * 改為自動導向，個人區塊一樣不會外洩。
+ * 用 replace 不留下這一頁的歷史紀錄，登入頁按上一頁不會又被彈回來。
+ */
 function SignedOutView() {
   const loginHref = loginUrlWithRedirect(currentPageTarget())
-  return (
-    <>
-      <Navbar />
-      <main className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-24 text-center sm:px-6">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-200">
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7 fill-brand-600">
-            <path d="M12 12a5 5 0 10-5-5 5 5 0 005 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-          </svg>
-        </span>
-        <h1 className="mt-6 text-2xl sm:text-3xl">請先登入</h1>
-        <p className="mt-3 text-ink-500">登入後即可查看個人檔案、星星與邀請紀錄。</p>
-        <div className="mt-8 w-full">
-          <Button href={loginHref} size="lg" block>
-            前往登入
-          </Button>
-        </div>
-      </main>
-      <Footer />
-    </>
-  )
+  useEffect(() => {
+    location.replace(loginHref)
+  }, [loginHref])
+  return null
 }
 
 function Card({ title, children }: { title: string; children: ReactNode }) {
