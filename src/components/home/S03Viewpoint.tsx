@@ -79,24 +79,6 @@ export function S03Viewpoint() {
             </ol>
           </div>
         </div>
-
-        <div className="mt-14 text-center">
-          <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">我們相信</p>
-          <p className="mt-4 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
-            {viewpoint.belief.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </p>
-          <p className="mt-6 text-ink-500">
-            {viewpoint.close.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </p>
-        </div>
       </div>
     </section>
   )
