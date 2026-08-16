@@ -11,7 +11,7 @@ export function Stuck() {
   const { stuck } = course.intro
 
   return (
-    <Section id="stuck" eyebrow={stuck.eyebrow} title={stuck.title}>
+    <Section id="stuck" label="課程簡介" eyebrow={stuck.eyebrow} title={stuck.title}>
       <div className="grid gap-4 sm:grid-cols-2">
         {stuck.cards.map((card) => (
           <div key={card.title} className="rounded-card border border-line bg-white p-5 sm:p-6">

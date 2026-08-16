@@ -27,8 +27,13 @@ export function FitCheck() {
       <div className="mt-14 flex flex-col items-center gap-6 px-4 pb-4 text-center lg:mt-20">
         <span aria-hidden="true" className="h-px w-12 bg-brass-400/40" />
 
+        {/* 固定兩行呈現，避免最後只剩一個字落單 */}
         <p className="max-w-xl text-lg leading-loose font-semibold text-brass-700 sm:text-xl">
-          {fit.nudge}
+          {fit.nudgeLines.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
         </p>
 
         <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-brass-400/50" />
