@@ -6,7 +6,7 @@ import { initialOf, type Session } from '../lib/session'
  */
 export function Avatar({
   user,
-  className = 'h-10 w-10 text-sm',
+  className = 'h-8 w-8 text-xs',
   ring = true,
 }: {
   user: Session

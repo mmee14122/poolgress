@@ -167,7 +167,7 @@ export function AccountMenu({ user }: { user: Session }) {
                 aria-label="更換頭像"
                 className="group relative rounded-full"
               >
-                <Avatar user={user} className="h-14 w-14 text-lg" />
+                <Avatar user={user} className="h-12 w-12 text-base" />
                 {/* hover 時覆蓋相機圖示提示可更換 */}
                 <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/45 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-white">

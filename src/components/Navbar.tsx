@@ -114,14 +114,15 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
           <LanguageMenu />
         </div>
 
-        {/* 手機：頭像（登入後）＋購物車抽屜 + 漢堡選單 */}
+        {/* 手機：購物車抽屜 ＋ 頭像（登入後）＋ 漢堡選單。
+            順序與桌機一致：購物車在左、頭像在右 */}
         <div className="flex items-center gap-1 lg:hidden">
+          <CartDrawerButton />
           {user && (
-            <div className="mr-2">
+            <div className="mx-1">
               <AccountMenu user={user} />
             </div>
           )}
-          <CartDrawerButton />
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
