@@ -64,9 +64,6 @@ export const site = {
   /** LINE 官方帳號連結；null＝顯示為停用並標示即將公開 */
   lineUrl: null as string | null,
 
-  /** 頁尾標語（比 tagline 完整的一句話） */
-  footerSlogan: '從看懂一球開始，把練習變成真正的進步。',
-
   /**
    * App 下載。
    *
@@ -79,8 +76,8 @@ export const site = {
   appDownload: {
     smartUrl: null as string | null,
     qrCode: null as string | null,
-    intro: '把課程帶到球桌前，完成每一次實戰挑戰。',
-    qrHint: '掃描下載，開始你的球桌 Challenge',
+    /** 下載區最下方唯一一句文案（非 CTA、不可點） */
+    outro: '讓我們一起把撞球變得好玩！',
     /** 商店連結（上架後填入；null＝顯示為即將上架） */
     appStore: null as string | null,
     googlePlay: null as string | null,

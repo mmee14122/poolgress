@@ -74,10 +74,12 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
     <footer className={t.shell}>
       {/* 最大寬度與導覽列、頁面主內容對齊 */}
       <div className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:py-14">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-12">
+        {/* 四欄對齊頂部；最右下載區略寬，QR 與 badge 才不會擁擠 */}
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-10">
           <BrandColumn t={t} />
+          <LinkGroup t={t} title="加入與合作" items={site.footerJoin} />
+          <LinkGroup t={t} title="支援與條款" items={site.footerSupport} />
           <AppColumn t={t} />
-          <LinksColumn t={t} />
         </div>
 
         {/* 版權：極淡分隔線，與內容欄位左緣對齊 */}
@@ -96,14 +98,13 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
 
 /* ------------------------------------------------------------------ */
 
-/** 左欄：Logo、標語、地址、信箱，社群 icon 緊接在聯絡資訊下方 */
+/** 第一欄：Logo、地址、信箱（緊接 Logo 下方，無標語），社群 icon 在最下方 */
 function BrandColumn({ t }: { t: Palette }) {
   return (
     <div className="max-w-sm">
       <Logo dark={t.logoDark} className="-ml-1 [&>span]:text-2xl [&>svg]:h-11 [&>svg]:w-11" />
-      <p className={`mt-3 text-base leading-relaxed ${t.slogan}`}>{site.footerSlogan}</p>
 
-      <address className="mt-6 space-y-3 not-italic">
+      <address className="mt-5 space-y-3 not-italic">
         {site.companyAddress && (
           <div>
             <p className={`text-xs font-semibold tracking-wide ${t.label}`}>公司地址</p>
@@ -128,16 +129,15 @@ function BrandColumn({ t }: { t: Palette }) {
 
 /* ------------------------------------------------------------------ */
 
-/** 中欄：App 下載（單一 QR code ＋ 兩個商店 badge） */
+/** 最右欄：App 下載（單一 QR code ＋ 兩個商店 badge ＋ 下方唯一一句文案） */
 function AppColumn({ t }: { t: Palette }) {
-  const { smartUrl, qrCode, intro, qrHint, appStore, googlePlay } = site.appDownload
+  const { qrCode, outro, appStore, googlePlay } = site.appDownload
 
   return (
-    <div className="max-w-sm">
+    <div className="max-w-md">
       <h2 className={`text-base font-bold ${t.heading}`}>下載 Poolgress App</h2>
-      <p className={`mt-2 text-sm leading-relaxed ${t.slogan}`}>{intro}</p>
 
-      <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-start">
+      <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
         {/* QR code：只有一個，指向智慧下載頁（依裝置分流） */}
         <div className="shrink-0">
           <div
@@ -158,13 +158,6 @@ function AppColumn({ t }: { t: Palette }) {
               </span>
             )}
           </div>
-          <p className={`mt-2 w-32 text-xs leading-snug ${t.slogan}`}>{qrHint}</p>
-          {/* smartUrl 尚未建立時不放假連結，只標示待補 */}
-          {!smartUrl && (
-            <p className={`mt-1 w-32 text-[0.625rem] leading-snug ${t.copyright}`}>
-              智慧下載頁待建立
-            </p>
-          )}
         </div>
 
         {/* 商店 badge：維持官方比例（約 3.375:1） */}
@@ -185,6 +178,9 @@ function AppColumn({ t }: { t: Palette }) {
           />
         </div>
       </div>
+
+      {/* 下載區最下方唯一一句文案：小一級、低對比，不是 CTA 也不可點 */}
+      <p className={`mt-4 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
     </div>
   )
 }
@@ -248,16 +244,7 @@ function StoreBadge({
 
 /* ------------------------------------------------------------------ */
 
-/** 右欄：支援與條款、加入與合作兩組文字連結 */
-function LinksColumn({ t }: { t: Palette }) {
-  return (
-    <div className="grid gap-8 sm:grid-cols-2 lg:gap-10">
-      <LinkGroup t={t} title="支援與條款" items={site.footerSupport} />
-      <LinkGroup t={t} title="加入與合作" items={site.footerJoin} />
-    </div>
-  )
-}
-
+/** 連結群組：小標題＋文字連結（加入與合作／支援與條款共用） */
 function LinkGroup({
   t,
   title,

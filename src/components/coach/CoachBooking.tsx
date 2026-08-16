@@ -622,7 +622,11 @@ function BookingResult({
         <strong className="font-semibold">未實際完成付款、未保留時段，確認信也尚未真的寄出</strong>。
       </p>
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-2">
+        {/* 這筆預約已寫入個人區，直接給一個入口過去看 */}
+        <Button href="./my-courses.html" block>
+          前往我的教練課
+        </Button>
         <Button onClick={onReset} variant="secondary" block>
           再預約一堂
         </Button>

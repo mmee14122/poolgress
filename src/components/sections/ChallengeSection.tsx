@@ -1,49 +1,18 @@
-import { useEffect, useState } from 'react'
 import { course } from '../../data/course-detail'
 import { appLinks } from '../../data/challenges'
+import { site } from '../../data/site'
 import { Button } from '../../ui/Button'
 
 /**
  * SECTION 05｜球桌 Challenge
- * 課程 × App 的連結亮點區：深色沉浸底、球路軌跡視覺，
- * 說明影片之外還有真實球桌上的 Challenge 練習。
+ *
+ * 桌機直接顯示單一智慧 QR code 與兩個商店 badge；
+ * 手機隱藏 QR code，只保留一個智慧下載按鈕。
+ * 所有網址與圖片都由 data/site.ts 集中管理。
  */
-/** 造訪裝置：決定按下下載後是直接跳商店還是顯示 QR code */
-type Platform = 'ios' | 'android' | 'desktop'
-
-/**
- * 判斷裝置平台。
- * iPadOS 13 以後的 Safari 會把自己報成 Macintosh，
- * 因此再用 maxTouchPoints 補判，否則 iPad 會被當成桌機。
- */
-function detectPlatform(): Platform {
-  if (typeof navigator === 'undefined') return 'desktop'
-  const ua = navigator.userAgent
-  if (/android/i.test(ua)) return 'android'
-  if (/iPad|iPhone|iPod/.test(ua)) return 'ios'
-  if (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) return 'ios'
-  return 'desktop'
-}
-
 export function ChallengeSection() {
   const { challenge } = course.intro
-  /** 桌機才彈出 QR code；手機直接跳商店（連結未上架時仍退回彈窗說明） */
-  const [qrOpen, setQrOpen] = useState(false)
-
-  function handleDownload() {
-    const platform = detectPlatform()
-    const storeUrl =
-      platform === 'ios' ? appLinks.appStore : platform === 'android' ? appLinks.googlePlay : null
-
-    /* 手機且商店連結已填 → 直接前往下載頁 */
-    if (storeUrl) {
-      window.location.href = storeUrl
-      return
-    }
-
-    /* 桌機，或 App 尚未上架的手機 → 顯示說明彈窗 */
-    setQrOpen(true)
-  }
+  const { appDownload } = site
 
   return (
     <section
@@ -51,7 +20,6 @@ export function ChallengeSection() {
       className="scroll-mt-[calc(var(--promo-h)+8rem)] py-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:py-14"
     >
       <div className="relative overflow-hidden rounded-card bg-brand-950 px-6 py-10 text-white sm:px-10 lg:py-12">
-        {/* 背景球路軌跡（裝飾） */}
         <svg
           viewBox="0 0 600 300"
           aria-hidden="true"
@@ -92,175 +60,127 @@ export function ChallengeSection() {
 
           <p className="mt-5 text-lg font-bold text-white">{challenge.punch}</p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* 點下載 → 彈出 iOS／Android 兩組 QR code */}
-            <Button onClick={handleDownload} size="lg">
-              {challenge.ctaPrimary.label}
-            </Button>
+          {/* 手機：同一個智慧網址由下載頁判斷 iOS／Android。 */}
+          <div data-download-layout="mobile" className="mt-7 lg:hidden">
+            {appDownload.smartUrl ? (
+              <Button href={appDownload.smartUrl} size="lg" block>
+                {challenge.ctaPrimary.label}
+              </Button>
+            ) : (
+              <button
+                type="button"
+                disabled
+                title="App 即將上架"
+                className="flex min-h-12 w-full cursor-not-allowed items-center justify-center rounded-full bg-brand-600 px-6 text-base font-semibold text-white opacity-60"
+              >
+                {challenge.ctaPrimary.label}
+              </button>
+            )}
             <a
               href={challenge.ctaSecondary.href}
-              className="text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+              className="mt-4 inline-block min-h-11 py-2.5 text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
             >
               {challenge.ctaSecondary.label}
             </a>
           </div>
+
+          {/* 桌機：QR code 直接露出，不再使用彈窗。 */}
+          <div
+            data-download-layout="desktop"
+            className="mt-7 hidden items-center gap-6 rounded-2xl border border-white/15 bg-white/[0.06] p-5 lg:flex"
+          >
+            <SmartQrCode src={appDownload.qrCode} href={appDownload.smartUrl} />
+
+            <div className="min-w-0">
+              <p className="font-semibold text-white">下載 Poolgress App</p>
+              <p className="mt-1 max-w-sm text-sm leading-relaxed text-white/65">
+                掃描 QR code，或選擇你的裝置商店，把課程帶到球桌前。
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <StoreBadge platform="apple" href={appLinks.appStore} />
+                <StoreBadge platform="google" href={appLinks.googlePlay} />
+              </div>
+
+              <a
+                href={challenge.ctaSecondary.href}
+                className="mt-4 inline-block min-h-11 py-2.5 text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+              >
+                {challenge.ctaSecondary.label}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
-      {qrOpen && <QrDialog onClose={() => setQrOpen(false)} />}
     </section>
   )
 }
 
-/* ------------------------------------------------------------------ */
+function SmartQrCode({ src, href }: { src: string | null; href: string | null }) {
+  const content = src ? (
+    <img src={src} alt="Poolgress App 智慧下載 QR code" className="h-full w-full object-contain p-2" />
+  ) : (
+    <span className="flex flex-col items-center gap-1.5 text-center text-white/55">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-current">
+        <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
+      </svg>
+      <span className="text-[0.65rem] leading-tight">QR code 待補</span>
+    </span>
+  )
 
-/**
- * App 下載彈窗。
- *
- * 桌機：顯示 iOS 與 Android 兩組 QR code，用手機掃描。
- * 手機：只有在商店連結尚未填時才會走到這裡（有連結時已直接跳轉），
- *       此時 QR code 對使用者沒有意義，改顯示該平台的「即將上架」說明。
- *
- * 圖片路徑填在 data/course-detail.ts 的 challenge.qrCodes；
- * 商店連結來自 data/challenges.ts 的 appLinks。
- */
-function QrDialog({ onClose }: { onClose: () => void }) {
-  const { qrCodes } = course.intro.challenge
-  const platform = detectPlatform()
-  const isMobile = platform !== 'desktop'
+  const className =
+    'flex h-32 w-32 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/20'
 
-  /* Esc 關閉；開啟期間鎖住背景捲動 */
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [onClose])
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="qr-dialog-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/60 p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-card bg-white p-6 text-ink-900 shadow-2xl sm:p-7"
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 id="qr-dialog-title" className="text-lg">
-              下載 Poolgress App
-            </h3>
-            <p className="mt-1 text-sm text-ink-500">
-              {isMobile ? 'App 尚未上架，敬請期待。' : '用手機掃描下方 QR code 前往商店。'}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="關閉"
-            className="-mt-1 -mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-ivory-100"
-          >
-            <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5 fill-current">
-              <path d="M5.3 4l4.7 4.7L14.7 4 16 5.3 11.3 10l4.7 4.7-1.3 1.3L10 11.3 5.3 16 4 14.7 8.7 10 4 5.3z" />
-            </svg>
-          </button>
-        </div>
-
-        {isMobile ? (
-          /* 手機：只列出自己的平台，不放掃不到的 QR code */
-          <div className="mt-6">
-            <QrSlot
-              label={platform === 'ios' ? 'iOS' : 'Android'}
-              store={platform === 'ios' ? 'App Store' : 'Google Play'}
-              src={null}
-              href={platform === 'ios' ? appLinks.appStore : appLinks.googlePlay}
-              hideQr
-            />
-          </div>
-        ) : (
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <QrSlot label="iOS" store="App Store" src={qrCodes.ios} href={appLinks.appStore} />
-            <QrSlot
-              label="Android"
-              store="Google Play"
-              src={qrCodes.android}
-              href={appLinks.googlePlay}
-            />
-          </div>
-        )}
-
-        <p className="mt-5 text-xs leading-relaxed text-ink-400">
-          ⚠️ App 尚未上架，QR code 與商店連結皆為待補佔位。
-          連結填入後，手機開啟會直接跳轉對應商店。
-        </p>
-      </div>
+  return href ? (
+    <a href={href} aria-label="開啟 Poolgress App 智慧下載頁" className={className}>
+      {content}
+    </a>
+  ) : (
+    <div className={className} aria-label="Poolgress App QR code 即將公開">
+      {content}
     </div>
   )
 }
 
-/** 單一平台的 QR code 格子 */
-function QrSlot({
-  label,
-  store,
-  src,
-  href,
-  hideQr = false,
-}: {
-  label: string
-  store: string
-  src: string | null
-  href: string | null
-  /** 手機上不顯示 QR code（自己掃自己沒有意義） */
-  hideQr?: boolean
-}) {
-  return (
-    <div className="rounded-card border border-line bg-ivory-50 p-4 text-center">
-      <p className="text-sm font-bold text-ink-900">{label}</p>
-      <p className="mt-0.5 text-xs text-ink-500">{store}</p>
+function StoreBadge({ platform, href }: { platform: 'apple' | 'google'; href: string | null }) {
+  const apple = platform === 'apple'
+  const label = apple ? 'App Store' : 'Google Play'
+  const badge = (
+    <>
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 shrink-0 fill-current">
+        <path
+          d={
+            apple
+              ? 'M16.7 12.8c0-2.5 2.1-3.7 2.2-3.8a4.8 4.8 0 00-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9A5 5 0 003.7 9.4c-1.8 3.1-.5 7.8 1.3 10.3.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.5-.8 1.6 0 2.1.8 3.5.8 1.5 0 2.4-1.3 3.2-2.5a11 11 0 001.5-3c0 0-3.3-1.3-3.3-3.9zM14.1 5.2A4.4 4.4 0 0015.2 2a4.6 4.6 0 00-3 1.5 4.2 4.2 0 00-1.1 3.1 3.8 3.8 0 003-1.4z'
+              : 'M3.6 2.5a2 2 0 00-.5 1.4v16.2c0 .5.2 1 .5 1.4l9-9.5-9-9.5zm10.2 10.8l-2.3-2.4L4.3 3.3 16.8 10l-3 3.3zm3.9-2.1l-2.3 1.2-2.5-2.6 2.5-2.6 2.3 1.2c1.2.7 1.2 2.1 0 2.8zM4.3 20.7l7.2-7.6 2.3 2.4-9.5 5.2z'
+          }
+        />
+      </svg>
+      <span className="text-left leading-none">
+        <span className="block text-[0.55rem] font-normal uppercase">
+          {apple ? 'Download on the' : 'Get it on'}
+        </span>
+        <span className="mt-0.5 block text-sm font-semibold">{label}</span>
+      </span>
+    </>
+  )
 
-      <div
-        className={`mx-auto mt-3 aspect-square w-full max-w-[9rem] items-center justify-center overflow-hidden rounded-lg bg-white ring-1 ring-line ${
-          hideQr ? 'hidden' : 'flex'
-        }`}
-      >
-        {src ? (
-          <img
-            src={src}
-            alt={`${label} 版 Poolgress App 下載 QR code`}
-            className="h-full w-full object-contain p-2"
-          />
-        ) : (
-          <span className="flex flex-col items-center gap-1.5 px-2 text-center">
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 fill-ink-400/60">
-              <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
-            </svg>
-            <span className="text-[0.625rem] leading-tight text-ink-400">QR code 待補</span>
-          </span>
-        )}
-      </div>
+  const className =
+    'inline-flex min-h-12 min-w-40 items-center justify-center gap-2 rounded-lg border border-white/25 bg-ink-900 px-4 text-white transition-colors'
 
-      {href ? (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 inline-block min-h-11 text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4"
-        >
-          前往 {store}
-        </a>
-      ) : (
-        <p className="mt-3 text-xs text-ink-400">即將上架</p>
-      )}
-    </div>
+  return href ? (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`前往 ${label} 下載 Poolgress App`}
+      className={`${className} hover:border-brass-300 hover:text-brass-300`}
+    >
+      {badge}
+    </a>
+  ) : (
+    <span aria-disabled="true" title="即將上架" className={`${className} cursor-not-allowed opacity-55`}>
+      {badge}
+    </span>
   )
 }

@@ -130,7 +130,6 @@ export type CourseIntro = {
       ctaPrimary: { label: string; href: string }
       ctaSecondary: { label: string; href: string }
       /** App 下載 QR code 圖片路徑（點下載按鈕後彈出）；null＝顯示待補佔位框 */
-      qrCodes: { ios: string | null; android: string | null }
     }
     /** 06｜這堂課適合你嗎？ */
     fit: { title: string; sub: string; items: string[]; nudgeLines: string[] }
@@ -314,7 +313,6 @@ export const course: CourseIntro = {
       /* 下載 QR code：點「下載 Poolgress App」後彈出，iOS 與 Android 各一張。
          圖片放 public/assets/challenges/ 後填路徑（建議 512×512 PNG）；
          null 時顯示待補佔位框，不會影響版面 */
-      qrCodes: { ios: null, android: null },
       ctaSecondary: { label: '了解實戰闖關如何進行', href: './challenges.html' },
     },
 
