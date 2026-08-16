@@ -143,8 +143,8 @@ export function CourseHero() {
             <Button size="lg" onClick={buyNow} className="w-full sm:w-auto">
               立即購買
             </Button>
-            <Button href="#chapters" variant="quiet" size="lg" className="w-full text-brand-700 sm:w-auto">
-              查看課程章節
+            <Button href="#info" variant="quiet" size="lg" className="w-full text-brand-700 sm:w-auto">
+              查看課程資訊
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">
                 <path d="M5.3 7.3l4.7 4.7 4.7-4.7 1.4 1.4-6.1 6.1-6.1-6.1z" />
               </svg>
