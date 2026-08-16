@@ -31,6 +31,9 @@ function ChallengeList() {
   /* 完成狀態由 App 回傳；串接前一律顯示「未完成」 */
   return (
     <>
+      {/* App 學習流程放最上方：先讓人看懂闖關長什麼樣，再往下看關卡 */}
+      <AppFlow />
+
       <h1 className="text-3xl sm:text-4xl">實戰闖關</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-ink-500">
         看懂只是開始。每一關都是課程的延伸——照著 App 的指示在真實球桌上擺球、
@@ -68,7 +71,6 @@ function ChallengeList() {
         ))}
       </ul>
 
-      <AppFlow />
       <AppPromo />
     </>
   )

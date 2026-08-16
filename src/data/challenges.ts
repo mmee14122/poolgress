@@ -110,6 +110,9 @@ export const appLinks = {
  */
 export const appFlow = {
   eyebrow: 'POOLGRESS APP',
+  /** 桌機用的連續整圖（四張畫面＋箭頭，已去除簡報綠底與手機黑框） */
+  fullImage: './assets/challenges/flow-full.png' as string | null,
+  fullImageAlt: '四步驟 App 流程：選擇關卡、看懂目標並開始挑戰、查看闖關結算、解鎖下一個學習地圖',
   title: '接住初生的興趣，用遊戲闖關引導學習',
   body: '從「我只是來玩」到「這是我能學會的運動」。撞球可以透過理解、練習，而持續進步。',
   steps: [
