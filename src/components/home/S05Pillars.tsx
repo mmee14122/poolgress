@@ -1,4 +1,5 @@
 import { home } from '../../data/home'
+import { useSession } from '../../lib/session'
 
 /** 四支柱圖示：課程、球桌挑戰、成長、教練 */
 const icons = [
@@ -19,6 +20,7 @@ const icons = [
  */
 export function S05Pillars() {
   const { pillars } = home
+  const user = useSession()
 
   return (
     <section id="pillars" className="scroll-mt-24 bg-white py-16 lg:py-24">
@@ -33,17 +35,33 @@ export function S05Pillars() {
 
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:gap-5">
           {pillars.items.map((item, i) => (
-            <li key={item.no} className="flex gap-5 rounded-card border border-line bg-ivory-50 p-6 sm:p-7">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card bg-brand-600">
-                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-white">
-                  <path d={icons[i]} />
-                </svg>
-              </span>
-              <div>
-                <p className="text-xs font-bold tracking-widest text-brand-600">{item.no}</p>
-                <h3 className="mt-1 text-lg">{item.name}</h3>
-                <p className="mt-2 text-sm text-ink-500">{item.body}</p>
-              </div>
+            <li key={item.no}>
+              {/* 整張卡片可點擊；成長歷程依登入狀態導向星星頁或登入頁 */}
+              <a
+                href={item.href ?? (user ? './stars.html' : './login.html')}
+                className="group flex h-full gap-5 rounded-card border border-line bg-ivory-50 p-6 transition-colors hover:border-brand-200 hover:bg-brand-50/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:p-7"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card bg-brand-600">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 fill-white">
+                    <path d={icons[i]} />
+                  </svg>
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold tracking-widest text-brand-600">{item.no}</p>
+                  <h3 className="mt-1 text-lg">{item.name}</h3>
+                  <p className="mt-2 text-sm text-ink-500">{item.body}</p>
+                  <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+                    {item.href === null && user ? '查看我的星星' : item.cta}
+                    <svg
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                      className="h-4 w-4 fill-current transition-transform duration-150 group-hover:translate-x-0.5"
+                    >
+                      <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
+                    </svg>
+                  </p>
+                </div>
+              </a>
             </li>
           ))}
         </ul>
