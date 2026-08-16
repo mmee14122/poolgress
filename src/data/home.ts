@@ -108,6 +108,24 @@ export const home = {
 
   /* ---------------- 關於 Poolgress（about.html） ---------------- */
   about: {
+    /**
+     * Hero 主視覺。日後拿到正式品牌照片／影片，只要改這個物件即可，版面不用動：
+     *   圖片 → { kind: 'image', src: './assets/about/hero.jpg', alt: '圖說' }
+     *   影片 → { kind: 'video', src: './assets/about/hero.mp4', poster: './assets/about/hero.jpg' }
+     * kind: 'animation' 為暫代方案，沿用首頁 Hero 的球桌球路視覺。
+     */
+    heroMedia: {
+      kind: 'animation',
+      src: null,
+      alt: null,
+      poster: null,
+    } as {
+      kind: 'animation' | 'image' | 'video'
+      src: string | null
+      alt: string | null
+      poster: string | null
+    },
+    heroTitle: '關於 Poolgress',
     eyebrow: 'POOLGRESS 的長期願景',
     title: ['從興趣，', '到一生的熱愛。'],
     body: [
@@ -116,9 +134,21 @@ export const home = {
       '因此，不同年齡、性別與身體條件的人，都有機會在同一張球桌上交流、競爭、成長。',
     ],
     hope: ['我們期待有一天：', '撞球成為跨越年齡、性別與身體條件，', '值得陪伴一生的運動。'],
-    entry: {
-      title: '想知道自己可以從哪裡開始？',
-      cta: { label: '探索課程', href: './course.html' },
+
+    /**
+     * 合作成果：願景的實際行動與信任證明（非活動廣告，故不放按鈕與連結）。
+     * background.src 待補真實照片（撞球教學／玩家練習／教練帶領／場館合作，滿版橫式，
+     * 建議 2000×1200 以上）。未填時自動退回深藍漸層底，不放假圖。
+     */
+    impact: {
+      title: '一起讓撞球更好玩',
+      subtitle: '#攜手場館、學校、教練，共同推廣撞球教育',
+      stats: [
+        { value: '20+', label: '撞球場館' },
+        { value: '30+', label: '學校團體' },
+        { value: '10+', label: '專業撞球教練' },
+      ],
+      background: { src: null as string | null, alt: null as string | null },
     },
   },
 } as const
