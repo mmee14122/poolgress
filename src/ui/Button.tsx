@@ -9,6 +9,9 @@ type Common = {
   size?: Size
   block?: boolean
   className?: string
+  /** 按鈕文字之外的說明（例：icon 按鈕、需要補充用途時） */
+  'aria-label'?: string
+  title?: string
 }
 
 type Props = Common &
@@ -46,6 +49,8 @@ export function Button({
   size = 'md',
   block = false,
   className = '',
+  'aria-label': ariaLabel,
+  title,
   ...rest
 }: Props) {
   const base = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-[background-color,transform] duration-150 disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 ${
@@ -58,6 +63,8 @@ export function Button({
       <a
         href={rest.href}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        aria-label={ariaLabel}
+        title={title}
         className={base}
       >
         {children}
@@ -72,7 +79,14 @@ export function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={base}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      title={title}
+      className={base}
+    >
       {children}
     </button>
   )

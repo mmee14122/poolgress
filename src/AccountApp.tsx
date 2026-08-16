@@ -234,49 +234,61 @@ function CoachLessonsCard() {
           const past = start.getTime() + (b.durationMin ?? 60) * 60000 < now.getTime()
 
           return (
-            <li key={b.id} className={`rounded-xl border border-line p-4 ${past ? 'opacity-60' : ''}`}>
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-ink-900">{b.serviceName}</p>
-                    {past && (
-                      <span className="rounded-full bg-ivory-100 px-2 py-0.5 text-xs text-ink-500">
-                        已結束
-                      </span>
-                    )}
+            <li
+              key={b.id}
+              className={`overflow-hidden rounded-xl border border-line ${past ? 'opacity-60' : ''}`}
+            >
+              {/* ── 上段：預約資訊 ── */}
+              <div className="p-5">
+                <p className="text-lg font-bold text-ink-900">{b.serviceName}</p>
+
+                <dl className="mt-3 space-y-2">
+                  <div className="flex gap-2 text-sm">
+                    <dt className="w-10 shrink-0 text-ink-500">教練</dt>
+                    <dd className="font-semibold text-ink-900">{b.coachName}</dd>
                   </div>
+                  {/* 日期時間是第二重要資訊：字級與字重都拉高，用品牌深藍 */}
+                  <div className="flex gap-2">
+                    <dt className="mt-0.5 w-10 shrink-0 text-sm text-ink-500">時段</dt>
+                    <dd className="text-base font-bold text-brand-900 tabular-nums">
+                      {formatLessonTime(b.date, b.time)}
+                      {b.durationMin !== null && `（${b.durationMin} 分鐘）`}
+                    </dd>
+                  </div>
+                  <div className="flex gap-2 text-sm">
+                    <dt className="w-10 shrink-0 text-ink-500">地點</dt>
+                    <dd className="text-ink-700">
+                      {b.venueName ?? '場館待補'}
+                      {b.venueAddress && (
+                        /* 待補資料也維持可讀字級，只降低對比 */
+                        <span className="mt-0.5 block text-ink-500">{b.venueAddress}</span>
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
 
-                  <dl className="mt-2 space-y-1 text-sm text-ink-700">
-                    <div className="flex gap-2">
-                      <dt className="shrink-0 text-ink-500">教練</dt>
-                      <dd className="font-semibold">{b.coachName}</dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="shrink-0 text-ink-500">時段</dt>
-                      <dd className="font-semibold tabular-nums">
-                        {formatLessonTime(b.date, b.time)}
-                        {b.durationMin !== null && `（${b.durationMin} 分鐘）`}
-                      </dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="shrink-0 text-ink-500">地點</dt>
-                      <dd>
-                        {b.venueName ?? '場館待補'}
-                        {b.venueAddress && (
-                          <span className="block text-xs text-ink-500">{b.venueAddress}</span>
-                        )}
-                      </dd>
-                    </div>
-                  </dl>
-                </div>
+              {/* ── 下段：操作列（細分隔線區隔；左對齊，右側放狀態） ── */}
+              <div className="flex flex-col gap-3 border-t border-line px-5 py-4 sm:flex-row sm:items-center">
+                <ContactCoachButton coachId={b.coachId} />
 
-                <div className="flex shrink-0 flex-col gap-2 sm:items-end">
-                  {/* 加入 Google 行事曆並由行事曆發出提醒 */}
-                  <Button href={googleCalendarUrl(b)} variant="secondary" className="shrink-0">
-                    加入 Google 行事曆
-                  </Button>
-                  <ContactCoachButton coachId={b.coachId} />
-                </div>
+                {/* 加入 Google 行事曆並由行事曆發出提醒 */}
+                <Button
+                  href={googleCalendarUrl(b)}
+                  variant="secondary"
+                  className="min-h-11 w-full whitespace-nowrap sm:w-auto"
+                >
+                  <CalendarIcon />
+                  加入 Google 行事曆
+                </Button>
+
+                <span
+                  className={`hidden text-sm font-semibold sm:ml-auto sm:block ${
+                    past ? 'text-ink-500' : 'text-pulse-700'
+                  }`}
+                >
+                  {past ? '已結束' : '已確認'}
+                </span>
               </div>
             </li>
           )
@@ -301,48 +313,52 @@ function ContactCoachButton({ coachId }: { coachId: string }) {
   const coach = coachById(coachId)
   const href = coach?.socialLinks.line ?? site.lineUrl
 
-  /* 與網站既有次要按鈕同款：白底、細環、圓角膠囊 */
-  const shape =
-    'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold ring-1 transition-colors'
-
-  const label = (
-    <>
-      <LineIcon />
-      聯絡教練
-    </>
-  )
-
+  /* 尚未設定 LINE：停用樣式＋明確提示，不導向空連結 */
   if (!href) {
     return (
       <span
         aria-disabled="true"
-        title="LINE 帳號即將開放"
-        className={`${shape} cursor-not-allowed text-ink-400 ring-line`}
+        title="這位教練的 LINE 尚未開放"
+        className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold whitespace-nowrap text-ink-400 ring-1 ring-line sm:w-auto"
       >
-        {label}
+        <ChatIcon />
+        聯絡教練
       </span>
     )
   }
 
   return (
-    <a
+    <Button
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`用 LINE 聯絡${coach?.name ?? '教練'}`}
-      title="用 LINE 聯絡教練"
-      className={`${shape} bg-white text-brand-700 ring-brand-200 hover:bg-brand-50`}
+      aria-label={`使用 LINE 聯絡${coach?.name ?? '教練'}`}
+      title="使用 LINE 聯絡教練"
+      className="min-h-11 w-full whitespace-nowrap sm:w-auto"
     >
-      {label}
-    </a>
+      <ChatIcon />
+      聯絡教練
+    </Button>
   )
 }
 
-/** LINE 官方辨識圖形 */
-function LineIcon() {
+/**
+ * 通用訊息圖示（對話泡泡）。
+ * 刻意不用 LINE 官方綠，改為 fill-current 跟隨按鈕文字色，
+ * 才不會在深藍／暖白／淺金的配色裡像外掛廣告；
+ * 「使用 LINE 聯絡」的資訊由 aria-label 與 title 明確提供。
+ */
+function ChatIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-[#06C755]">
-      <path d="M12 2C6.5 2 2 5.7 2 10.2c0 4 3.6 7.4 8.4 8 .3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.1-.5 6-3.5 8.2-6 1.5-1.6 2.2-3.3 2.2-5C22.5 5.7 18 2 12 2zM7.6 12.9H5.5c-.3 0-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5s.5.2.5.5v3.7h1.6c.3 0 .5.2.5.5s-.2.5-.5.5zm2-.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5s.5.2.5.5v4.2zm4.9 0c0 .2-.1.4-.3.5h-.2c-.2 0-.3-.1-.4-.2l-2-2.7v2.4c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.2c0-.2.1-.4.3-.5h.2c.1 0 .3.1.4.2l2 2.7V8.2c0-.3.2-.5.5-.5s.5.2.5.5v4.2zm3.3-2.6c.3 0 .5.2.5.5s-.2.5-.5.5h-1.6v1h1.6c.3 0 .5.2.5.5s-.2.5-.5.5h-2.1c-.3 0-.5-.2-.5-.5V8.2c0-.3.2-.5.5-.5h2.1c.3 0 .5.2.5.5s-.2.5-.5.5h-1.6v1h1.6z" />
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
+      <path d="M12 3c5 0 9 3.4 9 7.6 0 4.2-4 7.6-9 7.6-.8 0-1.6-.1-2.3-.2l-4 2.4a.6.6 0 01-.9-.6l.4-3.1C3.2 15.3 3 13.1 3 10.6 3 6.4 7 3 12 3zm-4 6.4a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zm4 0a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zm4 0a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" />
+    </svg>
+  )
+}
+
+/** 行事曆圖示（與訊息圖示同尺寸，維持兩顆按鈕的視覺重量一致） */
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
+      <path d="M7 2v2h10V2h2v2h1a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V2zm13 8H4v10h16zM6 12h5v4H6z" />
     </svg>
   )
 }
