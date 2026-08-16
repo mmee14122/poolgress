@@ -126,7 +126,7 @@ export function S01Hero() {
                 href={hero.ctaSecondary.href}
                 size="lg"
                 variant="quiet"
-                className="border border-white py-[calc(0.875rem-1px)]! text-white transition-colors hover:bg-white! hover:text-black! active:bg-white/85!"
+                className="border border-brass-300 py-[calc(0.875rem-1px)]! text-brass-300! transition-colors hover:bg-brass-300! hover:text-brand-950! active:bg-brass-400!"
               >
                 {hero.ctaSecondary.label}
               </Button>
@@ -260,7 +260,7 @@ function StaticHero() {
               href={hero.ctaSecondary.href}
               size="lg"
               variant="quiet"
-              className="border border-white py-[calc(0.875rem-1px)]! text-white transition-colors hover:bg-white! hover:text-black! active:bg-white/85!"
+              className="border border-brass-300 py-[calc(0.875rem-1px)]! text-brass-300! transition-colors hover:bg-brass-300! hover:text-brand-950! active:bg-brass-400!"
             >
               {hero.ctaSecondary.label}
             </Button>
