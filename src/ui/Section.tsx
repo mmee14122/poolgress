@@ -22,7 +22,9 @@ export function Section({ id, title, eyebrow, label, description, children }: Pr
       {/* 區段小標題：與「課程資訊」同款，讓右側內容對應得上左側索引 */}
       {/* 用 p 不用 h2：本區段的主標題仍是下方的 h2，避免出現兩層同級標題 */}
       {label && (
-        <p className="mb-6 flex items-center gap-2.5 text-lg font-bold text-ink-900">
+        /* 字級與「課程資訊」「課程章節」的 h2 一致；
+           用 p 需自行補 tracking／leading，因為全域 p 有 leading-[1.9] */
+        <p className="mb-6 flex items-center gap-2.5 text-2xl leading-8 font-bold tracking-tight text-ink-900 sm:text-3xl sm:leading-9">
           <span aria-hidden="true" className="h-5 w-1 rounded-full bg-brand-600" />
           {label}
         </p>

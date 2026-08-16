@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git rm -rq ui/)",
+      "Bash(git rm -rq ui)",
+      "Bash(cp -r *:*)",
+      "Bash(git add ui/)",
+      "Bash(git pull --rebase origin main)",
+      "Bash(git pull -q --rebase origin main)",
+      "Bash(npm run build)"
+    ]
+  }
+}
