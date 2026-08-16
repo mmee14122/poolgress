@@ -44,6 +44,20 @@ export const site = {
 
   contactEmail: 'hello@poolgress.com',
 
+  /** ⚠️ 公司地址待補；填入後頁尾自動顯示，留空字串則整行不出現 */
+  companyAddress: '公司地址待補',
+
+  /**
+   * 社群連結（頁尾追蹤入口）。
+   * 填入正式網址後 icon 自動變成可點；留 null 顯示為停用狀態，
+   * 滑上去出現「即將公開」提示，不會連到錯誤網址。
+   */
+  social: {
+    instagram: null as string | null,
+    facebook: null as string | null,
+    youtube: null as string | null,
+  },
+
   /* 全部使用相對路徑（子資料夾部署也正確） */
   footerLinks: [
     { label: '常見問題', href: './faq.html' },
