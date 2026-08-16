@@ -14,8 +14,8 @@ export function CoachCard({ coach }: { coach: Coach }) {
         href={coachHref(coach.id)}
         className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-white shadow-[0_1px_2px_rgba(20,23,26,0.04)] transition duration-200 hover:-translate-y-1 hover:border-brand-500 hover:shadow-[0_8px_20px_rgba(20,23,26,0.07)]"
       >
-        {/* 照片：4:5 直式，全卡片共用同一比例 */}
-        <div className="aspect-[4/5] w-full overflow-hidden bg-ivory-100">
+        {/* 照片：16:10，全卡片共用同一比例（桌機一頁要能同時看到所有教練） */}
+        <div className="aspect-[8/5] w-full overflow-hidden bg-ivory-100">
           <SafeImage
             src={coach.photo}
             alt={`${coach.name} 教練照片`}
@@ -24,12 +24,12 @@ export function CoachCard({ coach }: { coach: Coach }) {
           />
         </div>
 
-        <div className="flex flex-1 flex-col p-5">
+        <div className="flex flex-1 flex-col p-4">
           <p className="text-xs font-semibold tracking-wide text-brand-600">{coach.role}</p>
-          <h3 className="mt-1.5 text-lg">{coach.name}</h3>
+          <h3 className="mt-1 text-lg">{coach.name}</h3>
 
           {coach.specialties.length > 0 && (
-            <ul className="mt-3 flex flex-wrap gap-1.5">
+            <ul className="mt-2 flex flex-wrap gap-1.5">
               {coach.specialties.map((s) => (
                 <li
                   key={s}
@@ -42,15 +42,13 @@ export function CoachCard({ coach }: { coach: Coach }) {
           )}
 
           {coach.shortBio && (
-            <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-500">
-              {coach.shortBio}
-            </p>
+            <p className="mt-2 line-clamp-1 text-sm leading-snug text-ink-500">{coach.shortBio}</p>
           )}
 
           {/* 低調文字連結：卡片本身已是連結，這裡只作視覺提示 */}
           <p
             aria-hidden="true"
-            className="mt-4 pt-1 text-sm font-semibold text-brand-700"
+            className="mt-auto pt-2 text-sm font-semibold text-brand-700"
           >
             認識教練 →
           </p>

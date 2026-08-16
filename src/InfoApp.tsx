@@ -5,6 +5,7 @@ import { Button } from './ui/Button'
 import { course } from './data/course-detail'
 import { coachById, coachesIntro, featured, partners, partnersIntro } from './data/coaches'
 import { CoachCard } from './components/coach/CoachCard'
+import { CoachFeatured } from './components/coach/CoachFeatured'
 import { CoachProfile } from './components/coach/CoachProfile'
 import { site } from './data/site'
 
@@ -19,7 +20,12 @@ export default function InfoApp({ page }: { page: InfoPage }) {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
+      {/* 教練頁刻意縮小上下留白：桌機一頁要能同時看到首席與所有合作教練 */}
+      <main
+        className={`mx-auto w-full max-w-4xl px-4 sm:px-6 ${
+          page === 'coach' ? 'py-6 lg:py-8' : 'py-10 lg:py-14'
+        }`}
+      >
         {page === 'coach' && <CoachPage />}
         {page === 'faq' && <FaqPage />}
         {page === 'contact' && <ContactPage />}
@@ -52,30 +58,31 @@ function CoachPage() {
   return (
     <>
       {/* 頁首：品牌語氣的導言 */}
-      <header className="border-b border-line pb-10">
+      <header>
         <p className="text-sm font-semibold tracking-widest text-brand-600">
           {coachesIntro.eyebrow}
         </p>
-        <h1 className="mt-3 text-3xl leading-snug sm:text-4xl">{coachesIntro.title}</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-500">{coachesIntro.lead}</p>
+        <h1 className="mt-1.5 text-2xl leading-snug">{coachesIntro.title}</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-500">{coachesIntro.lead}</p>
       </header>
 
-      {/* 精選教練：完整介紹（只突出一位） */}
-      <section id={featured.id} className="mt-12 scroll-mt-24">
-        <p className="mb-5 text-sm font-semibold tracking-widest text-ink-400">精選教練</p>
-        <CoachProfile coach={featured} />
+      {/* 精選教練：橫式精簡卡（完整介紹在個別教練頁） */}
+      <section id={featured.id} className="mt-5 scroll-mt-24">
+        <CoachFeatured coach={featured} />
       </section>
 
       {/* 合作教練：桌機 3 欄，第 4 位以後自動換列；平板 2 欄、手機單欄 */}
       {partners.length > 0 && (
-        <section id="partners" className="mt-16 scroll-mt-24 border-t border-line pt-12">
-          <p className="text-sm font-semibold tracking-widest text-brand-600">
-            {partnersIntro.eyebrow}
-          </p>
-          <h2 className="mt-3 text-2xl sm:text-3xl">{partnersIntro.title}</h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-ink-500">{partnersIntro.lead}</p>
+        <section id="partners" className="mt-6 scroll-mt-24">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h2 className="text-xl sm:text-2xl">{partnersIntro.title}</h2>
+            <p className="text-sm font-semibold tracking-widest text-brand-600">
+              {partnersIntro.eyebrow}
+            </p>
+          </div>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-500">{partnersIntro.lead}</p>
 
-          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {partners.map((coach) => (
               <li key={coach.id}>
                 <CoachCard coach={coach} />

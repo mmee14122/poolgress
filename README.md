@@ -149,7 +149,7 @@ App 商店連結填在同一檔案的 `appLinks`。
 - **精選教練**：`featured: true` 的那一位，維持完整大版介紹（只放一位）
 - **合作教練**：其餘教練的卡片，桌機 3 欄、平板 2 欄、手機單欄，第 4 位以後自動換列
 
-照片放 `public/assets/coach/`（卡片 4:5 直式建議 800×1000，介紹區 3:4），
+照片放 `public/assets/coach/`（卡片 16:10 橫式建議 800×500，個別頁 3:4 直式建議 800×1066），
 在該筆的 `photo` 填路徑；留 `null` 會顯示品牌漸層人像佔位，版面不會壞。
 
 沒有資料的欄位（`credentials`、`socialLinks`、`courseIds`、`challengeIds` 等）
