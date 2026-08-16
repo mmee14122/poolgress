@@ -31,17 +31,21 @@ export function ProcessingOverlay() {
 /** 非會員購買成功後的綁定會員引導 */
 function GuestBindBlock({ email }: { email: string }) {
   return (
-    <div className="mt-8 rounded-card bg-ivory-50 p-6 text-left">
-      <p className="text-sm leading-relaxed text-ink-700">
+    /* 主要動作（開始學習）獨立一行置中，次要的建立帳號放在下方，
+       避免兩顆並排時使用者以為都是必要步驟 */
+    <div className="mt-8 rounded-card bg-ivory-50 p-6 text-center">
+      <div className="flex justify-center">
+        <Button href="./my-courses.html" size="lg">
+          開始學習
+        </Button>
+      </div>
+
+      <p className="mt-6 text-sm leading-relaxed text-ink-700">
         已將課程資訊寄送至 <strong className="font-semibold text-ink-900">{email}</strong>。
         建立帳號後，即可永久保存課程、學習進度與購買紀錄。
       </p>
-      <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
-        <Button href="./my-courses.html">開始學習</Button>
-        <Button
-          variant="secondary"
-          href={`./register.html?email=${encodeURIComponent(email)}`}
-        >
+      <div className="mt-4 flex justify-center">
+        <Button variant="secondary" href={`./register.html?email=${encodeURIComponent(email)}`}>
           建立帳號並保存學習進度
         </Button>
       </div>

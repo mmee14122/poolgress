@@ -4,6 +4,7 @@ import { Footer } from './components/Footer'
 import { Field, TextInput } from './ui/Field'
 import { Button } from './ui/Button'
 import { isEmail } from './lib/validate'
+import { session } from './lib/session'
 
 type Step = 'form' | 'verify' | 'done'
 
@@ -60,6 +61,10 @@ export default function RegisterApp() {
     // 模擬後端驗證與訂單綁定
     timer.current = window.setTimeout(() => {
       setVerifying(false)
+      /* 建立帳號＝已登入。少了這一步，使用者按「開始學習」會被
+         個人區的登入攔截導去登入頁，等於白註冊一次。
+         後端接上後改為以 API 回傳的 token 建立 session（一樣不存密碼）。 */
+      session.signIn({ email: email.trim() })
       setStep('done')
     }, 900)
   }
@@ -189,7 +194,9 @@ export default function RegisterApp() {
               的訪客訂單、已購課程與學習進度已綁定到你的會員帳號。
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button href="./course.html" size="lg">
+              {/* 綁定完成後直接進「我的課程」看已購課程，
+                  連到課程頁會讓使用者以為又要再買一次 */}
+              <Button href="./my-courses.html" size="lg">
                 開始學習
               </Button>
               <Button href="./" variant="secondary" size="lg">
