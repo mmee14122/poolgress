@@ -75,7 +75,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
       {/* 最大寬度與導覽列、頁面主內容對齊 */}
       <div className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:py-14">
         {/* 四欄對齊頂部；最右下載區略寬，QR 與 badge 才不會擁擠 */}
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-10">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-10">
           <BrandColumn t={t} />
           <LinkGroup t={t} title="加入與合作" items={site.footerJoin} />
           <LinkGroup t={t} title="支援與條款" items={site.footerSupport} />
@@ -102,9 +102,9 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
 function BrandColumn({ t }: { t: Palette }) {
   return (
     <div className="max-w-sm">
-      <Logo dark={t.logoDark} className="-ml-1 [&>span]:text-2xl [&>svg]:h-11 [&>svg]:w-11" />
+      <Logo dark={t.logoDark} className="-my-2 [&>span]:text-2xl [&>svg]:h-11 [&>svg]:w-11" />
 
-      <address className="mt-5 space-y-2.5 not-italic">
+      <address className="mt-4 space-y-2 not-italic">
         {site.companyAddress && (
           <div>
             <p className={`text-xs font-semibold tracking-wide ${t.label}`}>公司地址</p>
@@ -136,6 +136,7 @@ function AppColumn({ t }: { t: Palette }) {
   return (
     <div className="flex h-full max-w-md flex-col">
       <h2 className={`text-base font-bold ${t.heading}`}>下載 Poolgress App</h2>
+      <p className={`mt-2 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
         {/* QR code：只有一個，指向智慧下載頁（依裝置分流） */}
@@ -178,9 +179,6 @@ function AppColumn({ t }: { t: Palette }) {
           />
         </div>
       </div>
-
-      {/* 下載區最下方唯一一句文案：小一級、低對比，不是 CTA 也不可點 */}
-      <p className={`mt-7 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
     </div>
   )
 }
@@ -288,7 +286,7 @@ function SocialLinks({ t }: { t: Palette }) {
   ]
 
   return (
-    <ul className="mt-3 flex items-center gap-1.5">
+    <ul className="mt-2 flex items-center gap-1.5">
       {items.map((item) => (
         <li key={item.name}>
           {item.href ? (
@@ -298,7 +296,7 @@ function SocialLinks({ t }: { t: Palette }) {
               rel="noopener noreferrer"
               aria-label={item.name}
               title={item.name}
-              className={`flex h-12 w-12 items-center justify-center transition-colors ${t.icon}`}
+              className={`-my-1 flex h-12 w-12 items-center justify-center transition-colors ${t.icon}`}
             >
               {item.icon}
             </a>
@@ -308,7 +306,7 @@ function SocialLinks({ t }: { t: Palette }) {
               aria-disabled="true"
               aria-label={`${item.name}：即將公開`}
               title="即將公開"
-              className={`flex h-12 w-12 cursor-not-allowed items-center justify-center ${t.iconDisabled}`}
+              className={`-my-1 flex h-12 w-12 cursor-not-allowed items-center justify-center ${t.iconDisabled}`}
             >
               {item.icon}
             </span>
