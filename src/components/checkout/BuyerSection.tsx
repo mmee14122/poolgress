@@ -75,7 +75,12 @@ export function BuyerSection({
                 />
               )}
             </Field>
-            <Field label="聯絡電話" error={err('guestPhone', guest.phone)} hint="選填；依金流需求可能改為必填">
+            <Field
+              label="聯絡電話"
+              required
+              error={err('guestPhone', guest.phone)}
+              hint="訂單聯繫與付款驗證使用"
+            >
               {(id, invalid) => (
                 <TextInput
                   id={id}

@@ -54,8 +54,9 @@ export function validateCheckout(f: CheckoutForm): FieldErrors {
     if (!f.guest.email.trim()) e.guestEmail = '請填寫 Email'
     else if (!isEmail(f.guest.email)) e.guestEmail = 'Email 格式不正確'
     if (!f.guest.name.trim()) e.guestName = '請填寫姓名'
-    // 聯絡電話依金流需求可改為必填；目前選填、填了就檢查格式
-    if (f.guest.phone.trim() && !isPhoneTW(f.guest.phone)) e.guestPhone = '手機格式不正確（例：0912345678）'
+    // 聯絡電話為必填（訂單聯繫與金流驗證需要）
+    if (!f.guest.phone.trim()) e.guestPhone = '請填寫聯絡電話'
+    else if (!isPhoneTW(f.guest.phone)) e.guestPhone = '手機格式不正確（例：0912345678）'
   }
 
   if (!f.method) e.method = '請選擇付款方式'
