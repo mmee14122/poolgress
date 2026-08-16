@@ -203,7 +203,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | 教練場館名稱、地址、Google 地圖連結 | `data/coaches.ts` `venue` |
 | 星星規則與等級算法 | `data/user.ts`、星星頁 |
 | 開課日期、預購截止日 | `course-detail.ts` `info.startDate`、`purchase.priceDeadline` |
-| App 商店連結、deep link、下載 QR code | `data/challenges.ts`、`course-detail.ts` `challenge.qrCode` |
+| App 商店連結、deep link、下載 QR code（iOS／Android） | `data/challenges.ts` `appLinks`、`course-detail.ts` `challenge.qrCodes` |
 | 合作場館 | `data/venues.ts`（空陣列） |
 | 服務條款、隱私權政策條文 | terms/privacy 頁 |
 | 課程影片 `videoUrl` | 各單元資料 |

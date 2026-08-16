@@ -6,7 +6,7 @@ import { course } from './data/course-detail'
 import { coachById, coachesIntro, featured, partners, partnersIntro } from './data/coaches'
 import { CoachCard } from './components/coach/CoachCard'
 import { CoachFeatured } from './components/coach/CoachFeatured'
-import { CoachProfile } from './components/coach/CoachProfile'
+import { CoachSummary, CoachDetails } from './components/coach/CoachProfile'
 import { CoachBooking } from './components/coach/CoachBooking'
 import { site } from './data/site'
 
@@ -21,15 +21,22 @@ export default function InfoApp({ page }: { page: InfoPage }) {
   return (
     <>
       <Navbar />
-      {/* 教練頁刻意縮小上下留白：桌機一頁要能同時看到首席與所有合作教練 */}
+      {/* 教練頁刻意縮小上下留白：桌機一頁要能同時看到首席與所有合作教練。
+          寬度由各頁自行決定（個別教練頁要放兩欄，需要比其他支援頁寬） */}
       <main
-        className={`mx-auto w-full max-w-4xl px-4 sm:px-6 ${
-          page === 'coach' ? 'py-6 lg:py-8' : 'py-10 lg:py-14'
-        }`}
+        className={`w-full px-4 sm:px-6 ${page === 'coach' ? 'py-6 lg:py-8' : 'py-10 lg:py-14'}`}
       >
         {page === 'coach' && <CoachPage />}
-        {page === 'faq' && <FaqPage />}
-        {page === 'contact' && <ContactPage />}
+        {page === 'faq' && (
+          <div className="mx-auto max-w-4xl">
+            <FaqPage />
+          </div>
+        )}
+        {page === 'contact' && (
+          <div className="mx-auto max-w-4xl">
+            <ContactPage />
+          </div>
+        )}
       </main>
       <Footer />
     </>
@@ -57,7 +64,7 @@ function CoachPage() {
   if (id) return <CoachDetailPage coach={coach} />
 
   return (
-    <>
+    <div className="mx-auto max-w-4xl">
       {/* 頁首：品牌語氣的導言 */}
       <header>
         <p className="text-sm font-semibold tracking-widest text-brand-600">
@@ -113,7 +120,7 @@ function CoachPage() {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -121,7 +128,15 @@ function CoachPage() {
 
 /**
  * 個別教練頁（coach.html?id=…）。
- * 首席與合作教練共用同一份 CoachProfile 結構；沒有資料的欄位整段隱藏。
+ *
+ * 桌機（lg 以上）為兩欄：
+ *   左欄 ≈55%：教練摘要 → 關於教練／經歷／課程／場館
+ *   右欄 ≈45%：預約卡，sticky 停在導覽列下方（top 用 --promo-h 計算，
+ *              與課程頁購買卡同一套規則），過高時卡片內部捲動
+ *
+ * 平板與手機為單欄，順序固定：
+ *   返回 → 教練摘要 → 預約 → 關於教練 → 經歷 → 課程
+ * 預約卡緊接在摘要之後，不放到履歷最底部；手機不使用 sticky。
  */
 function CoachDetailPage({ coach }: { coach: ReturnType<typeof coachById> }) {
   if (!coach) {
@@ -140,23 +155,49 @@ function CoachDetailPage({ coach }: { coach: ReturnType<typeof coachById> }) {
     )
   }
 
+  const bookable = Object.keys(coach.availability).length > 0
+
   return (
-    <>
+    <div className="mx-auto max-w-[60rem]">
       {/* 麵包屑：回教練群 */}
-      <nav aria-label="麵包屑" className="mb-8">
+      <nav aria-label="麵包屑" className="mb-4 lg:mb-2">
         <a
           href="./coach.html"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4"
+          className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4 lg:min-h-0"
         >
           <span aria-hidden="true">←</span> 教練群
         </a>
       </nav>
 
-      <CoachProfile coach={coach} as="h1" />
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-start lg:gap-10">
+        {/* ── 左欄：教練內容 ── */}
+        <div className="min-w-0">
+          <CoachSummary coach={coach} />
 
-      {/* 預約行事曆：沒有開放時段的教練不顯示 */}
-      {Object.keys(coach.availability).length > 0 && <CoachBooking coach={coach} />}
-    </>
+          {/* 平板與手機：預約緊接在摘要之後（桌機由右欄呈現） */}
+          {bookable && (
+            <div className="mt-8 lg:hidden">
+              <div className="mx-auto max-w-[42.5rem]">
+                <CoachBooking coach={coach} />
+              </div>
+            </div>
+          )}
+
+          <div className="mt-10">
+            <CoachDetails coach={coach} />
+          </div>
+        </div>
+
+        {/* ── 右欄：桌機 sticky 預約卡 ──
+            sticky 必須放在格線欄本身；top 避開促銷列＋導覽列（h-16＝4rem），
+            過高時卡片內部捲動，避免被視窗切掉 */}
+        {bookable && (
+          <div className="sticky top-[calc(var(--promo-h)+4.5rem)] hidden max-h-[calc(100dvh-var(--promo-h)-5.5rem)] overflow-y-auto lg:block">
+            <CoachBooking coach={coach} />
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 

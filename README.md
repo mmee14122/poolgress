@@ -197,6 +197,22 @@ venue: {
 
 取得連結的方式：Google 地圖搜尋場館 → 按「分享」→ 複製連結。
 
+### 如何放 App 下載 QR code
+
+課程頁「球桌 Challenge」區的「下載 Poolgress App」按鈕，點下去會彈出
+iOS 與 Android 兩格 QR code。圖片放 `public/assets/challenges/`（建議 512×512 PNG），
+在 `src/data/course-detail.ts` 的 `challenge.qrCodes` 填路徑：
+
+```ts
+qrCodes: {
+  ios: '/assets/challenges/qr-ios.png',
+  android: '/assets/challenges/qr-android.png',
+}
+```
+
+留 `null` 顯示「QR code 待補」佔位框。商店連結另外填在
+`src/data/challenges.ts` 的 `appLinks`，未填時顯示「即將上架」。
+
 ### 如何改評價、FAQ
 
 在 `src/data/course-detail.ts`：`reviews`、`faqs`。課程頁與 FAQ 頁共用。

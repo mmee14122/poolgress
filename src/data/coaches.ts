@@ -110,6 +110,21 @@ export type Coach = {
   lessonPrice: number | null
   /** 授課的撞球場館；null＝不顯示這個區塊 */
   venue: CoachVenue | null
+  /** 可預約的服務項目；空陣列＝預約卡不顯示服務選單 */
+  services: CoachService[]
+}
+
+/**
+ * 可預約的服務項目（預約卡上方的下拉選單）。
+ * 只有一項時顯示為文字，兩項以上才出現下拉。
+ */
+export type CoachService = {
+  id: string
+  name: string
+  /** 單堂時長（分鐘）；null＝待補 */
+  durationMin: number | null
+  /** 單堂價格（新台幣）；null＝待補 */
+  price: number | null
 }
 
 /**
@@ -153,6 +168,10 @@ const featuredCoach: Coach = {
     address: '場館地址待補',
     mapUrl: null,
   },
+  /* ⚠️ 服務名稱／時長／價格皆待確認；填 price 與 durationMin 後預約摘要才會顯示 */
+  services: [
+    { id: 'private-1', name: '單堂一對一指導', durationMin: null, price: null },
+  ],
 }
 
 /**
@@ -184,6 +203,10 @@ const partnerCoaches: Coach[] = [
       address: '場館地址待補',
       mapUrl: null,
     },
+    /* ⚠️ 服務名稱／時長／價格皆待確認；填 price 與 durationMin 後預約摘要才會顯示 */
+    services: [
+      { id: 'private-1', name: '單堂一對一指導', durationMin: null, price: null },
+    ],
   },
   {
     id: 'coach-3',
@@ -209,6 +232,10 @@ const partnerCoaches: Coach[] = [
       address: '場館地址待補',
       mapUrl: null,
     },
+    /* ⚠️ 服務名稱／時長／價格皆待確認；填 price 與 durationMin 後預約摘要才會顯示 */
+    services: [
+      { id: 'private-1', name: '單堂一對一指導', durationMin: null, price: null },
+    ],
   },
   {
     id: 'coach-4',
@@ -234,6 +261,10 @@ const partnerCoaches: Coach[] = [
       address: '場館地址待補',
       mapUrl: null,
     },
+    /* ⚠️ 服務名稱／時長／價格皆待確認；填 price 與 durationMin 後預約摘要才會顯示 */
+    services: [
+      { id: 'private-1', name: '單堂一對一指導', durationMin: null, price: null },
+    ],
   },
 ]
 
