@@ -118,7 +118,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 |---|---|---|
 | `cart.ts` | 購物車 | key `poolgress.cart.v1` |
 | `session.ts` | 登入狀態（Email／名稱／頭像） | key `poolgress.session.v1`，**不存密碼** |
-| `library.ts` | **已購課程／學習進度／訂單／星星** | key `poolgress.library.v1` |
+| `library.ts` | **已購課程／學習進度／訂單／星星／教練課預約** | key `poolgress.library.v1` |
 | `auth.ts` | 認證 API 介面 | 目前全部回 `not_configured`，**不做假登入** |
 | `checkout.ts` | 結帳表單驗證與 demo 訂單 | |
 | `validate.ts` | Email、統編等驗證規則 | |

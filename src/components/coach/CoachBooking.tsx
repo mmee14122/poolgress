@@ -3,6 +3,7 @@ import { Button } from '../../ui/Button'
 import { Field, TextInput, ChoiceCard } from '../../ui/Field'
 import { paymentOptions, type PaymentMethod, type Carrier } from '../../lib/checkout'
 import { isEmail, isMobileBarcode, isCitizenCert } from '../../lib/validate'
+import { library } from '../../lib/library'
 import { toDateKey, type Coach, type CoachService } from '../../data/coaches'
 
 /**
@@ -115,6 +116,17 @@ export function CoachBooking({ coach }: { coach: Coach }) {
     /* ── 串接點：這裡改成導向金流，並在回呼後送出預約 ──
        送出內容：coachId / serviceId / 日期 / 時段 / Email / 付款方式 */
     setTimeout(() => {
+      /* 寫入個人區「我的教練課」（沒有後端時的替身，改接 API 時換這一段） */
+      library.addBooking({
+        coachId: coach.id,
+        coachName: coach.name,
+        serviceName: service?.name ?? '教練課',
+        date: selectedDate!,
+        time: selectedTime!,
+        durationMin: service?.durationMin ?? null,
+        venueName: coach.venue?.name ?? null,
+        venueAddress: coach.venue?.address ?? null,
+      })
       paying.current = false
       setStep('done')
     }, 1400)

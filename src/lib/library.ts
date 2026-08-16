@@ -38,10 +38,34 @@ export type LibraryStar = {
   amount: number
 }
 
+/**
+ * 已預約的教練課。
+ * 預約成功後寫入，個人區「我的課程 → 我的教練課」會列出來。
+ * ⚠️ 目前沒有後端，這是存在瀏覽器的替身資料。
+ */
+export type LibraryBooking = {
+  id: string
+  coachId: string
+  coachName: string
+  serviceName: string
+  /** 上課日期 YYYY-MM-DD */
+  date: string
+  /** 開始時間 HH:mm */
+  time: string
+  /** 課程時長（分鐘）；null＝待確認 */
+  durationMin: number | null
+  /** 上課地點（場館名稱＋地址）；null＝待補 */
+  venueName: string | null
+  venueAddress: string | null
+  /** 預約建立時間 ISO */
+  bookedAt: string
+}
+
 export type Library = {
   courses: LibraryCourse[]
   orders: LibraryOrder[]
   stars: LibraryStar[]
+  bookings: LibraryBooking[]
 }
 
 const KEY = 'poolgress.library.v1'
@@ -57,6 +81,7 @@ function seed(): Library {
     })),
     orders: [],
     stars: [...seedStars],
+    bookings: [],
   }
 }
 
@@ -69,6 +94,8 @@ function load(): Library {
       courses: Array.isArray(parsed.courses) ? parsed.courses : [],
       orders: Array.isArray(parsed.orders) ? parsed.orders : [],
       stars: Array.isArray(parsed.stars) ? parsed.stars : [],
+      /* 舊版資料沒有 bookings 欄位，補成空陣列避免壞掉 */
+      bookings: Array.isArray(parsed.bookings) ? parsed.bookings : [],
     }
   } catch {
     return seed()
@@ -96,6 +123,18 @@ export const library = {
 
   /** 取得單一課程的學習狀態 */
   courseState: (courseId: string) => cache.courses.find((c) => c.courseId === courseId) ?? null,
+
+  /** 預約教練課成功：寫入一筆預約紀錄 */
+  addBooking(booking: Omit<LibraryBooking, 'id' | 'bookedAt'>) {
+    const now = new Date()
+    const entry: LibraryBooking = {
+      ...booking,
+      id: `bk-${now.getTime()}`,
+      bookedAt: now.toISOString(),
+    }
+    commit({ ...cache, bookings: [...cache.bookings, entry] })
+    return entry
+  },
 
   /** 結帳成功：加入已購課程並產生訂單（同一課程不重複加入） */
   completePurchase(
@@ -171,7 +210,7 @@ export const library = {
 
   /** 清空（測試／展示重置用） */
   reset() {
-    commit({ courses: [], orders: [], stars: [] })
+    commit({ courses: [], orders: [], stars: [], bookings: [] })
   },
 
   subscribe(listener: () => void) {
@@ -189,7 +228,7 @@ if (typeof window !== 'undefined') {
   })
 }
 
-const emptyLibrary: Library = { courses: [], orders: [], stars: [] }
+const emptyLibrary: Library = { courses: [], orders: [], stars: [], bookings: [] }
 
 export function useLibrary(): Library {
   return useSyncExternalStore(library.subscribe, library.get, () => emptyLibrary)

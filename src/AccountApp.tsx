@@ -11,7 +11,7 @@ import {
   MAX_NAME_LENGTH,
   type Session,
 } from './lib/session'
-import { useLibrary, totalStarsOf } from './lib/library'
+import { useLibrary, totalStarsOf, type LibraryBooking } from './lib/library'
 import { courseById, flatLessons } from './data/courses'
 import { toast } from './ui/Toast'
 
@@ -100,6 +100,16 @@ export default function AccountApp({ page }: { page: AccountPage }) {
  * 資料來源：lib/library.ts（結帳成功即寫入）＋ data/courses.ts 的課程目錄。
  */
 function CoursesPanel() {
+  return (
+    <div className="space-y-6">
+      <OnlineCoursesCard />
+      <CoachLessonsCard />
+    </div>
+  )
+}
+
+/** 線上課程：已購買課程與觀看進度 */
+function OnlineCoursesCard() {
   const lib = useLibrary()
   const list = lib.courses
     .map((c) => {
@@ -112,7 +122,7 @@ function CoursesPanel() {
 
   if (list.length === 0) {
     return (
-      <Card title="我的課程">
+      <Card title="線上課程">
         <EmptyState
           icon="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm12 .5V21l5-3.2z"
           title="還沒有已購買的課程"
@@ -128,7 +138,7 @@ function CoursesPanel() {
   }
 
   return (
-    <Card title="我的課程">
+    <Card title="線上課程">
       <ul className="space-y-4">
         {list.map(({ c, info, progress }) => (
           <li
@@ -182,6 +192,164 @@ function CoursesPanel() {
     </Card>
   )
 }
+
+/* ------------------------------------------------------------------ */
+
+/**
+ * 我的教練課：預約成功後寫入 lib/library.ts 的 bookings。
+ * 每一筆顯示教練、時段與上課地點，並提供「加入 Google 行事曆」提醒連結。
+ */
+function CoachLessonsCard() {
+  const lib = useLibrary()
+  const now = new Date()
+
+  /* 依上課時間排序 */
+  const list = [...lib.bookings].sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+
+  if (list.length === 0) {
+    return (
+      <Card title="我的教練課">
+        <EmptyState
+          icon="M7 2v2h10V2h2v2h1a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V2zm13 8H4v10h16zM6 12h5v4H6z"
+          title="還沒有預約的教練課"
+          description="預約成功後，這裡會顯示上課的教練、時段與地點。"
+          action={
+            <Button href="./coach.html" size="lg">
+              找教練預約
+            </Button>
+          }
+        />
+      </Card>
+    )
+  }
+
+  return (
+    <Card title="我的教練課">
+      <ul className="space-y-4">
+        {list.map((b) => {
+          const start = lessonStart(b.date, b.time)
+          const past = start.getTime() + (b.durationMin ?? 60) * 60000 < now.getTime()
+
+          return (
+            <li key={b.id} className={`rounded-xl border border-line p-4 ${past ? 'opacity-60' : ''}`}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-semibold text-ink-900">{b.serviceName}</p>
+                    {past && (
+                      <span className="rounded-full bg-ivory-100 px-2 py-0.5 text-xs text-ink-500">
+                        已結束
+                      </span>
+                    )}
+                  </div>
+
+                  <dl className="mt-2 space-y-1 text-sm text-ink-700">
+                    <div className="flex gap-2">
+                      <dt className="shrink-0 text-ink-500">教練</dt>
+                      <dd className="font-semibold">{b.coachName}</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="shrink-0 text-ink-500">時段</dt>
+                      <dd className="font-semibold tabular-nums">
+                        {formatLessonTime(b.date, b.time)}
+                        {b.durationMin !== null && `（${b.durationMin} 分鐘）`}
+                      </dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="shrink-0 text-ink-500">地點</dt>
+                      <dd>
+                        {b.venueName ?? '場館待補'}
+                        {b.venueAddress && (
+                          <span className="block text-xs text-ink-500">{b.venueAddress}</span>
+                        )}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+                  {/* 加入 Google 行事曆並由行事曆發出提醒 */}
+                  <Button href={googleCalendarUrl(b)} variant="secondary" className="shrink-0">
+                    加入 Google 行事曆
+                  </Button>
+                  <a
+                    href={`./coach.html?id=${encodeURIComponent(b.coachId)}`}
+                    className="text-sm font-semibold text-brand-700 hover:underline hover:underline-offset-4 sm:text-right"
+                  >
+                    查看教練
+                  </a>
+                </div>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+
+      <p className="mt-4 text-xs leading-relaxed text-ink-400">
+        ⚠️ 目前預約為前端示範，紀錄只存在這台裝置的瀏覽器，尚未串接實際排程系統。
+      </p>
+    </Card>
+  )
+}
+
+/** 'YYYY-MM-DD' + 'HH:mm' → Date（本地時間） */
+function lessonStart(date: string, time: string) {
+  const [y, m, d] = date.split('-').map(Number)
+  const [hh, mm] = time.split(':').map(Number)
+  return new Date(y, m - 1, d, hh, mm)
+}
+
+/** 顯示用：2026 年 8 月 18 日（週二）19:00 */
+function formatLessonTime(date: string, time: string) {
+  const d = lessonStart(date, time)
+  const week = ['日', '一', '二', '三', '四', '五', '六'][d.getDay()]
+  return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日（週${week}）${time}`
+}
+
+/**
+ * 產生 Google 行事曆「新增活動」連結。
+ * 按下後開啟 Google 行事曆並帶入標題、時間、地點；
+ * 提醒時間由使用者行事曆的預設值決定（在 Google 端設定）。
+ *
+ * 時長未確認時以 60 分鐘估算，並在說明欄註明。
+ */
+function googleCalendarUrl(b: LibraryBooking) {
+  const start = lessonStart(b.date, b.time)
+  const minutes = b.durationMin ?? 60
+  const end = new Date(start.getTime() + minutes * 60000)
+
+  const stamp = (d: Date) =>
+    [
+      d.getFullYear(),
+      String(d.getMonth() + 1).padStart(2, '0'),
+      String(d.getDate()).padStart(2, '0'),
+      'T',
+      String(d.getHours()).padStart(2, '0'),
+      String(d.getMinutes()).padStart(2, '0'),
+      '00',
+    ].join('')
+
+  const details = [
+    `教練：${b.coachName}`,
+    `項目：${b.serviceName}`,
+    b.durationMin === null ? '（課程時長待確認，此活動以 60 分鐘估算）' : '',
+  ]
+    .filter(Boolean)
+    .join('\n')
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: `Poolgress 教練課｜${b.coachName}`,
+    dates: `${stamp(start)}/${stamp(end)}`,
+    ctz: 'Asia/Taipei',
+    details,
+    location: [b.venueName, b.venueAddress].filter(Boolean).join(' '),
+  })
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
+/* ------------------------------------------------------------------ */
 
 /** 我的訂單：來自 lib/library.ts（結帳成功即產生） */
 function OrdersPanel() {
