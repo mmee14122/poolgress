@@ -239,7 +239,7 @@ function CoachLessonsCard() {
               className={`overflow-hidden rounded-xl border border-line ${past ? 'opacity-60' : ''}`}
             >
               {/* 左：預約資訊（狀態接在課程名右側）／右：操作按鈕 */}
-              <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2.5">
                     <p className="text-lg font-bold text-ink-900">{b.serviceName}</p>
@@ -279,7 +279,7 @@ function CoachLessonsCard() {
                 </div>
 
                 {/* 操作區：桌機在右上直向堆疊，手機為滿寬堆疊 */}
-                <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto">
+                <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto">
                   {/* 加入 Google 行事曆並由行事曆發出提醒 */}
                   <Button
                     href={googleCalendarUrl(b)}

@@ -78,7 +78,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-10">
           <BrandColumn t={t} />
           {/* lg:pt-15＝與第一欄「公司地址」小標同高（Logo 高度＋間距） */}
-          <LinkGroup t={t} title="加入與合作" items={site.footerJoin} className="lg:pt-15" />
+          <LinkGroup t={t} title="關於" items={site.footerAbout} className="lg:pt-15" />
           <LinkGroup t={t} title="支援與條款" items={site.footerSupport} className="lg:pt-15" />
           <AppColumn t={t} />
         </div>

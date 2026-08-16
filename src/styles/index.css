@@ -71,6 +71,11 @@
     --promo-h: 2rem;
   }
 
+  /* 固定促銷列＋導覽列約 82px 高：錨點捲動時預留空間，標題不被蓋住 */
+  html {
+    scroll-padding-top: 96px;
+  }
+
   body {
     @apply bg-ivory-50 font-sans text-ink-700 antialiased;
   }
@@ -202,7 +207,8 @@
   }
   .hs-spacer {
     display: block;
-    height: 300px;
+    /* 300px → 200px：首頁精簡改版後，讓功能卡在第二屏內出現 */
+    height: 200px;
   }
 }
 

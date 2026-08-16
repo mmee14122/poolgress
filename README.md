@@ -30,7 +30,8 @@ npm run preview  # 預覽 build 後的結果
 
 | 網址 | 頁面 | 說明 |
 |---|---|---|
-| `/` | 首頁 | 品牌敘事、精選課程、實戰闖關、教練 |
+| `/` | 首頁 | 五區塊：Hero、痛點、功能卡、對照圖、CTA |
+| `/about.html` | 關於 Poolgress | 品牌長期願景 |
 | `/course.html` | 課程詳情／販售頁 | 主課程完整介紹與購買 |
 | `/learn.html?course=<id>&lesson=<章-單元>` | 課程學習頁 | 播放器＋章節清單＋進度 |
 | `/challenges.html` | 實戰闖關列表 | App 實戰任務 |

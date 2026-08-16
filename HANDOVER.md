@@ -67,7 +67,8 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 
 | 網址 | 進入點 | App | 說明 |
 |---|---|---|---|
-| `/` | index.html | HomeApp | 首頁（6 區塊） |
+| `/` | index.html | HomeApp | 首頁（5 區塊，2026-08 精簡改版） |
+| `/about.html` | about-entry | AboutApp | 關於 Poolgress（品牌願景） |
 | `/course.html` | course.tsx | App | 課程詳情／販售頁（主戰場） |
 | `/learn.html?course=&lesson=` | learn-entry | LearnApp | 學習頁（播放器＋章節） |
 | `/challenges.html[?id=]` | challenges-entry | ChallengesApp | 實戰闖關列表／詳情 |

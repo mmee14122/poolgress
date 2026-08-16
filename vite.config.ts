@@ -42,6 +42,7 @@ export default defineConfig({
         serviceAgreement: fileURLToPath(new URL('./service-agreement.html', import.meta.url)),
         join: fileURLToPath(new URL('./join.html', import.meta.url)),
         partnership: fileURLToPath(new URL('./partnership.html', import.meta.url)),
+        about: fileURLToPath(new URL('./about.html', import.meta.url)),
       },
     },
   },

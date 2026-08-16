@@ -16,6 +16,7 @@ export const site = {
     { label: '實戰闖關', href: './challenges.html' },
     { label: '關於教練', href: './coach.html' },
     { label: '合作場館', href: './venues.html' },
+    { label: '關於 Poolgress', href: './about.html' },
   ] as NavLink[],
 
   cartUrl: './cart.html',
@@ -83,6 +84,13 @@ export const site = {
     googlePlay: null as string | null,
   },
 
+  /** 頁尾「關於」連結群組（放在支援與條款之前） */
+  footerAbout: [
+    { label: '關於 Poolgress', href: './about.html' },
+    { label: '加入 Poolgress', href: './join.html' },
+    { label: '合作洽談', href: './partnership.html' },
+  ] as NavLink[],
+
   /** 頁尾「支援與條款」連結群組 */
   footerSupport: [
     { label: '常見問題', href: './faq.html' },
@@ -91,9 +99,4 @@ export const site = {
     { label: '隱私權政策', href: './privacy.html' },
   ] as NavLink[],
 
-  /** 頁尾「加入與合作」連結群組 */
-  footerJoin: [
-    { label: '加入 Poolgress', href: './join.html' },
-    { label: '合作洽談', href: './partnership.html' },
-  ] as NavLink[],
 } as const
