@@ -77,8 +77,9 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
         {/* 四欄對齊頂部；最右下載區略寬，QR 與 badge 才不會擁擠 */}
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-10">
           <BrandColumn t={t} />
-          <LinkGroup t={t} title="加入與合作" items={site.footerJoin} />
-          <LinkGroup t={t} title="支援與條款" items={site.footerSupport} />
+          {/* lg:pt-15＝與第一欄「公司地址」小標同高（Logo 高度＋間距） */}
+          <LinkGroup t={t} title="加入與合作" items={site.footerJoin} className="lg:pt-15" />
+          <LinkGroup t={t} title="支援與條款" items={site.footerSupport} className="lg:pt-15" />
           <AppColumn t={t} />
         </div>
 
@@ -247,13 +248,15 @@ function LinkGroup({
   t,
   title,
   items,
+  className = '',
 }: {
   t: Palette
   title: string
   items: readonly { label: string; href: string }[]
+  className?: string
 }) {
   return (
-    <nav aria-label={title}>
+    <nav aria-label={title} className={className}>
       <h2 className={`text-xs font-semibold tracking-wide ${t.label}`}>{title}</h2>
       <ul className="mt-2">
         {items.map((item) => (
