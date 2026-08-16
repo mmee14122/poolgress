@@ -46,25 +46,33 @@ export function CourseInfo() {
   ]
 
   return (
-    <section className="pt-8 pb-10 lg:pt-12">
+    /* id/scroll-mt：左側索引欄的第一個錨點（與 ui/Section 的偏移一致） */
+    <section
+      id="info"
+      className="scroll-mt-[calc(var(--promo-h)+8rem)] pt-8 pb-10 lg:scroll-mt-[calc(var(--promo-h)+6rem)] lg:pt-12"
+    >
       <h2 className="flex items-center gap-2.5 text-lg">
         <span aria-hidden="true" className="h-5 w-1 rounded-full bg-brand-600" />
         課程資訊
       </h2>
 
-      <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
+      {/* 手機也維持兩欄（與桌機一致）：整排單欄會把資訊拉得太長。
+          窄螢幕靠縮小間距與字級容納，不換行、不變形 */}
+      <dl className="mt-6 grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-8 sm:gap-y-5">
         {rows.map((row) => (
-          <div key={row.label} className="flex items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-500">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4.5 w-4.5 fill-white">
+          <div key={row.label} className="flex items-center gap-2 sm:gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 sm:h-9 sm:w-9">
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-white sm:h-4.5 sm:w-4.5">
                 <path d={row.icon} />
               </svg>
             </span>
-            <dt className="text-sm text-ink-500">{row.label}</dt>
-            <dd className="text-sm font-semibold text-ink-900">
-              {row.value}
-              {row.unit && <span className="ml-0.5 font-normal text-ink-500">{row.unit}</span>}
-            </dd>
+            <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
+              <dt className="text-xs text-ink-500 sm:text-sm">{row.label}</dt>
+              <dd className="text-xs font-semibold text-ink-900 sm:text-sm">
+                {row.value}
+                {row.unit && <span className="ml-0.5 font-normal text-ink-500">{row.unit}</span>}
+              </dd>
+            </div>
           </div>
         ))}
       </dl>

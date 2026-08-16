@@ -1,4 +1,4 @@
-import { course, sections } from '../data/course-detail'
+import { sections } from '../data/course-detail'
 
 /**
  * 桌機左欄錨點導覽。sticky 於視窗左側，
@@ -8,9 +8,6 @@ export function SideNav({ active }: { active: string }) {
   return (
     /* sticky 由 App.tsx 的格線欄容器負責 */
     <nav aria-label="課程內容導覽">
-      {/* 標題顯示課程名稱，改 content/course.ts 的 name 即可自訂 */}
-      <p className="mb-3 px-3 text-sm leading-snug font-bold text-ink-900">{course.name}</p>
-
       <ul className="space-y-0.5">
         {sections.map((section) => {
           const isActive = section.id === active

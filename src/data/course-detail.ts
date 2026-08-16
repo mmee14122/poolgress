@@ -15,6 +15,7 @@
  */
 
 export type SectionId =
+  | 'info'
   | 'stuck'
   | 'outcomes'
   | 'how'
@@ -519,6 +520,7 @@ export const courseStats = (() => {
  * 捲動到章節之前，「課程簡介」都維持高亮。
  */
 export const sections: { id: SectionId; label: string }[] = [
+  { id: 'info', label: '課程資訊' },
   { id: 'stuck', label: '課程簡介' },
   { id: 'chapters', label: '課程章節' },
   { id: 'reviews', label: '學員評價' },

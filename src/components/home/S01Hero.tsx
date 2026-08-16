@@ -95,17 +95,17 @@ export function S01Hero() {
       {/* 舞台：sticky 釘住，整段故事在此發生 */}
       <div className="hs-stage text-white">
         {/* 背景光暈（載入時輕微縮回） */}
-        <div aria-hidden="true" className="hs-enter-bg absolute inset-0">
+        <div aria-hidden="true" className="hs-enter-bg pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_60%_35%,rgba(56,126,217,0.28),transparent)]" />
         </div>
 
         {/* 球檯角落與球路（鏡頭推進的主角） */}
-        <div className="hs-visual absolute inset-0">
+        <div aria-hidden="true" className="hs-visual pointer-events-none absolute inset-0">
           <StoryTable />
         </div>
 
         {/* SCENE 04 背景微暗層 */}
-        <div aria-hidden="true" className="hs-dim absolute inset-0 bg-black opacity-0" />
+        <div aria-hidden="true" className="hs-dim pointer-events-none absolute inset-0 bg-black opacity-0" />
 
         {/* SCENE 01–02：品牌句組 */}
         <div className="hs-headline absolute inset-x-0 top-[16%] px-5 sm:px-8 lg:top-[22%]">
@@ -134,13 +134,15 @@ export function S01Hero() {
           </div>
         </div>
 
-        {/* SCENE 03 提示句（僅一句） */}
-        <p className="hs-hint absolute inset-x-0 bottom-[14%] px-5 text-center text-lg font-semibold text-white/85 opacity-0 sm:text-xl">
+        {/* SCENE 03 提示句（僅一句）。
+            pointer-events-none：這些是敘事文字覆蓋層，即使 opacity 為 0 仍會
+            疊在 Hero 按鈕上方攔截點擊（手機因畫面較窄特別明顯） */}
+        <p className="hs-hint pointer-events-none absolute inset-x-0 bottom-[14%] px-5 text-center text-lg font-semibold text-white/85 opacity-0 sm:text-xl">
           {hero.sceneHint}
         </p>
 
         {/* SCENE 04 金句 */}
-        <div className="absolute inset-x-0 top-[38%] px-5 text-center lg:top-[40%]">
+        <div className="pointer-events-none absolute inset-x-0 top-[38%] px-5 text-center lg:top-[40%]">
           <p className="hs-quote text-3xl font-bold text-white opacity-0 sm:text-5xl">
             {hero.sceneQuote}
           </p>

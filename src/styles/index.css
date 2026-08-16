@@ -414,30 +414,38 @@
 
 /* 效果 —— 全部由 --hero-p 直接映射，使用者停下動畫就停下。
    左影片、右文字、標題同節奏退場（輕微縮小＋上移＋淡出），
-   只動 transform / opacity；不再動 filter 與 box-shadow（避免逐幀 paint） */
-.hero-fx-media {
-  transform: translate3d(0, calc(var(--hero-p, 0) * -12px), 0)
-    scale(calc(1 - var(--hero-p, 0) * 0.02));
-  opacity: calc(1 - var(--hero-p, 0) * 0.45);
-  will-change: transform, opacity;
-}
-.hero-fx-title {
-  transform: translate3d(0, calc(var(--hero-p, 0) * -24px), 0);
-  opacity: calc(1 - var(--hero-p, 0));
-  will-change: transform, opacity;
-}
-.hero-fx-fade {
-  opacity: calc(1 - var(--hero-p, 0));
-}
-.hero-fx-panel {
-  border-bottom-right-radius: calc(var(--hero-p, 0) * 28px);
-  border-bottom-left-radius: calc(var(--hero-p, 0) * 28px);
+   只動 transform / opacity；不再動 filter 與 box-shadow（避免逐幀 paint）。
+
+   ⚠️ 僅限桌機：手機版 Hero 不釘住，內容淡出後區塊仍占著同樣高度，
+   會在捲動時留下一大片空白淺藍色。手機維持完全不透明，Hero 自然捲走即可。 */
+@media (min-width: 1024px) {
+  .hero-fx-media {
+    transform: translate3d(0, calc(var(--hero-p, 0) * -12px), 0)
+      scale(calc(1 - var(--hero-p, 0) * 0.02));
+    opacity: calc(1 - var(--hero-p, 0) * 0.45);
+    will-change: transform, opacity;
+  }
+  .hero-fx-title {
+    transform: translate3d(0, calc(var(--hero-p, 0) * -24px), 0);
+    opacity: calc(1 - var(--hero-p, 0));
+    will-change: transform, opacity;
+  }
+  .hero-fx-fade {
+    opacity: calc(1 - var(--hero-p, 0));
+  }
+  .hero-fx-panel {
+    border-bottom-right-radius: calc(var(--hero-p, 0) * 28px);
+    border-bottom-left-radius: calc(var(--hero-p, 0) * 28px);
+  }
 }
 /* 下一區進場：後段（p 0.7→1）淡入；不用 transform——
    內含 sticky 導覽與購買卡，祖先 transform 會使 sticky 失效，
-   位移感由 sticky 釋放後的自然上滑提供 */
-.hero-next {
-  opacity: clamp(0.4, calc(0.4 + (var(--hero-p, 0) - 0.7) * 2), 1);
+   位移感由 sticky 釋放後的自然上滑提供。
+   同樣僅限桌機：手機沒有 sticky 停留，內容不該一開始就變暗 */
+@media (min-width: 1024px) {
+  .hero-next {
+    opacity: clamp(0.4, calc(0.4 + (var(--hero-p, 0) - 0.7) * 2), 1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
