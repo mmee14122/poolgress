@@ -113,9 +113,9 @@ export const appFlow = {
   title: '接住初生的興趣，用遊戲闖關引導學習',
   body: '從「我只是來玩」到「這是我能學會的運動」。撞球可以透過理解、練習，而持續進步。',
   steps: [
-    { no: '01', name: '選擇關卡', image: null as string | null, alt: 'App 關卡地圖畫面' },
-    { no: '02', name: '看懂目標並開始挑戰', image: null as string | null, alt: 'App 關卡說明與開始遊戲畫面' },
-    { no: '03', name: '查看闖關結算', image: null as string | null, alt: 'App 通關結算與星星畫面' },
-    { no: '04', name: '解鎖下一個學習地圖', image: null as string | null, alt: 'App 解鎖下一關的地圖畫面' },
+    { no: '01', name: '選擇關卡', image: './assets/challenges/flow-01.png' as string | null, alt: 'App 關卡地圖畫面' },
+    { no: '02', name: '看懂目標並開始挑戰', image: './assets/challenges/flow-02.png' as string | null, alt: 'App 關卡說明與開始遊戲畫面' },
+    { no: '03', name: '查看闖關結算', image: './assets/challenges/flow-03.png' as string | null, alt: 'App 通關結算與星星畫面' },
+    { no: '04', name: '解鎖下一個學習地圖', image: './assets/challenges/flow-04.png' as string | null, alt: 'App 解鎖下一關的地圖畫面' },
   ],
 }

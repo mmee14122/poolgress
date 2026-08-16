@@ -97,7 +97,7 @@ export const home = {
   /**
    * SECTION 05.5｜App 預告
    * 只做預告：一句價值主張＋一到兩張畫面，完整四步驟流程在實戰闖關頁，
-   * 首頁不重複細節。images 待補（放 public/assets/challenges/ 後填相對路徑）。
+   * 首頁不重複細節。畫面沿用實戰闖關頁的第 1、3 張。
    */
   appTeaser: {
     eyebrow: 'POOLGRESS APP',
@@ -105,8 +105,8 @@ export const home = {
     body: '從選關卡、看懂目標、完成挑戰到解鎖下一關，App 帶著你在真實球桌上一關一關往前。',
     cta: { label: '認識實戰闖關', href: './challenges.html' },
     images: [
-      { src: null as string | null, alt: 'App 關卡地圖畫面' },
-      { src: null as string | null, alt: 'App 通關結算畫面' },
+      { src: './assets/challenges/flow-01.png' as string | null, alt: 'App 關卡地圖畫面' },
+      { src: './assets/challenges/flow-03.png' as string | null, alt: 'App 通關結算畫面' },
     ],
   },
 
