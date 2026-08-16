@@ -238,9 +238,19 @@ function CoachLessonsCard() {
               key={b.id}
               className={`overflow-hidden rounded-xl border border-line ${past ? 'opacity-60' : ''}`}
             >
-              {/* ── 上段：預約資訊 ── */}
-              <div className="p-5">
-                <p className="text-lg font-bold text-ink-900">{b.serviceName}</p>
+              {/* 左：預約資訊（狀態接在課程名右側）／右：操作按鈕 */}
+              <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <p className="text-lg font-bold text-ink-900">{b.serviceName}</p>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        past ? 'bg-ivory-100 text-ink-500' : 'bg-pulse-100 text-pulse-700'
+                      }`}
+                    >
+                      {past ? '已結束' : '已確認'}
+                    </span>
+                  </div>
 
                 <dl className="mt-3 space-y-2">
                   <div className="flex gap-2 text-sm">
@@ -266,29 +276,21 @@ function CoachLessonsCard() {
                     </dd>
                   </div>
                 </dl>
-              </div>
+                </div>
 
-              {/* ── 下段：操作列（細分隔線區隔；左對齊，右側放狀態） ── */}
-              <div className="flex flex-col gap-3 border-t border-line px-5 py-4 sm:flex-row sm:items-center">
-                <ContactCoachButton coachId={b.coachId} />
+                {/* 操作區：桌機在右上直向堆疊，手機為滿寬堆疊 */}
+                <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto">
+                  {/* 加入 Google 行事曆並由行事曆發出提醒 */}
+                  <Button
+                    href={googleCalendarUrl(b)}
+                    className="min-h-11 w-full whitespace-nowrap sm:w-auto"
+                  >
+                    <CalendarIcon />
+                    加入 Google 行事曆
+                  </Button>
 
-                {/* 加入 Google 行事曆並由行事曆發出提醒 */}
-                <Button
-                  href={googleCalendarUrl(b)}
-                  variant="secondary"
-                  className="min-h-11 w-full whitespace-nowrap sm:w-auto"
-                >
-                  <CalendarIcon />
-                  加入 Google 行事曆
-                </Button>
-
-                <span
-                  className={`hidden text-sm font-semibold sm:ml-auto sm:block ${
-                    past ? 'text-ink-500' : 'text-pulse-700'
-                  }`}
-                >
-                  {past ? '已結束' : '已確認'}
-                </span>
+                  <ContactCoachButton coachId={b.coachId} />
+                </div>
               </div>
             </li>
           )
@@ -309,7 +311,7 @@ function CoachLessonsCard() {
  * 未填時退回 site.lineUrl（Poolgress 官方帳號）；
  * 兩者都沒有就顯示為停用並標示「即將開放」，不放假連結。
  */
-function ContactCoachButton({ coachId }: { coachId: string }) {
+function ContactCoachButton({ coachId, className = '' }: { coachId: string; className?: string }) {
   const coach = coachById(coachId)
   const href = coach?.socialLinks.line ?? site.lineUrl
 
@@ -319,7 +321,7 @@ function ContactCoachButton({ coachId }: { coachId: string }) {
       <span
         aria-disabled="true"
         title="這位教練的 LINE 尚未開放"
-        className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold whitespace-nowrap text-ink-400 ring-1 ring-line sm:w-auto"
+        className={`inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold whitespace-nowrap text-ink-400 ring-1 ring-line sm:w-auto ${className}`}
       >
         <ChatIcon />
         聯絡教練
@@ -332,7 +334,8 @@ function ContactCoachButton({ coachId }: { coachId: string }) {
       href={href}
       aria-label={`使用 LINE 聯絡${coach?.name ?? '教練'}`}
       title="使用 LINE 聯絡教練"
-      className="min-h-11 w-full whitespace-nowrap sm:w-auto"
+      variant="secondary"
+      className={`min-h-11 w-full whitespace-nowrap sm:w-auto ${className}`}
     >
       <ChatIcon />
       聯絡教練
@@ -349,7 +352,7 @@ function ContactCoachButton({ coachId }: { coachId: string }) {
 function ChatIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
-      <path d="M12 3c5 0 9 3.4 9 7.6 0 4.2-4 7.6-9 7.6-.8 0-1.6-.1-2.3-.2l-4 2.4a.6.6 0 01-.9-.6l.4-3.1C3.2 15.3 3 13.1 3 10.6 3 6.4 7 3 12 3zm-4 6.4a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zm4 0a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zm4 0a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" />
+      <path d="M5 4h14a3 3 0 013 3v8a3 3 0 01-3 3H9.6l-4 3.2A1 1 0 014 20.4V18a3 3 0 01-3-3V7a3 3 0 013-3zm2 5.5a1 1 0 100 2h10a1 1 0 100-2zm0 4a1 1 0 100 2h6a1 1 0 100-2z" />
     </svg>
   )
 }
