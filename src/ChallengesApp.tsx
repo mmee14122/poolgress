@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Button } from './ui/Button'
-import { challenges, challengeById, appLinks, type Challenge } from './data/challenges'
+import { challengeById, appLinks, type Challenge } from './data/challenges'
 import { AppFlow } from './components/challenges/AppFlow'
 
 /**
@@ -27,49 +27,16 @@ export default function ChallengesApp() {
   )
 }
 
+/**
+ * 闖關列表頁：目前只呈現 App 學習流程與下載入口。
+ * 原本的「實戰闖關」標題、說明與四張關卡卡片已依需求移除；
+ * 關卡詳情頁（?id=）與 data/challenges.ts 的資料都保留，
+ * 日後要恢復列表把 challenges.map(...) 的區塊加回來即可。
+ */
 function ChallengeList() {
-  /* 完成狀態由 App 回傳；串接前一律顯示「未完成」 */
   return (
     <>
-      {/* App 學習流程放最上方：先讓人看懂闖關長什麼樣，再往下看關卡 */}
       <AppFlow />
-
-      <h1 className="text-3xl sm:text-4xl">實戰闖關</h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-ink-500">
-        看懂只是開始。每一關都是課程的延伸——照著 App 的指示在真實球桌上擺球、
-        完成任務條件，把「聽懂了」變成「做得到」。
-      </p>
-
-      <ul className="mt-10 grid gap-6 sm:grid-cols-2">
-        {challenges.map((c, i) => (
-          <li key={c.id}>
-            <a
-              href={`./challenges.html?id=${c.id}`}
-              className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-            >
-              <article className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-white shadow-sm transition-shadow hover:shadow-md">
-                <ChallengeImage challenge={c} index={i} />
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-                    <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-brand-700 ring-1 ring-brand-200">
-                      {c.level}
-                    </span>
-                    <StarBadge stars={c.stars} />
-                  </div>
-                  <h2 className="mt-3 text-lg leading-snug">{c.name}</h2>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-500">{c.goal}</p>
-                  <p className="mt-4 flex items-center gap-1.5 border-t border-line pt-4 text-sm font-semibold text-brand-700">
-                    查看任務
-                    <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">
-                      <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
-                    </svg>
-                  </p>
-                </div>
-              </article>
-            </a>
-          </li>
-        ))}
-      </ul>
 
       <AppPromo />
     </>
