@@ -289,7 +289,7 @@ function SocialLinks({ t }: { t: Palette }) {
   ]
 
   return (
-    <ul className="mt-2 flex items-center gap-1.5">
+    <ul className="mt-4 flex items-center gap-1.5">
       {items.map((item) => (
         <li key={item.name}>
           {item.href ? (
