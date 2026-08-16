@@ -211,7 +211,17 @@ qrCodes: {
 ```
 
 留 `null` 顯示「QR code 待補」佔位框。商店連結另外填在
-`src/data/challenges.ts` 的 `appLinks`，未填時顯示「即將上架」。
+`src/data/challenges.ts` 的 `appLinks`。
+
+按鈕行為會依裝置自動切換：
+
+| 裝置 | 點下載按鈕後 |
+|---|---|
+| 電腦 | 彈出 iOS 與 Android 兩組 QR code |
+| iPhone／iPad | 直接前往 `appLinks.appStore` |
+| Android | 直接前往 `appLinks.googlePlay` |
+
+商店連結還沒填時，手機會改顯示「App 尚未上架」說明（不放掃不到的 QR code）。
 
 ### 如何改評價、FAQ
 

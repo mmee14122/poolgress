@@ -8,10 +8,42 @@ import { Button } from '../../ui/Button'
  * 課程 × App 的連結亮點區：深色沉浸底、球路軌跡視覺，
  * 說明影片之外還有真實球桌上的 Challenge 練習。
  */
+/** 造訪裝置：決定按下下載後是直接跳商店還是顯示 QR code */
+type Platform = 'ios' | 'android' | 'desktop'
+
+/**
+ * 判斷裝置平台。
+ * iPadOS 13 以後的 Safari 會把自己報成 Macintosh，
+ * 因此再用 maxTouchPoints 補判，否則 iPad 會被當成桌機。
+ */
+function detectPlatform(): Platform {
+  if (typeof navigator === 'undefined') return 'desktop'
+  const ua = navigator.userAgent
+  if (/android/i.test(ua)) return 'android'
+  if (/iPad|iPhone|iPod/.test(ua)) return 'ios'
+  if (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) return 'ios'
+  return 'desktop'
+}
+
 export function ChallengeSection() {
   const { challenge } = course.intro
-  /** 點「下載 Poolgress App」後彈出 iOS／Android 兩組 QR code */
+  /** 桌機才彈出 QR code；手機直接跳商店（連結未上架時仍退回彈窗說明） */
   const [qrOpen, setQrOpen] = useState(false)
+
+  function handleDownload() {
+    const platform = detectPlatform()
+    const storeUrl =
+      platform === 'ios' ? appLinks.appStore : platform === 'android' ? appLinks.googlePlay : null
+
+    /* 手機且商店連結已填 → 直接前往下載頁 */
+    if (storeUrl) {
+      window.location.href = storeUrl
+      return
+    }
+
+    /* 桌機，或 App 尚未上架的手機 → 顯示說明彈窗 */
+    setQrOpen(true)
+  }
 
   return (
     <section
@@ -62,7 +94,7 @@ export function ChallengeSection() {
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             {/* 點下載 → 彈出 iOS／Android 兩組 QR code */}
-            <Button onClick={() => setQrOpen(true)} size="lg">
+            <Button onClick={handleDownload} size="lg">
               {challenge.ctaPrimary.label}
             </Button>
             <a
@@ -83,14 +115,19 @@ export function ChallengeSection() {
 /* ------------------------------------------------------------------ */
 
 /**
- * App 下載 QR code 彈窗：iOS 與 Android 各一格。
+ * App 下載彈窗。
+ *
+ * 桌機：顯示 iOS 與 Android 兩組 QR code，用手機掃描。
+ * 手機：只有在商店連結尚未填時才會走到這裡（有連結時已直接跳轉），
+ *       此時 QR code 對使用者沒有意義，改顯示該平台的「即將上架」說明。
  *
  * 圖片路徑填在 data/course-detail.ts 的 challenge.qrCodes；
- * 尚未提供時顯示待補佔位框，版面不會壞。
- * 商店連結來自 data/challenges.ts 的 appLinks，未上架時顯示「即將上架」。
+ * 商店連結來自 data/challenges.ts 的 appLinks。
  */
 function QrDialog({ onClose }: { onClose: () => void }) {
   const { qrCodes } = course.intro.challenge
+  const platform = detectPlatform()
+  const isMobile = platform !== 'desktop'
 
   /* Esc 關閉；開啟期間鎖住背景捲動 */
   useEffect(() => {
@@ -123,7 +160,9 @@ function QrDialog({ onClose }: { onClose: () => void }) {
             <h3 id="qr-dialog-title" className="text-lg">
               下載 Poolgress App
             </h3>
-            <p className="mt-1 text-sm text-ink-500">用手機掃描下方 QR code 前往商店。</p>
+            <p className="mt-1 text-sm text-ink-500">
+              {isMobile ? 'App 尚未上架，敬請期待。' : '用手機掃描下方 QR code 前往商店。'}
+            </p>
           </div>
           <button
             type="button"
@@ -137,18 +176,32 @@ function QrDialog({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
-          <QrSlot label="iOS" store="App Store" src={qrCodes.ios} href={appLinks.appStore} />
-          <QrSlot
-            label="Android"
-            store="Google Play"
-            src={qrCodes.android}
-            href={appLinks.googlePlay}
-          />
-        </div>
+        {isMobile ? (
+          /* 手機：只列出自己的平台，不放掃不到的 QR code */
+          <div className="mt-6">
+            <QrSlot
+              label={platform === 'ios' ? 'iOS' : 'Android'}
+              store={platform === 'ios' ? 'App Store' : 'Google Play'}
+              src={null}
+              href={platform === 'ios' ? appLinks.appStore : appLinks.googlePlay}
+              hideQr
+            />
+          </div>
+        ) : (
+          <div className="mt-6 grid grid-cols-2 gap-4">
+            <QrSlot label="iOS" store="App Store" src={qrCodes.ios} href={appLinks.appStore} />
+            <QrSlot
+              label="Android"
+              store="Google Play"
+              src={qrCodes.android}
+              href={appLinks.googlePlay}
+            />
+          </div>
+        )}
 
         <p className="mt-5 text-xs leading-relaxed text-ink-400">
           ⚠️ App 尚未上架，QR code 與商店連結皆為待補佔位。
+          連結填入後，手機開啟會直接跳轉對應商店。
         </p>
       </div>
     </div>
@@ -161,18 +214,25 @@ function QrSlot({
   store,
   src,
   href,
+  hideQr = false,
 }: {
   label: string
   store: string
   src: string | null
   href: string | null
+  /** 手機上不顯示 QR code（自己掃自己沒有意義） */
+  hideQr?: boolean
 }) {
   return (
     <div className="rounded-card border border-line bg-ivory-50 p-4 text-center">
       <p className="text-sm font-bold text-ink-900">{label}</p>
       <p className="mt-0.5 text-xs text-ink-500">{store}</p>
 
-      <div className="mx-auto mt-3 flex aspect-square w-full max-w-[9rem] items-center justify-center overflow-hidden rounded-lg bg-white ring-1 ring-line">
+      <div
+        className={`mx-auto mt-3 aspect-square w-full max-w-[9rem] items-center justify-center overflow-hidden rounded-lg bg-white ring-1 ring-line ${
+          hideQr ? 'hidden' : 'flex'
+        }`}
+      >
         {src ? (
           <img
             src={src}
