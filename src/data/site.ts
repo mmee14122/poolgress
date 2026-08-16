@@ -66,4 +66,37 @@ export const site = {
 
   /** 頁尾標語（比 tagline 完整的一句話） */
   footerSlogan: '從看懂一球開始，把練習變成真正的進步。',
+
+  /**
+   * App 下載。
+   *
+   * smartUrl：智慧下載頁（QR code 指向這裡）——同一個網址依裝置分流，
+   *           iOS 去 App Store、Android 去 Google Play、桌機顯示兩個平台。
+   *           ⚠️ 尚未建立，填 null 時 QR code 顯示待補佔位框。
+   * qrCode：  QR code 圖片路徑（建議 512×512 PNG，放 public/assets/challenges/）。
+   * appStore／googlePlay：商店連結，null＝尚未上架，badge 顯示為停用。
+   */
+  appDownload: {
+    smartUrl: null as string | null,
+    qrCode: null as string | null,
+    intro: '把課程帶到球桌前，完成每一次實戰挑戰。',
+    qrHint: '掃描下載，開始你的球桌 Challenge',
+    /** 商店連結（上架後填入；null＝顯示為即將上架） */
+    appStore: null as string | null,
+    googlePlay: null as string | null,
+  },
+
+  /** 頁尾「支援與條款」連結群組 */
+  footerSupport: [
+    { label: '常見問題', href: './faq.html' },
+    { label: '使用者條款', href: './terms.html' },
+    { label: '服務契約', href: './service-agreement.html' },
+    { label: '隱私權政策', href: './privacy.html' },
+  ] as NavLink[],
+
+  /** 頁尾「加入與合作」連結群組 */
+  footerJoin: [
+    { label: '加入 Poolgress', href: './join.html' },
+    { label: '合作洽談', href: './partnership.html' },
+  ] as NavLink[],
 } as const

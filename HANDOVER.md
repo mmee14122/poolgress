@@ -80,7 +80,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | `/my-courses.html` `/stars.html` `/orders.html` `/invite.html` | 同上 | AccountApp | 個人區其他分頁（`data-page` 區分） |
 | `/coach.html[?id=]` `/faq.html` `/contact.html` | info-entry | InfoApp | 支援頁（`data-page` 區分）；教練頁帶 `id` 即為個別教練頁 |
 | `/venues.html` | venues-entry | VenuesApp | 合作場館 |
-| `/terms.html` `/privacy.html` | coming-soon-entry | ComingSoonApp | 條款佔位頁 |
+| `/terms.html` `/privacy.html` `/service-agreement.html` `/join.html` `/partnership.html` | coming-soon-entry | ComingSoonApp | 條款與合作佔位頁（頁尾連結） |
 | `/games.html` | 純 HTML | — | 舊網址，meta refresh 轉到 challenges |
 | `/404.html` | coming-soon-entry | — | GitHub Pages 自動使用 |
 

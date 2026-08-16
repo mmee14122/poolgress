@@ -38,6 +38,10 @@ export default defineConfig({
         purchaseSuccess: fileURLToPath(new URL('./purchase-success.html', import.meta.url)),
         terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
         privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
+        // 頁尾法律與合作佔位頁（共用 coming-soon-entry）
+        serviceAgreement: fileURLToPath(new URL('./service-agreement.html', import.meta.url)),
+        join: fileURLToPath(new URL('./join.html', import.meta.url)),
+        partnership: fileURLToPath(new URL('./partnership.html', import.meta.url)),
       },
     },
   },

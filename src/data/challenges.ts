@@ -1,3 +1,5 @@
+import { site } from './site'
+
 /**
  * 實戰闖關（Challenge）資料：真實球桌上的 App 實戰任務。
  *
@@ -93,6 +95,6 @@ export const challengeById = (id: string) => challenges.find((c) => c.id === id)
  * 首頁與 Challenge 頁共用。
  */
 export const appLinks = {
-  appStore: null as string | null,
-  googlePlay: null as string | null,
+  appStore: site.appDownload.appStore,
+  googlePlay: site.appDownload.googlePlay,
 }

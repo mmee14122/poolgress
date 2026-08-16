@@ -50,7 +50,10 @@ npm run preview  # 預覽 build 後的結果
 | `/venues.html` | 合作場館 | |
 | `/faq.html` | 常見問題 | |
 | `/contact.html` | 聯絡我們 | |
-| `/terms.html`、`/privacy.html` | 服務條款、隱私權政策 | 內容待補 |
+| `/terms.html`、`/privacy.html` | 使用者條款、隱私權政策 | 內容待補 |
+| `/service-agreement.html` | 服務契約 | 內容待補 |
+| `/join.html` | 加入 Poolgress | 招募頁待補 |
+| `/partnership.html` | 合作洽談 | 合作頁待補 |
 | `/404.html` | 找不到頁面 | GitHub Pages 自動使用 |
 
 **新增頁面時**：建立 `新頁.html` 與 `src/新頁-entry.tsx`，然後在
