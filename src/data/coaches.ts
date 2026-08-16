@@ -32,6 +32,45 @@ import { course } from './course-detail'
 
 export type CoachStat = { label: string; value: string }
 
+/**
+ * 可預約時段：日期（YYYY-MM-DD）→ 該日開放的時間。
+ * 空物件＝這位教練目前不開放預約（個別頁不顯示行事曆）。
+ */
+export type CoachAvailability = Record<string, string[]>
+
+/**
+ * ⚠️ 示範用的開放時段產生器——上線前必須換成真實資料。
+ *
+ * 目前沒有預約後端，為了讓行事曆看得出設計，這裡自動把
+ * 「今天起三個月內的每週二、四、六」當成開放日。
+ * 真實資料到位後，直接把 coach 的 availability 換成固定物件即可：
+ *
+ *   availability: {
+ *     '2026-09-03': ['19:00', '20:00'],
+ *     '2026-09-05': ['14:00'],
+ *   }
+ */
+function demoAvailability(times: string[]): CoachAvailability {
+  const out: CoachAvailability = {}
+  const d = new Date()
+  d.setHours(0, 0, 0, 0)
+  const end = new Date(d)
+  end.setMonth(end.getMonth() + 3)
+
+  for (; d <= end; d.setDate(d.getDate() + 1)) {
+    /* 2＝週二、4＝週四、6＝週六 */
+    if ([2, 4, 6].includes(d.getDay())) out[toDateKey(d)] = times
+  }
+  return out
+}
+
+/** Date → 'YYYY-MM-DD'（用本地時區，避免跨時區差一天） */
+export function toDateKey(d: Date) {
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${m}-${day}`
+}
+
 export type CoachSocialLinks = {
   instagram?: string
   youtube?: string
@@ -65,6 +104,8 @@ export type Coach = {
   courseIds: string[]
   /** 對應實戰 Challenge（對應 data/challenges.ts） */
   challengeIds: string[]
+  /** 可預約時段；空物件＝不開放預約，個別教練頁不顯示行事曆 */
+  availability: CoachAvailability
 }
 
 /**
@@ -87,6 +128,7 @@ const featuredCoach: Coach = {
   socialLinks: { instagram: course.coach.instagram },
   courseIds: ['course-tbd-1'],
   challengeIds: [],
+  availability: demoAvailability(['19:00', '20:00', '21:00']),
 }
 
 /**
@@ -109,6 +151,7 @@ const partnerCoaches: Coach[] = [
     socialLinks: {},
     courseIds: [],
     challengeIds: [],
+    availability: demoAvailability(['10:00', '14:00']),
   },
   {
     id: 'coach-3',
@@ -125,6 +168,7 @@ const partnerCoaches: Coach[] = [
     socialLinks: {},
     courseIds: [],
     challengeIds: [],
+    availability: demoAvailability(['15:00', '19:00']),
   },
   {
     id: 'coach-4',
@@ -141,6 +185,7 @@ const partnerCoaches: Coach[] = [
     socialLinks: {},
     courseIds: [],
     challengeIds: [],
+    availability: demoAvailability(['20:00', '21:00']),
   },
 ]
 

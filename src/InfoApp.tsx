@@ -7,6 +7,7 @@ import { coachById, coachesIntro, featured, partners, partnersIntro } from './da
 import { CoachCard } from './components/coach/CoachCard'
 import { CoachFeatured } from './components/coach/CoachFeatured'
 import { CoachProfile } from './components/coach/CoachProfile'
+import { CoachBooking } from './components/coach/CoachBooking'
 import { site } from './data/site'
 
 export type InfoPage = 'coach' | 'faq' | 'contact'
@@ -153,18 +154,8 @@ function CoachDetailPage({ coach }: { coach: ReturnType<typeof coachById> }) {
 
       <CoachProfile coach={coach} as="h1" />
 
-      {/* CTA */}
-      <div className="mt-16 rounded-card bg-brand-950 p-8 text-center sm:p-10">
-        <h2 className="text-xl text-white sm:text-2xl">想跟著這位教練練習？</h2>
-        <p className="mx-auto mt-3 max-w-md leading-relaxed text-white/70">
-          課程裡的每一個單元，都是照著「把動作講清楚」的方法設計的。
-        </p>
-        <div className="mt-6">
-          <Button href="./course.html" size="lg">
-            查看這位教練的課程
-          </Button>
-        </div>
-      </div>
+      {/* 預約行事曆：沒有開放時段的教練不顯示 */}
+      {Object.keys(coach.availability).length > 0 && <CoachBooking coach={coach} />}
     </>
   )
 }

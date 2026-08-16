@@ -101,7 +101,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | `course-detail.ts` | 主課程詳情：Hero、六段文案、章節單元、教練、評價、FAQ、購買卡 |
 | `catalog.ts` | 商品價格與優惠券 |
 | `challenges.ts` | 闖關關卡、App 商店連結 `appLinks` |
-| `coaches.ts` | **教練群**：`featured`（精選）＋ `partners`（合作教練卡片），加一筆就自動生效 |
+| `coaches.ts` | **教練群**：`featured`（精選）＋ `partners`（合作教練卡片）＋ `availability`（預約時段），加一筆就自動生效 |
 | `venues.ts` | 合作場館（目前空陣列＝顯示洽談中） |
 | `user.ts` | 首次進站的預設值（預設全空，購買後才有課程） |
 | `index.ts` | 統一出口，含 `coaches`／`testimonials`／`faqs` 別名 |
@@ -198,6 +198,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | **學員評價（範例文案，上線前必須換真實）** | `data/course-detail.ts` `reviews` |
 | 課程名稱、Chapter 03/04 單元、闖關條件 | `data/course-detail.ts` |
 | 教練姓名、經歷、IG、照片 | `data/coaches.ts` ＋ `course-detail.ts` `coach` |
+| 教練可預約時段（目前為示範資料） | `data/coaches.ts` `availability` |
 | 星星規則與等級算法 | `data/user.ts`、星星頁 |
 | 開課日期、預購截止日 | `course-detail.ts` `info.startDate`、`purchase.priceDeadline` |
 | App 商店連結、deep link、下載 QR code | `data/challenges.ts`、`course-detail.ts` `challenge.qrCode` |
@@ -215,6 +216,7 @@ gh run watch $(gh run list --repo mmee14122/poolgress --limit 1 --json databaseI
 | 登入後導向 | `lib/auth.ts` `AFTER_LOGIN_URL` |
 | Apple／Google 登入 | `lib/auth.ts` `signInWithProvider` |
 | 金流 | `CheckoutApp.tsx` 的 `confirm()`（目前 setTimeout 模擬） |
+| 教練預約排程 | `components/coach/CoachBooking.tsx` 的 `handleConfirm`（目前只顯示示範結果） |
 | 已購課程／進度／訂單 | `lib/library.ts` 整支換成 API，函式簽名可不變 |
 | App deep link | `data/challenges.ts` |
 | 課程影片（外部平台） | `LearnApp.tsx` 播放區改 iframe（位置已標註） |
