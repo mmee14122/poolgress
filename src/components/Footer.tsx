@@ -75,7 +75,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
       {/* 最大寬度與導覽列、頁面主內容對齊 */}
       <div className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:py-14">
         {/* 四欄對齊頂部；最右下載區略寬，QR 與 badge 才不會擁擠 */}
-        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-10">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-10">
           <BrandColumn t={t} />
           <LinkGroup t={t} title="加入與合作" items={site.footerJoin} />
           <LinkGroup t={t} title="支援與條款" items={site.footerSupport} />
@@ -83,7 +83,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
         </div>
 
         {/* 版權：極淡分隔線，與內容欄位左緣對齊 */}
-        <div className={`mt-12 border-t pt-6 ${t.divider}`}>
+        <div className={`mt-10 border-t pt-6 ${t.divider}`}>
           <p className={`text-xs ${t.copyright}`}>
             © {new Date().getFullYear()} {site.brandName}. All rights reserved.
           </p>
@@ -134,7 +134,7 @@ function AppColumn({ t }: { t: Palette }) {
   const { qrCode, outro, appStore, googlePlay } = site.appDownload
 
   return (
-    <div className="max-w-md">
+    <div className="flex h-full max-w-md flex-col">
       <h2 className={`text-base font-bold ${t.heading}`}>下載 Poolgress App</h2>
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -180,7 +180,7 @@ function AppColumn({ t }: { t: Palette }) {
       </div>
 
       {/* 下載區最下方唯一一句文案：小一級、低對比，不是 CTA 也不可點 */}
-      <p className={`mt-4 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
+      <p className={`mt-auto max-w-[22rem] pt-4 text-sm leading-snug ${t.slogan}`}>{outro}</p>
     </div>
   )
 }
