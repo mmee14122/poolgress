@@ -139,10 +139,20 @@ npm run preview  # 預覽 build 後的結果
 
 App 商店連結填在同一檔案的 `appLinks`。
 
-### 如何改教練、評價、FAQ
+### 如何新增／修改教練
 
-都在 `src/data/course-detail.ts`：`coach`、`reviews`、`faqs`。
-課程頁、教練頁、FAQ 頁共用同一份資料。
+**教練群在 `src/data/coaches.ts`**——在 `coaches` 陣列加一筆，教練頁自動出現新卡片
+（單人時單欄大版，多人時自動加上 01／02 編號）。欄位格式與範例都寫在該檔開頭的註解。
+
+照片放 `public/assets/coach/`（建議 800×1066，3:4 直式），在該筆的 `photo` 填路徑；
+留 `null` 會顯示品牌漸層佔位，版面不會壞。
+
+第一位主教練的內容沿用 `src/data/course-detail.ts` 的 `coach`，
+課程頁與教練頁共用，改一處兩邊同步。
+
+### 如何改評價、FAQ
+
+在 `src/data/course-detail.ts`：`reviews`、`faqs`。課程頁與 FAQ 頁共用。
 
 ---
 
