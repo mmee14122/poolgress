@@ -1,7 +1,7 @@
 import { home } from '../../data/home'
 
 /**
- * S2｜痛點
+ * SECTION 02｜困境
  * 只負責描述問題，不解決。使用者看完應該想：「對，我就是這樣。」
  */
 export function S02Struggle() {
@@ -24,6 +24,8 @@ export function S02Struggle() {
           ))}
         </div>
 
+        <p className="mt-6 text-lg text-ink-700">{struggle.quote}</p>
+
         {/* 連自己哪裡有問題都不知道 */}
         <div className="mt-8 rounded-card border border-line bg-white p-6 sm:p-7">
           <p className="text-ink-700">{struggle.unknowns.lead}</p>
@@ -43,10 +45,12 @@ export function S02Struggle() {
           <p className="mt-4 text-ink-700">{struggle.unknowns.close}</p>
         </div>
 
-        {/* 引言：左側金色直線 */}
-        <p className="mt-10 border-l-4 border-brass-400 pl-5 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
-          {struggle.quote}
-        </p>
+        <div className="mt-10">
+          <p className="text-lg text-ink-500">{struggle.ending[0]}</p>
+          <p className="mt-2 border-l-4 border-brass-400 pl-5 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
+            {struggle.ending[1]}
+          </p>
+        </div>
       </div>
     </section>
   )

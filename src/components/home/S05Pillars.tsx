@@ -25,7 +25,11 @@ export function S05Pillars() {
   return (
     <section id="pillars" className="scroll-mt-24 bg-white py-16 lg:py-24">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
-        <h2 className="text-center text-2xl sm:text-4xl">{pillars.title}</h2>
+        {/* 主標提問、副標給答案 */}
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-4xl">{pillars.title}</h2>
+          <p className="mt-4 text-lg text-ink-500 sm:text-xl">{pillars.sub}</p>
+        </div>
 
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:gap-5">
           {pillars.items.map((item, i) => (

@@ -117,7 +117,7 @@ export function S01Hero() {
                 </span>
               ))}
             </h1>
-            <p className="mt-5 text-lg font-semibold text-brass-300 sm:text-xl">{hero.subtitle}</p>
+            <p className="mt-5 text-lg font-semibold text-brass-300 sm:text-xl">{hero.core}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
               <Button href={hero.cta.href} size="lg">
                 {hero.cta.label}
@@ -134,7 +134,23 @@ export function S01Hero() {
           </div>
         </div>
 
-        {/* SCENE 03–05 的敘事覆蓋層已移除（首頁精簡改版）；球路動畫保留為背景 */}
+        {/* SCENE 03 提示句（僅一句）。
+            pointer-events-none：這些是敘事文字覆蓋層，即使 opacity 為 0 仍會
+            疊在 Hero 按鈕上方攔截點擊（手機因畫面較窄特別明顯） */}
+        <p className="hs-hint pointer-events-none absolute inset-x-0 bottom-[14%] px-5 text-center text-lg font-semibold text-white/85 opacity-0 sm:text-xl">
+          {hero.sceneHint}
+        </p>
+
+        {/* SCENE 04 金句 */}
+        <div className="pointer-events-none absolute inset-x-0 top-[38%] px-5 text-center lg:top-[40%]">
+          <p className="hs-quote text-3xl font-bold text-white opacity-0 sm:text-5xl">
+            {hero.sceneQuote}
+          </p>
+          {/* SCENE 05 副標接棒 */}
+          <p className="hs-sub mx-auto mt-6 max-w-md text-base leading-relaxed text-white/75 opacity-0 sm:text-lg">
+            {hero.subtitle}
+          </p>
+        </div>
       </div>
 
       {/* 捲動距離 */}
@@ -234,7 +250,8 @@ function StaticHero() {
               </span>
             ))}
           </h1>
-          <p className="mt-6 text-lg font-semibold text-brass-300 sm:text-xl">{hero.subtitle}</p>
+          <p className="mt-6 max-w-xl text-base text-white/75 sm:text-lg">{hero.subtitle}</p>
+          <p className="mt-8 text-lg font-semibold text-brass-300 sm:text-xl">{hero.core}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
             <Button href={hero.cta.href} size="lg">
               {hero.cta.label}

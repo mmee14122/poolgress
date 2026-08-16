@@ -20,6 +20,12 @@ export function S03Viewpoint() {
           ))}
         </h2>
 
+        <div className="mt-6 max-w-2xl space-y-2 text-lg text-ink-700">
+          {viewpoint.lead.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+        </div>
+
         {/* 兩條路徑 */}
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {/* 無方向：整體灰階、末端繞回起點 */}
@@ -74,14 +80,23 @@ export function S03Viewpoint() {
           </div>
         </div>
 
-        {/* 收尾句：置中、字級略大 */}
-        <p className="mt-12 text-center text-xl leading-relaxed font-bold text-ink-900 sm:text-2xl">
-          {viewpoint.belief.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
-        </p>
+        <div className="mt-14 text-center">
+          <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">我們相信</p>
+          <p className="mt-4 text-2xl leading-snug font-bold text-ink-900 sm:text-3xl">
+            {viewpoint.belief.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
+          <p className="mt-6 text-ink-500">
+            {viewpoint.close.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
+        </div>
       </div>
     </section>
   )
