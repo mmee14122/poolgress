@@ -239,7 +239,15 @@ export function totalStarsOf(lib: Library): number {
   return lib.stars.reduce((sum, s) => sum + s.amount, 0)
 }
 
-/** 是否已擁有某課程（重複購買保護：課程頁改顯示「開始學習」） */
-export function ownsCourse(lib: Library, courseId: string): boolean {
+/**
+ * 是否已擁有某課程（重複購買保護：課程頁改顯示「開始學習」）。
+ *
+ * ⚠️ 必須同時已登入。學習庫存在瀏覽器本機，訪客購買也會寫入，
+ * 若只看學習庫，未登入的訪客（甚至只是共用同一台電腦的人）
+ * 會看到「開始學習」，但點進去會被登入攔截 —— 對使用者是壞掉的。
+ * 後端接上後改為讀帳號的 entitlement，這個判斷同樣成立。
+ */
+export function ownsCourse(lib: Library, courseId: string, signedIn: boolean): boolean {
+  if (!signedIn) return false
   return lib.courses.some((c) => c.courseId === courseId)
 }

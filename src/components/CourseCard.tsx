@@ -6,6 +6,7 @@ import { Button } from '../ui/Button'
 import { CourseCover } from './CourseCover'
 import { toast } from '../ui/Toast'
 import { useLibrary, ownsCourse } from '../lib/library'
+import { useSession } from '../lib/session'
 
 /** 這一頁對應的商品（⚠️ 價格為示範資料） */
 const product = products[0]
@@ -18,7 +19,7 @@ type BuyState = 'idle' | 'loading' | 'done'
  * 兩者皆有 loading／成功狀態，並以 aria-live 播報。
  */
 export function CourseCard() {
-  const owned = ownsCourse(useLibrary(), product.id)
+  const owned = ownsCourse(useLibrary(), product.id, !!useSession())
   const inCart = useCart().some((i) => i.id === product.id)
   const [buyState, setBuyState] = useState<BuyState>('idle')
   const [addState, setAddState] = useState<BuyState>('idle')

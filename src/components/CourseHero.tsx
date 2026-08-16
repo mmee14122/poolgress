@@ -2,6 +2,7 @@ import { course, courseStats } from '../data/course-detail'
 import { products } from '../data/catalog'
 import { cart } from '../lib/cart'
 import { useLibrary, ownsCourse } from '../lib/library'
+import { useSession } from '../lib/session'
 import { Button } from '../ui/Button'
 
 const product = products[0]
@@ -16,7 +17,7 @@ const product = products[0]
  */
 export function CourseHero() {
   const { hero } = course
-  const owned = ownsCourse(useLibrary(), product.id)
+  const owned = ownsCourse(useLibrary(), product.id, !!useSession())
   /** 立即購買：桌機與手機一致——加入購物車後直接前往結帳 */
   const buyNow = () => {
     cart.add(product)

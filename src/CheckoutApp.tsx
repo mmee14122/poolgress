@@ -201,8 +201,9 @@ export default function CheckoutApp() {
       setStatus(existing.status === 'paid' ? 'already_paid' : 'pending_confirmation')
       return
     }
-    /* 已擁有課程：不重複販售 */
-    if (items.some((i) => lib.courses.some((c) => c.courseId === i.id))) {
+    /* 已擁有課程：不重複販售。未登入的訪客不做此判斷——
+       本機學習庫可能是別人或先前訪客購買留下的，不能當作這個人的權限 */
+    if (member.loggedIn && items.some((i) => lib.courses.some((c) => c.courseId === i.id))) {
       setStatus('already_owned')
       return
     }

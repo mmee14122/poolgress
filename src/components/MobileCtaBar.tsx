@@ -5,6 +5,7 @@ import { cart, useCart, formatNT } from '../lib/cart'
 import { Button } from '../ui/Button'
 import { toast } from '../ui/Toast'
 import { useLibrary, ownsCourse } from '../lib/library'
+import { useSession } from '../lib/session'
 
 const product = products[0]
 const saving = product.originalPrice ? product.originalPrice - product.price : 0
@@ -14,7 +15,7 @@ const saving = product.originalPrice ? product.originalPrice - product.price : 0
  * 「立即購買」加入購物車後導向結帳頁（與購買卡一致）。
  */
 export function MobileCtaBar() {
-  const owned = ownsCourse(useLibrary(), product.id)
+  const owned = ownsCourse(useLibrary(), product.id, !!useSession())
   const [visible, setVisible] = useState(false)
   const [busy, setBusy] = useState(false)
   const [adding, setAdding] = useState(false)
