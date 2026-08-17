@@ -82,6 +82,8 @@ export function S01bTableChoice() {
     <section
       id="table-choice"
       aria-labelledby="table-choice-title"
+      /* 導覽列捲到本區上方時一起變成這個底色（見 Navbar 的 data-nav-dark） */
+      data-nav-dark="#142c4a"
       className="relative flex scroll-mt-24 items-center overflow-hidden bg-[var(--color-brand-925)] py-16 text-white lg:min-h-[calc(100svh-4rem)] lg:py-24"
     >
       {/* 與 Hero 的柔和交界：頂部 120px 由 Hero 的深藍漸層到本區底色，沒有硬切線 */}

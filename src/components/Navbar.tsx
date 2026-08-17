@@ -17,43 +17,77 @@ const navLinkClass = (dark: boolean) =>
       : 'text-ink-700 hover:bg-ivory-100 hover:text-ink-900'
   }`
 
+/** 深色態預設底色（與 Hero 同色）；區塊可用 data-nav-dark 指定自己的色值 */
+const DEFAULT_DARK_BG = '#0f1e33'
+
 /**
  * 主導覽列。
  *
- * theme='hero'（僅首頁）：載入時即為深色（與 Hero 同一個 brand-950），
- * 並以 Hero 底部的 sentinel + IntersectionObserver 判斷是否已離開 Hero，
- * 離開後平滑切回淺色，捲回時自動變深。不新增 scroll listener。
- * 其他頁面不傳 theme，維持原本淺色。
+ * theme='hero'（僅首頁）：導覽列會跟著「身後是哪一個深色區塊」走。
+ *
+ * 任何區塊只要加上 `data-nav-dark="#色碼"`，導覽列捲到它上方時就會變成深色，
+ * 且底色直接採用該區塊自己的色值 —— 所以導覽列與身後背景永遠是相近的顏色，
+ * 不會出現「深藍區塊上壓著另一個更深的深藍長條」。離開最後一個深色區塊後切回白色。
+ *
+ * 判定方式：在導覽列底線處放一條 2px 的偵測帶（IntersectionObserver 的 root 範圍），
+ * 哪個區塊與這條帶重疊，就用哪個區塊的色。不新增 scroll listener。
+ * 視窗高度改變會影響偵測帶位置，因此 resize 時重建 observer。
  */
 export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const user = useSession()
   /* 首頁初始就是深色 → 第一幀不會閃白 */
   const [dark, setDark] = useState(theme === 'hero')
+  const [darkBg, setDarkBg] = useState(DEFAULT_DARK_BG)
 
   useEffect(() => {
     if (theme !== 'hero') {
       setDark(false)
       return
     }
-    /* Hero 尚未掛載完成時重試一次；仍找不到就退回淺色（安全預設） */
-    const sentinel = document.getElementById('hero-end')
-    if (!sentinel) {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-nav-dark]'),
+    )
+    /* 找不到任何深色區塊就退回淺色（安全預設） */
+    if (sections.length === 0) {
       setDark(false)
       return
     }
 
-    /* sentinel 位於 Hero 底部且有 16px 高度＝遲滯範圍：
-       交界處小幅上下捲動不會反覆切換。
-       上邊界扣掉導覽列高度，讓切換點落在導覽列底線；
-       下邊界放大，確保 sentinel 遠在畫面下方時仍判定為「still in hero」 */
-    const navOffset = 64 + (document.documentElement.classList.contains('has-promo') ? 32 : 0)
-    const io = new IntersectionObserver(
-      ([entry]) => setDark(entry.isIntersecting),
-      { rootMargin: `-${navOffset}px 0px 100000px 0px`, threshold: 0 },
-    )
-    io.observe(sentinel)
-    return () => io.disconnect()
+    let io: IntersectionObserver | null = null
+    const hits = new Set<HTMLElement>()
+
+    const build = () => {
+      io?.disconnect()
+      hits.clear()
+      /* 偵測帶位置＝導覽列底線（促銷列存在時再往下 32px） */
+      const navOffset =
+        64 + (document.documentElement.classList.contains('has-promo') ? 32 : 0)
+      const bottom = Math.max(0, window.innerHeight - navOffset - 2)
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) hits.add(e.target as HTMLElement)
+            else hits.delete(e.target as HTMLElement)
+          }
+          /* 交界處可能同時命中兩區，取 DOM 順序較後者＝捲動方向上較新的那一區 */
+          const active = sections.filter((s) => hits.has(s)).pop()
+          setDark(Boolean(active))
+          if (active) {
+            setDarkBg(active.dataset.navDark || DEFAULT_DARK_BG)
+          }
+        },
+        { rootMargin: `-${navOffset}px 0px -${bottom}px 0px`, threshold: 0 },
+      )
+      sections.forEach((s) => io!.observe(s))
+    }
+
+    build()
+    window.addEventListener('resize', build)
+    return () => {
+      window.removeEventListener('resize', build)
+      io?.disconnect()
+    }
   }, [theme])
 
   // 開啟手機選單時鎖住背景捲動
@@ -69,8 +103,10 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
        深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。 */
     <header
       className={`sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
-        dark ? 'nav-hero border-transparent bg-brand-950' : 'border-line bg-white'
+        dark ? 'nav-hero border-transparent' : 'border-line bg-white'
       }`}
+      /* 深色態底色取自身後區塊的 data-nav-dark，兩者永遠同色 */
+      style={dark ? { backgroundColor: darkBg } : undefined}
     >
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6">
         {/* 左：Logo + 主導覽連結 */}
