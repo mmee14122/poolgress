@@ -27,9 +27,11 @@ export function S05bAppTeaser() {
 
         {/* 一到兩張 App 畫面；圖片未備妥時以同比例佔位框顯示，不放假圖 */}
         <ul className="flex justify-center gap-4 sm:gap-6">
-          {appTeaser.images.map((img, i) => (
-            <li key={img.alt} className={i === 1 ? 'hidden sm:block' : ''}>
-              <div className="w-36 sm:w-40 lg:w-44">
+          {appTeaser.images.map((img) => (
+            <li key={img.alt}>
+              {/* 手機也要看得到兩張（原本第二張被 hidden 藏起來）：
+                  縮小寬度讓兩支並排仍放得下 375px 螢幕 */}
+              <div className="w-[7.5rem] sm:w-40 lg:w-44">
                 {img.src ? (
                   <img
                     src={img.src}

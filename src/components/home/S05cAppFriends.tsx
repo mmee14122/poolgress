@@ -41,14 +41,11 @@ export function S05cAppFriends() {
         </div>
         {/* 手機：文字 → 圖片 → CTA（DOM 順序即手機順序）；
             桌機用 lg:order-first 把手機畫面移到左邊，與上一段左右交錯 */}
-        <ul className="order-2 flex justify-center gap-4 sm:gap-6 lg:order-first">
-          {appFriends.screenshots.map((shot, i) => (
-            <li
-              key={shot.alt}
-              /* 手機只放兩支，避免每支被壓到看不清楚 */
-              className={i === 2 ? 'hidden sm:block' : ''}
-            >
-              <div className="w-32 sm:w-36 lg:w-40">
+        <ul className="order-2 flex justify-center gap-2.5 sm:gap-5 lg:order-first">
+          {appFriends.screenshots.map((shot) => (
+            <li key={shot.alt}>
+              {/* 三支在手機也全部顯示，寬度縮小以容納 375px 螢幕 */}
+              <div className="w-[6.25rem] sm:w-32 lg:w-40">
                 {shot.src ? (
                   <img
                     src={shot.src}
