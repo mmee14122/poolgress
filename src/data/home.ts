@@ -20,7 +20,8 @@ export const home = {
     subtitle:
       '你不需要先很會打撞球。Poolgress 陪你從「覺得撞球好玩」，走到理解、做到，看見自己真的能進步。',
     core: '從玩撞球，開始真正學會撞球。',
-    cta: { label: '探索 Poolgress', href: '#struggle' },
+    /* 指向球桌互動區；原本的 #struggle 已隨痛點區一起隱藏，錨點會失效 */
+    cta: { label: '探索 Poolgress', href: '#table-choice' },
     /* 遊戲闖關獨立頁面上線後，href 改為實際頁面路徑 */
     /* 次要 CTA 直接前往實戰闖關頁（原為捲到頁內 #pillars 區塊） */
     ctaSecondary: { label: 'App 免費體驗', href: './challenges.html' },
