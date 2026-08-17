@@ -19,6 +19,8 @@
   --color-brand-700: #23528f;
   --color-brand-900: #1f3c6a;
   --color-brand-950: #0f1e33;
+  /* 互動空間：比 Hero 亮一階、比球桌暗一階，維持同一個深藍世界 */
+  --color-brand-925: #142c4a;
 
   /* 強調:銅金，用於徽章、星等、深色底上的重點 */
   --color-brass-300: #e6c478;

@@ -77,12 +77,24 @@ export function S01bTableChoice() {
   }
 
   return (
+    /* 背景分三層：Hero（最深）→ 互動空間（亮一階）→ 球桌（再亮一階），
+       用色階與光線變化區分空間，不用分隔線或波浪切角 */
     <section
       id="table-choice"
       aria-labelledby="table-choice-title"
-      className="scroll-mt-24 bg-brand-950 py-16 text-white lg:py-24"
+      className="relative scroll-mt-24 overflow-hidden bg-[var(--color-brand-925)] py-16 text-white lg:py-24"
     >
-      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
+      {/* 與 Hero 的柔和交界：頂部 120px 由 Hero 的深藍漸層到本區底色，沒有硬切線 */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand-950 to-transparent sm:h-32"
+      />
+      {/* 球館燈光：球桌上方非常淡的一圈亮度，克制、不做 spotlight 特效 */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_38%_48%,rgba(120,170,225,0.13),transparent_70%)]"
+      />
+      <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-8">
         <div className="text-center">
           <h2 id="table-choice-title" className="text-2xl text-brass-300 sm:text-4xl">
             {sectionCopy.title}
@@ -112,15 +124,23 @@ export function S01bTableChoice() {
                 onPick={play}
               />
             ) : (
-              <ResultPanel
-                route={selected!}
-                phase={phase}
-                onReset={reset}
-                showFinale={showFinale}
-              />
+              <ResultPanel route={selected!} phase={phase} onReset={reset} />
             )}
           </div>
         </div>
+
+        {/*
+          品牌收尾：屬於整段體驗，不屬於 A／B／C 任何一條路線，
+          因此獨立於左右雙欄之外、橫跨整個 Section 並置中。
+          不放卡片、邊框或 badge——它是體驗結束後的一句話，不是第四個 UI 元件。
+          仍維持原本的顯示條件：三條都體驗過才淡入。
+        */}
+        {showFinale && (
+          <div className="pg-reveal mt-16 text-center lg:mt-24">
+            <p className="text-xl leading-snug font-bold text-white sm:text-2xl">{finale.title}</p>
+            <p className="mt-3 text-base text-brass-300 sm:text-lg">{finale.subtitle}</p>
+          </div>
+        )}
       </div>
     </section>
   )
@@ -158,8 +178,8 @@ function PoolTable({
         aria-label="俯視撞球桌，母球與目標球，以及三條可選的球路"
       >
         {/* 檯面與庫邊 */}
-        <rect x="0" y="0" width="400" height="240" rx="16" fill="#123055" />
-        <rect x="12" y="12" width="376" height="216" rx="8" fill="#1B4C7E" />
+        <rect x="0" y="0" width="400" height="240" rx="16" fill="#153A61" />
+        <rect x="12" y="12" width="376" height="216" rx="8" fill="#1E5786" />
         <rect
           x="12"
           y="12"
@@ -392,12 +412,10 @@ const ResultPanel = ({
   route,
   phase,
   onReset,
-  showFinale,
 }: {
   route: Route
   phase: Phase
   onReset: () => void
-  showFinale: boolean
 }) => {
   const revealed = phase === 'insight' || phase === 'cta'
 
@@ -445,13 +463,6 @@ const ResultPanel = ({
         </div>
       )}
 
-      {/* 三條都看過之後的品牌收尾：安靜、有重量，不做過關慶祝 */}
-      {showFinale && (
-        <div className="pg-reveal mt-8 border-t border-white/15 pt-6">
-          <p className="text-lg leading-snug font-bold text-white sm:text-xl">{finale.title}</p>
-          <p className="mt-2 text-brass-300">{finale.subtitle}</p>
-        </div>
-      )}
     </div>
   )
 }
