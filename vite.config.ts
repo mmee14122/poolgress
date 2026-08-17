@@ -35,6 +35,7 @@ export default defineConfig({
         games: fileURLToPath(new URL('./games.html', import.meta.url)),
         notFound: fileURLToPath(new URL('./404.html', import.meta.url)),
         venues: fileURLToPath(new URL('./venues.html', import.meta.url)),
+        status: fileURLToPath(new URL('./status.html', import.meta.url)),
         purchaseSuccess: fileURLToPath(new URL('./purchase-success.html', import.meta.url)),
         terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
         privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
