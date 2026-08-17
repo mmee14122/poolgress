@@ -157,6 +157,15 @@ export default function CheckoutApp() {
   const busy = status === 'validating' || status === 'processing'
   const inForm = status === 'idle' || busy
 
+  /** 發票載具的人話說明（存進訂單，之後在我的訂單顯示） */
+  const invoiceCarrierLabel = () => {
+    if (invoiceType === 'donate') return '捐贈發票'
+    if (invoiceType === 'company') return `公司戶（統編 ${company.taxId || '待補'}）`
+    if (carrier === 'mobile') return `手機條碼 ${mobileCode}`
+    if (carrier === 'cert') return `自然人憑證 ${certCode}`
+    return `會員載具（${buyerEmail}）`
+  }
+
   /** 寫入學習庫（後端串接後改由付款回呼觸發） */
   const grantCourses = (paid: boolean) => {
     library.completePurchase(
@@ -164,6 +173,7 @@ export default function CheckoutApp() {
       total,
       method as PaymentMethod,
       paid,
+      invoiceCarrierLabel(),
     )
   }
 

@@ -510,47 +510,28 @@ function OrderRow({ order }: { order: LibraryOrder }) {
 
       {open && (
         <div id={panelId} className="pb-5">
-          <div className="rounded-xl bg-ivory-50 p-4 sm:p-5">
-            <dl className="space-y-2.5 text-sm">
-              <div className="flex items-baseline justify-between gap-4">
-                <dt className="shrink-0 text-ink-500">下單時間</dt>
-                <dd className="text-right text-ink-900 tabular-nums">
-                  {new Date(order.date).toLocaleString('zh-TW', { hour12: false })}
-                </dd>
-              </div>
-              <div className="flex items-baseline justify-between gap-4">
-                <dt className="shrink-0 text-ink-500">付款方式</dt>
-                <dd className="text-right text-ink-900">
-                  {orderMethodLabel[order.method] ?? order.method}
-                </dd>
-              </div>
-            </dl>
-
-            <ul className="mt-4 divide-y divide-line border-t border-line">
-              {order.items.map((item) => (
-                <li key={item.id} className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
-                  <span className="min-w-0 break-words text-ink-900">{item.title}</span>
-                  <span className="shrink-0 text-ink-700 tabular-nums">
-                    NT${item.price.toLocaleString()}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-3 flex items-baseline justify-between border-t border-line pt-3">
-              <span className="font-semibold text-ink-900">訂單總計</span>
-              <span className="font-bold text-ink-900 tabular-nums">
-                NT${order.total.toLocaleString()}
-              </span>
+          {/* 展開區只放訂單基本資訊：金額與品項已在列上呈現 */}
+          <dl className="space-y-2.5 rounded-xl bg-ivory-50 p-4 text-sm sm:p-5">
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="shrink-0 text-ink-500">下單時間</dt>
+              <dd className="text-right text-ink-900 tabular-nums">
+                {new Date(order.date).toLocaleString('zh-TW', { hour12: false })}
+              </dd>
             </div>
-
-            {order.status === '待繳費' && (
-              <p className="mt-3 rounded-lg bg-brass-400/12 px-3 py-2.5 text-xs leading-relaxed text-ink-700">
-                這筆訂單尚未完成付款，繳費完成後課程才會開通。
-              </p>
-            )}
-
-          </div>
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="shrink-0 text-ink-500">付款方式</dt>
+              <dd className="text-right text-ink-900">
+                {orderMethodLabel[order.method] ?? order.method}
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="shrink-0 text-ink-500">發票載具</dt>
+              {/* 舊訂單沒有這個欄位；不虛構，直接標示未紀錄 */}
+              <dd className="min-w-0 text-right break-all text-ink-900">
+                {order.invoiceCarrier ?? '未紀錄'}
+              </dd>
+            </div>
+          </dl>
         </div>
       )}
     </li>

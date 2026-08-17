@@ -30,6 +30,8 @@ export type LibraryOrder = {
   status: '已完成' | '待繳費' | '已取消'
   /** 付款方式代碼（demo） */
   method: string
+  /** 發票載具說明（結帳時選的類型與載具；舊資料可能沒有） */
+  invoiceCarrier?: string
 }
 
 export type LibraryStar = {
@@ -142,6 +144,7 @@ export const library = {
     total: number,
     method: string,
     paid: boolean,
+    invoiceCarrier?: string,
   ) {
     const now = new Date().toISOString()
     const added: LibraryCourse[] = items
@@ -160,6 +163,7 @@ export const library = {
       total,
       status: paid ? '已完成' : '待繳費',
       method,
+      invoiceCarrier,
     }
 
     commit({
