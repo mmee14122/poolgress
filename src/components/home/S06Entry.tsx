@@ -19,25 +19,26 @@ export function S06Entry() {
         {/* 背景紋理：球路軌跡，透明度極低 */}
         <BackgroundLines />
 
-        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 lg:min-h-[400px] lg:grid-cols-[57fr_43fr] lg:gap-16 lg:py-20">
-          {/* 左：敘事 */}
-          <div>
-            <p className="text-sm font-semibold tracking-widest text-brass-300 uppercase">
-              {entry.eyebrow}
-            </p>
-            <h2 className="mt-4 text-2xl leading-snug text-white sm:text-4xl">{entry.title}</h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
-              {entry.body.join('')}
-            </p>
-          </div>
+        {/* 首頁終章：打破上方兩段的左右雙欄，改為中央單欄收束。
+            視覺重心落在主標題與 CTA 按鈕，不再分散到左右兩側。 */}
+        <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-20 text-center sm:px-8 lg:py-28">
+          <p className="text-sm font-semibold tracking-widest text-brass-300 uppercase">
+            {entry.eyebrow}
+          </p>
+          <h2 className="mt-5 text-2xl leading-snug text-white sm:text-4xl">{entry.title}</h2>
+          {/* 限制寬度，避免桌機一整行拉太長 */}
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
+            {entry.body.join('')}
+          </p>
 
-          {/* 右：單一行動入口＋一句補充語 */}
-          <div className="lg:ml-auto lg:w-full lg:max-w-sm">
-            <Button href={entry.cta.href} size="lg" block>
-              {entry.cta.label}
-            </Button>
-            <p className="mt-3 text-center text-sm text-white/70">{entry.ctaNote}</p>
-          </div>
+          {/* 按鈕依文字自適應寬度（不撐滿），手機略寬但不貼邊 */}
+          <Button href={entry.cta.href} size="lg" className="mt-9 w-full max-w-xs sm:w-auto sm:min-w-[15rem]">
+            {entry.cta.label}
+            <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 fill-current">
+              <path d="M7.3 4.3l5.7 5.7-5.7 5.7-1.4-1.4 4.3-4.3-4.3-4.3z" />
+            </svg>
+          </Button>
+          <p className="mt-4 text-sm text-white/70">{entry.ctaNote}</p>
         </div>
       </div>
 
@@ -55,7 +56,7 @@ function BackgroundLines() {
       viewBox="0 0 1200 400"
       aria-hidden="true"
       preserveAspectRatio="xMidYMid slice"
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.045]"
     >
       {/* 檯邊 */}
       <path
