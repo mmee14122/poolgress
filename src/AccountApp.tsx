@@ -462,8 +462,8 @@ function OrdersPanel() {
 
 /**
  * 訂單列：點整列展開明細（購買項目、付款方式、下單時間）。
- * 展開內容以 aria-expanded／aria-controls 串接，鍵盤與螢幕閱讀器可用；
- * 需要可分享的網址時，展開區底部另有「開啟完整訂單頁」。
+ * 展開內容以 aria-expanded／aria-controls 串接，鍵盤與螢幕閱讀器可用。
+ * 展開區只呈現訂單資訊，不放後續動作（開始學習在「我的課程」分頁）。
  */
 function OrderRow({ order }: { order: LibraryOrder }) {
   const [open, setOpen] = useState(false)
@@ -550,22 +550,6 @@ function OrderRow({ order }: { order: LibraryOrder }) {
               </p>
             )}
 
-            <div className="mt-4 flex flex-wrap items-center gap-4">
-              {order.status === '已完成' && (
-                <a
-                  href="./my-courses.html"
-                  className="text-sm font-semibold text-brand-700 underline underline-offset-4"
-                >
-                  開始學習
-                </a>
-              )}
-              <a
-                href={`./order.html?id=${encodeURIComponent(order.id)}`}
-                className="text-sm font-semibold text-brand-700 underline underline-offset-4"
-              >
-                開啟完整訂單頁
-              </a>
-            </div>
           </div>
         </div>
       )}

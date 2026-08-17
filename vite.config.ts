@@ -23,7 +23,6 @@ export default defineConfig({
         myCourses: fileURLToPath(new URL('./my-courses.html', import.meta.url)),
         stars: fileURLToPath(new URL('./stars.html', import.meta.url)),
         orders: fileURLToPath(new URL('./orders.html', import.meta.url)),
-        orderDetail: fileURLToPath(new URL('./order.html', import.meta.url)),
         invite: fileURLToPath(new URL('./invite.html', import.meta.url)),
         // 課程列表／實戰闖關／學習頁
         challenges: fileURLToPath(new URL('./challenges.html', import.meta.url)),
