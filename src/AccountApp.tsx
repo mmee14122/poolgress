@@ -452,7 +452,13 @@ function OrdersPanel() {
         {lib.orders.map((o) => (
           <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
             <div className="min-w-0">
-              <p className="font-semibold text-ink-900 tabular-nums">{o.id}</p>
+              {/* 訂單編號即入口：連到訂單詳情頁（order.html?id=） */}
+              <a
+                href={`./order.html?id=${encodeURIComponent(o.id)}`}
+                className="font-semibold text-ink-900 underline-offset-4 tabular-nums hover:underline"
+              >
+                {o.id}
+              </a>
               <p className="mt-0.5 truncate text-xs text-ink-500">
                 {new Date(o.date).toLocaleDateString('zh-TW')}・{o.items.map((i) => i.title).join('、')}
               </p>
@@ -470,6 +476,13 @@ function OrdersPanel() {
                 {o.status}
               </span>
               <span className="font-semibold text-ink-900 tabular-nums">NT${o.total.toLocaleString()}</span>
+              <a
+                href={`./order.html?id=${encodeURIComponent(o.id)}`}
+                aria-label={`查看訂單 ${o.id}`}
+                className="shrink-0 text-sm font-semibold text-brand-700 underline underline-offset-4"
+              >
+                查看
+              </a>
             </div>
           </li>
         ))}
