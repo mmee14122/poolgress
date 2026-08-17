@@ -11,7 +11,7 @@ import {
   MAX_NAME_LENGTH,
   type Session,
 } from './lib/session'
-import { useLibrary, totalStarsOf, type LibraryBooking } from './lib/library'
+import { useLibrary, totalStarsOf, type LibraryBooking, type LibraryOrder } from './lib/library'
 import { loginUrlWithRedirect, currentPageTarget } from './lib/auth'
 import { courseById, flatLessons } from './data/courses'
 import { coachById } from './data/coaches'
@@ -450,41 +450,7 @@ function OrdersPanel() {
     <Card title="我的訂單">
       <ul className="divide-y divide-line">
         {lib.orders.map((o) => (
-          <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
-            <div className="min-w-0">
-              {/* 訂單編號即入口：連到訂單詳情頁（order.html?id=） */}
-              <a
-                href={`./order.html?id=${encodeURIComponent(o.id)}`}
-                className="font-semibold text-ink-900 underline-offset-4 tabular-nums hover:underline"
-              >
-                {o.id}
-              </a>
-              <p className="mt-0.5 truncate text-xs text-ink-500">
-                {new Date(o.date).toLocaleDateString('zh-TW')}・{o.items.map((i) => i.title).join('、')}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                  o.status === '已完成'
-                    ? 'bg-pulse-100 text-pulse-700'
-                    : o.status === '待繳費'
-                      ? 'bg-brass-400/15 text-brass-700'
-                      : 'bg-ivory-100 text-ink-500'
-                }`}
-              >
-                {o.status}
-              </span>
-              <span className="font-semibold text-ink-900 tabular-nums">NT${o.total.toLocaleString()}</span>
-              <a
-                href={`./order.html?id=${encodeURIComponent(o.id)}`}
-                aria-label={`查看訂單 ${o.id}`}
-                className="shrink-0 text-sm font-semibold text-brand-700 underline underline-offset-4"
-              >
-                查看
-              </a>
-            </div>
-          </li>
+          <OrderRow key={o.id} order={o} />
         ))}
       </ul>
       <p className="mt-4 text-xs text-ink-400">
@@ -492,6 +458,127 @@ function OrdersPanel() {
       </p>
     </Card>
   )
+}
+
+/**
+ * 訂單列：點整列展開明細（購買項目、付款方式、下單時間）。
+ * 展開內容以 aria-expanded／aria-controls 串接，鍵盤與螢幕閱讀器可用；
+ * 需要可分享的網址時，展開區底部另有「開啟完整訂單頁」。
+ */
+function OrderRow({ order }: { order: LibraryOrder }) {
+  const [open, setOpen] = useState(false)
+  const panelId = `order-panel-${order.id}`
+  const statusTone =
+    order.status === '已完成'
+      ? 'bg-pulse-100 text-pulse-700'
+      : order.status === '待繳費'
+        ? 'bg-brass-400/15 text-brass-700'
+        : 'bg-ivory-100 text-ink-500'
+
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="flex w-full flex-wrap items-center justify-between gap-3 py-4 text-left transition-colors hover:bg-ivory-50/60"
+      >
+        <span className="min-w-0">
+          <span className="block font-semibold text-ink-900 tabular-nums">{order.id}</span>
+          <span className="mt-0.5 block truncate text-xs text-ink-500">
+            {new Date(order.date).toLocaleDateString('zh-TW')}・
+            {order.items.map((i) => i.title).join('、')}
+          </span>
+        </span>
+        <span className="flex items-center gap-3">
+          <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusTone}`}>
+            {order.status}
+          </span>
+          <span className="font-semibold text-ink-900 tabular-nums">
+            NT${order.total.toLocaleString()}
+          </span>
+          <svg
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+            className={`h-5 w-5 shrink-0 fill-ink-400 transition-transform ${open ? 'rotate-180' : ''}`}
+          >
+            <path d="M5.3 7.3l4.7 4.7 4.7-4.7 1.4 1.4-6.1 6.1-6.1-6.1z" />
+          </svg>
+        </span>
+      </button>
+
+      {open && (
+        <div id={panelId} className="pb-5">
+          <div className="rounded-xl bg-ivory-50 p-4 sm:p-5">
+            <dl className="space-y-2.5 text-sm">
+              <div className="flex items-baseline justify-between gap-4">
+                <dt className="shrink-0 text-ink-500">下單時間</dt>
+                <dd className="text-right text-ink-900 tabular-nums">
+                  {new Date(order.date).toLocaleString('zh-TW', { hour12: false })}
+                </dd>
+              </div>
+              <div className="flex items-baseline justify-between gap-4">
+                <dt className="shrink-0 text-ink-500">付款方式</dt>
+                <dd className="text-right text-ink-900">
+                  {orderMethodLabel[order.method] ?? order.method}
+                </dd>
+              </div>
+            </dl>
+
+            <ul className="mt-4 divide-y divide-line border-t border-line">
+              {order.items.map((item) => (
+                <li key={item.id} className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
+                  <span className="min-w-0 break-words text-ink-900">{item.title}</span>
+                  <span className="shrink-0 text-ink-700 tabular-nums">
+                    NT${item.price.toLocaleString()}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-3 flex items-baseline justify-between border-t border-line pt-3">
+              <span className="font-semibold text-ink-900">訂單總計</span>
+              <span className="font-bold text-ink-900 tabular-nums">
+                NT${order.total.toLocaleString()}
+              </span>
+            </div>
+
+            {order.status === '待繳費' && (
+              <p className="mt-3 rounded-lg bg-brass-400/12 px-3 py-2.5 text-xs leading-relaxed text-ink-700">
+                這筆訂單尚未完成付款，繳費完成後課程才會開通。
+              </p>
+            )}
+
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              {order.status === '已完成' && (
+                <a
+                  href="./my-courses.html"
+                  className="text-sm font-semibold text-brand-700 underline underline-offset-4"
+                >
+                  開始學習
+                </a>
+              )}
+              <a
+                href={`./order.html?id=${encodeURIComponent(order.id)}`}
+                className="text-sm font-semibold text-brand-700 underline underline-offset-4"
+              >
+                開啟完整訂單頁
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </li>
+  )
+}
+
+/** 訂單付款方式代碼對照（與結帳頁共用同一組代碼） */
+const orderMethodLabel: Record<string, string> = {
+  card: '信用卡',
+  installment: '信用卡分期',
+  atm: 'ATM 轉帳',
+  cvs: '超商代碼',
 }
 
 /** 個人檔案：帳號設定 */
