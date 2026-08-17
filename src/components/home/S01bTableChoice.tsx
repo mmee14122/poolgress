@@ -84,7 +84,7 @@ export function S01bTableChoice() {
     >
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <div className="text-center">
-          <h2 id="table-choice-title" className="text-2xl sm:text-4xl">
+          <h2 id="table-choice-title" className="text-2xl text-brass-300 sm:text-4xl">
             {sectionCopy.title}
           </h2>
           {phase === 'choose' && (
