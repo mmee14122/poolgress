@@ -24,6 +24,7 @@ export default defineConfig({
         stars: fileURLToPath(new URL('./stars.html', import.meta.url)),
         orders: fileURLToPath(new URL('./orders.html', import.meta.url)),
         invite: fileURLToPath(new URL('./invite.html', import.meta.url)),
+        friend: fileURLToPath(new URL('./friend.html', import.meta.url)),
         // 課程列表／實戰闖關／學習頁
         challenges: fileURLToPath(new URL('./challenges.html', import.meta.url)),
         learn: fileURLToPath(new URL('./learn.html', import.meta.url)),

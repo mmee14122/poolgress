@@ -17,19 +17,21 @@ import { courseById, flatLessons } from './data/courses'
 import { coachById } from './data/coaches'
 import { site } from './data/site'
 import { toast } from './ui/Toast'
+import { FriendsPanel } from './components/account/FriendsPanel'
 
-export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'invite'
+export type AccountPage = 'profile' | 'courses' | 'stars' | 'orders' | 'friends'
 
 const tabs: { key: AccountPage; label: string; href: string }[] = [
   { key: 'profile', label: '個人檔案', href: './account.html' },
   { key: 'courses', label: '我的課程', href: './my-courses.html' },
   { key: 'stars', label: '我的星星', href: './stars.html' },
   { key: 'orders', label: '我的訂單', href: './orders.html' },
-  { key: 'invite', label: '邀請好友', href: './invite.html' },
+  /* 網址維持 invite.html：既有連結與書籤不能因為改名而失效 */
+  { key: 'friends', label: '我的好友', href: './invite.html' },
 ]
 
 /**
- * 登入後的個人頁面（個人檔案／我的星星／邀請好友共用版型）。
+ * 登入後的個人頁面（個人檔案／我的課程／星星／訂單／好友共用版型）。
  *
  * ⚠️ 後端尚未串接：所有數字、紀錄與規則一律為空狀態或「待補」，
  * 不虛構學員資料。串接後把各區塊的空狀態換成 API 資料即可。
@@ -88,7 +90,7 @@ export default function AccountApp({ page }: { page: AccountPage }) {
           {page === 'courses' && <CoursesPanel />}
           {page === 'stars' && <StarsPanel />}
           {page === 'orders' && <OrdersPanel />}
-          {page === 'invite' && <InvitePanel />}
+          {page === 'friends' && <FriendsPanel />}
         </div>
       </main>
       <Footer />
@@ -810,39 +812,6 @@ function StarsPanel() {
 }
 
 /** 邀請好友：邀請連結與獎勵（皆待後端與行銷方案確認） */
-function InvitePanel() {
-  return (
-    <div className="space-y-8">
-      <Card title="你的邀請連結">
-        <p className="text-sm leading-relaxed text-ink-500">
-          邀請連結由後端在帳號建立時產生，串接後會顯示在這裡並提供複製與分享。
-        </p>
-        <div className="mt-4 flex items-center gap-2 rounded-lg border border-dashed border-line bg-ivory-50 px-4 py-3">
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 shrink-0 fill-ink-400">
-            <path d="M10.6 13.4a1 1 0 001.4 0l3.5-3.5a3 3 0 10-4.2-4.2L9.6 7.4 11 8.8l1.7-1.7a1 1 0 111.4 1.4l-3.5 3.5a1 1 0 000 1.4zm2.8-2.8a1 1 0 00-1.4 0l-3.5 3.5a1 1 0 11-1.4-1.4l1.7-1.7-1.4-1.4-1.7 1.7a3 3 0 104.2 4.2l3.5-3.5a1 1 0 000-1.4z" />
-          </svg>
-          <span className="truncate text-sm text-ink-400">邀請連結待補</span>
-        </div>
-      </Card>
-
-      <Card title="邀請獎勵">
-        {/* ⚠️ 獎勵內容與條件尚未確認 */}
-        <p className="text-sm leading-relaxed text-ink-500">
-          邀請成功後雙方可獲得的獎勵內容與條件【待確認】。
-        </p>
-      </Card>
-
-      <Card title="已邀請的朋友">
-        <EmptyState
-          icon="M15 12a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h16v-3c0-2.7-5.3-4-8-4zM6 9V6H4v3H1v2h3v3h2v-3h3V9z"
-          title="還沒有邀請紀錄"
-          description="朋友透過你的連結註冊後，會顯示在這裡。"
-        />
-      </Card>
-    </div>
-  )
-}
-
 /* ------------------------------------------------------------------ */
 
 /**
