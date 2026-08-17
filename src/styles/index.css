@@ -591,3 +591,12 @@
     transition: none;
   }
 }
+
+/* 球路點擊區：整條球路可點，游標明確表示可選 */
+.pg-route-hit {
+  cursor: pointer;
+}
+.pg-route-hit:focus-visible {
+  outline: 2px solid #e8c97a;
+  outline-offset: 2px;
+}

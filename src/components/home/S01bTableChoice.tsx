@@ -89,7 +89,7 @@ export function S01bTableChoice() {
           </h2>
           {phase === 'choose' && (
             <p className="mx-auto mt-4 max-w-md leading-relaxed text-white/65">
-              三種打法都合理。選一條，看看球會怎麼走。
+              選一條，看看球會怎麼走
             </p>
           )}
         </div>
@@ -100,6 +100,8 @@ export function S01bTableChoice() {
             preview={preview}
             phase={phase}
             reduced={reduced}
+            onPreview={setPreview}
+            onPick={play}
           />
 
           <div className="mt-8 lg:mt-0">
@@ -135,11 +137,15 @@ function PoolTable({
   preview,
   phase,
   reduced,
+  onPreview,
+  onPick,
 }: {
   selected: Route | null
   preview: string | null
   phase: Phase
   reduced: boolean
+  onPreview: (id: string | null) => void
+  onPick: (r: Route) => void
 }) {
   const playing = phase !== 'choose'
 
@@ -217,6 +223,51 @@ function PoolTable({
           )
         })}
 
+        {/* 球路本身即可點選：透明粗線提供足夠的點擊範圍（手機也好按），
+            旁邊放中性的 A／B／C 標記——不寫任何說明 */}
+        {!selected &&
+          routes.map((r, i) => (
+            <g
+              key={`hit-${r.id}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`選擇球路 ${String.fromCharCode(65 + i)}`}
+              className="pg-route-hit"
+              onClick={() => onPick(r)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onPick(r)
+                }
+              }}
+              onMouseEnter={() => onPreview(r.id)}
+              onMouseLeave={() => onPreview(null)}
+              onFocus={() => onPreview(r.id)}
+              onBlur={() => onPreview(null)}
+            >
+              <path d={r.objectBallPath} fill="none" stroke="transparent" strokeWidth="26" />
+              <path d={r.cueBallPath} fill="none" stroke="transparent" strokeWidth="22" />
+              <circle
+                cx={r.marker.x}
+                cy={r.marker.y}
+                r="13"
+                fill={preview === r.id ? '#E8C97A' : 'rgba(8,25,44,0.75)'}
+                stroke={preview === r.id ? '#E8C97A' : '#9dc0e8'}
+                strokeWidth="1.4"
+              />
+              <text
+                x={r.marker.x}
+                y={r.marker.y + 5}
+                textAnchor="middle"
+                fontSize="14"
+                fontWeight="700"
+                fill={preview === r.id ? '#0f1e33' : '#dce9f7'}
+              >
+                {String.fromCharCode(65 + i)}
+              </text>
+            </g>
+          ))}
+
         {/* 下一顆球：A 與 B 的差別靠它才看得懂 */}
         <circle cx={layout.nextBall.x} cy={layout.nextBall.y} r="9" fill="#D9A441" opacity="0.9" />
         <circle cx={layout.nextBall.x - 3} cy={layout.nextBall.y - 3} r="2.6" fill="#fff" opacity="0.5" />
@@ -282,8 +333,11 @@ function PoolTable({
 /* ------------------------------------------------------------------ */
 
 /**
- * 打法選擇：不是三張功能卡，而是「在球桌上選一條打法」。
- * 桌機滑過即預覽該球路，手機以點擊選擇（不依賴 hover）。
+ * 選擇前的右欄：極簡。
+ *
+ * ⚠️ 這裡刻意只出現中性的 A／B／C——打法名稱、說明、結果與 CTA
+ * 全部要等動畫播完才揭曉。提前公布會讓整段互動退化成產品導覽。
+ * 視覺重心留給球桌，使用者是憑球路直覺選，不是讀說明做選擇題。
  */
 function RouteChooser({
   seen,
@@ -295,35 +349,39 @@ function RouteChooser({
   onPick: (r: Route) => void
 }) {
   return (
-    <ul className="space-y-3">
-      {routes.map((r, i) => (
-        <li key={r.id}>
-          <button
-            type="button"
-            onClick={() => onPick(r)}
-            onMouseEnter={() => onPreview(r.id)}
-            onMouseLeave={() => onPreview(null)}
-            onFocus={() => onPreview(r.id)}
-            onBlur={() => onPreview(null)}
-            className="group flex w-full min-h-16 items-center gap-4 rounded-card border border-white/15 bg-white/[0.04] px-4 py-3.5 text-left transition-colors hover:border-brass-300/60 hover:bg-white/[0.09] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass-300"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-brass-300">
+    <div className="text-center lg:text-left">
+      <p className="text-white/70">選一條你直覺會走的球路</p>
+      <ul className="mt-5 flex justify-center gap-3 lg:justify-start">
+        {routes.map((r, i) => (
+          <li key={r.id}>
+            <button
+              type="button"
+              onClick={() => onPick(r)}
+              onMouseEnter={() => onPreview(r.id)}
+              onMouseLeave={() => onPreview(null)}
+              onFocus={() => onPreview(r.id)}
+              onBlur={() => onPreview(null)}
+              aria-label={`選擇球路 ${String.fromCharCode(65 + i)}`}
+              className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/[0.04] text-xl font-bold text-white transition-colors hover:border-brass-300 hover:bg-white/10 hover:text-brass-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass-300"
+            >
               {String.fromCharCode(65 + i)}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block font-semibold text-white">{r.label}</span>
-              <span className="mt-0.5 block text-sm text-white/60">{r.hint}</span>
-            </span>
-            {/* 已看過的提示：極輕微，不做成任務打勾清單 */}
-            {seen.includes(r.id) && (
-              <span className="shrink-0 text-xs text-white/40" title="這條你看過了">
-                看過
-              </span>
-            )}
-          </button>
-        </li>
-      ))}
-    </ul>
+              {/* 已看過：極輕微的一點，不做成任務清單 */}
+              {seen.includes(r.id) && (
+                <span
+                  aria-hidden="true"
+                  className="absolute right-3 bottom-2.5 h-1.5 w-1.5 rounded-full bg-brass-300/70"
+                />
+              )}
+            </button>
+          </li>
+        ))}
+      </ul>
+      {seen.length > 0 && (
+        <p className="mt-4 text-xs text-white/35">
+          點過的球路會留下一個小點，你可以把三條都看過。
+        </p>
+      )}
+    </div>
   )
 }
 
@@ -351,7 +409,12 @@ const ResultPanel = ({
 
       {revealed && (
         <div className="pg-reveal">
-          <h3 className="text-xl leading-snug font-bold text-white sm:text-2xl">
+          {/* 這一刻才揭曉：使用者剛才選的是哪一種打法 */}
+          <p className="text-sm font-semibold tracking-wide text-brass-300">
+            {route.id.toUpperCase()}｜{route.label}
+          </p>
+          <p className="mt-1 text-sm text-white/50">{route.hint}</p>
+          <h3 className="mt-4 text-xl leading-snug font-bold text-white sm:text-2xl">
             {route.resultTitle}
           </h3>
           <p className="mt-3 leading-relaxed text-white/70">{route.resultDescription}</p>
