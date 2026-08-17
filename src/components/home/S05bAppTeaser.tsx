@@ -12,7 +12,7 @@ export function S05bAppTeaser() {
   const { appTeaser } = home
 
   return (
-    <section id="app" className="scroll-mt-24 bg-ivory-50 py-16 lg:py-24">
+    <section id="app" className="scroll-mt-24 bg-white py-16 lg:py-24">
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:gap-16">
         <div>
           <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">
