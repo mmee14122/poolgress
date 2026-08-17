@@ -43,7 +43,8 @@ export const site = {
     endedText: '本次限時優惠已結束',
   },
 
-  contactEmail: 'hello@poolgress.com',
+  /** 全站唯一對外信箱（2026-08-17 使用者決定統一用 support@） */
+  contactEmail: 'support@poolgress.com',
 
   /** ⚠️ 公司地址待補；填入後頁尾自動顯示，留空字串則整行不出現 */
   companyAddress: '公司地址待補',
@@ -59,7 +60,7 @@ export const site = {
     youtube: null as string | null,
   },
 
-  /** ⚠️ 客服信箱【待確認】；與上方 contactEmail 之後應統一為同一個 */
+  /** 客服信箱；已與 contactEmail 統一，兩個欄位保留是為了不動到既有引用點 */
   supportEmail: 'support@poolgress.com',
 
   /** LINE 官方帳號連結；null＝顯示為停用並標示即將公開 */

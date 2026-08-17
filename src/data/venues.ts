@@ -13,6 +13,8 @@
  *   image    場館照片路徑（建議 16:9；放 public/assets/venues/）；null＝漸層佔位
  */
 
+import { site } from './site'
+
 export type Venue = {
   name: string
   city: string
@@ -24,8 +26,8 @@ export type Venue = {
 
 export const venues: Venue[] = []
 
-/** 場館合作洽談窗口（顯示於場館頁） */
-export const venueContactEmail = 'hello@poolgress.com'
+/** 場館合作洽談窗口（顯示於場館頁）；直接沿用全站信箱，避免日後又出現兩個信箱 */
+export const venueContactEmail = site.contactEmail
 
 /**
  * 預覽用示範場館（**不是真實合作場館**）。

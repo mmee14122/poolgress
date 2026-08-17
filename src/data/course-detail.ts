@@ -486,7 +486,7 @@ export const course: CourseIntro = {
     },
     {
       q: '如果有問題要如何聯絡？',
-      a: '課程內每個單元下方都有提問區，教練會定期回覆；也可以來信 hello@poolgress.com，通常＿＿個工作天內回覆。',
+      a: '課程內每個單元下方都有提問區，教練會定期回覆；也可以來信 support@poolgress.com，通常＿＿個工作天內回覆。',
     },
   ],
 
