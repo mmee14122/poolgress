@@ -82,7 +82,7 @@ export function S01bTableChoice() {
     <section
       id="table-choice"
       aria-labelledby="table-choice-title"
-      className="relative scroll-mt-24 overflow-hidden bg-[var(--color-brand-925)] py-16 text-white lg:py-24"
+      className="relative flex scroll-mt-24 items-center overflow-hidden bg-[var(--color-brand-925)] py-16 text-white lg:min-h-[calc(100svh-4rem)] lg:py-24"
     >
       {/* 與 Hero 的柔和交界：頂部 120px 由 Hero 的深藍漸層到本區底色，沒有硬切線 */}
       <div
@@ -99,11 +99,16 @@ export function S01bTableChoice() {
           <h2 id="table-choice-title" className="text-2xl text-brass-300 sm:text-4xl">
             {sectionCopy.title}
           </h2>
-          {phase === 'choose' && (
-            <p className="mx-auto mt-4 max-w-md leading-relaxed text-white/65">
-              選一條，看看球會怎麼走
-            </p>
-          )}
+          {/* 副標只在選擇前出現，但空間一直保留：
+              否則它消失時整個球桌會往上跳一行 */}
+          <p
+            aria-hidden={phase !== 'choose'}
+            className={`mx-auto mt-4 max-w-md leading-relaxed text-white/65 transition-opacity duration-300 ${
+              phase === 'choose' ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            選一條，看看球會怎麼走
+          </p>
         </div>
 
         <div className="mt-10 lg:grid lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12">
@@ -116,7 +121,9 @@ export function S01bTableChoice() {
             onPick={play}
           />
 
-          <div className="mt-8 lg:mt-0">
+          {/* 右欄固定最小高度：選擇區與 Result Panel 內容量不同，
+              預留空間才不會在切換時把球桌推上推下 */}
+          <div className="mt-8 min-h-[15rem] lg:mt-0 lg:min-h-[19rem]">
             {phase === 'choose' ? (
               <RouteChooser
                 seen={seen}
@@ -135,12 +142,22 @@ export function S01bTableChoice() {
           不放卡片、邊框或 badge——它是體驗結束後的一句話，不是第四個 UI 元件。
           仍維持原本的顯示條件：三條都體驗過才淡入。
         */}
-        {showFinale && (
-          <div className="pg-reveal mt-16 text-center lg:mt-24">
+        {/* Closing Zone：空間從一開始就保留（min-height），
+            三條都體驗過後只是把文字 reveal 進來——不改變舞台高度。
+            用 opacity/visibility 而非條件渲染，避免 layout shift。 */}
+        <div
+          className="mt-12 flex min-h-[7.5rem] items-center justify-center text-center lg:mt-16 lg:min-h-[9rem]"
+          aria-hidden={!showFinale}
+        >
+          <div
+            className={`transition-all duration-500 ${
+              showFinale ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0'
+            }`}
+          >
             <p className="text-xl leading-snug font-bold text-white sm:text-2xl">{finale.title}</p>
             <p className="mt-3 text-base text-brass-300 sm:text-lg">{finale.subtitle}</p>
           </div>
-        )}
+        </div>
       </div>
     </section>
   )

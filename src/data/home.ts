@@ -111,16 +111,33 @@ export const home = {
     ],
   },
 
+  /**
+   * SECTION 05.6｜App 第二段：好友與星星
+   * 與上一段同屬 POOLGRESS APP 主題，但聚焦「一起挑戰」而非個人闖關。
+   * ⚠️ 重點是陪伴與持續練習，不是競爭排行榜。
+   * screenshots 待補：拿到真實 App 截圖後填入 src 即可，版面不用動。
+   */
+  appFriends: {
+    eyebrow: 'PLAY TOGETHER',
+    title: '和好友一起挑戰，蒐集每一次做得到',
+    body: '邀請朋友一起完成球桌 Challenge、累積星星，看看這週誰又多解鎖了一關。不是比誰最厲害，而是讓每一次練習，都有人和你一起記得。',
+    cta: { label: '看看我的好友與星星' },
+    /** 三支手機畫面：好友與星星／本週共同 Challenge／好友進度 */
+    screenshots: [
+      { src: null as string | null, alt: 'App 好友與星星數畫面', caption: '好友與星星' },
+      { src: null as string | null, alt: 'App 本週共同 Challenge 畫面', caption: '本週共同挑戰' },
+      { src: null as string | null, alt: 'App 好友進度畫面', caption: '好友進度' },
+    ],
+  },
+
   /* ---------------- SECTION 06｜首頁收尾邀請（願景已移至 about） ---------------- */
   entry: {
     eyebrow: 'READY WHEN YOU ARE',
-    /* 文案取自暫時隱藏的觀點區與痛點區（多打就會啦／重複不一定等於進步）。
-       ⚠️ 上方 App 預告已經講過「看懂 → 做得到」，這裡不可再用同一組說法。 */
-    title: '多打可能會變強，但你不必一直靠自己摸索。',
-    body: ['有人說「多打就會啦」。', '但不知道自己正在練什麼，重複不一定等於進步。'],
+    title: '想知道自己可以從哪裡開始？',
+    body: ['從適合初學者的 Poolgress 課程開始，', '一步一步把看懂變成做得到。'],
     cta: { label: '探索線上課程', href: './course.html' },
     /** 按鈕下方的補充語（不是連結） */
-    ctaNote: '從第一堂課，開始有方向的練習',
+    ctaNote: '前往你的第一堂課',
   },
 
   /* ---------------- 關於 Poolgress（about.html） ---------------- */

@@ -7,6 +7,7 @@ import { S01bTableChoice } from './components/home/S01bTableChoice'
 // import { S03Viewpoint } from './components/home/S03Viewpoint'
 // import { S05Pillars } from './components/home/S05Pillars'
 import { S05bAppTeaser } from './components/home/S05bAppTeaser'
+import { S05cAppFriends } from './components/home/S05cAppFriends'
 import { S06Entry } from './components/home/S06Entry'
 
 /**
@@ -27,6 +28,7 @@ export default function HomeApp() {
         <S01Hero />
         <S01bTableChoice />
         <S05bAppTeaser />
+        <S05cAppFriends />
         {/* ⏸ 暫時隱藏（2026-08-17，待使用者決定是否保留）：
             痛點、觀點對照、功能卡三區。元件與文案都完整保留，
             要復原就把下面三行的註解拿掉即可。 */}
