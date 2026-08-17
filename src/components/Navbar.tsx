@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { site } from '../data/site'
 import { LanguageMenu } from './LanguageMenu'
 import { CartHover, CartDrawerButton } from './cart/CartWidget'
@@ -29,9 +29,12 @@ const DEFAULT_DARK_BG = '#0f1e33'
  * 且底色直接採用該區塊自己的色值 —— 所以導覽列與身後背景永遠是相近的顏色，
  * 不會出現「深藍區塊上壓著另一個更深的深藍長條」。離開最後一個深色區塊後切回白色。
  *
- * 判定方式：在導覽列底線處放一條 2px 的偵測帶（IntersectionObserver 的 root 範圍），
- * 哪個區塊與這條帶重疊，就用哪個區塊的色。不新增 scroll listener。
- * 視窗高度改變會影響偵測帶位置，因此 resize 時重建 observer。
+ * 判定方式：直接量測「導覽列底線」這條水平線落在哪個區塊身上（getBoundingClientRect）。
+ *
+ * 為什麼不用 IntersectionObserver：它的回呼在分頁不可見時完全不會送出，
+ * 導致無法在自動化環境中驗證，也曾造成首頁一載入就誤判成淺色。
+ * 這裡改用 rAF 節流的 scroll listener，每幀最多算一次、只讀兩個矩形，
+ * 判定與捲動位置同步且可被直接量測驗證。
  */
 export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -39,6 +42,7 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
   /* 首頁初始就是深色 → 第一幀不會閃白 */
   const [dark, setDark] = useState(theme === 'hero')
   const [darkBg, setDarkBg] = useState(DEFAULT_DARK_BG)
+  const headerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     if (theme !== 'hero') {
@@ -54,39 +58,33 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
       return
     }
 
-    let io: IntersectionObserver | null = null
-    const hits = new Set<HTMLElement>()
-
-    const build = () => {
-      io?.disconnect()
-      hits.clear()
-      /* 偵測帶位置＝導覽列底線（促銷列存在時再往下 32px） */
-      const navOffset =
-        64 + (document.documentElement.classList.contains('has-promo') ? 32 : 0)
-      const bottom = Math.max(0, window.innerHeight - navOffset - 2)
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) hits.add(e.target as HTMLElement)
-            else hits.delete(e.target as HTMLElement)
-          }
-          /* 交界處可能同時命中兩區，取 DOM 順序較後者＝捲動方向上較新的那一區 */
-          const active = sections.filter((s) => hits.has(s)).pop()
-          setDark(Boolean(active))
-          if (active) {
-            setDarkBg(active.dataset.navDark || DEFAULT_DARK_BG)
-          }
-        },
-        { rootMargin: `-${navOffset}px 0px -${bottom}px 0px`, threshold: 0 },
-      )
-      sections.forEach((s) => io!.observe(s))
+    const apply = () => {
+      /* 判定線＝導覽列自己的底線（實測而非寫死 64px：
+         促銷列高度、1px 下邊框、瀏覽器縮放都會讓實際位置不同，
+         寫死會在捲到最頂端時差 1px，剛好判成「沒有任何區塊」＝白色） */
+      const line = headerRef.current?.getBoundingClientRect().bottom ?? 64
+      /* 由後往前找：交界處若同時命中兩區，取 DOM 順序較後者 */
+      let active: HTMLElement | null = null
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const r = sections[i].getBoundingClientRect()
+        if (r.top <= line && r.bottom > line) {
+          active = sections[i]
+          break
+        }
+      }
+      setDark(Boolean(active))
+      if (active) setDarkBg(active.dataset.navDark || DEFAULT_DARK_BG)
     }
 
-    build()
-    window.addEventListener('resize', build)
+    /* 不套 requestAnimationFrame：rAF 在分頁不可見時不會執行，會讓判定停在舊值，
+       而且瀏覽器本來就把 scroll 事件對齊到每幀最多一次。
+       每次只讀 3 個矩形、不寫入樣式，不會觸發額外的版面重算。 */
+    apply()
+    window.addEventListener('scroll', apply, { passive: true })
+    window.addEventListener('resize', apply)
     return () => {
-      window.removeEventListener('resize', build)
-      io?.disconnect()
+      window.removeEventListener('scroll', apply)
+      window.removeEventListener('resize', apply)
     }
   }, [theme])
 
@@ -102,6 +100,7 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
     /* 背景用純色：backdrop-filter 在捲動時整條列逐幀重繪，是滾動卡頓來源之一。
        深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。 */
     <header
+      ref={headerRef}
       className={`sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
         dark ? 'nav-hero border-transparent' : 'border-line bg-white'
       }`}
