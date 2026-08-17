@@ -1,6 +1,7 @@
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { S01Hero } from './components/home/S01Hero'
+import { S01bTableChoice } from './components/home/S01bTableChoice'
 import { S02Struggle } from './components/home/S02Struggle'
 import { S03Viewpoint } from './components/home/S03Viewpoint'
 import { S05Pillars } from './components/home/S05Pillars'
@@ -22,6 +23,7 @@ export default function HomeApp() {
       <Navbar theme="hero" />
       <main>
         <S01Hero />
+        <S01bTableChoice />
         <S02Struggle />
         <S03Viewpoint />
         <S05Pillars />

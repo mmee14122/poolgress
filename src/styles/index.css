@@ -548,3 +548,46 @@
   }
   .pg-illus-check { stroke-dasharray: none; }
 }
+
+/* ------------------------------------------------------------------
+   首頁互動：「這顆球，你會怎麼打？」（S01bTableChoice）
+   球沿 CSS offset-path 移動（路徑由元件以 inline style 指定），
+   動畫只播一次並停在終點；虛線淡出與結果淡入都很克制。
+   全部 class 以 .pg- 開頭，不影響其他頁面。
+   ------------------------------------------------------------------ */
+.pg-route {
+  transition: opacity 320ms ease;
+}
+
+@keyframes pg-roll-path {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+.pg-ball-cue,
+.pg-ball-object {
+  offset-rotate: 0deg;
+  animation-name: pg-roll-path;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0.4, 1);
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+
+@keyframes pg-reveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pg-reveal {
+  animation: pg-reveal 420ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-ball-cue,
+  .pg-ball-object,
+  .pg-reveal {
+    animation: none !important;
+  }
+  .pg-route {
+    transition: none;
+  }
+}
