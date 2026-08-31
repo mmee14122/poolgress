@@ -39,7 +39,7 @@ export const SEG = {
  * ballStart：母球起點（畫面百分比座標），照草圖＝桿頭前方中央偏下。
  */
 export const s05 = {
-  image: null as string | null,
+  image: './assets/hero/s05-strike.webp' as string | null,
   imageAlt: '女兒出竿、爸爸指引球路的定格畫面',
   ballStart: { x: 56, y: 72 },
 } as const
