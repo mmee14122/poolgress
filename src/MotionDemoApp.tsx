@@ -36,6 +36,9 @@ function segmentName(p: number): string {
 
 export default function MotionDemoApp() {
   const storyRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  /* 影片是否已播過（進入 S05 播一次、停在最後一格；捲回頂端重置） */
+  const played = useRef(false)
   const [p, setP] = useState(0)
   const [reduced, setReduced] = useState(false)
   /* 接管狀態：armed＝允許下一次觸發；active＝正在自動滑動 */
@@ -91,6 +94,19 @@ export default function MotionDemoApp() {
       const prev = take.current.lastP
       take.current.lastP = next
       setP(next)
+      /* S05 影片：時間驅動，進入故事播一次（靜音），停在最後一格。
+         捲回故事起點之前則重置，讓下次進入重播。 */
+      const v = videoRef.current
+      if (v) {
+        if (next > 0.005 && !played.current) {
+          played.current = true
+          v.play().catch(() => {}) /* 自動播放被擋時停在 poster，不報錯 */
+        } else if (next <= 0.002 && played.current) {
+          played.current = false
+          v.pause()
+          v.currentTime = 0
+        }
+      }
       if (take.current.active) return // 自動滑動期間的 scroll 事件是自己觸發的
       const [w0, w1] = SEG.whiteout
       if (
@@ -196,7 +212,20 @@ export default function MotionDemoApp() {
           {/* ===== S05｜出竿（影片佔位） ===== */}
           {showS05 && (
             <div className="absolute inset-0">
-              {s05.image ? (
+              {s05.video ? (
+                /* 1 秒擊球＋視角轉動影片：進入 S05 自動播一次、停在最後一格；
+                   之後程式的母球從最後一格的位置接手（s05.ballStart） */
+                <video
+                  ref={videoRef}
+                  src={s05.video}
+                  poster={s05.image ?? undefined}
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{ opacity: 1 - 0.5 * seg(p, [SEG.approach[0] + 0.1, SEG.whiteout[0]]) }}
+                />
+              ) : s05.image ? (
                 /* 出竿定格圖：滿版顯示，球接近鏡頭時輕微變暗聚焦 */
                 <img
                   src={s05.image}
@@ -216,7 +245,7 @@ export default function MotionDemoApp() {
                 </div>
               )}
 
-              {!s05.image && (<>
+              {!s05.image && !s05.video && (<>
               {/* 目標球：滾向左上袋口 */}
               <div
                 className="absolute h-[4.5vmin] w-[4.5vmin] rounded-full"
@@ -244,10 +273,12 @@ export default function MotionDemoApp() {
               />
               </>)}
 
-              {/* 母球：離桿 → 朝鏡頭放大（最後與白幕融合） */}
+              {/* 母球：離桿 → 朝鏡頭放大（最後與白幕融合）。
+                  有影片時，approach 開始前球還在影片畫面裡，程式球先隱藏 */}
               <div
                 className="absolute h-[22vmin] w-[22vmin] rounded-full"
                 style={{
+                  opacity: s05.video && p < SEG.approach[0] ? 0 : 1,
                   left: `${ballX}%`,
                   top: `${ballY}%`,
                   transform: `translate(-50%, -50%) scale(${ballScale})`,

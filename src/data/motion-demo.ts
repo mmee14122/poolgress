@@ -39,8 +39,16 @@ export const SEG = {
  * ballStart：母球起點（畫面百分比座標），照草圖＝桿頭前方中央偏下。
  */
 export const s05 = {
+  /** 1 秒擊球＋視角轉動影片；null＝尚未提供，先用 image 靜態圖 */
+  video: null as string | null,
+  /** 靜態圖：影片未提供時的畫面；影片提供後作為 poster（載入前的第一格） */
   image: './assets/hero/s05-strike.webp' as string | null,
   imageAlt: '女兒出竿、爸爸指引球路的定格畫面',
+  /**
+   * 母球起點＝影片「最後一格」裡球的位置與大小（畫面百分比）。
+   * ⚠️ 影片交付時要一併提供這三個數字，程式的球從這裡無縫接手。
+   * sizePct：球直徑佔畫面寬的百分比（目前 22vmin 基準，scale 由此換算）。
+   */
   ballStart: { x: 56, y: 72 },
 } as const
 
