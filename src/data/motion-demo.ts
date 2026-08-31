@@ -32,6 +32,18 @@ export const SEG = {
   dock: [0.88, 1.0],
 } as const
 
+/**
+ * S05 出竿定格圖。
+ * image：null＝顯示虛線佔位框＋程式畫的球桿；填入路徑（放 public/assets/hero/）後
+ *        整張圖滿版顯示，程式球桿隱藏，母球從 ballStart 出發飛向鏡頭。
+ * ballStart：母球起點（畫面百分比座標），照草圖＝桿頭前方中央偏下。
+ */
+export const s05 = {
+  image: null as string | null,
+  imageAlt: '女兒出竿、爸爸指引球路的定格畫面',
+  ballStart: { x: 56, y: 72 },
+} as const
+
 export const copy = {
   intro: {
     title: '捲動動畫演示：S05 → S06 → S07',

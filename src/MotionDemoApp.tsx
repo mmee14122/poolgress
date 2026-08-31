@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { SEG, STORY_VH, copy } from './data/motion-demo'
+import { SEG, STORY_VH, copy, s05 } from './data/motion-demo'
 
 /**
  * 首頁捲動動畫演示：S05（出竿）→ S06（白球遮罩轉場）→ S07（玩家標記）→ S08（揭曉擊掌）。
@@ -135,8 +135,9 @@ export default function MotionDemoApp() {
   /* S06a 母球接近：t² 放大（越近越快），並向畫面中央漂移 */
   const ap = seg(p, SEG.approach)
   const ballScale = 0.35 + 15.65 * ap * ap
-  const ballX = 58 - 8 * ap
-  const ballY = 62 - 12 * ap
+  /* 起點＝出竿圖的桿頭位置（data/motion-demo.ts 的 s05.ballStart），終點＝畫面中央 */
+  const ballX = s05.ballStart.x + (50 - s05.ballStart.x) * ap
+  const ballY = s05.ballStart.y + (52 - s05.ballStart.y) * ap
 
   /* S06a 目標球進袋（左後方） */
   const pk = seg(p, SEG.pocket)
@@ -195,16 +196,27 @@ export default function MotionDemoApp() {
           {/* ===== S05｜出竿（影片佔位） ===== */}
           {showS05 && (
             <div className="absolute inset-0">
-              {/* 影片佔位框 */}
-              <div
-                className="absolute inset-[8%] rounded-2xl border-2 border-dashed border-white/25"
-                style={{ opacity: 1 - seg(p, [SEG.approach[0], SEG.approach[0] + 0.12]) }}
-              >
-                <span className="absolute top-3 left-4 text-xs text-white/60 sm:text-sm">
-                  {copy.s05Label}
-                </span>
-              </div>
+              {s05.image ? (
+                /* 出竿定格圖：滿版顯示，球接近鏡頭時輕微變暗聚焦 */
+                <img
+                  src={s05.image}
+                  alt={s05.imageAlt}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{ opacity: 1 - 0.5 * seg(p, [SEG.approach[0] + 0.1, SEG.whiteout[0]]) }}
+                />
+              ) : (
+                /* 尚無圖：虛線佔位框 */
+                <div
+                  className="absolute inset-[8%] rounded-2xl border-2 border-dashed border-white/25"
+                  style={{ opacity: 1 - seg(p, [SEG.approach[0], SEG.approach[0] + 0.12]) }}
+                >
+                  <span className="absolute top-3 left-4 text-xs text-white/60 sm:text-sm">
+                    {copy.s05Label}
+                  </span>
+                </div>
+              )}
 
+              {!s05.image && (<>
               {/* 目標球：滾向左上袋口 */}
               <div
                 className="absolute h-[4.5vmin] w-[4.5vmin] rounded-full"
@@ -230,6 +242,7 @@ export default function MotionDemoApp() {
                   background: 'linear-gradient(90deg, #7c5813, #d9a441 70%, #f4f1e9 97%)',
                 }}
               />
+              </>)}
 
               {/* 母球：離桿 → 朝鏡頭放大（最後與白幕融合） */}
               <div
