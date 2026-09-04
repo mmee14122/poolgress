@@ -341,7 +341,13 @@ export default function PremiumDemoApp() {
                  第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
               <span
                 key={line}
-                className={`block overflow-hidden ${i === 1 ? 'ml-[9vw] sm:ml-[13vw]' : ''}`}
+                className="block overflow-hidden"
+                style={
+                  /* editorial stagger（2026-09-05 使用者定義）：第二行起點＝第一行
+                     文字寬度的 30%。"YOUR TABLE." 實測寬 6.858em，故 0.30 × 6.858
+                     ≈ 2.05em；用大字自己的 clamp 換算，桌機／手機自動等比縮放。 */
+                  i === 1 ? { marginLeft: 'calc(clamp(36px, 7vw, 108px) * 2.05)' } : undefined
+                }
               >
                 <span
                   className="block"
