@@ -616,15 +616,15 @@
   initial-value: 0deg;
 }
 .pg-cta-sweep {
-  padding: 1.5px;
+  padding: 2px;
   background: conic-gradient(
     from var(--pg-sweep-angle),
     transparent 0deg,
-    transparent 314deg,
-    rgba(245, 232, 207, 0.15) 322deg,
-    rgba(255, 248, 235, 0.85) 336deg,
-    rgba(245, 232, 207, 0.15) 350deg,
-    transparent 358deg
+    transparent 306deg,
+    rgba(255, 250, 240, 0.35) 318deg,
+    rgba(255, 255, 255, 1) 336deg,
+    rgba(255, 250, 240, 0.35) 352deg,
+    transparent 360deg
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -656,15 +656,15 @@
   position: absolute;
   top: -40%;
   left: -45%;
-  width: 28%;
+  width: 34%;
   height: 180%;
   z-index: 1;
   background: linear-gradient(
     110deg,
     transparent 0%,
-    rgba(255, 250, 240, 0.04) 25%,
-    rgba(255, 250, 240, 0.22) 50%,
-    rgba(255, 250, 240, 0.06) 75%,
+    rgba(255, 252, 245, 0.1) 25%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 252, 245, 0.12) 75%,
     transparent 100%
   );
   transform: skewX(-18deg);
