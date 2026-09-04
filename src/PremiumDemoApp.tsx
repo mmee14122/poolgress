@@ -501,7 +501,16 @@ function ChapterTransition({
           style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
         >
           {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
-            <span key={t} className={`block overflow-hidden ${i === 1 ? 'ml-[3vw]' : ''}`}>
+            <span
+              key={t}
+              className="block overflow-hidden"
+              style={
+                /* 與 01 同一套 editorial stagger：第二行起點＝第一行文字寬度的 30%。
+                   "THE GAME" 實測寬 5.494em，0.30 × 5.494 ≈ 1.65em；
+                   用大字自己的 clamp 換算，桌機／手機自動等比。 */
+                i === 1 ? { marginLeft: 'calc(clamp(26px, 2.9vw, 44px) * 1.65)' } : undefined
+              }
+            >
               <span
                 className="block"
                 style={{
