@@ -1,17 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import {
-  appJourney,
-  brand,
-  finale,
-  hero,
-  palette as P,
-  pillarSections,
-  type JourneyStep,
-  type Pillar,
-} from './data/premium-demo'
+import { brand, finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 
 /**
- * 首頁定案版：NAV → HERO → 01 THE SPACE → 02 THE APP（章節開場＋PLAY→PROGRESS→TOGETHER）
+ * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
  *
  * 進場動畫（2026-08-17 依使用者規格改版）：left-to-right masked reveal。
  * 內容一開始就在最終位置，不飛入、不上浮——用 clip-path: inset(0 100% 0 0)
@@ -50,24 +41,24 @@ const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSPropert
   transition: `opacity ${dur}s ${EASE2} ${delay}s, transform ${dur}s ${EASE2} ${delay}s`,
 })
 
-/** 02 THE APP 三段旅程的 reveal id（PLAY／PROGRESS／TOGETHER） */
-const JOURNEY_IDS = appJourney.steps.map((_, i) => `j${i}`)
+/* 02–04 圖片遮罩的捲動區間：[圖頂在視窗高度比例的起點, 終點] */
+const MASK_RANGES: Record<string, [number, number]> = {
+  s02: [0.95, 0.62],
+  s03: [0.96, 0.64],
+  s04: [0.95, 0.62],
+}
 
 export default function PremiumDemoApp() {
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
+  /* 圖片遮罩揭開進度（0=全遮、1=全開），只作用於 overlay，不作用於圖片 */
+  const [maskP, setMaskP] = useState<Record<string, number>>({})
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = [
-      'hero',
-      'intro01',
-      'trans02',
-      ...pillarSections.map((s) => s.id),
-      ...JOURNEY_IDS,
-      'finale',
-    ]
+    const ids = ['hero', 'intro01', 'trans02', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
+      setMaskP({ s02: 1, s03: 1, s04: 1 })
       return
     }
     const check = () => {
@@ -78,8 +69,8 @@ export default function PremiumDemoApp() {
             ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
             : id === 'finale'
               ? 0.92
-              : id.startsWith('j')
-                ? 0.88 /* 旅程三段：各自進場，元素頂緣過視窗 88% 就淡入 */
+              : id === 's02' || id === 's03' || id === 's04'
+                ? 0.9 /* 02–04 內容提前在視窗 90% 就開始淡入 */
                 : 0.8)
       setRevealed((prev) => {
         let changed = false
@@ -90,6 +81,23 @@ export default function PremiumDemoApp() {
             changed = true
           }
         })
+        return changed ? next : prev
+      })
+      /* 圖片遮罩進度：圖頂到達視窗 90% 開始、約 58% 完成（各段微差）。
+         值四捨五入到 1%，快速捲動時不會過度重繪；平滑由 CSS transition 負責 */
+      setMaskP((prev) => {
+        let changed = false
+        const next = { ...prev }
+        for (const [id, [a, b]] of Object.entries(MASK_RANGES)) {
+          const el = refs.current.get(id + '-img')
+          if (!el) continue
+          const t = el.getBoundingClientRect().top / window.innerHeight
+          const p = Math.round(Math.min(1, Math.max(0, (a - t) / (a - b))) * 100) / 100
+          if (next[id] !== p) {
+            next[id] = p
+            changed = true
+          }
+        }
         return changed ? next : prev
       })
     }
@@ -351,27 +359,21 @@ export default function PremiumDemoApp() {
       </div>
 
       {/* ---------- 01–04 價值階梯（奶油白底，隨內容高） ---------- */}
-      {pillarSections.map((s) => (
-        <PillarBlock key={s.id} s={s} on={shown(s.id)} refCb={reg(s.id)} />
+      {pillarSections.map((s, i) => (
+        <Fragment key={s.id}>
+          {s.id === 's02' && <ChapterTransition on={shown('trans02')} refCb={reg('trans02')} />}
+          <PillarBlock
+            s={s}
+            flip={i % 2 === 1}
+            on={shown(s.id)}
+            refCb={reg(s.id)}
+            imgRefCb={reg(s.id + '-img')}
+            maskProgress={maskP[s.id] ?? 0}
+            hideHeading={i === 0}
+            hideChapterHead={i > 0}
+          />
+        </Fragment>
       ))}
-
-      {/* ---------- 02 THE APP：章節開場＋PLAY → PROGRESS → TOGETHER ---------- */}
-      <ChapterTransition on={shown('trans02')} refCb={reg('trans02')} />
-      <section id="s02" className="scroll-mt-16 px-5 pb-20 sm:px-10 lg:pb-28">
-        <div className="mx-auto max-w-7xl">
-          {appJourney.steps.map((step, i) => (
-            <Fragment key={step.key}>
-              {i > 0 && <JourneyLink on={shown(`j${i}`)} indent={JOURNEY_INDENT[i]} />}
-              <JourneyBlock
-                step={step}
-                on={shown(`j${i}`)}
-                refCb={reg(`j${i}`)}
-                indent={JOURNEY_INDENT[i]}
-              />
-            </Fragment>
-          ))}
-        </div>
-      </section>
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
@@ -437,20 +439,23 @@ export default function PremiumDemoApp() {
   )
 }
 
-/** 使用者指定的 editorial ease（02 THE APP 全段共用） */
-const EASE_S = 'cubic-bezier(0.22, 1, 0.36, 1)'
-
+/** 01–04 段：編號＋英文視覺標＋中文主述＋說明＋大圖，左右交錯；
+ *  各元素依閱讀順序 left-to-right mask reveal（stagger 0.13s） */
 /**
- * 02 THE APP 章節開場（2026-09-05 使用者規格）。
+ * 01 → 02 章節轉場（2026-09-05 使用者規格）。
  *
- * 只是從 THE SPACE 過渡到 THE APP 的一次翻頁，不是第二個 Hero：
- * - 高度 36vh（桌機 40vh），落在規格的 35–45vh
- * - 大字 clamp(24px, 3.4vw, 52px)；1440 寬實測 48.96px ≈ 01 大字（100.8px）的 48.6%
- * - 與 01 同一套 serif display、同樣的米白底與 charcoal 字
- * - 眉標 small uppercase sans、字距 0.3em、taupe
+ * 定位：**不是**第二個 Hero、也不是章節封面，只是一次「翻頁」——
+ * 從實體空間 THE SPACE 進入數位體驗 THE APP。因此刻意克制：
+ * - 高度 30vh（桌機 33vh），遠低於 01 的滿屏
+ * - 大字 clamp(22px, 2.9vw, 44px) ≈ 01（clamp 48/7vw/108px）的 41%（2026-09-05 使用者再縮小）
+ * - 第二行只縮排 3vw（01 是 14vw），不做大幅左右錯位
+ * - 無 CTA、無內文、無卡片、無圖片
+ * - 眉標與大標間距 12/16px（01 是 24px），兩者讀成同一個 block
+ * - 對齊既有 content grid（max-w-7xl + px-5/sm:px-10），與下方 App 區同一條左緣
  *
- * 動效：眉標 fade+translateY(12px)、大字 fade+translateY(16px)，
- * 0.5s／0.6s、ease cubic-bezier(0.22,1,0.36,1)，第二行晚 80ms。無逐字動畫。
+ * 動效：延用 01 的 line-mask + opacity 語言，但更快更輕。
+ * 眉標 0s/0.34s → THE GAME 0.06s/0.46s → GOES WITH YOU. 0.14s/0.46s
+ * （第二行晚 80ms），整串 0.60s 收完；位移只有 6px，完成後完全靜止。
  */
 function ChapterTransition({
   on,
@@ -459,11 +464,16 @@ function ChapterTransition({
   on: boolean
   refCb: (el: HTMLElement | null) => void
 }) {
+  const line = (on: boolean, delay: number): React.CSSProperties => ({
+    opacity: on ? 1 : 0,
+    transform: on ? 'translateY(0)' : 'translateY(6px)',
+    transition: `opacity 0.46s ${EASE2} ${delay}s, transform 0.46s ${EASE2} ${delay}s`,
+  })
   return (
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex min-h-[36vh] items-center px-5 sm:px-10 lg:min-h-[40vh]"
+      className="flex min-h-[30vh] items-center px-5 sm:px-10 lg:min-h-[33vh]"
     >
       <div className="mx-auto w-full max-w-7xl">
         <p
@@ -471,23 +481,24 @@ function ChapterTransition({
           style={{
             color: P.accent,
             opacity: on ? 1 : 0,
-            transform: on ? 'translateY(0)' : 'translateY(12px)',
-            transition: `opacity 0.5s ${EASE_S}, transform 0.5s ${EASE_S}`,
+            transform: on ? 'translateY(0)' : 'translateY(6px)',
+            transition: `opacity 0.34s ${EASE2}, transform 0.34s ${EASE2}`,
           }}
         >
-          {appJourney.intro.eyebrow}
+          02 / THE APP
         </p>
-        <h2 className="mt-3 sm:mt-4" style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}>
-          {appJourney.intro.lines.map((t, i) => (
+        <h2
+          className="mt-3 sm:mt-4"
+          style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
+        >
+          {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
             <span key={t} className={`block overflow-hidden ${i === 1 ? 'sm:ml-[3vw]' : ''}`}>
               <span
                 className="block"
                 style={{
-                  fontSize: 'clamp(24px, 3.4vw, 52px)',
+                  fontSize: 'clamp(22px, 2.9vw, 44px)',
                   lineHeight: 1.08,
-                  opacity: on ? 1 : 0,
-                  transform: on ? 'translateY(0)' : 'translateY(16px)',
-                  transition: `opacity 0.6s ${EASE_S} ${i * 0.08}s, transform 0.6s ${EASE_S} ${i * 0.08}s`,
+                  ...line(on, 0.06 + i * 0.08),
                 }}
               >
                 {t}
@@ -500,142 +511,31 @@ function ChapterTransition({
   )
 }
 
-/**
- * 三段旅程的桌機左緣縮排（%），讓視線從左上 → 中間 → 右下移動。
- * 區塊寬 62%，34+62=96%，右側仍留白。手機一律 0（CSS 只在 lg 以上套用）。
- */
-const JOURNEY_INDENT = ['0%', '17%', '34%']
-
-/**
- * 段與段之間的 directional cue：一條細 taupe 線＋一個小箭頭。
- * 克制到底——只跟著該段一起 fade in，沒有 pulse／glow／gradient／持續動畫。
- * 縮排對齊「下一段」的左緣，視線自然被帶往右下。
- */
-function JourneyLink({ on, indent }: { on: boolean; indent: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      className="pg-journey-step flex items-center gap-3 py-9 lg:w-[62%] lg:py-11"
-      style={
-        {
-          '--pg-journey-indent': indent,
-          opacity: on ? 1 : 0,
-          transition: `opacity 0.6s ${EASE_S}`,
-        } as React.CSSProperties
-      }
-    >
-      <span className="h-px w-14 lg:w-24" style={{ background: 'rgba(129,107,89,.35)' }} />
-      <span className="text-[11px] leading-none" style={{ color: 'rgba(129,107,89,.75)' }}>
-        →
-      </span>
-    </div>
-  )
-}
-
-/**
- * 旅程的一段（PLAY／PROGRESS／TOGETHER）。
- *
- * 排版：序號＋英文 keyword 同一行 → 中文 serif headline → 一句 description → 大圖。
- * 圖是最大的視覺元素；文字欄最寬 420px，不與圖爭畫面。
- * 桌機用 62% 寬＋遞增縮排做輕微錯位，不是等寬三欄卡片（無框線、無陰影、無 icon）。
- *
- * 動效：整段一起進場，opacity 0→1、translateY 20px→0、0.6s、
- * ease cubic-bezier(0.22,1,0.36,1)；圖片晚 0.1s。無 stagger 逐元素接力。
- */
-function JourneyBlock({
-  step,
-  on,
-  refCb,
-  indent,
-}: {
-  step: JourneyStep
-  on: boolean
-  refCb: (el: HTMLElement | null) => void
-  indent: string
-}) {
-  const rise = (delay: number): React.CSSProperties => ({
-    opacity: on ? 1 : 0,
-    transform: on ? 'translateY(0)' : 'translateY(20px)',
-    transition: `opacity 0.6s ${EASE_S} ${delay}s, transform 0.6s ${EASE_S} ${delay}s`,
-  })
-  return (
-    <div
-      ref={refCb}
-      className="pg-journey-step lg:w-[62%]"
-      style={{ '--pg-journey-indent': indent } as React.CSSProperties}
-    >
-      <div style={rise(0)}>
-        <p className="flex items-baseline gap-4">
-          <span className="text-[11px] tracking-[0.2em]" style={{ color: P.accent }}>
-            {step.no}
-          </span>
-          <span
-            className="text-xs font-medium tracking-[0.22em] uppercase sm:text-sm"
-            style={{ color: P.text }}
-          >
-            {step.key}
-          </span>
-        </p>
-        <h3
-          className="mt-5"
-          style={{
-            fontFamily: SERIF,
-            fontWeight: 500,
-            color: P.text,
-            fontSize: 'clamp(28px, 2.6vw, 40px)',
-            lineHeight: 1.35,
-          }}
-        >
-          {step.zh}
-        </h3>
-        <p
-          className="mt-4 max-w-[420px] text-[17px]"
-          style={{ color: 'rgba(37,44,48,.72)', lineHeight: 1.75 }}
-        >
-          {step.body}
-        </p>
-      </div>
-      {/* 大圖：整段最大的視覺元素，比文字晚 0.1s 出現 */}
-      <div
-        className="relative mt-8 overflow-hidden rounded-2xl lg:mt-10"
-        style={{ aspectRatio: '3/2', ...rise(0.1) }}
-      >
-        {step.image ? (
-          <img src={step.image} alt={step.zh} className="absolute inset-0 h-full w-full object-cover" />
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{ background: `linear-gradient(135deg, ${P.secondary}, ${P.primary})` }}
-          >
-            <div
-              className="absolute inset-[5%] rounded-xl border border-dashed"
-              style={{ borderColor: 'rgba(37,44,48,.25)' }}
-            />
-            <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(37,44,48,.6)' }}>
-              {step.imageHint}
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-/**
- * 01 THE SPACE：滿版場館橫幅＋玻璃卡（編號與大標在上方轉場區已出現）。
- * 2026-09-05 起本頁只剩 01 使用它——舊的 02/03/04 左右交錯版位已由
- * JourneyBlock（PLAY→PROGRESS→TOGETHER）取代，相關死碼一併移除。
- */
 function PillarBlock({
   s,
+  flip,
   on,
   refCb,
+  imgRefCb,
+  maskProgress = 0,
+  hideHeading = false,
+  hideChapterHead = false,
 }: {
   s: Pillar
+  flip: boolean
   on: boolean
   refCb: (el: HTMLElement | null) => void
+  imgRefCb?: (el: HTMLElement | null) => void
+  /** 圖片遮罩揭開進度 0–1（捲動連動，只動遮罩） */
+  maskProgress?: number
+  /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
+  hideHeading?: boolean
+  /** 隱藏全寬章節頭（編號＋英文句）：02 由上方轉場區承擔，03/04 使用者指定不要 */
+  hideChapterHead?: boolean
 }) {
-  return (
+  /* 01（標題在轉場區）：滿版橫幅＋玻璃卡。圖先揭開、卡片後進（0.35s） */
+  if (hideHeading) {
+    return (
       <section
         ref={refCb}
         id={s.id}
@@ -688,4 +588,99 @@ function PillarBlock({
         </div>
       </section>
     )
+  }
+
+  /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
+  const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
+  return (
+    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-14 pb-10 sm:px-10 lg:pt-16 lg:pb-12">
+      {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
+          03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
+      {!hideHeading && !hideChapterHead && (
+        <div className="mx-auto mb-8 max-w-7xl lg:mb-10">
+          <span
+            className="flex items-center gap-3 text-sm font-bold"
+            style={{ color: P.accent, ...fadeUp(on, d.no) }}
+          >
+            {s.no}
+            {s.badge && (
+              <span
+                className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em]"
+                style={{ background: P.neutral, color: P.text }}
+              >
+                {s.badge}
+              </span>
+            )}
+          </span>
+          <p
+            className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
+            style={{ color: P.accent, ...fadeUp(on, d.en) }}
+          >
+            {s.en}
+          </p>
+        </div>
+      )}
+      <div
+        className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
+          flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
+        }`}
+      >
+        {/* 文字欄 */}
+        <div className="lg:w-[38%]">
+          {!hideHeading && (
+            <div className="overflow-hidden">
+              <h2
+                className="text-3xl leading-snug font-bold sm:text-5xl"
+                style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
+              >
+                {s.zh}
+              </h2>
+            </div>
+          )}
+          <p
+            className="mt-5 max-w-md text-base leading-relaxed"
+            style={{ color: 'rgba(37,44,48,.78)', ...fadeUp(on, d.body) }}
+          >
+            {s.body}
+          </p>
+        </div>
+        {/* 大圖：本體全程靜態（無 opacity/transform 動畫）。
+            揭開由上層遮罩負責：底色遮罩隨捲動往下移出，底部 25% 羽化。 */}
+        <div
+          ref={imgRefCb}
+          className="relative overflow-hidden rounded-2xl lg:w-[62%]"
+          style={{ aspectRatio: '16/9' }}
+        >
+          {s.image ? (
+            <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div
+              className="absolute inset-0"
+              style={{ background: `linear-gradient(135deg, ${P.secondary}, ${P.primary})` }}
+            >
+              <div
+                className="absolute inset-[5%] rounded-xl border border-dashed"
+                style={{ borderColor: 'rgba(37,44,48,.25)' }}
+              />
+              <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(37,44,48,.6)' }}>
+                {s.imageHint}
+              </span>
+            </div>
+          )}
+          {/* 薄紗遮罩：半透明底色 tint（上稍清、下稍霧），隨捲動整層溶解。
+              圖片從一開始就看得到，只是柔霧；不做 translateY 移板。 */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[2]"
+            style={{
+              background:
+                'linear-gradient(to bottom, rgba(242,238,230,0.38) 0%, rgba(242,238,230,0.48) 55%, rgba(242,238,230,0.55) 100%)',
+              opacity: 1 - maskProgress,
+              transition: 'opacity 0.18s linear',
+            }}
+          />
+        </div>
+      </div>
+    </section>
+  )
 }

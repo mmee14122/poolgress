@@ -737,10 +737,3 @@
 @media (min-width: 1024px) {
   .pg-home-root { --pg-peek: 56px; }
 }
-
-/* 02 THE APP 三段旅程的桌機錯位縮排。
-   縮排值由元件以 inline --pg-journey-indent 指定（0% / 17% / 34%），
-   只在 lg 以上生效——手機一律靠左，不做階梯。 */
-@media (min-width: 1024px) {
-  .pg-journey-step { margin-left: var(--pg-journey-indent, 0); }
-}
