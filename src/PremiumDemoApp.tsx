@@ -28,13 +28,16 @@ const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => (
   willChange: 'clip-path',
 })
 
+/** ≈ GSAP power3.out（Final CTA 中文標題的落定感） */
+const EASE3 = 'cubic-bezier(0.33, 1, 0.68, 1)'
+
 /** ≈ GSAP power2.out（02–04 的安靜 fade 用） */
 const EASE2 = 'cubic-bezier(0.5, 1, 0.89, 1)'
 
 /** 02–04 文字：極輕的 fade-up（y 20px→0），不是飛入 */
-const fadeUp = (on: boolean, delay: number, dur = 0.7): React.CSSProperties => ({
+const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSProperties => ({
   opacity: on ? 1 : 0,
-  transform: on ? 'translateY(0)' : 'translateY(20px)',
+  transform: on ? 'translateY(0)' : `translateY(${y}px)`,
   transition: `opacity ${dur}s ${EASE2} ${delay}s, transform ${dur}s ${EASE2} ${delay}s`,
 })
 
@@ -57,7 +60,8 @@ export default function PremiumDemoApp() {
     const check = () => {
       /* 02–04 提前在視窗 90% 就開始淡入；其餘（hero/轉場/01/結尾）維持 80% */
       const lineFor = (id: string) =>
-        window.innerHeight * (id === 's02' || id === 's03' || id === 's04' ? 0.9 : 0.8)
+        window.innerHeight *
+          (id === 'finale' ? 0.92 : id === 's02' || id === 's03' || id === 's04' ? 0.9 : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
@@ -300,22 +304,24 @@ export default function PremiumDemoApp() {
       >
         <p
           className="text-xs font-medium tracking-[0.3em] sm:text-sm"
-          style={{ color: P.neutral, ...reveal(shown('finale'), 0, 0.9) }}
+          style={{ color: P.neutral, ...fadeUp(shown('finale'), 0, 0.46, 10) }}
         >
           {finale.en}
         </p>
-        <div className="overflow-hidden">
-          <h2
-            className="mt-4 text-3xl font-bold sm:text-5xl"
-            style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('finale'), 0.12, 1.1) }}
-          >
-            {finale.zh}
-          </h2>
-        </div>
-        <div
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          style={reveal(shown('finale'), 0.3, 0.9)}
+        <h2
+          className="mt-4 text-3xl font-bold sm:text-5xl"
+          style={{
+            fontFamily: SERIF,
+            color: P.bg,
+            opacity: shown('finale') ? 1 : 0,
+            transform: shown('finale') ? 'translateY(0)' : 'translateY(16px)',
+            transition: `opacity 0.6s ${EASE3} 0.1s, transform 0.6s ${EASE3} 0.1s`,
+          }}
         >
+          {finale.zh}
+        </h2>
+        {/* 按鈕完全靜態：無任何進場動畫，從頭就鎖在最終位置與樣式 */}
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {finale.ctas.map((c, i) => (
             <a
               key={c.label}
