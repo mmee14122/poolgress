@@ -613,7 +613,7 @@
   background: rgba(255, 252, 245, 0.55);
   filter: blur(11px);
   opacity: 0;
-  animation: pg-cta-fill-edge 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.35s 1 both;
+  animation: pg-cta-fill-edge 0.76s cubic-bezier(0.22, 1, 0.36, 1) 0.03s 1 both;
 }
 @keyframes pg-cta-fill-edge {
   0% { left: -8%; opacity: 0; }

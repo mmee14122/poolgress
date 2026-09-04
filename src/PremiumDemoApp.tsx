@@ -173,22 +173,25 @@ export default function PremiumDemoApp() {
             style={{ color: P.neutral }}
           >
             {hero.manifesto.map((w, i) => {
+              /* 與 CTA 填色同一條 master timeline：整串 0–0.75s 完成 */
+              const wordDelay = [0, 0.12, 0.27, 0.45][i]
+              const arrowDelay = [0, 0.07, 0.2, 0.38][i]
               const mReveal = (delay: number): React.CSSProperties => ({
                 clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
                 opacity: shown('hero') ? 1 : 0,
-                transition: `clip-path 0.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+                transition: `clip-path 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
               })
               return (
                 <span key={w} className="flex items-center gap-3">
                   {i > 0 && (
                     <span
                       aria-hidden="true"
-                      style={{ color: 'rgba(242,238,230,.35)', ...mReveal(i * 0.1 - 0.035) }}
+                      style={{ color: 'rgba(242,238,230,.35)', ...mReveal(arrowDelay) }}
                     >
                       →
                     </span>
                   )}
-                  <span style={mReveal(i * 0.1)}>{w}</span>
+                  <span style={mReveal(wordDelay)}>{w}</span>
                 </span>
               )
             })}
@@ -197,7 +200,7 @@ export default function PremiumDemoApp() {
           <div className="overflow-hidden">
             <h1
               className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
-              style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.15, 1.15) }}
+              style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.12, 1.15) }}
             >
               {hero.title}
             </h1>
@@ -217,7 +220,7 @@ export default function PremiumDemoApp() {
                 background: P.neutral,
                 clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
                 transition:
-                  'clip-path 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.35s, background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+                  'clip-path 0.76s cubic-bezier(0.22, 1, 0.36, 1) 0.03s, background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             />
             {/* fill 前緣柔光：同步右移，填滿時消失 */}
@@ -228,7 +231,7 @@ export default function PremiumDemoApp() {
               className="pg-cta-text relative z-[2]"
               style={{
                 color: shown('hero') ? P.text : 'rgba(242,238,230,.92)',
-                transition: 'color 0.35s ease 0.62s',
+                transition: 'color 0.35s ease 0.33s',
               }}
             >
               {hero.cta.label}
