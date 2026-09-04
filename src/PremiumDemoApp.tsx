@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { brand, finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 
 /**
- * 首頁定案版：四段價值階梯（NAV → HERO → 01–04 → FINAL CTA → FOOTER）。
+ * 首頁定案版：NAV → HERO → 01 場館 → 02 THE APP → FINAL CTA → FOOTER。
  *
  * 進場動畫（2026-08-17 依使用者規格改版）：left-to-right masked reveal。
  * 內容一開始就在最終位置，不飛入、不上浮——用 clip-path: inset(0 100% 0 0)
@@ -44,8 +44,6 @@ const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSPropert
 /* 02–04 圖片遮罩的捲動區間：[圖頂在視窗高度比例的起點, 終點] */
 const MASK_RANGES: Record<string, [number, number]> = {
   s02: [0.95, 0.62],
-  s03: [0.96, 0.64],
-  s04: [0.95, 0.62],
 }
 
 export default function PremiumDemoApp() {
@@ -58,7 +56,7 @@ export default function PremiumDemoApp() {
     const ids = ['hero', 'intro01', 's02-en', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
-      setMaskP({ s02: 1, s03: 1, s04: 1 })
+      setMaskP({ s02: 1 })
       return
     }
     const check = () => {
@@ -71,9 +69,7 @@ export default function PremiumDemoApp() {
               ? 0.68 /* 02 主內容延後，讓接棒句先單獨存在 */
               : id === 'finale'
                 ? 0.92
-                : id === 's03' || id === 's04'
-                  ? 0.9
-                  : 0.8)
+                : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
