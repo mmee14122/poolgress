@@ -110,7 +110,7 @@ export default function PremiumDemoApp() {
   const shown = (id: string) => revealed.has(id)
 
   return (
-    <main style={{ background: P.bg, color: P.text }}>
+    <main className="pg-home-root" style={{ background: P.bg, color: P.text }}>
       {/* ---------- NAV ---------- */}
       <header
         className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between px-5 sm:px-10"
@@ -131,8 +131,8 @@ export default function PremiumDemoApp() {
       {/* ---------- HERO：滿屏，8 秒品牌影片（暫空置） ---------- */}
       <section
         ref={reg('hero')}
-        className="relative flex min-h-svh items-end overflow-hidden"
-        style={{ background: P.text, color: P.bg }}
+        className="relative flex items-end overflow-hidden"
+        style={{ background: P.text, color: P.bg, minHeight: 'calc(100svh - var(--pg-peek))' }}
       >
         {hero.video ? (
           <video

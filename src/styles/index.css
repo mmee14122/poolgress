@@ -777,3 +777,17 @@
   .pg-primary-cta::after { display: none; }
   .pg-primary-cta:hover .pg-cta-text { transform: none; }
 }
+
+
+/* 首頁定案版：首屏「下一章預告」露出量（LV 式 viewport composition）。
+   Hero 高度＝100svh - peek，讓 01 的米白背景在未捲動時自然露出。
+   純 layout，無動畫、無 spacer、無偽元素。 */
+.pg-home-root {
+  --pg-peek: 32px;
+}
+@media (min-width: 640px) {
+  .pg-home-root { --pg-peek: 44px; }
+}
+@media (min-width: 1024px) {
+  .pg-home-root { --pg-peek: 56px; }
+}
