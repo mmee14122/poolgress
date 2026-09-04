@@ -677,3 +677,45 @@
 @media (prefers-reduced-motion: reduce) {
   .pg-cta-sweep { display: none; }
 }
+
+
+/* 頁尾 outline 鈕 hover：重播與進場相同的兩段定點流光（右上＋左下）。
+   mouseenter 播一次（forwards 收在透明），停留不循環，離開再進會重播。 */
+.pg-outline-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--pg-sweep-angle),
+    transparent 0deg,
+    transparent 26deg,
+    rgba(245, 232, 207, 0.25) 38deg,
+    rgba(255, 248, 235, 0.9) 52deg,
+    rgba(245, 232, 207, 0.25) 66deg,
+    transparent 78deg,
+    transparent 206deg,
+    rgba(245, 232, 207, 0.25) 218deg,
+    rgba(255, 248, 235, 0.9) 232deg,
+    rgba(245, 232, 207, 0.25) 246deg,
+    transparent 258deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+}
+.pg-outline-cta:hover::after {
+  animation: pg-cta-sweep 0.9s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-outline-cta::after { display: none; }
+}
