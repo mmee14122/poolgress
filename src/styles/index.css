@@ -679,8 +679,10 @@
 }
 
 
-/* 頁尾 outline 鈕 hover：重播與進場相同的兩段定點流光（右上＋左下）。
-   mouseenter 播一次（forwards 收在透明），停留不循環，離開再進會重播。 */
+/* 頁尾 outline 鈕 hover：單一道行進光（single travelling highlight）。
+   一段約 12% 圓周的細光從右上出發，沿右側往下、繞過底部，
+   到左下時已變短變弱（靠亮度衰減呈現），最後淡出。
+   mouseenter 播一次、停留不循環；亮度刻意壓低（峰值 0.26）像金屬邊緣反光。 */
 .pg-outline-cta::after {
   content: '';
   position: absolute;
@@ -690,16 +692,11 @@
   background: conic-gradient(
     from var(--pg-sweep-angle),
     transparent 0deg,
-    transparent 26deg,
-    rgba(245, 232, 207, 0.25) 38deg,
-    rgba(255, 248, 235, 0.9) 52deg,
-    rgba(245, 232, 207, 0.25) 66deg,
-    transparent 78deg,
-    transparent 206deg,
-    rgba(245, 232, 207, 0.25) 218deg,
-    rgba(255, 248, 235, 0.9) 232deg,
-    rgba(245, 232, 207, 0.25) 246deg,
-    transparent 258deg,
+    transparent 24deg,
+    rgba(255, 248, 235, 0.4) 34deg,
+    rgba(255, 248, 235, 1) 45deg,
+    rgba(255, 248, 235, 0.4) 56deg,
+    transparent 66deg,
     transparent 360deg
   );
   -webkit-mask:
@@ -714,7 +711,17 @@
   pointer-events: none;
 }
 .pg-outline-cta:hover::after {
-  animation: pg-cta-sweep 0.9s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
+  animation: pg-cta-travel 0.75s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
+}
+/* 光弧中心 45°（右上）→ 230°（左下）；亮度沿途衰減：
+   右上/右側 0.26（主光）→ 底部後 0.16 → 左下 0.12（短尾）→ 0 */
+@keyframes pg-cta-travel {
+  0% { --pg-sweep-angle: 0deg; opacity: 0; }
+  15% { opacity: 0.26; }
+  48% { opacity: 0.26; }
+  64% { opacity: 0.16; }
+  86% { opacity: 0.12; }
+  100% { --pg-sweep-angle: 185deg; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-outline-cta::after { display: none; }
