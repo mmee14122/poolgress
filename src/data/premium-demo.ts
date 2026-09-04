@@ -65,11 +65,11 @@ export const pillarSections: Pillar[] = [
   {
     id: 's04',
     no: '04',
-    en: 'WANT TO GET BETTER?',
-    zh: '想變得更強？',
-    body: '線上課程按部就班，搭配預約教練一對一校正。從玩家到高手，路是看得見的。',
+    en: 'BEYOND',
+    zh: '帶著你的進步，去連結更多人。',
+    body: '分享你的成長、找到一起打球的朋友、揪一場週末的團體局。走出 App，撞球把人連在一起。',
     image: null,
-    imageHint: '線上課程×教練：教學畫面（3200×1800）',
+    imageHint: 'BEYOND：店門前看手機的女孩＋Share/Find Friends/Group Play 卡片（3200×1800）',
   },
 ]
 
@@ -78,7 +78,8 @@ export const finale = {
   zh: '你想怎麼玩？',
   ctas: [
     { label: '開始玩', href: './challenges.html' },
-    { label: '開始學習', href: './course.html' },
+    { label: '線上課程', href: './course.html' },
+    { label: '預約教練', href: './coach.html' },
   ],
 }
 
