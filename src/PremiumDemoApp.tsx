@@ -314,8 +314,12 @@ export default function PremiumDemoApp() {
           />
         </svg>
 
-        {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal */}
-        <div className="pt-[64px] pb-2 sm:pt-[120px] sm:pb-4">
+        {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal。
+            2026-09-05 使用者調整 optical balance：整組（眉標＋徽章＋大字）視為一個
+            composition，用 justify-center 置中後再以「下留白大於上留白」的 padding
+            把視覺中心壓到 section 高度 46–48%，下方留白較多，帶眼睛往場館圖走。
+            高度改由 .pg-intro01 的 min/max-height 控制（見 styles/index.css）。 */}
+        <div className="pg-intro01 flex flex-col justify-center pb-9 sm:pb-[38px]">
           <p
             className="pl-6 text-[11px] font-medium tracking-[0.3em] uppercase sm:pl-[10vw] sm:text-xs"
             style={{ color: P.accent, ...reveal(shown('intro01'), 0, 0.9) }}
@@ -338,7 +342,7 @@ export default function PremiumDemoApp() {
                  第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
               <span
                 key={line}
-                className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
+                className={`block overflow-hidden ${i === 1 ? 'sm:ml-[6vw]' : ''}`}
               >
                 <span
                   className="block"
@@ -473,7 +477,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex min-h-[30vh] items-center px-5 sm:px-10 lg:min-h-[33vh]"
+      className="flex items-center px-5 pt-20 pb-12 sm:px-10 lg:pt-28 lg:pb-14"
     >
       <div className="mx-auto w-full max-w-7xl">
         <p

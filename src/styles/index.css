@@ -737,3 +737,11 @@
 @media (min-width: 1024px) {
   .pg-home-root { --pg-peek: 56px; }
 }
+
+/* 01 THE SPACE 章節開場的高度：由 min/max-height 控制，不用固定值也不用 100vh。
+   桌機落在 620–680px（≈70vh），讓大標上下都有充分的 negative space；
+   手機收斂到 400–520px，避免小螢幕上空掉一整頁。 */
+.pg-intro01 { min-height: clamp(400px, 56vh, 520px); }
+@media (min-width: 1024px) {
+  .pg-intro01 { min-height: clamp(620px, 70vh, 680px); }
+}
