@@ -679,54 +679,8 @@
 }
 
 
-/* 頁尾 outline 鈕 hover：單一道行進光（single travelling highlight）。
-   一段約 12% 圓周的細光從右上出發，沿右側往下、繞過底部，
-   到左下時已變短變弱（靠亮度衰減呈現），最後淡出。
-   mouseenter 播一次、停留不循環；亮度刻意壓低（峰值 0.26）像金屬邊緣反光。 */
-.pg-outline-cta::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  padding: 2px;
-  background: conic-gradient(
-    from var(--pg-sweep-angle),
-    transparent 0deg,
-    transparent 24deg,
-    rgba(255, 248, 235, 0.4) 34deg,
-    rgba(255, 248, 235, 1) 45deg,
-    rgba(255, 248, 235, 0.4) 56deg,
-    transparent 66deg,
-    transparent 360deg
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  pointer-events: none;
-}
-.pg-outline-cta:hover::after {
-  animation: pg-cta-travel 0.9s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
-}
-/* 行進衰減：光弧自右上出發順時針走 3/4 圈，到左上角停住熄滅。
-   亮度一路遞減（0.85→0.6→0.35→0.15→0），左上只剩微弱殘光 */
-@keyframes pg-cta-travel {
-  0% { --pg-sweep-angle: 0deg; opacity: 0; }
-  10% { opacity: 0.85; }
-  40% { opacity: 0.6; }
-  68% { opacity: 0.35; }
-  90% { opacity: 0.15; }
-  100% { --pg-sweep-angle: 270deg; opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pg-outline-cta::after { display: none; }
-}
-
+/* （2026-08-17 使用者指示：outline 鈕的 hover 行進光已移除，
+    僅保留進場的兩段定點流光與一般 opacity hover） */
 
 /* Final CTA 主鈕「開始玩」hover：霧面材質語言（與 outline 鈕的行進光區隔）。
    ① 底色微深 3–4%（#D2C2AD→#C9BAA6）② 文字右移 3px ③ 一道低對比斜向反光
