@@ -321,7 +321,7 @@ export default function PremiumDemoApp() {
             高度改由 .pg-intro01 的 min/max-height 控制（見 styles/index.css）。 */}
         <div className="pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
           <p
-            className="pl-6 text-[11px] font-medium tracking-[0.3em] uppercase sm:pl-[10vw] sm:text-xs"
+            className="px-5 text-[11px] font-medium tracking-[0.3em] uppercase sm:pr-10 sm:pl-[10vw] sm:text-xs"
             style={{ color: P.accent, ...reveal(shown('intro01'), 0, 0.9) }}
           >
             01 / THE SPACE
@@ -333,7 +333,7 @@ export default function PremiumDemoApp() {
             </span>
           </p>
           <h2
-            className="mt-6 pl-6 sm:pl-[10vw]"
+            className="mt-5 px-5 sm:mt-6 sm:pr-10 sm:pl-[10vw]"
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
@@ -342,12 +342,12 @@ export default function PremiumDemoApp() {
                  第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
               <span
                 key={line}
-                className={`block overflow-hidden ${i === 1 ? 'sm:ml-[6vw]' : ''}`}
+                className={`block overflow-hidden ${i === 1 ? 'ml-[7vw] sm:ml-[10vw]' : ''}`}
               >
                 <span
                   className="block"
                   style={{
-                    fontSize: 'clamp(48px, 7vw, 108px)',
+                    fontSize: 'clamp(36px, 7vw, 108px)',
                     lineHeight: 1.05,
                     opacity: shown('intro01') ? 1 : 0,
                     transform: shown('intro01') ? 'translateY(0)' : 'translateY(8px)',
@@ -477,7 +477,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex items-center px-5 pt-20 pb-10 sm:px-10 lg:pt-28 lg:pb-10"
+      className="flex items-center px-5 pt-16 pb-8 sm:px-10 lg:pt-20 lg:pb-8"
     >
       <div className="mx-auto w-full max-w-7xl">
         <p
@@ -496,11 +496,11 @@ function ChapterTransition({
           style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
         >
           {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
-            <span key={t} className={`block overflow-hidden ${i === 1 ? 'sm:ml-[3vw]' : ''}`}>
+            <span key={t} className={`block overflow-hidden ${i === 1 ? 'ml-[3vw]' : ''}`}>
               <span
                 className="block"
                 style={{
-                  fontSize: 'clamp(22px, 2.9vw, 44px)',
+                  fontSize: 'clamp(26px, 2.9vw, 44px)',
                   lineHeight: 1.08,
                   ...line(on, 0.06 + i * 0.08),
                 }}
@@ -547,8 +547,7 @@ function PillarBlock({
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
-          className="relative min-h-[420px]"
-          style={{ height: 'calc(100svh - var(--pg-peek, 56px))' }}
+          className="pg-venue-banner relative min-h-[400px]"
         >
           {/* 滿版底圖（佔位：灰藍漸層） */}
           {s.image ? (
@@ -597,7 +596,7 @@ function PillarBlock({
   /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
   const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
   return (
-    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-14 pb-10 sm:px-10 lg:pt-16 lg:pb-12">
+    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 lg:pt-14 lg:pb-12">
       {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
           03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
       {!hideHeading && !hideChapterHead && (
@@ -625,7 +624,7 @@ function PillarBlock({
         </div>
       )}
       <div
-        className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
+        className={`pg-feature-row mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
@@ -645,7 +644,7 @@ function PillarBlock({
           {!hideHeading && (
             <div className="overflow-hidden">
               <h2
-                className="text-3xl leading-snug font-bold sm:text-5xl"
+                className="text-[clamp(24px,6.6vw,32px)] leading-snug font-bold sm:text-5xl"
                 style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
               >
                 {s.zh}
@@ -653,7 +652,7 @@ function PillarBlock({
             </div>
           )}
           <p
-            className="mt-5 max-w-md text-base leading-relaxed"
+            className="mt-4 max-w-md text-base leading-relaxed sm:mt-5"
             style={{ color: 'rgba(37,44,48,.78)', ...fadeUp(on, d.body) }}
           >
             {s.body}

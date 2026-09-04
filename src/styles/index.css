@@ -744,7 +744,29 @@
    上下節奏改由 pt-[70px]／pb-[88px] 控制（下留白 = 上留白 × 1.25）。
    不設 max-height：大字級是 clamp(48px,7vw,108px) 已有上限，
    再加 max-height 只會在極寬螢幕上裁切文字。 */
-.pg-intro01 { min-height: clamp(340px, 42vh, 400px); }
+.pg-intro01 { min-height: clamp(240px, 30vh, 330px); }
 @media (min-width: 1024px) {
   .pg-intro01 { min-height: clamp(380px, 44vh, 420px); }
+}
+
+/* ── 02 THE APP / 01 THE SPACE 的 RWD（2026-09-05）。
+   Desktop（≥1024px）維持已定案的版面，以下只處理 tablet 與 mobile。 ── */
+
+/* description → image 的中層間距；桌機由 lg:gap-14 接手，這裡不生效 */
+.pg-home-root { --pg-gap-mid: 24px; }
+@media (min-width: 640px) {
+  .pg-home-root { --pg-gap-mid: 32px; }
+}
+
+/* 01 場館滿版橫幅：手機／平板不做滿屏，避免標題後接一整頁圖；
+   桌機（≥1024px）維持原本的 100svh - peek，不動。 */
+.pg-venue-banner { height: clamp(400px, 66svh, 560px); }
+@media (min-width: 1024px) {
+  .pg-venue-banner { height: calc(100svh - var(--pg-peek, 56px)); }
+}
+
+/* 02–04 每一組 feature 的欄間距。手機是「description → image」的中層間距，
+   桌機（≥1024px）是圖文的水平間距，維持已定案的 3.5rem。 */
+@media (max-width: 1023px) {
+  .pg-feature-row { gap: var(--pg-gap-mid, 24px); }
 }
