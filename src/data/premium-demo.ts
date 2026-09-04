@@ -19,21 +19,6 @@ export type Section = {
   cta?: { label: string; href: string }
 }
 
-/**
- * 三分類導引卡（Poolhouse 的 Social Pool / Venue / Food & Drink 模式）。
- * 位置：故事講完之後、最終 CTA 之前——先情感、再分流、後行動。
- * image null＝深色佔位；建議尺寸 1200×1600（直式 3:4）。
- */
-export const pillars = {
-  eyebrow: 'EXPLORE POOLGRESS',
-  title: '接下來，看你想怎麼玩。',
-  items: [
-    { name: '線上課程', desc: '從第一桿開始，建立一條看得見的學習路。', href: './course.html', image: null as string | null },
-    { name: '實戰闖關', desc: '把看懂的，帶到真實球桌上做出來。', href: './challenges.html', image: null as string | null },
-    { name: '教練與場館', desc: '需要真人指導，或找個好地方練球。', href: './coach.html', image: null as string | null },
-  ],
-}
-
 export const brand = {
   name: 'Poolgress',
   navCta: { label: '探索課程', href: './course.html' },
