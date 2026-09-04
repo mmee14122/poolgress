@@ -290,8 +290,17 @@ export default function PremiumDemoApp() {
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
-              /* line-mask：每行獨立 overflow hidden，內層獨立 reveal */
-              <span key={line} className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}>
+              /* line-mask：每行獨立 overflow hidden，內層獨立 reveal。
+                 外層另做第二段 settle：reveal 快結束前無縫接手，
+                 4–5px 極慢落定（power1.out），兩行 timing 微差、只播一次。 */
+              <span
+                key={line}
+                className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
+                style={{
+                  transform: shown('intro01') ? 'translateY(0)' : `translateY(${4 + i}px)`,
+                  transition: `transform ${i === 0 ? 1.25 : 1.45}s ${EASE2} ${i === 0 ? 1.1 : 1.27}s`,
+                }}
+              >
                 <span
                   className="block"
                   style={{
