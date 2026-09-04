@@ -335,7 +335,7 @@ export default function PremiumDemoApp() {
                  第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
               <span
                 key={line}
-                className={`block overflow-hidden ${i === 1 ? 'ml-[7vw] sm:ml-[10vw]' : ''}`}
+                className={`block overflow-hidden ${i === 1 ? 'ml-[9vw] sm:ml-[13vw]' : ''}`}
               >
                 <span
                   className="block"
