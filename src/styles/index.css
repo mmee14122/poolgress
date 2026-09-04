@@ -724,3 +724,16 @@
     transform: none;
   }
 }
+
+
+/* 首頁定案版：首屏「下一章預告」露出量（誤刪修復＋此後由 Hero 端帶預設值防呆）。
+   Hero 高度＝100svh - peek。桌機 56／平板 44／手機 32。 */
+.pg-home-root {
+  --pg-peek: 32px;
+}
+@media (min-width: 640px) {
+  .pg-home-root { --pg-peek: 44px; }
+}
+@media (min-width: 1024px) {
+  .pg-home-root { --pg-peek: 56px; }
+}

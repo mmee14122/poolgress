@@ -132,7 +132,7 @@ export default function PremiumDemoApp() {
       <section
         ref={reg('hero')}
         className="relative flex items-end overflow-hidden"
-        style={{ background: P.text, color: P.bg, minHeight: 'calc(100svh - var(--pg-peek))' }}
+        style={{ background: P.text, color: P.bg, minHeight: 'calc(100svh - var(--pg-peek, 56px))' }}
       >
         {hero.video ? (
           <video
@@ -373,7 +373,7 @@ export default function PremiumDemoApp() {
       <section
         ref={reg('finale')}
         className="px-5 py-14 text-center sm:px-10 lg:py-20"
-        style={{ background: P.text, color: P.bg }}
+        style={{ background: '#98AFBE', color: P.text }}
       >
         <p
           className="text-xs font-medium tracking-[0.3em] sm:text-sm"
@@ -385,7 +385,7 @@ export default function PremiumDemoApp() {
           className="mt-4 text-3xl font-bold sm:text-5xl"
           style={{
             fontFamily: SERIF,
-            color: P.bg,
+            color: P.text,
             opacity: shown('finale') ? 1 : 0,
             transform: shown('finale') ? 'translateY(0)' : 'translateY(16px)',
             transition: `opacity 0.6s ${EASE3} 0.1s, transform 0.6s ${EASE3} 0.1s`,
@@ -405,7 +405,7 @@ export default function PremiumDemoApp() {
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
-                  : { border: '2px solid rgba(242,238,230,.55)', color: P.bg }
+                  : { border: '2px solid rgba(37,44,48,.5)', color: P.text }
               }
             >
               {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
@@ -463,7 +463,10 @@ function PillarBlock({
         className="relative mt-2 w-full overflow-hidden sm:mt-5"
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
-        <div className="relative h-[68svh] min-h-[420px] sm:h-[82svh]">
+        <div
+          className="relative min-h-[420px]"
+          style={{ height: 'calc(100svh - var(--pg-peek, 56px))' }}
+        >
           {/* 滿版底圖（佔位：灰藍漸層） */}
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
