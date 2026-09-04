@@ -770,3 +770,12 @@
 @media (max-width: 1023px) {
   .pg-feature-row { gap: var(--pg-gap-mid, 24px); }
 }
+
+/* 首頁 Navbar 的玻璃淺色態（方案 B）：米白 82%＋模糊，捲到米白區塊時用。
+   深色態由 .nav-hero＋inline 漸層負責（見 Navbar.tsx 的 glass）。 */
+.pg-nav-glass-light {
+  background: rgba(242, 238, 230, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(37, 44, 48, 0.08);
+}

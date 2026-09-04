@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { brand, finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
+import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
+import { Navbar } from './components/Navbar'
 
 /**
  * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
@@ -139,19 +140,14 @@ export default function PremiumDemoApp() {
 
   return (
     <main className="pg-home-root" style={{ background: P.bg, color: P.text }}>
-      {/* ---------- NAV ---------- */}
-      <header
-        className="fixed inset-x-0 top-0 z-40 flex h-16 items-center px-5 sm:px-10"
-        style={{ background: 'linear-gradient(to bottom, rgba(37,44,48,.55), transparent)' }}
-      >
-        <span className="font-logo text-lg font-semibold tracking-wide" style={{ color: P.bg }}>
-          {brand.name}
-        </span>
-      </header>
+      {/* ---------- NAV：與其他頁同一顆 Navbar，首頁走透明玻璃變體（方案 B）。
+          深色區塊加 data-nav-dark 讓它切成透明漸層＋白字，其餘落回米白玻璃 ---------- */}
+      <Navbar theme="hero" glass />
 
       {/* ---------- HERO：滿屏，8 秒品牌影片（暫空置） ---------- */}
       <section
         ref={reg('hero')}
+        data-nav-dark="#252C30"
         className="relative flex items-end overflow-hidden"
         style={{ background: P.text, color: P.bg, minHeight: 'calc(100svh - var(--pg-peek, 56px))' }}
       >
@@ -163,6 +159,15 @@ export default function PremiumDemoApp() {
             muted
             loop
             playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : hero.poster ? (
+          /* 影片還沒到之前先放靜態主視覺（2026-09-05 使用者提供的場館入口圖）；
+             影片一填進 hero.video 就自動改播影片、這張變 poster */
+          <img
+            src={hero.poster}
+            alt=""
+            fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
@@ -405,6 +410,7 @@ export default function PremiumDemoApp() {
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
+        data-nav-dark="#252C30"
         className="px-5 py-14 text-center sm:px-10 lg:py-20"
         style={{ background: P.text, color: P.bg }}
       >

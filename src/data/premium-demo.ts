@@ -12,9 +12,10 @@
  */
 
 export const hero = {
-  /** 8 秒品牌影片；null＝深色佔位框 */
+  /** 8 秒品牌影片；null＝先顯示 poster 靜態圖，連 poster 都沒有才是深色佔位框 */
   video: null as string | null,
-  poster: null as string | null,
+  /** 場館入口主視覺（使用者 2026-09-05 提供，1672×941 PNG → WebP） */
+  poster: './assets/hero/hero-entrance.webp' as string | null,
   manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
   title: '從玩撞球，開始真正學會撞球。',
   cta: { label: '探索 Poolgress', href: '#s01' },

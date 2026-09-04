@@ -36,7 +36,19 @@ const DEFAULT_DARK_BG = '#0f1e33'
  * 這裡改用 rAF 節流的 scroll listener，每幀最多算一次、只讀兩個矩形，
  * 判定與捲動位置同步且可被直接量測驗證。
  */
-export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
+/**
+ * glass（僅 premium 首頁）：透明玻璃變體。
+ * - 深色態：不用實色底，改成「上深下透明」的漸層壓在 Hero 影像上
+ * - 淺色態：米白 82% 半透明＋backdrop-blur（與首頁玻璃卡同語言），不是純白
+ * - 用 fixed 而非 sticky：首頁 Hero 是 100svh 滿屏，sticky 會把它往下推 64px
+ * 功能（導覽、購物車、登入、語言、手機漢堡）與其他頁完全相同。
+ * 註：backdrop-filter 捲動時會逐幀重繪，這是使用者為首頁選的視覺（方案 B），
+ * 其他 28 頁仍走純色底、不受影響。
+ */
+export function Navbar({
+  theme = 'light',
+  glass = false,
+}: { theme?: NavTheme; glass?: boolean } = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const user = useSession()
   /* 首頁初始就是深色 → 第一幀不會閃白 */
@@ -101,11 +113,23 @@ export function Navbar({ theme = 'light' }: { theme?: NavTheme } = {}) {
        深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。 */
     <header
       ref={headerRef}
-      className={`sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
-        dark ? 'nav-hero border-transparent' : 'border-line bg-white'
-      }`}
-      /* 深色態底色取自身後區塊的 data-nav-dark，兩者永遠同色 */
-      style={dark ? { backgroundColor: darkBg } : undefined}
+      className={
+        glass
+          ? `fixed inset-x-0 top-0 z-40 transition-colors duration-250 ease-out ${
+              dark ? 'nav-hero' : 'pg-nav-glass-light'
+            }`
+          : `sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
+              dark ? 'nav-hero border-transparent' : 'border-line bg-white'
+            }`
+      }
+      /* 深色態底色取自身後區塊的 data-nav-dark，兩者永遠同色；glass 改用透明漸層 */
+      style={
+        dark
+          ? glass
+            ? { background: 'linear-gradient(to bottom, rgba(37,44,48,.55), transparent)' }
+            : { backgroundColor: darkBg }
+          : undefined
+      }
     >
       <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-6">
         {/* 左：Logo + 主導覽連結 */}
