@@ -82,6 +82,21 @@ export const finale = {
   ],
 }
 
+/**
+ * 首頁專用色盤（2026-08-17 使用者提供）。只作用於本頁，不動全站 token。
+ * 小字對比度不足處見工程回報，深色由 Text 擔任。
+ */
+export const palette = {
+  primary: '#7F9EAD',   // 灰藍：編號、主按鈕、重點
+  secondary: '#B8CDD5', // 淺藍：佔位圖、輔助面
+  bg: '#F5F2EA',        // 奶油白：頁面底
+  neutral: '#D8D0C3',   // 暖灰：邊框、徽章底
+  accent: '#B58F68',    // 橡木棕：眉標、宣言、金色點綴
+  text: '#293033',      // 深墨：文字、深色段落底
+  /** 深色段落的漸層亮端（text 的提亮衍生色） */
+  textSoft: '#39454a',
+} as const
+
 export const brand = {
   name: 'Poolgress',
   navCta: { label: '開始學習', href: './course.html' },
