@@ -140,7 +140,7 @@ export default function PremiumDemoApp() {
                 key={c.label}
                 href={c.href}
                 className={`inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-colors sm:w-auto ${
-                  i === 1
+                  i === 0
                     ? 'bg-brand-500 text-white hover:bg-brand-600'
                     : 'border border-white/35 text-white hover:border-brass-300 hover:text-brass-300'
                 }`}
@@ -181,7 +181,14 @@ function PillarBlock({
       >
         {/* 文字欄 */}
         <div className="lg:w-[38%]">
-          <span className="text-sm font-semibold text-brand-500">{s.no}</span>
+          <span className="flex items-center gap-3 text-sm font-semibold text-brand-500">
+            {s.no}
+            {s.badge && (
+              <span className="rounded-full bg-brass-400/15 px-3 py-1 text-[11px] font-semibold tracking-[0.15em] text-brass-700">
+                {s.badge}
+              </span>
+            )}
+          </span>
           <p className="mt-3 text-xs font-medium tracking-[0.25em] text-ink-500 sm:text-sm">
             {s.en}
           </p>
