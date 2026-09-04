@@ -688,7 +688,7 @@
   position: absolute;
   inset: 0;
   border-radius: 9999px;
-  padding: 1.5px;
+  padding: 2px;
   background: conic-gradient(
     from var(--pg-sweep-angle),
     transparent 0deg,
@@ -717,10 +717,10 @@
    右上/右側 0.26（主光）→ 底部後 0.16 → 左下 0.12（短尾）→ 0 */
 @keyframes pg-cta-travel {
   0% { --pg-sweep-angle: 0deg; opacity: 0; }
-  15% { opacity: 0.26; }
-  48% { opacity: 0.26; }
-  64% { opacity: 0.16; }
-  86% { opacity: 0.12; }
+  15% { opacity: 0.85; }
+  48% { opacity: 0.85; }
+  64% { opacity: 0.55; }
+  86% { opacity: 0.38; }
   100% { --pg-sweep-angle: 185deg; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
