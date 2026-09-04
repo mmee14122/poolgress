@@ -106,5 +106,6 @@ export const palette = {
 
 export const brand = {
   name: 'Poolgress',
+  /** 2026-09-05 使用者指定移除 NAV 右上角按鈕；資料保留，之後要加回來直接用 */
   navCta: { label: '開始學習', href: './course.html' },
 }

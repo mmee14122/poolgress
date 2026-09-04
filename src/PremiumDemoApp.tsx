@@ -119,19 +119,12 @@ export default function PremiumDemoApp() {
     <main className="pg-home-root" style={{ background: P.bg, color: P.text }}>
       {/* ---------- NAV ---------- */}
       <header
-        className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between px-5 sm:px-10"
+        className="fixed inset-x-0 top-0 z-40 flex h-16 items-center px-5 sm:px-10"
         style={{ background: 'linear-gradient(to bottom, rgba(37,44,48,.55), transparent)' }}
       >
         <span className="font-logo text-lg font-semibold tracking-wide" style={{ color: P.bg }}>
           {brand.name}
         </span>
-        <a
-          href={brand.navCta.href}
-          className="inline-flex min-h-10 items-center rounded-full border px-5 text-sm font-semibold transition-colors"
-          style={{ borderColor: 'rgba(242,238,230,.5)', color: P.bg }}
-        >
-          {brand.navCta.label}
-        </a>
       </header>
 
       {/* ---------- HERO：滿屏，8 秒品牌影片（暫空置） ---------- */}
