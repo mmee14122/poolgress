@@ -350,13 +350,21 @@ export default function PremiumDemoApp() {
             <a
               key={c.label}
               href={c.href}
-              className="inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:w-auto"
+              className="relative inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:w-auto"
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
                   : { border: '1px solid rgba(242,238,230,.4)', color: P.bg }
               }
             >
+              {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
+              {i > 0 && shown('finale') && (
+                <span
+                  aria-hidden="true"
+                  className="pg-cta-sweep pointer-events-none absolute inset-0 rounded-full"
+                  style={i === 2 ? { animationDelay: '0.6s' } : undefined}
+                />
+              )}
               {c.label}
             </a>
           ))}

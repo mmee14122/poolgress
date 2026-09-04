@@ -666,3 +666,43 @@
 @media (prefers-reduced-motion: reduce) {
   .pg-cta-fill-edge { display: none; }
 }
+
+
+/* 頁尾 outline CTA（線上課程／預約教練）：一次性邊框光帶。
+   深色底上的香檳細光沿邊框順時針繞一圈，mask 只留 1.5px 環，只播一次。 */
+@property --pg-sweep-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.pg-cta-sweep {
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--pg-sweep-angle),
+    transparent 0deg,
+    transparent 310deg,
+    rgba(245, 232, 207, 0.2) 320deg,
+    rgba(255, 248, 235, 0.9) 336deg,
+    rgba(245, 232, 207, 0.2) 352deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  animation: pg-cta-sweep 1.05s cubic-bezier(0.45, 0, 0.55, 1) 0.45s 1 both;
+}
+@keyframes pg-cta-sweep {
+  0% { --pg-sweep-angle: 0deg; opacity: 0; }
+  12% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { --pg-sweep-angle: 360deg; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-cta-sweep { display: none; }
+}
