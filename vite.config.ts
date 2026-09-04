@@ -46,6 +46,7 @@ export default defineConfig({
         partnership: fileURLToPath(new URL('./partnership.html', import.meta.url)),
         about: fileURLToPath(new URL('./about.html', import.meta.url)),
         comicDemo: fileURLToPath(new URL('./comic-demo.html', import.meta.url)),
+        premiumDemo: fileURLToPath(new URL('./premium-demo.html', import.meta.url)),
         // 首頁捲動動畫演示（S05–S07 垂直切片，確認後併入首頁）
         motionDemo: fileURLToPath(new URL('./motion-demo.html', import.meta.url)),
       },
