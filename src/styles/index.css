@@ -713,15 +713,15 @@
 .pg-outline-cta:hover::after {
   animation: pg-cta-travel 0.9s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
 }
-/* 繞整圈衰減：光弧自右上出發順時針走完 360°，
-   亮度一路遞減（0.85→0.6→0.4→0.2→0），回到起點時剛好燒盡 */
+/* 行進衰減：光弧自右上出發順時針走 3/4 圈，到左上角停住熄滅。
+   亮度一路遞減（0.85→0.6→0.35→0.15→0），左上只剩微弱殘光 */
 @keyframes pg-cta-travel {
   0% { --pg-sweep-angle: 0deg; opacity: 0; }
   10% { opacity: 0.85; }
   40% { opacity: 0.6; }
-  68% { opacity: 0.4; }
-  88% { opacity: 0.2; }
-  100% { --pg-sweep-angle: 360deg; opacity: 0; }
+  68% { opacity: 0.35; }
+  90% { opacity: 0.15; }
+  100% { --pg-sweep-angle: 270deg; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-outline-cta::after { display: none; }
