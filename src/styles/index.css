@@ -604,11 +604,6 @@
 }
 
 
-/* Hero CTA hover：僅保留極小亮度回饋（光澤掃過已依使用者指示移除） */
-.pg-hero-cta:hover {
-  filter: brightness(1.03);
-}
-
 /* Hero CTA entrance fill 的前緣柔光：跟著填色右移的一小段模糊亮光，
    填滿即淡出。只是材質感，不是發光。 */
 .pg-cta-fill-edge {
@@ -682,70 +677,63 @@
 /* （2026-08-17 使用者指示：outline 鈕的 hover 行進光已移除，
     僅保留進場的兩段定點流光與一般 opacity hover） */
 
-/* Final CTA 主鈕「開始玩」hover：霧面材質語言（與 outline 鈕的行進光區隔）。
-   ① 底色微深 3–4%（#D2C2AD→#C9BAA6）② 文字右移 3px ③ 一道低對比斜向反光
-   掃過表面一次。按鈕本體不縮放、不位移。 */
-.pg-primary-cta {
-  overflow: hidden;
+/* ------------------------------------------------------------------
+   全站 CTA hover（2026-08-17 定稿）：luxury editorial 克制回饋。
+   無 shimmer／流光／glow／gradient sweep／scale／明顯陰影。
+   Primary（米色實心）＝材質回應：底色暖亮 4%＋按鈕 -1px＋文字 +2px。
+   Secondary（描邊）＝表面回應：極淡暖米灰填色＋邊框變實＋文字微亮＋-1px。
+   hover in 320ms／out 480ms，cubic-bezier(0.22,1,0.36,1)。
+   ------------------------------------------------------------------ */
+.pg-hero-cta,
+.pg-primary-cta,
+.pg-outline-cta {
   transition:
-    background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.48s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.pg-hero-cta:hover,
+.pg-primary-cta:hover,
+.pg-outline-cta:hover {
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(-1px);
+}
+/* Primary：底色暖亮約 4%（D2C2AD → DACCB9） */
 .pg-primary-cta:hover {
-  background-color: #CDBFA9 !important; /* 約 2–3% 深，主要 hover 回饋 */
-  box-shadow: 0 6px 18px rgba(20, 28, 32, 0.06);
+  background-color: #DACCB9 !important;
 }
-.pg-primary-cta .pg-cta-text {
+.pg-hero-cta:hover .pg-cta-fill {
+  background-color: #DACCB9 !important;
+}
+/* Primary 文字微移 */
+.pg-cta-text {
   display: inline-block;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.pg-hero-cta:hover .pg-cta-text,
 .pg-primary-cta:hover .pg-cta-text {
   transform: translateX(2px);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* 環境反射：超寬（過渡區約佔按鈕寬 50%+）、極低對比（峰值 0.075）、
-   全羽化無可見邊界、無暗帶——像霧面材質感受到環境光角度改變，
-   截在動畫中間也看不出「有一塊 overlay」。 */
-.pg-primary-cta::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 15%,
-    rgba(255, 255, 255, 0) 25%,
-    rgba(255, 255, 255, 0.035) 42%,
-    rgba(255, 255, 255, 0.075) 50%,
-    rgba(255, 255, 255, 0.035) 58%,
-    rgba(255, 255, 255, 0) 75%,
-    transparent 85%
-  );
-  transform: translateX(-60%);
-  opacity: 0;
-  pointer-events: none;
-}
-.pg-primary-cta:hover::after {
-  animation: pg-primary-reflect 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0s 1 forwards;
-}
-@keyframes pg-primary-reflect {
-  0% { transform: translateX(-60%); opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateX(60%); opacity: 0; }
+/* Secondary：極淡填色＋邊框提高＋文字微亮（不變成 Primary） */
+.pg-outline-cta:hover {
+  background-color: rgba(210, 194, 173, 0.07);
+  border-color: rgba(242, 238, 230, 0.8) !important;
+  color: #fffdf6 !important;
 }
 @media (prefers-reduced-motion: reduce) {
-  .pg-primary-cta::after { display: none; }
-  .pg-primary-cta:hover .pg-cta-text { transform: none; }
-}
-
-
-/* 首頁定案版：首屏「下一章預告」露出量（LV 式 viewport composition）。
-   Hero 高度＝100svh - peek，讓 01 的米白背景在未捲動時自然露出。
-   純 layout，無動畫、無 spacer、無偽元素。 */
-.pg-home-root {
-  --pg-peek: 32px;
-}
-@media (min-width: 640px) {
-  .pg-home-root { --pg-peek: 44px; }
-}
-@media (min-width: 1024px) {
-  .pg-home-root { --pg-peek: 56px; }
+  .pg-hero-cta:hover,
+  .pg-primary-cta:hover,
+  .pg-outline-cta:hover {
+    transform: none;
+  }
+  .pg-hero-cta:hover .pg-cta-text,
+  .pg-primary-cta:hover .pg-cta-text {
+    transform: none;
+  }
 }

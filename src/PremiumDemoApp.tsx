@@ -212,11 +212,12 @@ export default function PremiumDemoApp() {
             {/* fill layer：左→右填滿，停在實心米杏色 */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 z-0 rounded-full"
+              className="pg-cta-fill pointer-events-none absolute inset-0 z-0 rounded-full"
               style={{
                 background: P.neutral,
                 clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-                transition: 'clip-path 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.35s',
+                transition:
+                  'clip-path 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.35s, background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             />
             {/* fill 前緣柔光：同步右移，填滿時消失 */}
@@ -224,7 +225,7 @@ export default function PremiumDemoApp() {
               <span aria-hidden="true" className="pg-cta-fill-edge pointer-events-none absolute z-[1]" />
             )}
             <span
-              className="relative z-[2]"
+              className="pg-cta-text relative z-[2]"
               style={{
                 color: shown('hero') ? P.text : 'rgba(242,238,230,.92)',
                 transition: 'color 0.35s ease 0.62s',
@@ -396,7 +397,7 @@ export default function PremiumDemoApp() {
               key={c.label}
               href={c.href}
               className={`relative inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold sm:w-auto ${
-                i === 0 ? 'pg-primary-cta' : 'pg-outline-cta transition-opacity hover:opacity-90'
+                i === 0 ? 'pg-primary-cta' : 'pg-outline-cta'
               }`}
               style={
                 i === 0
