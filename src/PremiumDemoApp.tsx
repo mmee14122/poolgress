@@ -389,7 +389,7 @@ export default function PremiumDemoApp() {
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
-                  : { border: '1px solid rgba(242,238,230,.4)', color: P.bg }
+                  : { border: '2px solid rgba(242,238,230,.55)', color: P.bg }
               }
             >
               {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
