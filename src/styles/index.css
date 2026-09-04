@@ -602,3 +602,47 @@
   outline: 2px solid #e8c97a;
   outline-offset: 2px;
 }
+
+
+/* ------------------------------------------------------------------
+   首頁定案版（premium-demo）：Hero CTA 一次性邊框光帶。
+   細香檳色光帶沿按鈕邊框順時針繞一圈（約佔圓周 12%），
+   mask 讓漸層只出現在 1.5px 的邊框環上，不覆蓋按鈕內部。
+   延遲 0.4s（標題開始揭開後約 0.25s）、1.05s 一圈、只播一次後消失。
+   ------------------------------------------------------------------ */
+@property --pg-sweep-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.pg-cta-sweep {
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--pg-sweep-angle),
+    transparent 0deg,
+    transparent 314deg,
+    rgba(245, 232, 207, 0.15) 322deg,
+    rgba(255, 248, 235, 0.85) 336deg,
+    rgba(245, 232, 207, 0.15) 350deg,
+    transparent 358deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  animation: pg-cta-sweep 1.05s cubic-bezier(0.45, 0, 0.55, 1) 0.4s 1 both;
+}
+@keyframes pg-cta-sweep {
+  0% { --pg-sweep-angle: 0deg; opacity: 0; }
+  12% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { --pg-sweep-angle: 360deg; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-cta-sweep { display: none; }
+}
