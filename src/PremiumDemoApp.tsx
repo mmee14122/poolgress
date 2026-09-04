@@ -291,14 +291,15 @@ export default function PremiumDemoApp() {
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
               /* line-mask：每行獨立 overflow hidden，內層獨立 reveal。
-                 外層另做第二段 settle：reveal 快結束前無縫接手，
-                 4–5px 極慢落定（power1.out），兩行 timing 微差、只播一次。 */
+                 外層做第二段水平慣性：reveal 快結束前無縫接手，
+                 文字帶著向右的餘勢（7/9px）極慢滑到定位（power1.out），
+                 兩行 timing 微差、只播一次、最後完全靜止。 */
               <span
                 key={line}
                 className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
                 style={{
-                  transform: shown('intro01') ? 'translateY(0)' : `translateY(${4 + i}px)`,
-                  transition: `transform ${i === 0 ? 1.25 : 1.45}s ${EASE2} ${i === 0 ? 1.1 : 1.27}s`,
+                  transform: shown('intro01') ? 'translateX(0)' : `translateX(-${7 + i * 2}px)`,
+                  transition: `transform ${i === 0 ? 1.3 : 1.5}s ${EASE2} ${i === 0 ? 1.1 : 1.29}s`,
                 }}
               >
                 <span
