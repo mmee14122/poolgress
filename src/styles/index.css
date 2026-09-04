@@ -711,17 +711,17 @@
   pointer-events: none;
 }
 .pg-outline-cta:hover::after {
-  animation: pg-cta-travel 0.75s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
+  animation: pg-cta-travel 0.9s cubic-bezier(0.45, 0, 0.55, 1) 0s 1 forwards;
 }
-/* 光弧中心 45°（右上）→ 230°（左下）；亮度沿途衰減：
-   右上/右側 0.26（主光）→ 底部後 0.16 → 左下 0.12（短尾）→ 0 */
+/* 繞整圈衰減：光弧自右上出發順時針走完 360°，
+   亮度一路遞減（0.85→0.6→0.4→0.2→0），回到起點時剛好燒盡 */
 @keyframes pg-cta-travel {
   0% { --pg-sweep-angle: 0deg; opacity: 0; }
-  15% { opacity: 0.85; }
-  48% { opacity: 0.85; }
-  64% { opacity: 0.55; }
-  86% { opacity: 0.38; }
-  100% { --pg-sweep-angle: 185deg; opacity: 0; }
+  10% { opacity: 0.85; }
+  40% { opacity: 0.6; }
+  68% { opacity: 0.4; }
+  88% { opacity: 0.2; }
+  100% { --pg-sweep-angle: 360deg; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-outline-cta::after { display: none; }
