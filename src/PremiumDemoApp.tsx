@@ -50,12 +50,16 @@ const MASK_RANGES: Record<string, [number, number]> = {
 
 export default function PremiumDemoApp() {
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
+  /* <768px 視為手機：01／02 大標的 reveal 觸發對象改成大標本體（見 lineFor 註解） */
+  const [narrow, setNarrow] = useState(
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false,
+  )
   /* 圖片遮罩揭開進度（0=全遮、1=全開），只作用於 overlay，不作用於圖片 */
   const [maskP, setMaskP] = useState<Record<string, number>>({})
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = ['hero', 'intro01', 'trans02', ...pillarSections.map((s) => s.id), 'finale']
+    const ids = ['hero', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
@@ -63,20 +67,22 @@ export default function PremiumDemoApp() {
     }
     const check = () => {
       /* 觸發線：元素頂緣越過視窗高度的這個比例就觸發（單向鎖存）。
-         手機（<768px）一律 0.97——桌機那組比例是為了讓文字進到畫面中上段才亮，
-         但手機視窗窄而高、區塊本身矮，同樣比例要多捲快 1/5 個螢幕才會動，
-         使用者實際看到的是「字幕太晚出現」。改成一進視窗底緣就開始。 */
+         手機（<768px）：01／02 大標改成以「大標本體」為觸發對象（id 結尾 h），
+         線 0.92——之前用外層容器判定，容器頂緣到大標之間隔著 padding＋眉標約 105px，
+         0.80 嫌晚、0.97 又讓動畫在畫面外就播完（使用者兩次回饋）。
+         看大標自己，大標露出約 8% 視窗高（812 時約 65px）就開始浮現，與視窗高無關。
+         02–04 三段文字同理：section 頂緣到文字只隔 40px padding，線提前到 0.87。 */
       const narrow = window.innerWidth < 768
       const lineFor = (id: string) =>
         window.innerHeight *
-          (narrow
-            ? 0.97
+          (id === 'intro01h' || id === 'trans02h'
+            ? 0.92
             : id === 'trans02'
               ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
               : id === 'finale'
                 ? 0.92
                 : id === 's02' || id === 's03' || id === 's04'
-                  ? 0.9 /* 02–04 內容提前在視窗 90% 就開始淡入 */
+                  ? (narrow ? 0.87 : 0.9) /* 02–04 內容提前淡入；手機再往前一點 */
                   : 0.8)
       setRevealed((prev) => {
         let changed = false
@@ -116,10 +122,19 @@ export default function PremiumDemoApp() {
     }
   }, [])
 
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const sync = () => setNarrow(mq.matches)
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
   const reg = (id: string) => (el: HTMLElement | null) => {
     if (el) refs.current.set(id, el)
   }
   const shown = (id: string) => revealed.has(id)
+  const on01 = shown(narrow ? 'intro01h' : 'intro01')
+  const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
   return (
     <main className="pg-home-root" style={{ background: P.bg, color: P.text }}>
@@ -266,7 +281,7 @@ export default function PremiumDemoApp() {
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
-            strokeDashoffset={shown('intro01') ? 0 : 1}
+            strokeDashoffset={on01 ? 0 : 1}
             style={{ transition: `stroke-dashoffset 1.1s ${EASE} 0.15s` }}
           />
           <circle
@@ -275,8 +290,8 @@ export default function PremiumDemoApp() {
             r="4"
             fill={P.primary}
             style={{
-              opacity: shown('intro01') ? 0.3 : 0,
-              transform: shown('intro01') ? 'none' : 'translate(-22px, -12px)',
+              opacity: on01 ? 0.3 : 0,
+              transform: on01 ? 'none' : 'translate(-22px, -12px)',
               transition: `opacity 0.9s ${EASE} 0.5s, transform 0.9s ${EASE} 0.5s`,
             }}
           />
@@ -297,7 +312,7 @@ export default function PremiumDemoApp() {
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
-            strokeDashoffset={shown('intro01') ? 0 : 1}
+            strokeDashoffset={on01 ? 0 : 1}
             style={{ transition: `stroke-dashoffset 1s ${EASE} 0.15s` }}
           />
           <circle
@@ -306,8 +321,8 @@ export default function PremiumDemoApp() {
             r="3"
             fill={P.primary}
             style={{
-              opacity: shown('intro01') ? 0.3 : 0,
-              transform: shown('intro01') ? 'none' : 'translate(-12px, -7px)',
+              opacity: on01 ? 0.3 : 0,
+              transform: on01 ? 'none' : 'translate(-12px, -7px)',
               transition: `opacity 0.8s ${EASE} 0.4s, transform 0.8s ${EASE} 0.4s`,
             }}
           />
@@ -321,7 +336,7 @@ export default function PremiumDemoApp() {
         <div className="pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
           <p
             className="px-5 text-[11px] font-medium tracking-[0.3em] uppercase sm:pr-10 sm:pl-[10vw] sm:text-xs"
-            style={{ color: P.accent, ...reveal(shown('intro01'), 0, 0.9) }}
+            style={{ color: P.accent, ...reveal(on01, 0, 0.9) }}
           >
             01 / THE SPACE
             <span
@@ -332,6 +347,7 @@ export default function PremiumDemoApp() {
             </span>
           </p>
           <h2
+            ref={reg('intro01h')}
             className="mt-5 px-5 sm:mt-6 sm:pr-10 sm:pl-[10vw]"
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
@@ -354,8 +370,8 @@ export default function PremiumDemoApp() {
                   style={{
                     fontSize: 'clamp(36px, 7vw, 108px)',
                     lineHeight: 1.05,
-                    opacity: shown('intro01') ? 1 : 0,
-                    transform: shown('intro01') ? 'translateY(0)' : 'translateY(8px)',
+                    opacity: on01 ? 1 : 0,
+                    transform: on01 ? 'translateY(0)' : 'translateY(8px)',
                     transition: `opacity 0.52s ${EASE2} ${0.12 + i * 0.08}s, transform 0.52s ${EASE2} ${0.12 + i * 0.08}s`,
                   }}
                 >
@@ -370,7 +386,7 @@ export default function PremiumDemoApp() {
       {/* ---------- 01–04 價值階梯（奶油白底，隨內容高） ---------- */}
       {pillarSections.map((s, i) => (
         <Fragment key={s.id}>
-          {s.id === 's02' && <ChapterTransition on={shown('trans02')} refCb={reg('trans02')} />}
+          {s.id === 's02' && <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />}
           <PillarBlock
             s={s}
             flip={i % 2 === 1}
@@ -380,6 +396,7 @@ export default function PremiumDemoApp() {
             maskProgress={maskP[s.id] ?? 0}
             hideHeading={i === 0}
             hideChapterHead={i > 0}
+            quick={narrow}
           />
         </Fragment>
       ))}
@@ -469,9 +486,12 @@ export default function PremiumDemoApp() {
 function ChapterTransition({
   on,
   refCb,
+  headRefCb,
 }: {
   on: boolean
   refCb: (el: HTMLElement | null) => void
+  /** 手機用的觸發對象：大標本體（見 lineFor 註解） */
+  headRefCb?: (el: HTMLElement | null) => void
 }) {
   const line = (on: boolean, delay: number): React.CSSProperties => ({
     opacity: on ? 1 : 0,
@@ -497,6 +517,7 @@ function ChapterTransition({
           02 / THE APP
         </p>
         <h2
+          ref={headRefCb}
           className="mt-3 sm:mt-4"
           style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
         >
@@ -538,6 +559,7 @@ function PillarBlock({
   maskProgress = 0,
   hideHeading = false,
   hideChapterHead = false,
+  quick = false,
 }: {
   s: Pillar
   flip: boolean
@@ -550,6 +572,8 @@ function PillarBlock({
   hideHeading?: boolean
   /** 隱藏全寬章節頭（編號＋英文句）：02 由上方轉場區承擔，03/04 使用者指定不要 */
   hideChapterHead?: boolean
+  /** 手機：縮短時長與接力延遲（使用者回饋「字幕出現的太慢」） */
+  quick?: boolean
 }) {
   /* 01（標題在轉場區）：滿版橫幅＋玻璃卡。圖先揭開、卡片後進（0.35s） */
   if (hideHeading) {
@@ -607,8 +631,12 @@ function PillarBlock({
     )
   }
 
-  /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
-  const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
+  /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖。
+     手機（quick）把接力壓成一半、時長 0.7s → 0.45s，整串 0.79s → 0.54s。 */
+  const st = quick ? 0.03 : 0.06
+  const dur = quick ? 0.45 : 0.7
+  const d = { no: 0, en: st, zh: st * 2, body: st * 3, img: st * 4 }
+  const up = (delay: number) => fadeUp(on, delay, dur)
   return (
     <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 lg:pt-10 lg:pb-8">
       {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
@@ -617,7 +645,7 @@ function PillarBlock({
         <div className="mx-auto mb-8 max-w-7xl lg:mb-10">
           <span
             className="flex items-center gap-3 text-sm font-bold"
-            style={{ color: P.accent, ...fadeUp(on, d.no) }}
+            style={{ color: P.accent, ...up(d.no) }}
           >
             {s.no}
             {s.badge && (
@@ -631,7 +659,7 @@ function PillarBlock({
           </span>
           <p
             className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-            style={{ color: P.accent, ...fadeUp(on, d.en) }}
+            style={{ color: P.accent, ...up(d.en) }}
           >
             {s.en}
           </p>
@@ -650,7 +678,7 @@ function PillarBlock({
           {s.eyebrow && (
             <p
               className="mb-4 text-[10px] font-medium tracking-[0.28em] uppercase"
-              style={{ color: P.accent, ...fadeUp(on, d.no) }}
+              style={{ color: P.accent, ...up(d.no) }}
             >
               {s.eyebrow}
             </p>
@@ -659,7 +687,7 @@ function PillarBlock({
             <div className="overflow-hidden">
               <h2
                 className="text-[clamp(24px,6.6vw,32px)] leading-snug font-bold sm:text-5xl"
-                style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
+                style={{ fontFamily: SERIF, color: P.text, ...up(d.zh) }}
               >
                 {s.zh}
               </h2>
@@ -667,7 +695,7 @@ function PillarBlock({
           )}
           <p
             className="mt-4 max-w-md text-base leading-relaxed sm:mt-5"
-            style={{ color: 'rgba(37,44,48,.78)', ...fadeUp(on, d.body) }}
+            style={{ color: 'rgba(37,44,48,.78)', ...up(d.body) }}
           >
             {s.body}
           </p>
