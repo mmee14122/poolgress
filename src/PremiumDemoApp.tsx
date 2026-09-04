@@ -383,7 +383,9 @@ export default function PremiumDemoApp() {
             <a
               key={c.label}
               href={c.href}
-              className={`relative inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:w-auto ${i > 0 ? 'pg-outline-cta' : ''}`}
+              className={`relative inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold sm:w-auto ${
+                i === 0 ? 'pg-primary-cta' : 'pg-outline-cta transition-opacity hover:opacity-90'
+              }`}
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
@@ -398,7 +400,7 @@ export default function PremiumDemoApp() {
                   style={i === 2 ? { animationDelay: '0.6s' } : undefined}
                 />
               )}
-              {c.label}
+              <span className="pg-cta-text relative z-[1]">{c.label}</span>
             </a>
           ))}
         </div>

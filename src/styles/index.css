@@ -726,3 +726,54 @@
 @media (prefers-reduced-motion: reduce) {
   .pg-outline-cta::after { display: none; }
 }
+
+
+/* Final CTA 主鈕「開始玩」hover：霧面材質語言（與 outline 鈕的行進光區隔）。
+   ① 底色微深 3–4%（#D2C2AD→#C9BAA6）② 文字右移 3px ③ 一道低對比斜向反光
+   掃過表面一次。按鈕本體不縮放、不位移。 */
+.pg-primary-cta {
+  overflow: hidden;
+  transition:
+    background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-primary-cta:hover {
+  background-color: #C9BAA6 !important;
+  box-shadow: 0 6px 18px rgba(20, 28, 32, 0.06);
+}
+.pg-primary-cta .pg-cta-text {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-primary-cta:hover .pg-cta-text {
+  transform: translateX(3px);
+}
+/* 低對比反光：稍暗→微亮→透明，像霧面材質的光線角度變化，不是白色 sheen */
+.pg-primary-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(37, 44, 48, 0) 38%,
+    rgba(37, 44, 48, 0.04) 48%,
+    rgba(255, 255, 255, 0.09) 54%,
+    transparent 64%
+  );
+  transform: translateX(-70%);
+  opacity: 0;
+  pointer-events: none;
+}
+.pg-primary-cta:hover::after {
+  animation: pg-primary-reflect 0.6s ease-out 0s 1 forwards;
+}
+@keyframes pg-primary-reflect {
+  0% { transform: translateX(-70%); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(70%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-primary-cta::after { display: none; }
+  .pg-primary-cta:hover .pg-cta-text { transform: none; }
+}
