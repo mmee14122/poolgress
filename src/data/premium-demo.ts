@@ -26,6 +26,8 @@ export type Pillar = {
   /** 狀態徽章（例：COMING SOON）；未提供則不顯示 */
   badge?: string
   en: string
+  /** 02 THE APP 三段敘事的小眉標（例：01 / PLAY）；未提供則不顯示 */
+  eyebrow?: string
   zh: string
   body: string
   image: string | null
@@ -48,28 +50,31 @@ export const pillarSections: Pillar[] = [
     id: 's02',
     no: '02',
     en: 'THE APP',
+    eyebrow: '01 / PLAY',
     zh: '球桌變成你的關卡。',
-    body: '打開 App，照著指示在真實球桌上擺球、闖關、拿星星。每一桿都有目標，每一關都看得到自己的進步。',
+    body: '打開 App，照著指示在真實球桌上挑戰、闖關、拿星星。',
     image: null,
-    imageHint: 'App 闖關：真實球桌＋手機畫面（3200×1800）',
+    imageHint: 'PLAY：真實撞球桌＋App 闖關介面（3200×1800）',
   },
   {
     id: 's03',
     no: '03',
-    en: 'PLAY TOGETHER. KEEP PROGRESSING.',
-    zh: '一起玩，一起變強。',
-    body: '邀請家人或好友加入，共享關卡、成績與每一次成功。每一次來玩，都接得上上一次的自己。',
+    en: 'PROGRESS',
+    eyebrow: '02 / PROGRESS',
+    zh: '每一球，都留下進步。',
+    body: '記錄成績、精彩片段與成長軌跡，讓玩家看見自己逐漸變強。',
     image: null,
-    imageHint: 'App 好友／紀錄／成長畫面（3200×1800）',
+    imageHint: 'PROGRESS：App 個人成長／成績／精彩片段／關卡進度（3200×1800）',
   },
   {
     id: 's04',
     no: '04',
-    en: 'BEYOND',
-    zh: '帶著你的進步，去連結更多人。',
-    body: '分享你的成長、找到一起打球的朋友、揪一場週末的團體局。走出 App，撞球把人連在一起。',
+    en: 'TOGETHER',
+    eyebrow: '03 / TOGETHER',
+    zh: '離開球館，遊戲還在繼續。',
+    body: '分享精彩時刻、找到一起打球的人，並自然產生下一次回來的理由。',
     image: null,
-    imageHint: 'BEYOND：店門前看手機的女孩＋Share/Find Friends/Group Play 卡片（3200×1800）',
+    imageHint: 'TOGETHER：好友／分享／活動／再次邀約的 App 畫面（3200×1800）',
   },
 ]
 

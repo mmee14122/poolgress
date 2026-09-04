@@ -477,7 +477,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex items-center px-5 pt-20 pb-12 sm:px-10 lg:pt-28 lg:pb-14"
+      className="flex items-center px-5 pt-20 pb-10 sm:px-10 lg:pt-28 lg:pb-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <p
@@ -629,8 +629,19 @@ function PillarBlock({
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
-        {/* 文字欄 */}
-        <div className="lg:w-[38%]">
+        {/* 文字欄。桌機上整欄再往上抬 22px——與圖片同組閱讀時，
+            文字視覺中心落在圖高的 42–48%（1440 實測 45.0%），略高於數學置中。 */}
+        <div className="lg:w-[38%] lg:-translate-y-[22px]">
+          {/* 敘事標記：01 / PLAY → 02 / PROGRESS → 03 / TOGETHER。
+              與「02 / THE APP」同一套 uppercase＋字距語言，但更小（10px／0.28em）。 */}
+          {s.eyebrow && (
+            <p
+              className="mb-4 text-[10px] font-medium tracking-[0.28em] uppercase"
+              style={{ color: P.accent, ...fadeUp(on, d.no) }}
+            >
+              {s.eyebrow}
+            </p>
+          )}
           {!hideHeading && (
             <div className="overflow-hidden">
               <h2
