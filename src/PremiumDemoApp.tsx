@@ -4,14 +4,37 @@ import { brand, finale, hero, palette as P, pillarSections, type Pillar } from '
 /**
  * 首頁定案版：四段價值階梯（NAV → HERO → 01–04 → FINAL CTA → FOOTER）。
  *
- * 配色（2026-08-17 使用者提供的六色盤，僅此頁）：
- * 奶油白底、深墨文字與深色段落、灰藍主色、橡木棕點綴、暖灰邊框。
+ * 進場動畫（2026-08-17 依使用者規格改版）：left-to-right masked reveal。
+ * 內容一開始就在最終位置，不飛入、不上浮——用 clip-path: inset(0 100% 0 0)
+ * → inset(0 0 0 0) 由左往右「揭開」，僅配極輕的 opacity .85→1 與 translateX -8px→0。
+ * 圖片另配極微 scale 1.03→1。easing 用 cubic-bezier(0.25,1,0.5,1)（≈ power4.out）。
+ * 文字 0.9s、大標 1.1s、圖片 1.25s；同一區內依閱讀順序 stagger 0.12–0.15s。
  *
- * 版面照 pool.house 實測：標題襯線兩極字級、只有 Hero 滿屏、64px 大按鈕、
- * 唯一動效為進場單向淡入（scroll 事件判定；IO/rAF 隱藏分頁不執行故不用）。
+ * 觸發：沿用既有 scroll 判定（元素頂緣進入視窗 80% 觸發、單向 once）。
+ * 專案無 GSAP/ScrollTrigger，依約不新增 animation library。
+ * prefers-reduced-motion：全部直接顯示（revealed 預填）。
  */
 
 const SERIF = "'Noto Serif TC', 'Noto Sans TC', serif"
+/** ≈ GSAP power4.out */
+const EASE = 'cubic-bezier(0.25, 1, 0.5, 1)'
+
+/** 文字類 reveal：clip 由左而右揭開＋極輕 opacity 與 translateX */
+const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => ({
+  clipPath: on ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+  opacity: on ? 1 : 0.85,
+  transform: on ? 'translateX(0)' : 'translateX(-8px)',
+  transition: `clip-path ${dur}s ${EASE} ${delay}s, opacity ${dur}s ${EASE} ${delay}s, transform ${dur}s ${EASE} ${delay}s`,
+  willChange: 'clip-path',
+})
+
+/** 圖片類 reveal：同向揭開＋極微 scale（電影感，不是 zoom） */
+const revealImg = (on: boolean, delay: number, dur = 1.25): React.CSSProperties => ({
+  clipPath: on ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+  transform: on ? 'scale(1)' : 'scale(1.03)',
+  transition: `clip-path ${dur}s ${EASE} ${delay}s, transform ${dur}s ${EASE} ${delay}s`,
+  willChange: 'clip-path',
+})
 
 export default function PremiumDemoApp() {
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
@@ -50,8 +73,6 @@ export default function PremiumDemoApp() {
     if (el) refs.current.set(id, el)
   }
   const shown = (id: string) => revealed.has(id)
-  const fade = (id: string) =>
-    `transition-all duration-700 ease-out ${shown(id) ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`
 
   return (
     <main style={{ background: P.bg, color: P.text }}>
@@ -108,11 +129,11 @@ export default function PremiumDemoApp() {
           style={{ background: 'linear-gradient(to top, rgba(37,44,48,.85), transparent 55%)' }}
         />
 
-        <div className={`relative w-full px-5 pb-16 sm:px-10 sm:pb-20 ${fade('hero')}`}>
-          {/* 四字宣言（橡木棕） */}
+        <div className="relative w-full px-5 pb-16 sm:px-10 sm:pb-20">
+          {/* 宣言：eyebrow 先揭開 */}
           <p
             className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium tracking-[0.3em] sm:text-sm"
-            style={{ color: P.neutral }}
+            style={{ color: P.neutral, ...reveal(shown('hero'), 0, 0.9) }}
           >
             {hero.manifesto.map((w, i) => (
               <span key={w} className="flex items-center gap-3">
@@ -125,16 +146,19 @@ export default function PremiumDemoApp() {
               </span>
             ))}
           </p>
-          <h1
-            className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
-            style={{ fontFamily: SERIF, color: P.bg }}
-          >
-            {hero.title}
-          </h1>
+          {/* 主標：line-mask 包一層，內層由左而右揭開 */}
+          <div className="overflow-hidden">
+            <h1
+              className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
+              style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.15, 1.15) }}
+            >
+              {hero.title}
+            </h1>
+          </div>
           <a
             href={hero.cta.href}
-            className="mt-9 inline-flex min-h-16 items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:text-lg"
-            style={{ background: P.neutral, color: P.text }}
+            className="mt-9 inline-flex min-h-16 items-center justify-center rounded-full px-10 text-base font-semibold hover:opacity-90 sm:text-lg"
+            style={{ background: P.neutral, color: P.text, ...reveal(shown('hero'), 0.45, 0.9) }}
           >
             {hero.cta.label}
           </a>
@@ -143,7 +167,7 @@ export default function PremiumDemoApp() {
 
       {/* ---------- Hero → 01 Editorial Typography Transition ----------
           Typography first, graphic second：乾淨水平交界，140–220px 呼吸空間，
-          先讀到 01 / THE SPACE，再讀到大字標題，最後才進場館圖。
+          先讀到 01 / THE SPACE，再讀到大字標題（逐行 mask reveal），最後才進場館圖。
           撞球軌跡是第二層細節：1.5px、13%、走大字右側負空間，不穿過文字。 */}
       <div ref={reg('intro01')} className="relative">
         {/* 軌跡（桌機）：自 Hero 右下越界，收在標題右側負空間 */}
@@ -163,7 +187,7 @@ export default function PremiumDemoApp() {
             pathLength={1}
             strokeDasharray="1"
             strokeDashoffset={shown('intro01') ? 0 : 1}
-            style={{ transition: 'stroke-dashoffset 1.1s ease 0.15s' }}
+            style={{ transition: `stroke-dashoffset 1.1s ${EASE} 0.15s` }}
           />
           <circle
             cx="872"
@@ -173,7 +197,7 @@ export default function PremiumDemoApp() {
             style={{
               opacity: shown('intro01') ? 0.3 : 0,
               transform: shown('intro01') ? 'none' : 'translate(-22px, -12px)',
-              transition: 'opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s',
+              transition: `opacity 0.9s ${EASE} 0.5s, transform 0.9s ${EASE} 0.5s`,
             }}
           />
         </svg>
@@ -194,7 +218,7 @@ export default function PremiumDemoApp() {
             pathLength={1}
             strokeDasharray="1"
             strokeDashoffset={shown('intro01') ? 0 : 1}
-            style={{ transition: 'stroke-dashoffset 1s ease 0.15s' }}
+            style={{ transition: `stroke-dashoffset 1s ${EASE} 0.15s` }}
           />
           <circle
             cx="244"
@@ -204,21 +228,16 @@ export default function PremiumDemoApp() {
             style={{
               opacity: shown('intro01') ? 0.3 : 0,
               transform: shown('intro01') ? 'none' : 'translate(-12px, -7px)',
-              transition: 'opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s',
+              transition: `opacity 0.8s ${EASE} 0.4s, transform 0.8s ${EASE} 0.4s`,
             }}
           />
         </svg>
 
-        {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱排列 */}
+        {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal */}
         <div className="pt-[88px] pb-4 sm:pt-[176px] sm:pb-8">
           <p
             className="pl-6 text-[11px] font-medium tracking-[0.3em] uppercase sm:pl-[10vw] sm:text-xs"
-            style={{
-              color: P.accent,
-              opacity: shown('intro01') ? 1 : 0,
-              transform: shown('intro01') ? 'none' : 'translateY(16px)',
-              transition: 'opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s',
-            }}
+            style={{ color: P.accent, ...reveal(shown('intro01'), 0, 0.9) }}
           >
             01 / THE SPACE
             <span
@@ -233,18 +252,18 @@ export default function PremiumDemoApp() {
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
-              <span
-                key={line}
-                className={`block ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
-                style={{
-                  fontSize: 'clamp(48px, 7vw, 108px)',
-                  lineHeight: 1.0,
-                  opacity: shown('intro01') ? 1 : 0,
-                  transform: shown('intro01') ? 'none' : 'translateY(30px)',
-                  transition: `opacity 0.7s ease ${0.2 + i * 0.15}s, transform 0.7s ease ${0.2 + i * 0.15}s`,
-                }}
-              >
-                {line.endsWith('.') ? line : line + '.'}
+              /* line-mask：每行獨立 overflow hidden，內層獨立 reveal */
+              <span key={line} className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}>
+                <span
+                  className="block"
+                  style={{
+                    fontSize: 'clamp(48px, 7vw, 108px)',
+                    lineHeight: 1.05,
+                    ...reveal(shown('intro01'), 0.12 + i * 0.12, 1.1),
+                  }}
+                >
+                  {line.endsWith('.') ? line : line + '.'}
+                </span>
               </span>
             ))}
           </h2>
@@ -257,41 +276,50 @@ export default function PremiumDemoApp() {
           key={s.id}
           s={s}
           flip={i % 2 === 1}
-          fadeCls={fade(s.id)}
+          on={shown(s.id)}
           refCb={reg(s.id)}
           hideHeading={i === 0}
         />
       ))}
 
-      {/* ---------- FINAL CTA：兩入口 ---------- */}
+      {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
         className="px-5 py-24 text-center sm:px-10 lg:py-32"
         style={{ background: P.text, color: P.bg }}
       >
-        <div className={fade('finale')}>
-          <p className="text-xs font-medium tracking-[0.3em] sm:text-sm" style={{ color: P.neutral }}>
-            {finale.en}
-          </p>
-          <h2 className="mt-4 text-3xl font-bold sm:text-5xl" style={{ fontFamily: SERIF, color: P.bg }}>
+        <p
+          className="text-xs font-medium tracking-[0.3em] sm:text-sm"
+          style={{ color: P.neutral, ...reveal(shown('finale'), 0, 0.9) }}
+        >
+          {finale.en}
+        </p>
+        <div className="overflow-hidden">
+          <h2
+            className="mt-4 text-3xl font-bold sm:text-5xl"
+            style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('finale'), 0.12, 1.1) }}
+          >
             {finale.zh}
           </h2>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            {finale.ctas.map((c, i) => (
-              <a
-                key={c.label}
-                href={c.href}
-                className="inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:w-auto"
-                style={
-                  i === 0
-                    ? { background: P.neutral, color: P.text }
-                    : { border: '1px solid rgba(242,238,230,.4)', color: P.bg }
-                }
-              >
-                {c.label}
-              </a>
-            ))}
-          </div>
+        </div>
+        <div
+          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          style={reveal(shown('finale'), 0.3, 0.9)}
+        >
+          {finale.ctas.map((c, i) => (
+            <a
+              key={c.label}
+              href={c.href}
+              className="inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold transition-opacity hover:opacity-90 sm:w-auto"
+              style={
+                i === 0
+                  ? { background: P.neutral, color: P.text }
+                  : { border: '1px solid rgba(242,238,230,.4)', color: P.bg }
+              }
+            >
+              {c.label}
+            </a>
+          ))}
         </div>
       </section>
 
@@ -306,64 +334,79 @@ export default function PremiumDemoApp() {
   )
 }
 
-/** 01–04 段：編號＋英文視覺標＋中文主述＋說明＋大圖，左右交錯 */
+/** 01–04 段：編號＋英文視覺標＋中文主述＋說明＋大圖，左右交錯；
+ *  各元素依閱讀順序 left-to-right mask reveal（stagger 0.13s） */
 function PillarBlock({
   s,
   flip,
-  fadeCls,
+  on,
   refCb,
   hideHeading = false,
 }: {
   s: Pillar
   flip: boolean
-  fadeCls: string
+  on: boolean
   refCb: (el: HTMLElement | null) => void
   /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
   hideHeading?: boolean
 }) {
+  /* 01（標題在轉場區）：body 0s、圖 0.15s；其餘段：編號 0、眉標 0.13、標題 0.26、body 0.42、圖 0.55 */
+  const d = hideHeading
+    ? { body: 0, img: 0.15 }
+    : { no: 0, en: 0.13, zh: 0.26, body: 0.42, img: 0.55 }
   return (
     <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 py-16 sm:px-10 lg:py-24">
       <div
         className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
-        } ${hideHeading ? fadeCls.replace('translate-y-5', 'translate-y-10') : fadeCls}`}
-        style={hideHeading ? { transitionDelay: '0.45s' } : undefined}
+        }`}
       >
         {/* 文字欄 */}
         <div className="lg:w-[38%]">
-          {!hideHeading && (<>
-          <span className="flex items-center gap-3 text-sm font-bold" style={{ color: P.accent }}>
-            {s.no}
-            {s.badge && (
-              <span
-                className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em]"
-                style={{ background: P.neutral, color: P.text }}
-              >
-                {s.badge}
-              </span>
-            )}
-          </span>
-          <p
-            className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-            style={{ color: P.accent }}
-          >
-            {s.en}
-          </p>
-          </>)}
           {!hideHeading && (
-          <h2
-            className="mt-4 text-3xl leading-snug font-bold sm:text-5xl"
-            style={{ fontFamily: SERIF, color: P.text }}
-          >
-            {s.zh}
-          </h2>
+            <>
+              <span
+                className="flex items-center gap-3 text-sm font-bold"
+                style={{ color: P.accent, ...reveal(on, d.no!, 0.9) }}
+              >
+                {s.no}
+                {s.badge && (
+                  <span
+                    className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em]"
+                    style={{ background: P.neutral, color: P.text }}
+                  >
+                    {s.badge}
+                  </span>
+                )}
+              </span>
+              <p
+                className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
+                style={{ color: P.accent, ...reveal(on, d.en!, 0.9) }}
+              >
+                {s.en}
+              </p>
+              <div className="overflow-hidden">
+                <h2
+                  className="mt-4 text-3xl leading-snug font-bold sm:text-5xl"
+                  style={{ fontFamily: SERIF, color: P.text, ...reveal(on, d.zh!, 1.1) }}
+                >
+                  {s.zh}
+                </h2>
+              </div>
+            </>
           )}
-          <p className="mt-5 max-w-md text-base leading-relaxed" style={{ color: 'rgba(37,44,48,.78)' }}>
+          <p
+            className="mt-5 max-w-md text-base leading-relaxed"
+            style={{ color: 'rgba(37,44,48,.78)', ...reveal(on, d.body, 0.9) }}
+          >
             {s.body}
           </p>
         </div>
-        {/* 大圖（深色圖浮在奶油白紙上；佔位用灰藍面） */}
-        <div className="relative overflow-hidden rounded-2xl lg:w-[62%]" style={{ aspectRatio: '16/9' }}>
+        {/* 大圖：同向揭開＋極微 scale */}
+        <div
+          className="relative overflow-hidden rounded-2xl lg:w-[62%]"
+          style={{ aspectRatio: '16/9', ...revealImg(on, d.img, 1.25) }}
+        >
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
           ) : (
