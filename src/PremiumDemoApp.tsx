@@ -293,7 +293,7 @@ export default function PremiumDemoApp() {
         </svg>
 
         {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal */}
-        <div className="pt-[88px] pb-4 sm:pt-[176px] sm:pb-8">
+        <div className="pt-[64px] pb-2 sm:pt-[120px] sm:pb-4">
           <p
             className="pl-6 text-[11px] font-medium tracking-[0.3em] uppercase sm:pl-[10vw] sm:text-xs"
             style={{ color: P.accent, ...reveal(shown('intro01'), 0, 0.9) }}
@@ -444,7 +444,7 @@ function PillarBlock({
       <section
         ref={refCb}
         id={s.id}
-        className="relative mt-4 w-full overflow-hidden sm:mt-8"
+        className="relative mt-2 w-full overflow-hidden sm:mt-5"
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div className="relative h-[68svh] min-h-[420px] sm:h-[82svh]">
