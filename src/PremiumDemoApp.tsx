@@ -41,20 +41,24 @@ const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSPropert
   transition: `opacity ${dur}s ${EASE2} ${delay}s, transform ${dur}s ${EASE2} ${delay}s`,
 })
 
-/** 02–04 圖片：只有 opacity，位置與尺寸完全不動 */
-const fadeIn = (on: boolean, delay: number, dur = 0.8): React.CSSProperties => ({
-  opacity: on ? 1 : 0,
-  transition: `opacity ${dur}s ${EASE2} ${delay}s`,
-})
+/* 02–04 圖片遮罩的捲動區間：[圖頂在視窗高度比例的起點, 終點] */
+const MASK_RANGES: Record<string, [number, number]> = {
+  s02: [0.9, 0.58],
+  s03: [0.92, 0.6],
+  s04: [0.9, 0.58],
+}
 
 export default function PremiumDemoApp() {
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
+  /* 圖片遮罩揭開進度（0=全遮、1=全開），只作用於 overlay，不作用於圖片 */
+  const [maskP, setMaskP] = useState<Record<string, number>>({})
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
     const ids = ['hero', 'intro01', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
+      setMaskP({ s02: 1, s03: 1, s04: 1 })
       return
     }
     const check = () => {
@@ -71,6 +75,23 @@ export default function PremiumDemoApp() {
             changed = true
           }
         })
+        return changed ? next : prev
+      })
+      /* 圖片遮罩進度：圖頂到達視窗 90% 開始、約 58% 完成（各段微差）。
+         值四捨五入到 1%，快速捲動時不會過度重繪；平滑由 CSS transition 負責 */
+      setMaskP((prev) => {
+        let changed = false
+        const next = { ...prev }
+        for (const [id, [a, b]] of Object.entries(MASK_RANGES)) {
+          const el = refs.current.get(id + '-img')
+          if (!el) continue
+          const t = el.getBoundingClientRect().top / window.innerHeight
+          const p = Math.round(Math.min(1, Math.max(0, (a - t) / (a - b))) * 100) / 100
+          if (next[id] !== p) {
+            next[id] = p
+            changed = true
+          }
+        }
         return changed ? next : prev
       })
     }
@@ -326,6 +347,8 @@ export default function PremiumDemoApp() {
           flip={i % 2 === 1}
           on={shown(s.id)}
           refCb={reg(s.id)}
+          imgRefCb={reg(s.id + '-img')}
+          maskProgress={maskP[s.id] ?? 0}
           hideHeading={i === 0}
         />
       ))}
@@ -399,12 +422,17 @@ function PillarBlock({
   flip,
   on,
   refCb,
+  imgRefCb,
+  maskProgress = 0,
   hideHeading = false,
 }: {
   s: Pillar
   flip: boolean
   on: boolean
   refCb: (el: HTMLElement | null) => void
+  imgRefCb?: (el: HTMLElement | null) => void
+  /** 圖片遮罩揭開進度 0–1（捲動連動，只動遮罩） */
+  maskProgress?: number
   /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
   hideHeading?: boolean
 }) {
@@ -512,10 +540,12 @@ function PillarBlock({
             {s.body}
           </p>
         </div>
-        {/* 大圖：同向揭開＋極微 scale */}
+        {/* 大圖：本體全程靜態（無 opacity/transform 動畫）。
+            揭開由上層遮罩負責：底色遮罩隨捲動往下移出，底部 25% 羽化。 */}
         <div
+          ref={imgRefCb}
           className="relative overflow-hidden rounded-2xl lg:w-[62%]"
-          style={{ aspectRatio: '16/9', ...fadeIn(on, d.img, 0.8) }}
+          style={{ aspectRatio: '16/9' }}
         >
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
@@ -533,6 +563,17 @@ function PillarBlock({
               </span>
             </div>
           )}
+          {/* overlay 遮罩：Section 底色＋底部羽化，往下移出圖片區（112% 含羽化段） */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[2]"
+            style={{
+              background:
+                'linear-gradient(to bottom, #F2EEE6 0%, #F2EEE6 75%, rgba(242,238,230,0.85) 85%, rgba(242,238,230,0) 100%)',
+              transform: `translateY(${maskProgress * 112}%)`,
+              transition: 'transform 0.18s linear',
+            }}
+          />
         </div>
       </div>
     </section>
