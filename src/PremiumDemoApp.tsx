@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { brand, sections, type Section } from './data/premium-demo'
+import { brand, pillars, sections, type Section } from './data/premium-demo'
 
 /**
  * 首頁定案版演示：Poolhouse 式滿版分段敘事。
@@ -58,7 +58,44 @@ export default function PremiumDemoApp() {
         </a>
       </header>
 
-      {sections.map((s) => (
+      {sections.slice(0, -1).map((s) => (
+        <Screen key={s.id} s={s} shown={revealed.has(s.id)} refs={refs} />
+      ))}
+
+      {/* 三分類導引（米白換氣段）：故事之後、最終 CTA 之前 */}
+      <section className="bg-ivory-50 px-5 py-20 text-ink-900 sm:px-8 lg:py-28">
+        <div className="mx-auto max-w-6xl">
+          <span className="text-xs font-medium tracking-[0.25em] text-brand-700">
+            {pillars.eyebrow}
+          </span>
+          <h2 className="mt-3 text-2xl font-bold sm:text-4xl">{pillars.title}</h2>
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {pillars.items.map((it) => (
+              <a
+                key={it.name}
+                href={it.href}
+                className="group relative block overflow-hidden rounded-2xl"
+                style={{ aspectRatio: '3/4' }}
+              >
+                {it.image ? (
+                  <img src={it.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-925 to-brand-950">
+                    <div className="absolute inset-[5%] rounded-xl border border-dashed border-white/15" />
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                  <h3 className="text-xl font-bold sm:text-2xl">{it.name}</h3>
+                  <p className="mt-2 text-sm text-white/75">{it.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {sections.slice(-1).map((s) => (
         <Screen key={s.id} s={s} shown={revealed.has(s.id)} refs={refs} />
       ))}
     </main>
