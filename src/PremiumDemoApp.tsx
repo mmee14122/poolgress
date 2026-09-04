@@ -172,13 +172,13 @@ export default function PremiumDemoApp() {
           {/* CTA 本體完全靜態（無任何進場動畫）；僅在 Hero 揭開後播一次邊框光帶 */}
           <a
             href={hero.cta.href}
-            className="relative mt-9 inline-flex min-h-16 items-center justify-center rounded-full px-10 text-base font-semibold hover:opacity-90 sm:text-lg"
+            className="pg-hero-cta relative mt-9 inline-flex min-h-16 items-center justify-center overflow-hidden rounded-full px-10 text-base font-semibold sm:text-lg"
             style={{ background: P.neutral, color: P.text }}
           >
             {shown('hero') && (
-              <span aria-hidden="true" className="pg-cta-sweep pointer-events-none absolute inset-0 rounded-full" />
+              <span aria-hidden="true" className="pg-cta-sweep pointer-events-none absolute inset-0 z-[3] rounded-full" />
             )}
-            {hero.cta.label}
+            <span className="relative z-[2]">{hero.cta.label}</span>
           </a>
         </div>
       </section>
