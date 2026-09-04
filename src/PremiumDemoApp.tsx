@@ -596,7 +596,7 @@ function PillarBlock({
   /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
   const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
   return (
-    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 lg:pt-14 lg:pb-12">
+    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 lg:pt-10 lg:pb-8">
       {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
           03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
       {!hideHeading && !hideChapterHead && (
