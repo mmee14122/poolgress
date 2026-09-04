@@ -526,7 +526,44 @@ function PillarBlock({
   /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
   const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
   return (
-    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 py-10 sm:px-10 lg:py-12">
+    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-14 pb-10 sm:px-10 lg:pt-16 lg:pb-12">
+      {/* 章節頭：編號＋英文句橫跨整個版面，先於內容出現——
+          與 01 的眉標區同一套章節語言，02 的英文句兼任 01→02 接棒 */}
+      {!hideHeading && (
+        <div className="mx-auto mb-8 max-w-7xl lg:mb-10">
+          <span
+            className="flex items-center gap-3 text-sm font-bold"
+            style={{ color: P.accent, ...fadeUp(on, d.no) }}
+          >
+            {s.no}
+            {s.badge && (
+              <span
+                className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em]"
+                style={{ background: P.neutral, color: P.text }}
+              >
+                {s.badge}
+              </span>
+            )}
+          </span>
+          <p
+            ref={enEarlyRef}
+            className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
+            style={{
+              color: P.accent,
+              ...(enEarlyOn !== undefined
+                ? {
+                    /* 接棒句：02 背景進場即輕輕浮現（6px／0.4s），先於其餘內容 */
+                    opacity: enEarlyOn ? 1 : 0,
+                    transform: enEarlyOn ? 'translateY(0)' : 'translateY(6px)',
+                    transition: 'opacity 0.4s cubic-bezier(0.5, 1, 0.89, 1), transform 0.4s cubic-bezier(0.5, 1, 0.89, 1)',
+                  }
+                : fadeUp(on, d.en)),
+            }}
+          >
+            {s.en}
+          </p>
+        </div>
+      )}
       <div
         className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
@@ -535,48 +572,14 @@ function PillarBlock({
         {/* 文字欄 */}
         <div className="lg:w-[38%]">
           {!hideHeading && (
-            <>
-              <span
-                className="flex items-center gap-3 text-sm font-bold"
-                style={{ color: P.accent, ...fadeUp(on, d.no) }}
+            <div className="overflow-hidden">
+              <h2
+                className="text-3xl leading-snug font-bold sm:text-5xl"
+                style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
               >
-                {s.no}
-                {s.badge && (
-                  <span
-                    className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em]"
-                    style={{ background: P.neutral, color: P.text }}
-                  >
-                    {s.badge}
-                  </span>
-                )}
-              </span>
-              <p
-                ref={enEarlyRef}
-                className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-                style={{
-                  color: P.accent,
-                  ...(enEarlyOn !== undefined
-                    ? {
-                        /* 接棒句：02 背景進場即輕輕浮現（6px／0.4s），
-                           先於編號與其餘內容，位置就是它在 02 的原位 */
-                        opacity: enEarlyOn ? 1 : 0,
-                        transform: enEarlyOn ? 'translateY(0)' : 'translateY(6px)',
-                        transition: 'opacity 0.4s cubic-bezier(0.5, 1, 0.89, 1), transform 0.4s cubic-bezier(0.5, 1, 0.89, 1)',
-                      }
-                    : fadeUp(on, d.en)),
-                }}
-              >
-                {s.en}
-              </p>
-              <div className="overflow-hidden">
-                <h2
-                  className="mt-4 text-3xl leading-snug font-bold sm:text-5xl"
-                  style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
-                >
-                  {s.zh}
-                </h2>
-              </div>
-            </>
+                {s.zh}
+              </h2>
+            </div>
           )}
           <p
             className="mt-5 max-w-md text-base leading-relaxed"
