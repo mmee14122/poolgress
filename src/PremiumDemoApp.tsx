@@ -373,7 +373,7 @@ export default function PremiumDemoApp() {
       <section
         ref={reg('finale')}
         className="px-5 py-14 text-center sm:px-10 lg:py-20"
-        style={{ background: '#98AFBE', color: P.text }}
+        style={{ background: P.text, color: P.bg }}
       >
         <p
           className="text-xs font-medium tracking-[0.3em] sm:text-sm"
@@ -385,7 +385,7 @@ export default function PremiumDemoApp() {
           className="mt-4 text-3xl font-bold sm:text-5xl"
           style={{
             fontFamily: SERIF,
-            color: P.text,
+            color: P.bg,
             opacity: shown('finale') ? 1 : 0,
             transform: shown('finale') ? 'translateY(0)' : 'translateY(16px)',
             transition: `opacity 0.6s ${EASE3} 0.1s, transform 0.6s ${EASE3} 0.1s`,
@@ -405,7 +405,7 @@ export default function PremiumDemoApp() {
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
-                  : { border: '2px solid rgba(37,44,48,.5)', color: P.text }
+                  : { border: '2px solid rgba(242,238,230,.55)', color: P.bg }
               }
             >
               {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
