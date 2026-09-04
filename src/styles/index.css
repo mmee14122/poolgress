@@ -670,8 +670,8 @@
 }
 @keyframes pg-cta-sweep {
   0% { --pg-sweep-angle: -14deg; opacity: 0; }
-  18% { opacity: 1; }
-  80% { opacity: 1; }
+  18% { opacity: 0.55; }
+  80% { opacity: 0.55; }
   100% { --pg-sweep-angle: 22deg; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
