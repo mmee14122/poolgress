@@ -55,7 +55,7 @@ export default function PremiumDemoApp() {
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = ['hero', 'intro01', ...pillarSections.map((s) => s.id), 'finale']
+    const ids = ['hero', 'intro01', 's02-en', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
@@ -65,7 +65,15 @@ export default function PremiumDemoApp() {
       /* 02–04 提前在視窗 90% 就開始淡入；其餘（hero/轉場/01/結尾）維持 80% */
       const lineFor = (id: string) =>
         window.innerHeight *
-          (id === 'finale' ? 0.92 : id === 's02' || id === 's03' || id === 's04' ? 0.9 : 0.8)
+          (id === 's02-en'
+            ? 1.0 /* 接棒句：一進視窗底緣就亮 */
+            : id === 's02'
+              ? 0.68 /* 02 主內容延後，讓接棒句先單獨存在 */
+              : id === 'finale'
+                ? 0.92
+                : id === 's03' || id === 's04'
+                  ? 0.9
+                  : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
@@ -327,24 +335,21 @@ export default function PremiumDemoApp() {
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
-              /* line-mask：每行獨立 overflow hidden，內層獨立 reveal。
-                 外層做第二段水平慣性：reveal 快結束前無縫接手，
-                 文字帶著向右的餘勢（7/9px）極慢滑到定位（power1.out），
-                 兩行 timing 微差、只播一次、最後完全靜止。 */
+              /* 垂直 reveal（2026-08-17 使用者定稿）：line-mask 保留（overflow hidden），
+                 內層自下而上浮現——opacity 0→1＋translateY 8px→0（0.52s ease-out），
+                 第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
               <span
                 key={line}
                 className={`block overflow-hidden ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
-                style={{
-                  transform: shown('intro01') ? 'translateX(0)' : `translateX(-${7 + i * 2}px)`,
-                  transition: `transform ${i === 0 ? 1.3 : 1.5}s ${EASE2} ${i === 0 ? 1.1 : 1.29}s`,
-                }}
               >
                 <span
                   className="block"
                   style={{
                     fontSize: 'clamp(48px, 7vw, 108px)',
                     lineHeight: 1.05,
-                    ...reveal(shown('intro01'), 0.12 + i * 0.12, 1.1),
+                    opacity: shown('intro01') ? 1 : 0,
+                    transform: shown('intro01') ? 'translateY(0)' : 'translateY(8px)',
+                    transition: `opacity 0.52s ${EASE2} ${0.12 + i * 0.08}s, transform 0.52s ${EASE2} ${0.12 + i * 0.08}s`,
                   }}
                 >
                   {line.endsWith('.') ? line : line + '.'}
@@ -366,6 +371,8 @@ export default function PremiumDemoApp() {
           imgRefCb={reg(s.id + '-img')}
           maskProgress={maskP[s.id] ?? 0}
           hideHeading={i === 0}
+          enEarlyOn={s.id === 's02' ? shown('s02-en') : undefined}
+          enEarlyRef={s.id === 's02' ? reg('s02-en') : undefined}
         />
       ))}
 
@@ -443,6 +450,8 @@ function PillarBlock({
   imgRefCb,
   maskProgress = 0,
   hideHeading = false,
+  enEarlyOn,
+  enEarlyRef,
 }: {
   s: Pillar
   flip: boolean
@@ -453,6 +462,9 @@ function PillarBlock({
   maskProgress?: number
   /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
   hideHeading?: boolean
+  /** 章節接棒（僅 02）：英文句用自己的早觸發先亮，成為 01→02 的 handoff */
+  enEarlyOn?: boolean
+  enEarlyRef?: (el: HTMLElement | null) => void
 }) {
   /* 01（標題在轉場區）：滿版橫幅＋玻璃卡。圖先揭開、卡片後進（0.35s） */
   if (hideHeading) {
@@ -539,8 +551,20 @@ function PillarBlock({
                 )}
               </span>
               <p
+                ref={enEarlyRef}
                 className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-                style={{ color: P.accent, ...fadeUp(on, d.en) }}
+                style={{
+                  color: P.accent,
+                  ...(enEarlyOn !== undefined
+                    ? {
+                        /* 接棒句：02 背景進場即輕輕浮現（6px／0.4s），
+                           先於編號與其餘內容，位置就是它在 02 的原位 */
+                        opacity: enEarlyOn ? 1 : 0,
+                        transform: enEarlyOn ? 'translateY(0)' : 'translateY(6px)',
+                        transition: 'opacity 0.4s cubic-bezier(0.5, 1, 0.89, 1), transform 0.4s cubic-bezier(0.5, 1, 0.89, 1)',
+                      }
+                    : fadeUp(on, d.en)),
+                }}
               >
                 {s.en}
               </p>
