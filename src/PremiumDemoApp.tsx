@@ -356,7 +356,7 @@ export default function PremiumDemoApp() {
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
-        className="px-5 py-24 text-center sm:px-10 lg:py-32"
+        className="px-5 py-14 text-center sm:px-10 lg:py-20"
         style={{ background: P.text, color: P.bg }}
       >
         <p
@@ -378,7 +378,7 @@ export default function PremiumDemoApp() {
           {finale.zh}
         </h2>
         {/* 按鈕完全靜態：無任何進場動畫，從頭就鎖在最終位置與樣式 */}
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {finale.ctas.map((c, i) => (
             <a
               key={c.label}
