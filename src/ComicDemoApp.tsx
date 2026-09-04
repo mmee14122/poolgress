@@ -13,23 +13,23 @@ import { comicCopy, panels, type Panel } from './data/comic-demo'
 
 export default function ComicDemoApp() {
   return (
-    <main className="min-h-screen bg-ivory-50 text-ink-900">
+    <main className="min-h-screen bg-brand-950 text-white">
       {/* 頁首說明（演示用，正式版拿掉） */}
-      <header className="mx-auto max-w-6xl px-4 pt-10 pb-6 sm:px-6">
-        <h1 className="font-logo text-xl font-semibold text-brand-900 sm:text-2xl">
+      <header className="mx-auto max-w-6xl px-4 pt-12 pb-10 sm:px-6">
+        <h1 className="font-logo text-lg font-semibold text-white/90 sm:text-xl">
           {comicCopy.pageTitle}
         </h1>
-        <p className="mt-2 max-w-2xl text-sm text-ink-500">{comicCopy.intro}</p>
+        <p className="mt-2 max-w-2xl text-sm text-white/45">{comicCopy.intro}</p>
       </header>
 
       {/* 漫畫頁：12 欄格線，gap 就是溝 */}
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-3 px-4 pb-16 sm:px-6 lg:grid-cols-12 lg:gap-4">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 px-4 pb-24 sm:px-6 lg:grid-cols-12 lg:gap-6">
         {panels.map((pn) => (pn.kind === 'text' ? <TextPanel key={pn.id} p={pn} /> : <ImagePanel key={pn.id} p={pn} />))}
       </div>
 
       {/* 收尾 CTA（跟在 S09 滿版格之後） */}
       <div className="mx-auto max-w-6xl px-4 pb-20 text-center sm:px-6">
-        <p className="text-lg font-bold text-ink-900 sm:text-2xl">{comicCopy.ctaFinal}</p>
+        <p className="text-xl font-bold text-white sm:text-3xl">{comicCopy.ctaFinal}</p>
         <a
           href="./course.html"
           className="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-brand-500 px-8 text-base font-semibold text-white transition-colors hover:bg-brand-600"
@@ -48,9 +48,7 @@ function ImagePanel({ p }: { p: Panel }) {
   return (
     <figure className="m-0 lg:col-[span_var(--span)]" style={{ '--span': p.span } as React.CSSProperties}>
       <div
-        className={`relative w-full overflow-hidden rounded-xl border ${
-          p.dark ? 'border-brand-900/30' : 'border-line'
-        }`}
+        className="relative w-full overflow-hidden rounded-2xl"
         style={{ aspectRatio: p.ratio ?? '16/9' }}
       >
         {p.image ? (
@@ -84,20 +82,14 @@ function ImagePanel({ p }: { p: Panel }) {
           </div>
         ) : (
           /* 一般佔位格 */
-          <div
-            className={`absolute inset-0 ${
-              p.dark ? 'bg-gradient-to-br from-brand-925 to-brand-950' : 'bg-ivory-100'
-            }`}
-          >
-            <div className="absolute inset-[6%] rounded-lg border-2 border-dashed border-white/25" />
-            <span className={`absolute top-2.5 left-3.5 text-[11px] ${p.dark ? 'text-white/60' : 'text-ink-400'}`}>
-              {p.label}
-            </span>
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-925 to-brand-950">
+            <div className="absolute inset-[6%] rounded-lg border border-dashed border-white/15" />
+            <span className="absolute top-2.5 left-3.5 text-[11px] text-white/40">{p.label}</span>
           </div>
         )}
       </div>
       {p.caption && (
-        <figcaption className="mt-1.5 px-1 text-xs leading-relaxed text-ink-500">{p.caption}</figcaption>
+        <figcaption className="mt-2 px-1 text-xs leading-relaxed tracking-wide text-white/40">{p.caption}</figcaption>
       )}
     </figure>
   )
@@ -107,11 +99,12 @@ function ImagePanel({ p }: { p: Panel }) {
 function TextPanel({ p }: { p: Panel }) {
   return (
     <div
-      className="flex flex-col justify-center rounded-xl bg-ivory-100 px-6 py-8 lg:col-[span_var(--span)]"
+      className="flex flex-col justify-center px-2 py-8 lg:col-[span_var(--span)] lg:px-6"
       style={{ '--span': p.span } as React.CSSProperties}
     >
-      <h2 className="text-lg leading-snug font-bold text-ink-900 sm:text-xl">{p.title}</h2>
-      <p className="mt-3 text-sm leading-relaxed text-ink-700">{p.body}</p>
+      <span className="text-xs tracking-[0.2em] text-brass-300">POOLGRESS</span>
+      <h2 className="mt-3 text-2xl leading-snug font-bold text-white sm:text-3xl">{p.title}</h2>
+      <p className="mt-4 text-sm leading-relaxed text-white/65 sm:text-base">{p.body}</p>
     </div>
   )
 }
