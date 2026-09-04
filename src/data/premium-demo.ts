@@ -87,14 +87,15 @@ export const finale = {
  * 小字對比度不足處見工程回報，深色由 Text 擔任。
  */
 export const palette = {
-  primary: '#7F9EAD',   // 灰藍：編號、主按鈕、重點
-  secondary: '#B8CDD5', // 淺藍：佔位圖、輔助面
-  bg: '#F5F2EA',        // 奶油白：頁面底
-  neutral: '#D8D0C3',   // 暖灰：邊框、徽章底
-  accent: '#B58F68',    // 橡木棕：眉標、宣言、金色點綴
-  text: '#293033',      // 深墨：文字、深色段落底
-  /** 深色段落的漸層亮端（text 的提亮衍生色） */
-  textSoft: '#39454a',
+  primary: '#385666',   // 深灰藍：編號、主按鈕、撞球軌跡
+  secondary: '#8FAAB5', // 中灰藍：佔位圖漸層
+  light: '#C8D8DD',     // 淺藍灰：邊框、輔助面
+  bg: '#F2EFE8',        // Ivory：頁面底
+  neutral: '#B9AA98',   // Taupe：徽章底、暖色點綴
+  accent: '#B9AA98',    // 眉標、宣言（Taupe）
+  text: '#252A2B',      // Charcoal：文字、深色段落底
+  /** 深色段落的漸層亮端（charcoal 的提亮衍生色） */
+  textSoft: '#333a3c',
 } as const
 
 export const brand = {
