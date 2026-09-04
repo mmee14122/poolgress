@@ -396,7 +396,7 @@ function PillarBlock({
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
               color: P.bg,
-              ...reveal(on, 0.35, 1.0),
+              ...fadeUp(on, 0.2, 0.8), /* 玻璃卡改漸層浮出（使用者指定），不再左至右揭開 */
             }}
           >
             <span
