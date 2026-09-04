@@ -710,16 +710,7 @@
 .pg-hero-cta:hover .pg-cta-fill {
   background-color: #DACCB9 !important;
 }
-/* Primary 文字微移 */
-.pg-cta-text {
-  display: inline-block;
-  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.pg-hero-cta:hover .pg-cta-text,
-.pg-primary-cta:hover .pg-cta-text {
-  transform: translateX(2px);
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-}
+/* （文字位移已依使用者指示取消，hover 時文字完全不動） */
 /* Secondary：極淡填色＋邊框提高＋文字微亮（不變成 Primary） */
 .pg-outline-cta:hover {
   background-color: rgba(210, 194, 173, 0.07);
@@ -730,10 +721,6 @@
   .pg-hero-cta:hover,
   .pg-primary-cta:hover,
   .pg-outline-cta:hover {
-    transform: none;
-  }
-  .pg-hero-cta:hover .pg-cta-text,
-  .pg-primary-cta:hover .pg-cta-text {
     transform: none;
   }
 }
