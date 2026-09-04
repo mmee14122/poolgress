@@ -165,21 +165,33 @@ export default function PremiumDemoApp() {
         />
 
         <div className="relative w-full px-5 pb-16 sm:px-10 sm:pb-20">
-          {/* 宣言：eyebrow 先揭開 */}
+          {/* 宣言：由左至右快速連續 reveal——字與箭頭各自 clip 揭開，
+              箭頭先畫出、35ms 後帶出下一個字，整串約 0.5s 一氣呵成。
+              文字位置不動（無 translateX），完成後全部靜止。 */}
           <p
             className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium tracking-[0.3em] sm:text-sm"
-            style={{ color: P.neutral, ...reveal(shown('hero'), 0, 0.9) }}
+            style={{ color: P.neutral }}
           >
-            {hero.manifesto.map((w, i) => (
-              <span key={w} className="flex items-center gap-3">
-                {i > 0 && (
-                  <span aria-hidden="true" style={{ color: 'rgba(242,238,230,.35)' }}>
-                    →
-                  </span>
-                )}
-                {w}
-              </span>
-            ))}
+            {hero.manifesto.map((w, i) => {
+              const mReveal = (delay: number): React.CSSProperties => ({
+                clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+                opacity: shown('hero') ? 1 : 0,
+                transition: `clip-path 0.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+              })
+              return (
+                <span key={w} className="flex items-center gap-3">
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      style={{ color: 'rgba(242,238,230,.35)', ...mReveal(i * 0.1 - 0.035) }}
+                    >
+                      →
+                    </span>
+                  )}
+                  <span style={mReveal(i * 0.1)}>{w}</span>
+                </span>
+              )
+            })}
           </p>
           {/* 主標：line-mask 包一層，內層由左而右揭開 */}
           <div className="overflow-hidden">
