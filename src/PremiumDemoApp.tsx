@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { brand, finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 
 /**
- * 首頁定案版：NAV → HERO → 01 場館 → 02 THE APP → FINAL CTA → FOOTER。
+ * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
  *
  * 進場動畫（2026-08-17 依使用者規格改版）：left-to-right masked reveal。
  * 內容一開始就在最終位置，不飛入、不上浮——用 clip-path: inset(0 100% 0 0)
@@ -44,6 +44,8 @@ const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSPropert
 /* 02–04 圖片遮罩的捲動區間：[圖頂在視窗高度比例的起點, 終點] */
 const MASK_RANGES: Record<string, [number, number]> = {
   s02: [0.95, 0.62],
+  s03: [0.96, 0.64],
+  s04: [0.95, 0.62],
 }
 
 export default function PremiumDemoApp() {
@@ -53,22 +55,22 @@ export default function PremiumDemoApp() {
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = ['hero', 'intro01', 's02-en', ...pillarSections.map((s) => s.id), 'finale']
+    const ids = ['hero', 'intro01', 'trans02', ...pillarSections.map((s) => s.id), 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
-      setMaskP({ s02: 1 })
+      setMaskP({ s02: 1, s03: 1, s04: 1 })
       return
     }
     const check = () => {
-      /* 02–04 提前在視窗 90% 就開始淡入；其餘（hero/轉場/01/結尾）維持 80% */
+      /* 觸發線：元素頂緣越過視窗高度的這個比例就觸發（單向鎖存） */
       const lineFor = (id: string) =>
         window.innerHeight *
-          (id === 's02-en'
-            ? 1.0 /* 接棒句：一進視窗底緣就亮 */
-            : id === 's02'
-              ? 0.68 /* 02 主內容延後，讓接棒句先單獨存在 */
-              : id === 'finale'
-                ? 0.92
+          (id === 'trans02'
+            ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
+            : id === 'finale'
+              ? 0.92
+              : id === 's02' || id === 's03' || id === 's04'
+                ? 0.9 /* 02–04 內容提前在視窗 90% 就開始淡入 */
                 : 0.8)
       setRevealed((prev) => {
         let changed = false
@@ -358,18 +360,19 @@ export default function PremiumDemoApp() {
 
       {/* ---------- 01–04 價值階梯（奶油白底，隨內容高） ---------- */}
       {pillarSections.map((s, i) => (
-        <PillarBlock
-          key={s.id}
-          s={s}
-          flip={i % 2 === 1}
-          on={shown(s.id)}
-          refCb={reg(s.id)}
-          imgRefCb={reg(s.id + '-img')}
-          maskProgress={maskP[s.id] ?? 0}
-          hideHeading={i === 0}
-          enEarlyOn={s.id === 's02' ? shown('s02-en') : undefined}
-          enEarlyRef={s.id === 's02' ? reg('s02-en') : undefined}
-        />
+        <Fragment key={s.id}>
+          {s.id === 's02' && <ChapterTransition on={shown('trans02')} refCb={reg('trans02')} />}
+          <PillarBlock
+            s={s}
+            flip={i % 2 === 1}
+            on={shown(s.id)}
+            refCb={reg(s.id)}
+            imgRefCb={reg(s.id + '-img')}
+            maskProgress={maskP[s.id] ?? 0}
+            hideHeading={i === 0}
+            hideChapterHead={i > 0}
+          />
+        </Fragment>
       ))}
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
@@ -438,6 +441,76 @@ export default function PremiumDemoApp() {
 
 /** 01–04 段：編號＋英文視覺標＋中文主述＋說明＋大圖，左右交錯；
  *  各元素依閱讀順序 left-to-right mask reveal（stagger 0.13s） */
+/**
+ * 01 → 02 章節轉場（2026-09-05 使用者規格）。
+ *
+ * 定位：**不是**第二個 Hero、也不是章節封面，只是一次「翻頁」——
+ * 從實體空間 THE SPACE 進入數位體驗 THE APP。因此刻意克制：
+ * - 高度 38vh（桌機 42vh），遠低於 01 的滿屏
+ * - 大字 clamp(26px, 3.7vw, 56px) ≈ 01（clamp 48/7vw/108px）的 52%
+ * - 第二行只縮排 3vw（01 是 14vw），不做大幅左右錯位
+ * - 無 CTA、無內文、無卡片、無圖片
+ * - 眉標與大標間距 12/16px（01 是 24px），兩者讀成同一個 block
+ * - 對齊既有 content grid（max-w-7xl + px-5/sm:px-10），與下方 App 區同一條左緣
+ *
+ * 動效：延用 01 的 line-mask + opacity 語言，但更快更輕。
+ * 眉標 0s/0.34s → THE GAME 0.06s/0.46s → GOES WITH YOU. 0.14s/0.46s
+ * （第二行晚 80ms），整串 0.60s 收完；位移只有 6px，完成後完全靜止。
+ */
+function ChapterTransition({
+  on,
+  refCb,
+}: {
+  on: boolean
+  refCb: (el: HTMLElement | null) => void
+}) {
+  const line = (on: boolean, delay: number): React.CSSProperties => ({
+    opacity: on ? 1 : 0,
+    transform: on ? 'translateY(0)' : 'translateY(6px)',
+    transition: `opacity 0.46s ${EASE2} ${delay}s, transform 0.46s ${EASE2} ${delay}s`,
+  })
+  return (
+    <section
+      ref={refCb}
+      id="s02-transition"
+      className="flex min-h-[38vh] items-center px-5 sm:px-10 lg:min-h-[42vh]"
+    >
+      <div className="mx-auto w-full max-w-7xl">
+        <p
+          className="text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
+          style={{
+            color: P.accent,
+            opacity: on ? 1 : 0,
+            transform: on ? 'translateY(0)' : 'translateY(6px)',
+            transition: `opacity 0.34s ${EASE2}, transform 0.34s ${EASE2}`,
+          }}
+        >
+          02 / THE APP
+        </p>
+        <h2
+          className="mt-3 sm:mt-4"
+          style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
+        >
+          {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
+            <span key={t} className={`block overflow-hidden ${i === 1 ? 'sm:ml-[3vw]' : ''}`}>
+              <span
+                className="block"
+                style={{
+                  fontSize: 'clamp(26px, 3.7vw, 56px)',
+                  lineHeight: 1.08,
+                  ...line(on, 0.06 + i * 0.08),
+                }}
+              >
+                {t}
+              </span>
+            </span>
+          ))}
+        </h2>
+      </div>
+    </section>
+  )
+}
+
 function PillarBlock({
   s,
   flip,
@@ -446,8 +519,7 @@ function PillarBlock({
   imgRefCb,
   maskProgress = 0,
   hideHeading = false,
-  enEarlyOn,
-  enEarlyRef,
+  hideChapterHead = false,
 }: {
   s: Pillar
   flip: boolean
@@ -458,9 +530,8 @@ function PillarBlock({
   maskProgress?: number
   /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
   hideHeading?: boolean
-  /** 章節接棒（僅 02）：英文句用自己的早觸發先亮，成為 01→02 的 handoff */
-  enEarlyOn?: boolean
-  enEarlyRef?: (el: HTMLElement | null) => void
+  /** 隱藏全寬章節頭（編號＋英文句）：02 由上方轉場區承擔，03/04 使用者指定不要 */
+  hideChapterHead?: boolean
 }) {
   /* 01（標題在轉場區）：滿版橫幅＋玻璃卡。圖先揭開、卡片後進（0.35s） */
   if (hideHeading) {
@@ -523,9 +594,9 @@ function PillarBlock({
   const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
   return (
     <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-14 pb-10 sm:px-10 lg:pt-16 lg:pb-12">
-      {/* 章節頭：編號＋英文句橫跨整個版面，先於內容出現——
-          與 01 的眉標區同一套章節語言，02 的英文句兼任 01→02 接棒 */}
-      {!hideHeading && (
+      {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
+          03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
+      {!hideHeading && !hideChapterHead && (
         <div className="mx-auto mb-8 max-w-7xl lg:mb-10">
           <span
             className="flex items-center gap-3 text-sm font-bold"
@@ -542,19 +613,8 @@ function PillarBlock({
             )}
           </span>
           <p
-            ref={enEarlyRef}
             className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-            style={{
-              color: P.accent,
-              ...(enEarlyOn !== undefined
-                ? {
-                    /* 接棒句：02 背景進場即輕輕浮現（6px／0.4s），先於其餘內容 */
-                    opacity: enEarlyOn ? 1 : 0,
-                    transform: enEarlyOn ? 'translateY(0)' : 'translateY(6px)',
-                    transition: 'opacity 0.4s cubic-bezier(0.5, 1, 0.89, 1), transform 0.4s cubic-bezier(0.5, 1, 0.89, 1)',
-                  }
-                : fadeUp(on, d.en)),
-            }}
+            style={{ color: P.accent, ...fadeUp(on, d.en) }}
           >
             {s.en}
           </p>
