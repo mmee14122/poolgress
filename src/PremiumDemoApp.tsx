@@ -43,9 +43,9 @@ const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSPropert
 
 /* 02–04 圖片遮罩的捲動區間：[圖頂在視窗高度比例的起點, 終點] */
 const MASK_RANGES: Record<string, [number, number]> = {
-  s02: [0.9, 0.58],
-  s03: [0.92, 0.6],
-  s04: [0.9, 0.58],
+  s02: [0.95, 0.62],
+  s03: [0.96, 0.64],
+  s04: [0.95, 0.62],
 }
 
 export default function PremiumDemoApp() {
@@ -563,15 +563,16 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* overlay 遮罩：Section 底色＋底部羽化，往下移出圖片區（112% 含羽化段） */}
+          {/* 薄紗遮罩：半透明底色 tint（上稍清、下稍霧），隨捲動整層溶解。
+              圖片從一開始就看得到，只是柔霧；不做 translateY 移板。 */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-[2]"
             style={{
               background:
-                'linear-gradient(to bottom, #F2EEE6 0%, #F2EEE6 75%, rgba(242,238,230,0.85) 85%, rgba(242,238,230,0) 100%)',
-              transform: `translateY(${maskProgress * 112}%)`,
-              transition: 'transform 0.18s linear',
+                'linear-gradient(to bottom, rgba(242,238,230,0.38) 0%, rgba(242,238,230,0.48) 55%, rgba(242,238,230,0.55) 100%)',
+              opacity: 1 - maskProgress,
+              transition: 'opacity 0.18s linear',
             }}
           />
         </div>
