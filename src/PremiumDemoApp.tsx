@@ -446,8 +446,8 @@ export default function PremiumDemoApp() {
  *
  * 定位：**不是**第二個 Hero、也不是章節封面，只是一次「翻頁」——
  * 從實體空間 THE SPACE 進入數位體驗 THE APP。因此刻意克制：
- * - 高度 38vh（桌機 42vh），遠低於 01 的滿屏
- * - 大字 clamp(26px, 3.7vw, 56px) ≈ 01（clamp 48/7vw/108px）的 52%
+ * - 高度 30vh（桌機 33vh），遠低於 01 的滿屏
+ * - 大字 clamp(22px, 2.9vw, 44px) ≈ 01（clamp 48/7vw/108px）的 41%（2026-09-05 使用者再縮小）
  * - 第二行只縮排 3vw（01 是 14vw），不做大幅左右錯位
  * - 無 CTA、無內文、無卡片、無圖片
  * - 眉標與大標間距 12/16px（01 是 24px），兩者讀成同一個 block
@@ -473,7 +473,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex min-h-[38vh] items-center px-5 sm:px-10 lg:min-h-[42vh]"
+      className="flex min-h-[30vh] items-center px-5 sm:px-10 lg:min-h-[33vh]"
     >
       <div className="mx-auto w-full max-w-7xl">
         <p
@@ -496,7 +496,7 @@ function ChapterTransition({
               <span
                 className="block"
                 style={{
-                  fontSize: 'clamp(26px, 3.7vw, 56px)',
+                  fontSize: 'clamp(22px, 2.9vw, 44px)',
                   lineHeight: 1.08,
                   ...line(on, 0.06 + i * 0.08),
                 }}
