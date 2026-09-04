@@ -62,16 +62,22 @@ export default function PremiumDemoApp() {
       return
     }
     const check = () => {
-      /* 觸發線：元素頂緣越過視窗高度的這個比例就觸發（單向鎖存） */
+      /* 觸發線：元素頂緣越過視窗高度的這個比例就觸發（單向鎖存）。
+         手機（<768px）一律 0.97——桌機那組比例是為了讓文字進到畫面中上段才亮，
+         但手機視窗窄而高、區塊本身矮，同樣比例要多捲快 1/5 個螢幕才會動，
+         使用者實際看到的是「字幕太晚出現」。改成一進視窗底緣就開始。 */
+      const narrow = window.innerWidth < 768
       const lineFor = (id: string) =>
         window.innerHeight *
-          (id === 'trans02'
-            ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
-            : id === 'finale'
-              ? 0.92
-              : id === 's02' || id === 's03' || id === 's04'
-                ? 0.9 /* 02–04 內容提前在視窗 90% 就開始淡入 */
-                : 0.8)
+          (narrow
+            ? 0.97
+            : id === 'trans02'
+              ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
+              : id === 'finale'
+                ? 0.92
+                : id === 's02' || id === 's03' || id === 's04'
+                  ? 0.9 /* 02–04 內容提前在視窗 90% 就開始淡入 */
+                  : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
