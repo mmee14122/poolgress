@@ -15,7 +15,7 @@ export const hero = {
   /** 8 秒品牌影片；null＝深色佔位框 */
   video: null as string | null,
   poster: null as string | null,
-  manifesto: ['PLAY', 'TOGETHER', 'PROGRESS', 'SPACE'],
+  manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
   title: '從玩撞球，開始真正學會撞球。',
   cta: { label: '探索 Poolgress', href: '#s01' },
 }
@@ -37,6 +37,16 @@ export const pillarSections: Pillar[] = [
   {
     id: 's01',
     no: '01',
+    badge: 'COMING SOON',
+    en: 'YOUR TABLE. YOUR SPACE.',
+    zh: '一張球桌，一個屬於你們的空間。',
+    body: '我們正在打造 Poolgress 場館：完整的出桿空間、專屬座位與 Café，以及把闖關投影直接搬上桌面的互動球桌。',
+    image: null,
+    imageHint: '場館願景圖（概念視覺，3200×1800）',
+  },
+  {
+    id: 's02',
+    no: '02',
     en: 'THE TABLE BECOMES THE GAME.',
     zh: '球桌變成你的關卡。',
     body: '打開 App，照著指示在真實球桌上擺球、闖關、拿星星。每一桿都有目標，每一關都看得到自己的進步。',
@@ -44,8 +54,8 @@ export const pillarSections: Pillar[] = [
     imageHint: 'App 闖關：真實球桌＋手機畫面（3200×1800）',
   },
   {
-    id: 's02',
-    no: '02',
+    id: 's03',
+    no: '03',
     en: 'PLAY TOGETHER. KEEP PROGRESSING.',
     zh: '一起玩，一起變強。',
     body: '邀請家人或好友加入，共享關卡、成績與每一次成功。每一次來玩，都接得上上一次的自己。',
@@ -53,23 +63,13 @@ export const pillarSections: Pillar[] = [
     imageHint: 'App 好友／紀錄／成長畫面（3200×1800）',
   },
   {
-    id: 's03',
-    no: '03',
+    id: 's04',
+    no: '04',
     en: 'WANT TO GET BETTER?',
     zh: '想變得更強？',
     body: '線上課程按部就班，搭配預約教練一對一校正。從玩家到高手，路是看得見的。',
     image: null,
     imageHint: '線上課程×教練：教學畫面（3200×1800）',
-  },
-  {
-    id: 's04',
-    no: '04',
-    badge: 'COMING SOON',
-    en: 'YOUR TABLE. YOUR SPACE.',
-    zh: '屬於你的場館，正在路上。',
-    body: '我們正在打造 Poolgress 場館：完整的出桿空間、專屬座位與 Café，以及把闖關投影直接搬上桌面的互動球桌。',
-    image: null,
-    imageHint: '場館願景圖（概念視覺，3200×1800）',
   },
 ]
 

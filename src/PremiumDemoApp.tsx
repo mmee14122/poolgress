@@ -141,97 +141,112 @@ export default function PremiumDemoApp() {
         </div>
       </section>
 
-      {/* ---------- Hero → 01 Editorial Transition ----------
-          乾淨水平交界＋呼吸空間；一條極淡的撞球軌跡自 Hero 右下越過交界
-          延伸進 01。無 wave、無斜切、無強烈 gradient。 */}
-      <div ref={reg('intro01')} className="relative" aria-hidden={false}>
-        {/* 軌跡（桌機）：越界 SVG，上緣蓋在 Hero 底部 */}
+      {/* ---------- Hero → 01 Editorial Typography Transition ----------
+          Typography first, graphic second：乾淨水平交界，140–220px 呼吸空間，
+          先讀到 01 / THE SPACE，再讀到大字標題，最後才進場館圖。
+          撞球軌跡是第二層細節：1.5px、13%、走大字右側負空間，不穿過文字。 */}
+      <div ref={reg('intro01')} className="relative">
+        {/* 軌跡（桌機）：自 Hero 右下越界，收在標題右側負空間 */}
         <svg
-          viewBox="0 0 1440 420"
+          viewBox="0 0 1440 460"
           preserveAspectRatio="xMidYMid meet"
           fill="none"
-          className="pointer-events-none absolute inset-x-0 -top-[220px] hidden h-[420px] w-full sm:block"
+          className="pointer-events-none absolute inset-x-0 -top-[220px] hidden h-[460px] w-full sm:block"
           aria-hidden="true"
         >
           <path
-            d="M 1330 28 C 1160 150, 970 240, 800 298 C 700 332, 620 358, 552 378"
+            d="M 1345 26 C 1230 130, 1130 220, 1050 292 C 985 350, 930 396, 872 428"
             stroke={P.primary}
             strokeWidth="1.5"
-            strokeOpacity="0.16"
+            strokeOpacity="0.13"
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
             strokeDashoffset={shown('intro01') ? 0 : 1}
-            style={{ transition: 'stroke-dashoffset 1.1s ease 0.1s' }}
+            style={{ transition: 'stroke-dashoffset 1.1s ease 0.15s' }}
           />
           <circle
-            cx="552"
-            cy="378"
+            cx="872"
+            cy="428"
             r="4"
             fill={P.primary}
             style={{
-              opacity: shown('intro01') ? 0.35 : 0,
-              transform: shown('intro01') ? 'none' : 'translate(-26px, -9px)',
-              transition: 'opacity 0.9s ease 0.35s, transform 0.9s ease 0.35s',
+              opacity: shown('intro01') ? 0.3 : 0,
+              transform: shown('intro01') ? 'none' : 'translate(-22px, -12px)',
+              transition: 'opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s',
             }}
           />
         </svg>
-        {/* 軌跡（手機）：縮短、幅度降低 */}
+        {/* 軌跡（手機）：縮短、只保留局部 */}
         <svg
-          viewBox="0 0 375 200"
+          viewBox="0 0 375 190"
           preserveAspectRatio="xMidYMid meet"
           fill="none"
-          className="pointer-events-none absolute inset-x-0 -top-[100px] h-[200px] w-full sm:hidden"
+          className="pointer-events-none absolute inset-x-0 -top-[95px] h-[190px] w-full sm:hidden"
           aria-hidden="true"
         >
           <path
-            d="M 342 18 C 300 70, 250 118, 188 156"
+            d="M 344 16 C 312 62, 282 100, 244 132"
             stroke={P.primary}
             strokeWidth="1.2"
-            strokeOpacity="0.15"
+            strokeOpacity="0.13"
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
             strokeDashoffset={shown('intro01') ? 0 : 1}
-            style={{ transition: 'stroke-dashoffset 1s ease 0.1s' }}
+            style={{ transition: 'stroke-dashoffset 1s ease 0.15s' }}
           />
           <circle
-            cx="188"
-            cy="156"
+            cx="244"
+            cy="132"
             r="3"
             fill={P.primary}
             style={{
-              opacity: shown('intro01') ? 0.35 : 0,
-              transform: shown('intro01') ? 'none' : 'translate(-14px, -6px)',
-              transition: 'opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s',
+              opacity: shown('intro01') ? 0.3 : 0,
+              transform: shown('intro01') ? 'none' : 'translate(-12px, -7px)',
+              transition: 'opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s',
             }}
           />
         </svg>
 
-        {/* 呼吸空間裡先出現 01 的編號與標題（intentional whitespace） */}
-        <div className="mx-auto max-w-7xl px-5 pt-20 sm:px-10 sm:pt-40">
+        {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱排列 */}
+        <div className="pt-[88px] pb-4 sm:pt-[176px] sm:pb-8">
           <p
-            className="text-xs font-semibold tracking-[0.25em] sm:text-sm"
+            className="pl-6 text-[11px] font-medium tracking-[0.3em] uppercase sm:pl-[10vw] sm:text-xs"
             style={{
               color: P.primary,
               opacity: shown('intro01') ? 1 : 0,
-              transform: shown('intro01') ? 'none' : 'translateY(24px)',
-              transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
+              transform: shown('intro01') ? 'none' : 'translateY(16px)',
+              transition: 'opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s',
             }}
           >
-            01 / {pillarSections[0].en}
+            01 / THE SPACE
+            <span
+              className="ml-4 rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em] normal-case"
+              style={{ background: P.neutral, color: P.text }}
+            >
+              COMING SOON
+            </span>
           </p>
           <h2
-            className="mt-4 max-w-2xl text-3xl leading-snug font-bold sm:text-5xl"
-            style={{
-              fontFamily: SERIF,
-              color: P.text,
-              opacity: shown('intro01') ? 1 : 0,
-              transform: shown('intro01') ? 'none' : 'translateY(24px)',
-              transition: 'opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s',
-            }}
+            className="mt-6 pl-6 sm:pl-[10vw]"
+            style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
-            {pillarSections[0].zh}
+            {pillarSections[0].en.split('. ').map((line, i) => (
+              <span
+                key={line}
+                className={`block ${i === 1 ? 'sm:ml-[14vw]' : ''}`}
+                style={{
+                  fontSize: 'clamp(48px, 7vw, 108px)',
+                  lineHeight: 1.0,
+                  opacity: shown('intro01') ? 1 : 0,
+                  transform: shown('intro01') ? 'none' : 'translateY(30px)',
+                  transition: `opacity 0.7s ease ${0.2 + i * 0.15}s, transform 0.7s ease ${0.2 + i * 0.15}s`,
+                }}
+              >
+                {line.endsWith('.') ? line : line + '.'}
+              </span>
+            ))}
           </h2>
         </div>
       </div>
@@ -312,6 +327,7 @@ function PillarBlock({
         className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         } ${hideHeading ? fadeCls.replace('translate-y-5', 'translate-y-10') : fadeCls}`}
+        style={hideHeading ? { transitionDelay: '0.45s' } : undefined}
       >
         {/* 文字欄 */}
         <div className="lg:w-[38%]">
