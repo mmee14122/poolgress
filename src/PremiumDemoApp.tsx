@@ -28,12 +28,20 @@ const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => (
   willChange: 'clip-path',
 })
 
-/** 圖片類 reveal：同向揭開＋極微 scale（電影感，不是 zoom） */
-const revealImg = (on: boolean, delay: number, dur = 1.25): React.CSSProperties => ({
-  clipPath: on ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-  transform: on ? 'scale(1)' : 'scale(1.03)',
-  transition: `clip-path ${dur}s ${EASE} ${delay}s, transform ${dur}s ${EASE} ${delay}s`,
-  willChange: 'clip-path',
+/** ≈ GSAP power2.out（02–04 的安靜 fade 用） */
+const EASE2 = 'cubic-bezier(0.5, 1, 0.89, 1)'
+
+/** 02–04 文字：極輕的 fade-up（y 20px→0），不是飛入 */
+const fadeUp = (on: boolean, delay: number, dur = 0.7): React.CSSProperties => ({
+  opacity: on ? 1 : 0,
+  transform: on ? 'translateY(0)' : 'translateY(20px)',
+  transition: `opacity ${dur}s ${EASE2} ${delay}s, transform ${dur}s ${EASE2} ${delay}s`,
+})
+
+/** 02–04 圖片：只有 opacity，位置與尺寸完全不動 */
+const fadeIn = (on: boolean, delay: number, dur = 0.8): React.CSSProperties => ({
+  opacity: on ? 1 : 0,
+  transition: `opacity ${dur}s ${EASE2} ${delay}s`,
 })
 
 export default function PremiumDemoApp() {
@@ -47,12 +55,14 @@ export default function PremiumDemoApp() {
       return
     }
     const check = () => {
-      const line = window.innerHeight * 0.8
+      /* 02–04 提前在視窗 90% 就開始淡入；其餘（hero/轉場/01/結尾）維持 80% */
+      const lineFor = (id: string) =>
+        window.innerHeight * (id === 's02' || id === 's03' || id === 's04' ? 0.9 : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
         refs.current.forEach((el, id) => {
-          if (!next.has(id) && el.getBoundingClientRect().top < line) {
+          if (!next.has(id) && el.getBoundingClientRect().top < lineFor(id)) {
             next.add(id)
             changed = true
           }
@@ -358,8 +368,8 @@ function PillarBlock({
         id={s.id}
         className="relative mt-4 w-full overflow-hidden sm:mt-8"
       >
-        {/* reveal 放內層：外層 overflow-hidden 裁掉 scale(1.03) 的溢出，避免頁面水平捲動 */}
-        <div className="relative h-[68svh] min-h-[420px] sm:h-[82svh]" style={revealImg(on, 0, 1.4)}>
+        {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
+        <div className="relative h-[68svh] min-h-[420px] sm:h-[82svh]">
           {/* 滿版底圖（佔位：灰藍漸層） */}
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
@@ -404,9 +414,10 @@ function PillarBlock({
     )
   }
 
-  const d = { no: 0, en: 0.13, zh: 0.26, body: 0.42, img: 0.55 }
+  /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖 */
+  const d = { no: 0, en: 0.06, zh: 0.12, body: 0.18, img: 0.24 }
   return (
-    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 py-16 sm:px-10 lg:py-24">
+    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 py-10 sm:px-10 lg:py-12">
       <div
         className={`mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
@@ -418,7 +429,7 @@ function PillarBlock({
             <>
               <span
                 className="flex items-center gap-3 text-sm font-bold"
-                style={{ color: P.accent, ...reveal(on, d.no!, 0.9) }}
+                style={{ color: P.accent, ...fadeUp(on, d.no) }}
               >
                 {s.no}
                 {s.badge && (
@@ -432,14 +443,14 @@ function PillarBlock({
               </span>
               <p
                 className="mt-3 text-xs font-semibold tracking-[0.25em] sm:text-sm"
-                style={{ color: P.accent, ...reveal(on, d.en!, 0.9) }}
+                style={{ color: P.accent, ...fadeUp(on, d.en) }}
               >
                 {s.en}
               </p>
               <div className="overflow-hidden">
                 <h2
                   className="mt-4 text-3xl leading-snug font-bold sm:text-5xl"
-                  style={{ fontFamily: SERIF, color: P.text, ...reveal(on, d.zh!, 1.1) }}
+                  style={{ fontFamily: SERIF, color: P.text, ...fadeUp(on, d.zh) }}
                 >
                   {s.zh}
                 </h2>
@@ -448,7 +459,7 @@ function PillarBlock({
           )}
           <p
             className="mt-5 max-w-md text-base leading-relaxed"
-            style={{ color: 'rgba(37,44,48,.78)', ...reveal(on, d.body, 0.9) }}
+            style={{ color: 'rgba(37,44,48,.78)', ...fadeUp(on, d.body) }}
           >
             {s.body}
           </p>
@@ -456,7 +467,7 @@ function PillarBlock({
         {/* 大圖：同向揭開＋極微 scale */}
         <div
           className="relative overflow-hidden rounded-2xl lg:w-[62%]"
-          style={{ aspectRatio: '16/9', ...revealImg(on, d.img, 1.25) }}
+          style={{ aspectRatio: '16/9', ...fadeIn(on, d.img, 0.8) }}
         >
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
