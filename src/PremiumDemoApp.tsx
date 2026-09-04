@@ -76,13 +76,14 @@ export default function PremiumDemoApp() {
       const lineFor = (id: string) =>
         window.innerHeight *
           (id === 'intro01h' || id === 'trans02h'
-            ? 0.92
+            ? 0.85 /* 手機大標：露出約 15% 視窗高（812 時約 120px）才開始，
+                      0.92 時使用者一撥就滑過去，動畫在指尖下播完看不到 */
             : id === 'trans02'
               ? 0.85 /* 章節轉場：section 進視窗約 15% 就開始 reveal，不等到畫面中央 */
               : id === 'finale'
                 ? 0.92
                 : id === 's02' || id === 's03' || id === 's04'
-                  ? (narrow ? 0.87 : 0.9) /* 02–04 內容提前淡入；手機再往前一點 */
+                  ? (narrow ? 0.8 : 0.9) /* 02–04 內容提前淡入；手機要等文字進來約 90px 才動 */
                   : 0.8)
       setRevealed((prev) => {
         let changed = false
@@ -632,9 +633,10 @@ function PillarBlock({
   }
 
   /* 依閱讀順序 stagger 0.06s：label → 標題 → 內文 → 圖。
-     手機（quick）把接力壓成一半、時長 0.7s → 0.45s，整串 0.79s → 0.54s。 */
-  const st = quick ? 0.03 : 0.06
-  const dur = quick ? 0.45 : 0.7
+     手機（quick）反而拉長到 0.8s：手機是用撥的，0.45s 在指尖離開前就播完，
+     使用者回饋「完全看不到動畫」；拉長讓 ease-out 的尾巴在畫面停下後還看得到。 */
+  const st = 0.06
+  const dur = quick ? 0.8 : 0.7
   const d = { no: 0, en: st, zh: st * 2, body: st * 3, img: st * 4 }
   const up = (delay: number) => fadeUp(on, delay, dur)
   return (
