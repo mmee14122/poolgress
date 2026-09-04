@@ -604,47 +604,10 @@
 }
 
 
-/* Hero CTA hover：表面光澤掃過（surface sheen）。
-   與 entrance 邊框光帶完全分開——hover 是一道柔光斜掃過按鈕表面，
-   mouseenter 播一次（forwards 停在透明），停留不循環，離開再進會重播。 */
-.pg-hero-cta::after {
-  content: '';
-  position: absolute;
-  top: -40%;
-  left: -45%;
-  width: 34%;
-  height: 180%;
-  z-index: 1;
-  background: linear-gradient(
-    110deg,
-    transparent 0%,
-    rgba(255, 252, 245, 0.1) 25%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 252, 245, 0.12) 75%,
-    transparent 100%
-  );
-  transform: skewX(-18deg);
-  pointer-events: none;
-  opacity: 0;
-}
-.pg-hero-cta:hover::after {
-  animation: pg-cta-sheen 0.55s ease-out forwards;
-}
-/* 背景只做極小的亮度回應，不位移、不縮放、不發光 */
+/* Hero CTA hover：僅保留極小亮度回饋（光澤掃過已依使用者指示移除） */
 .pg-hero-cta:hover {
   filter: brightness(1.03);
 }
-@keyframes pg-cta-sheen {
-  0% { left: -45%; opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { left: 120%; opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pg-hero-cta::after { display: none; }
-  .pg-hero-cta:hover { filter: brightness(1.03); } /* 保留一般 hover 回饋 */
-}
-
 
 /* Hero CTA entrance fill 的前緣柔光：跟著填色右移的一小段模糊亮光，
    填滿即淡出。只是材質感，不是發光。 */
