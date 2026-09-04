@@ -169,16 +169,36 @@ export default function PremiumDemoApp() {
               {hero.title}
             </h1>
           </div>
-          {/* CTA 本體完全靜態（無任何進場動畫）；僅在 Hero 揭開後播一次邊框光帶 */}
+          {/* CTA 本體完全靜態：初始只有邊框＋文字，米杏色 fill 隨 Hero 標題節奏
+              由左而右灌入（獨立 fill layer 做 clip-path，按鈕本體零位移）。 */}
           <a
             href={hero.cta.href}
-            className="pg-hero-cta relative mt-9 inline-flex min-h-16 items-center justify-center overflow-hidden rounded-full px-10 text-base font-semibold sm:text-lg"
-            style={{ background: P.neutral, color: P.text }}
+            className="pg-hero-cta relative mt-9 inline-flex min-h-16 items-center justify-center overflow-hidden rounded-full border px-10 text-base font-semibold sm:text-lg"
+            style={{ background: 'transparent', borderColor: 'rgba(210,194,173,.85)' }}
           >
+            {/* fill layer：左→右填滿，停在實心米杏色 */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-0 rounded-full"
+              style={{
+                background: P.neutral,
+                clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+                transition: 'clip-path 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.35s',
+              }}
+            />
+            {/* fill 前緣柔光：同步右移，填滿時消失 */}
             {shown('hero') && (
-              <span aria-hidden="true" className="pg-cta-sweep pointer-events-none absolute inset-0 z-[3] rounded-full" />
+              <span aria-hidden="true" className="pg-cta-fill-edge pointer-events-none absolute z-[1]" />
             )}
-            <span className="relative z-[2]">{hero.cta.label}</span>
+            <span
+              className="relative z-[2]"
+              style={{
+                color: shown('hero') ? P.text : 'rgba(242,238,230,.92)',
+                transition: 'color 0.35s ease 0.62s',
+              }}
+            >
+              {hero.cta.label}
+            </span>
           </a>
         </div>
       </section>
