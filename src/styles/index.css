@@ -738,7 +738,7 @@
     box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .pg-primary-cta:hover {
-  background-color: #C9BAA6 !important;
+  background-color: #CDBFA9 !important; /* 約 2–3% 深，主要 hover 回饋 */
   box-shadow: 0 6px 18px rgba(20, 28, 32, 0.06);
 }
 .pg-primary-cta .pg-cta-text {
@@ -746,32 +746,36 @@
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .pg-primary-cta:hover .pg-cta-text {
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
-/* 低對比反光：稍暗→微亮→透明，像霧面材質的光線角度變化，不是白色 sheen */
+/* 環境反射：超寬（過渡區約佔按鈕寬 50%+）、極低對比（峰值 0.075）、
+   全羽化無可見邊界、無暗帶——像霧面材質感受到環境光角度改變，
+   截在動畫中間也看不出「有一塊 overlay」。 */
 .pg-primary-cta::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     110deg,
-    transparent 30%,
-    rgba(37, 44, 48, 0) 38%,
-    rgba(37, 44, 48, 0.04) 48%,
-    rgba(255, 255, 255, 0.09) 54%,
-    transparent 64%
+    transparent 15%,
+    rgba(255, 255, 255, 0) 25%,
+    rgba(255, 255, 255, 0.035) 42%,
+    rgba(255, 255, 255, 0.075) 50%,
+    rgba(255, 255, 255, 0.035) 58%,
+    rgba(255, 255, 255, 0) 75%,
+    transparent 85%
   );
-  transform: translateX(-70%);
+  transform: translateX(-60%);
   opacity: 0;
   pointer-events: none;
 }
 .pg-primary-cta:hover::after {
-  animation: pg-primary-reflect 0.6s ease-out 0s 1 forwards;
+  animation: pg-primary-reflect 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0s 1 forwards;
 }
 @keyframes pg-primary-reflect {
-  0% { transform: translateX(-70%); opacity: 1; }
+  0% { transform: translateX(-60%); opacity: 1; }
   85% { opacity: 1; }
-  100% { transform: translateX(70%); opacity: 0; }
+  100% { transform: translateX(60%); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-primary-cta::after { display: none; }
