@@ -350,10 +350,61 @@ function PillarBlock({
   /** 編號＋眉標＋標題已在上方轉場區出現時隱藏（僅 01） */
   hideHeading?: boolean
 }) {
-  /* 01（標題在轉場區）：body 0s、圖 0.15s；其餘段：編號 0、眉標 0.13、標題 0.26、body 0.42、圖 0.55 */
-  const d = hideHeading
-    ? { body: 0, img: 0.15 }
-    : { no: 0, en: 0.13, zh: 0.26, body: 0.42, img: 0.55 }
+  /* 01（標題在轉場區）：滿版橫幅＋玻璃卡。圖先揭開、卡片後進（0.35s） */
+  if (hideHeading) {
+    return (
+      <section
+        ref={refCb}
+        id={s.id}
+        className="relative mt-4 w-full overflow-hidden sm:mt-8"
+      >
+        {/* reveal 放內層：外層 overflow-hidden 裁掉 scale(1.03) 的溢出，避免頁面水平捲動 */}
+        <div className="relative h-[68svh] min-h-[420px] sm:h-[82svh]" style={revealImg(on, 0, 1.4)}>
+          {/* 滿版底圖（佔位：灰藍漸層） */}
+          {s.image ? (
+            <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div
+              className="absolute inset-0"
+              style={{ background: `linear-gradient(135deg, ${P.secondary}, ${P.primary})` }}
+            >
+              <span className="absolute top-4 left-5 text-[11px]" style={{ color: 'rgba(37,44,48,.6)' }}>
+                {s.imageHint}（滿版橫幅）
+              </span>
+            </div>
+          )}
+          {/* 可讀性漸層：往卡片側加深 */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to right, transparent 30%, rgba(37,44,48,.35))' }}
+          />
+          {/* 玻璃卡：桌機置右垂直置中，手機貼底滿寬 */}
+          <div
+            className="absolute inset-x-4 bottom-5 rounded-2xl p-6 sm:inset-x-auto sm:top-1/2 sm:right-[6%] sm:bottom-auto sm:max-w-xl sm:-translate-y-1/2 sm:p-10"
+            style={{
+              background: 'rgba(37,44,48,.55)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              color: P.bg,
+              ...reveal(on, 0.35, 1.0),
+            }}
+          >
+            <span
+              className="rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
+              style={{ background: P.neutral, color: P.text }}
+            >
+              {s.badge}
+            </span>
+            <p className="mt-4 text-base leading-relaxed sm:text-lg" style={{ color: 'rgba(242,238,230,.9)' }}>
+              {s.body}
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  const d = { no: 0, en: 0.13, zh: 0.26, body: 0.42, img: 0.55 }
   return (
     <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 py-16 sm:px-10 lg:py-24">
       <div
