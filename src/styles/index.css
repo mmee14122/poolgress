@@ -744,7 +744,11 @@
    上下節奏改由 pt-[70px]／pb-[88px] 控制（下留白 = 上留白 × 1.25）。
    不設 max-height：大字級是 clamp(48px,7vw,108px) 已有上限，
    再加 max-height 只會在極寬螢幕上裁切文字。 */
-.pg-intro01 { min-height: clamp(240px, 30vh, 330px); }
+/* 手機不設地板：高度由文字組自己撐，Header 下方不留無意義的米白空白 */
+.pg-intro01 { min-height: 0; }
+@media (min-width: 769px) {
+  .pg-intro01 { min-height: clamp(240px, 30vh, 330px); }
+}
 @media (min-width: 1024px) {
   .pg-intro01 { min-height: clamp(380px, 44vh, 420px); }
 }
@@ -760,9 +764,19 @@
 
 /* 01 場館滿版橫幅：手機／平板不做滿屏，避免標題後接一整頁圖；
    桌機（≥1024px）維持原本的 100svh - peek，不動。 */
-.pg-venue-banner { height: clamp(400px, 66svh, 560px); }
+/* 手機（≤768px）：不繼承桌機高度，改用直式 4:5 比例，圖不會被無限制放大裁切；
+   焦點先用 65% center（爸爸、女兒與球桌在畫面右半），之後換獨立直式圖時
+   只要填 imageMobile／posterMobile，這裡不用動。 */
+.pg-venue-banner { height: auto; aspect-ratio: 4 / 5; min-height: 0; }
+@media (min-width: 769px) {
+  .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
+}
 @media (min-width: 1024px) {
   .pg-venue-banner { height: calc(100svh - var(--pg-peek, 56px)); }
+}
+@media (max-width: 768px) {
+  .pg-venue-img,
+  .pg-hero-img { object-position: 65% center; }
 }
 
 /* 02–04 每一組 feature 的欄間距。手機是「description → image」的中層間距，

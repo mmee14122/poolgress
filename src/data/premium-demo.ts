@@ -16,6 +16,8 @@ export const hero = {
   video: null as string | null,
   /** 場館入口主視覺（使用者 2026-09-05 提供，1672×941 PNG → WebP） */
   poster: './assets/hero/hero-entrance.webp' as string | null,
+  /** 手機（≤768px）專用直式主視覺（4:5 或 3:4）；null＝沿用 poster＋手機 object-position */
+  posterMobile: null as string | null,
   manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
   title: '從玩撞球，開始真正學會撞球。',
   cta: { label: '探索 Poolgress', href: '#s01' },
@@ -32,6 +34,8 @@ export type Pillar = {
   zh: string
   body: string
   image: string | null
+  /** 手機（≤768px）專用直式圖；null＝沿用 image＋手機 object-position */
+  imageMobile?: string | null
   /** 圖說（佔位期顯示要放什麼圖） */
   imageHint: string
 }
@@ -46,6 +50,7 @@ export const pillarSections: Pillar[] = [
     body: '我們正在打造 Poolgress 場館：完整的出桿空間、專屬座位與 Café，以及把闖關投影直接搬上桌面的互動球桌。',
     /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
     image: './assets/hero/s01-venue.webp',
+    imageMobile: null,
     imageHint: '場館願景圖（概念視覺，3200×1800）',
   },
   {

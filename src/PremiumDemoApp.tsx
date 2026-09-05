@@ -164,12 +164,16 @@ export default function PremiumDemoApp() {
         ) : hero.poster ? (
           /* 影片還沒到之前先放靜態主視覺（2026-09-05 使用者提供的場館入口圖）；
              影片一填進 hero.video 就自動改播影片、這張變 poster */
-          <img
-            src={hero.poster}
-            alt=""
-            fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <picture>
+            {/* 手機可換獨立直式圖；沒有就沿用桌機圖＋ .pg-hero-img 的手機 object-position */}
+            <source media="(max-width: 768px)" srcSet={hero.posterMobile ?? hero.poster} />
+            <img
+              src={hero.poster}
+              alt=""
+              fetchPriority="high"
+              className="pg-hero-img absolute inset-0 h-full w-full object-cover"
+            />
+          </picture>
         ) : (
           <div
             className="absolute inset-0"
@@ -592,11 +596,19 @@ function PillarBlock({
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
-          className="pg-venue-banner relative min-h-[400px]"
+          className="pg-venue-banner relative"
         >
           {/* 滿版底圖（佔位：灰藍漸層） */}
           {s.image ? (
-            <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
+            <picture>
+              {/* 手機可換獨立直式圖（imageMobile）；沒有就沿用桌機圖＋ .pg-venue-img 的手機 object-position */}
+              <source media="(max-width: 768px)" srcSet={s.imageMobile ?? s.image} />
+              <img
+                src={s.image}
+                alt={s.zh}
+                className="pg-venue-img absolute inset-0 h-full w-full object-cover"
+              />
+            </picture>
           ) : (
             <div
               className="absolute inset-0"
