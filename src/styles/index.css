@@ -886,13 +886,13 @@
 
 /* ── Navbar hover system（2026-09-05 v2：Billiard Line + Ball）──
    Default 白／墨字，無線無點。
-   Hover：文字轉 Secondary #AFC4CF；文字左緣起一條 1.5px、寬＝文字寬 55% 的細線由左向右
-   scaleX(0→1)，同時一顆 5.5px 的球從線的起點沿線滑到線末端右側 3.5px 處（left 動畫，
+   Hover：文字轉 Secondary #AFC4CF；文字左緣起一條 1.5px、寬＝文字寬 80% 的細線由左向右
+   scaleX(0→1)，同時一顆 6px 的球從線的起點滑到文字右緣（球右緣貼齊文字右緣；left 動畫，
    與線同一條 250ms ease-out 時間軸），線畫完球剛好停住——「球沿直線前進」的暗示。
    Active：同樣式、停在完成位置、不循環。
    無 outer ring／glow／shadow／bounce／pulse／曲線／箭頭／full-width underline。 */
 .pg-nav-link {
-  --pg-ind-w: calc((100% - 2rem) * 0.55);  /* 文字寬度（去掉 px-4）的 55% */
+  --pg-ind-w: calc((100% - 2rem) * 0.8);   /* 文字寬度（去掉 px-4）的 80%（使用者 2026-09-05 依圖指定） */
   position: relative;
   transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -914,9 +914,9 @@
   content: '';
   position: absolute;
   left: 1rem;
-  bottom: -2px;                            /* 5.5px 球置中於 1.5px 線 */
-  width: 5.5px;
-  height: 5.5px;
+  bottom: -2.25px;                         /* 6px 球置中於 1.5px 線 */
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #afc4cf;
   opacity: 0;
@@ -934,7 +934,7 @@
 }
 .pg-nav-link:hover::before,
 .pg-nav-link--active::before {
-  left: calc(1rem + var(--pg-ind-w) + 3.5px); /* 線末端右側 3.5px */
+  left: calc(100% - 1rem - 6px);           /* 球右緣貼齊文字右緣；線 80% 之後留約 5px 空隙 */
   opacity: 1;
 }
 /* utility：購物車 icon、語言 selector 只變色，不加 indicator、不加底 */
