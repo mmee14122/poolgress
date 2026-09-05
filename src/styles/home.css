@@ -601,7 +601,10 @@
   .pg-app-intro { padding-bottom: 56px; }   /* + feature pt 56 ＝ Intro → PLAY 112 */
 }
 .pg-app-intro__cta { margin-top: 30px; }
-.pg-qr-unit { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
+.pg-qr-unit { display: none; }   /* 手機不顯示 QR（改下載 CTA）；≥768 才並排 */
+@media (min-width: 768px) {
+  .pg-qr-unit { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
+}
 .pg-qr-unit__code {
   display: grid;
   place-items: center;
@@ -618,6 +621,7 @@
 .pg-qr-unit__label { margin-top: 8px; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--pg-charcoal); white-space: nowrap; }
 @media (max-width: 767px) {
   .pg-app-intro__row { gap: 0; }
+  .pg-app-intro__desc { max-width: none; }
   .pg-app-world .pg-app-intro { padding-bottom: 38px !important; }   /* + feature pt 30 ＝ CTA → 01 / PLAY 68 */
 }
 /* ---------- 錨點偏移 ----------
