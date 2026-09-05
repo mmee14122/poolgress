@@ -22,8 +22,8 @@ export const hero = {
   /** 主標兩行（2026-09-05 使用者定案斷行：讓撞球成為／一家人的共同記憶） */
   titleLines: ['讓撞球成為', '一家人的共同記憶'],
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
-  /** 2026-09-06：預約場館 → booking.html（簡單訂位表單，送 mailto；之後接訂位系統只換該頁 submit） */
-  cta: { label: '預約場館', href: './booking.html' },
+  /** 2026-09-06：預約場館 → 合作場館頁（booking.html 的 Coming Soon／BookingForm 保留，之後有訂位系統再改回） */
+  cta: { label: '預約場館', href: './venues.html' },
 }
 
 export type Pillar = {
