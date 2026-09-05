@@ -603,7 +603,7 @@
 .pg-app-intro__cta { margin-top: 30px; }
 /* 手機 THE APP 下載連結（2026-09-06）：serif 斜體 + 尾端箭頭 + 1px 細底線，精品感但可辨識為連結 */
 .pg-app-intro__link {
-  display: inline-flex;
+  display: none; /* 只在手機顯示；桌機用 QR 單元（display 在 ≥768 會蓋過 Tailwind md:hidden，所以這裡自己管） */
   align-items: baseline;
   gap: 10px;
   margin-top: 28px;
@@ -618,6 +618,7 @@
   line-height: 1;
   text-decoration: none;
 }
+@media (max-width: 767px) { .pg-app-intro__link { display: inline-flex; } }
 .pg-app-intro__link-arrow { font-style: normal; font-size: 15px; transform: translateY(-1px); }
 .pg-qr-unit { display: none; }   /* 手機不顯示 QR（改下載 CTA）；≥768 才並排 */
 @media (min-width: 768px) {

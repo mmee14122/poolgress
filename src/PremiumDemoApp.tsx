@@ -532,7 +532,7 @@ function ChapterTransition({
           </div>
           {/* 手機專用下載 CTA */}
           {/* 2026-09-06：手機改 editorial text link——斜體一行＋尾端箭頭＋細底線，去掉按鈕底框 */}
-          <a href={appChapter.cta.href} className="pg-app-intro__link md:hidden" style={line(on, 0.34)}>
+          <a href={appChapter.cta.href} className="pg-app-intro__link" style={line(on, 0.34)}>
             <span className="pg-app-intro__link-text">{appChapter.cta.label}</span>
             <span className="pg-app-intro__link-arrow" aria-hidden="true">→</span>
           </a>

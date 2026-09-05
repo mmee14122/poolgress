@@ -103,7 +103,7 @@ export const appChapter = {
   eyebrow: '02 / THE APP',
   titleLines: ['THE GAME', 'GOES WITH YOU.'] as [string, string],
   body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',
-  cta: { label: '下載 Poolgress App', href: '#app-download' },
+  cta: { label: '下載 Poolgress App', href: './app.html' }, // 2026-09-06：先接 Coming Soon 頁，App 上架後改成商店跳轉
 }
 
 export const finale = {
