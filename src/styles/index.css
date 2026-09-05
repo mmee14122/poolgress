@@ -846,3 +846,22 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(37, 44, 48, 0.08);
 }
+
+/* 首頁 Hero 的兩層 scrim（桌機）。顏色只用 Charcoal #252C30 的透明度，不做全圖濾鏡。 */
+.pg-hero-scrim-top {
+  background: linear-gradient(
+    to bottom,
+    rgba(37, 44, 48, 0.48) 0%,
+    rgba(37, 44, 48, 0.22) 55%,
+    rgba(37, 44, 48, 0) 100%
+  );
+}
+.pg-hero-scrim-copy {
+  background: linear-gradient(
+    90deg,
+    rgba(37, 44, 48, 0.55) 0%,
+    rgba(37, 44, 48, 0.34) 28%,
+    rgba(37, 44, 48, 0.1) 48%,
+    rgba(37, 44, 48, 0) 68%
+  );
+}

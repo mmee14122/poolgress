@@ -206,6 +206,20 @@ export default function PremiumDemoApp() {
           className="absolute inset-0"
           style={{ background: 'linear-gradient(to top, rgba(37,44,48,.85), transparent 55%)' }}
         />
+        {/* 兩層獨立 scrim（2026-09-05 使用者規格，桌機 ≥768 才有；手機維持原設計）。
+            位於底圖之上、所有文字與 fixed Navbar 之下（文字容器是 relative，
+            Navbar 是 fixed z-40）。只用 Charcoal 的透明漸層，不動圖片亮度。 */}
+        {/* 1) Top Navbar scrim：頂部 150px 垂直漸層，讓透明 Navbar 的 Logo／導覽在亮部仍可讀，
+              Navbar 本身仍是透明的、不形成矩形底 */}
+        <div
+          aria-hidden="true"
+          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[150px] md:block"
+        />
+        {/* 2) Hero copy scrim：左側水平漸層，只墊在文案後方，68% 之後完全透明，右側場館維持原亮度 */}
+        <div
+          aria-hidden="true"
+          className="pg-hero-scrim-copy pointer-events-none absolute inset-0 hidden md:block"
+        />
 
         <div className="site-container relative pb-16 sm:pb-20">
           {/* 宣言：由左至右快速連續 reveal——字與箭頭各自 clip 揭開，
