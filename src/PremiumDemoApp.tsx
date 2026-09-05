@@ -569,7 +569,7 @@ function PillarBlock({
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
-          className="pg-venue-banner relative"
+          className="pg-venue-banner relative isolate"
         >
           {/* 滿版底圖（佔位：灰藍漸層） */}
           {s.image ? (
@@ -592,24 +592,25 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Editorial Glass Overlay（2026-09-05 使用者規格）：
-              刻意壓在照片左側 Café 吧檯／店員區（店員被部分遮擋是預期），
-              絕不碰右側爸爸＋女兒（照片 ≥57%），盡量避開左下媽媽。
-              left 10%／垂直中心 40%／寬 clamp(400,31%,460)：1440–2560 皆落在 10%→≤45%。
-              Charcoal 76%＋blur 10、radius 18、padding 30，無 border、無重 shadow。 */}
+          {/* 桌機（≥1024px）Editorial Glass Overlay（2026-09-05 使用者規格，v2 refinement）：
+              刻意壓在照片左上 Café 吧檯／店員區（店員被部分遮擋是預期），絕不碰右側爸爸＋女兒
+              （照片 ≥57%）。left 用 --site-gutter 當 inset（不貼圖邊、跟全站 grid token 走）、
+              top 64px、寬 36% 上限 560。Charcoal 72%＋blur 12，無 border、無重 shadow。
+              不用 transform 定位／進場（backdrop-filter＋transform 在部分 GPU 會合成出白色矩形），
+              只做 opacity 淡入；banner 加 isolation 隔離合成層。 */}
           <div
             className="absolute hidden lg:block"
             style={{
-              left: '10%',
-              top: '40%',
-              width: 'clamp(400px, 31%, 460px)',
-              padding: 30,
+              left: 'var(--site-gutter)',
+              top: 64,
+              width: 'min(36%, 560px)',
+              padding: 36,
               borderRadius: 18,
-              background: 'rgba(37,44,48,.76)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              ...fadeUp(on, 0.2, 0.8, 12),
-              transform: on ? 'translateY(-50%)' : 'translateY(calc(-50% + 12px))',
+              background: 'rgba(37,44,48,.72)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              opacity: on ? 1 : 0,
+              transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
           >
             <span
@@ -618,10 +619,10 @@ function PillarBlock({
             >
               {s.badge}
             </span>
-            <h3 className="mt-4 text-xl leading-snug font-medium" style={{ color: P.bg }}>
+            <h3 className="mt-[30px] text-xl leading-snug font-medium" style={{ color: P.bg }}>
               {s.body.split('：')[0]}
             </h3>
-            <p className="mt-3 text-[15px]" style={{ color: 'rgba(242,238,230,.78)', lineHeight: 1.7 }}>
+            <p className="mt-[22px] text-[15px]" style={{ color: 'rgba(242,238,230,.72)', lineHeight: 1.7 }}>
               {s.body.split('：').slice(1).join('：')}
             </p>
           </div>
