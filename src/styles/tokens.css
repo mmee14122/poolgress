@@ -132,7 +132,8 @@
   --pg-nav-scrolled-surface: rgba(242, 238, 232, 0.86); /* 捲動後（桌機＋手機）：Ivory 86% translucent */
   --pg-nav-scrolled-surface-fallback: rgba(242, 238, 232, 0.96); /* 不支援 backdrop-filter 時 */
   --pg-nav-blur: 16px;
-  --pg-banner-ratio: 21 / 10;           /* 桌機 01 橫幅 */
+  --pg-banner-ratio: 23 / 9;            /* 桌機 01 橫幅（2026-09-05 使用者再裁扁：原 21/10） */
+  --pg-banner-focus-desktop: 50% 61%;   /* 裁切焦點偏下：切掉天花板圓環、保留媽媽與球桌 */
   --pg-feature-ratio: 16 / 9;
   --pg-hero-mobile-h: 78svh;
   --pg-hero-img-focus-mobile: 44.5% 0;

@@ -253,6 +253,7 @@
 }
 @media (min-width: 1024px) {
   .pg-venue-banner { height: auto; aspect-ratio: var(--pg-banner-ratio); }
+  .pg-venue-img { object-position: var(--pg-banner-focus-desktop); }
 }
 /* 照片左上的局部 scrim（桌機）：無邊界 radial，只服務 COMING SOON／標題／說明，
    在抵達媽媽臉（y ≥50%）之前衰減到 0；父女、球桌、右側維持原曝光。 */
