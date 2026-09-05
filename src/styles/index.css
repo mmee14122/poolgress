@@ -126,15 +126,15 @@
    的文字與圖示顏色；彈出面板（role=menu／region／dialog、手機選單）
    以下方 reset 排除，維持原本淺色底深色字。
    ------------------------------------------------------------------ */
-/* 首頁透明導覽列的文字／icon 與 Logo 同色＝白（2026-09-05 使用者最終決定：
-   Sand 在亮部不夠明顯，改回白；hover／active 仍 Secondary） */
+/* 首頁透明導覽列的文字／icon＝Sand #D2C2AD（2026-09-05 最終：可讀性靠上方 scrim 解決，
+   不改回白；hover／active 仍 Secondary）。Logo 字維持白（brand 層與導覽層分開） */
 .nav-hero button,
 .nav-hero [role='button'],
 .nav-hero .pg-nav-link {
-  color: #fff;
+  color: #d2c2ad;
 }
 .nav-hero button svg {
-  fill: #fff;
+  fill: #d2c2ad;
   transition: fill 250ms ease;
 }
 /* 購物車數量徽章：深底上改用品牌金＋深藍字，維持高辨識度 */
@@ -867,11 +867,14 @@
 
 /* 首頁 Hero 的兩層 scrim（桌機）。顏色只用 Charcoal #252C30 的透明度，不做全圖濾鏡。 */
 .pg-hero-scrim-top {
+  /* 2026-09-05 使用者規格：只負責 Navbar 對比，不是 Navbar 背景；
+     用偏冷的 rgb(20,29,34) 壓木質招牌，四段自然消失 */
   background: linear-gradient(
     to bottom,
-    rgba(37, 44, 48, 0.48) 0%,
-    rgba(37, 44, 48, 0.22) 55%,
-    rgba(37, 44, 48, 0) 100%
+    rgba(20, 29, 34, 0.48) 0%,
+    rgba(20, 29, 34, 0.3) 45%,
+    rgba(20, 29, 34, 0.1) 75%,
+    rgba(20, 29, 34, 0) 100%
   );
 }
 .pg-hero-scrim-copy {

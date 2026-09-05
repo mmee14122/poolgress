@@ -83,7 +83,7 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 - **CTA hover 定稿（無任何流光/glow/sheen）**：Primary＝底色暖亮4%(#DACCB9)＋按鈕-1px；Secondary＝rgba(210,194,173,.07)填色＋邊框.55→.8＋文字微亮＋-1px；in 320ms/out 480ms、cubic-bezier(0.22,1,0.36,1)；**hover 文字不位移**
 - **進場流光（entrance 專屬，非 hover）**：頁尾兩顆描邊鈕右上＋左下兩段定點流光，峰值 0.55、0.45s/0.6s 接力、只播一次（CSS `.pg-cta-sweep`）
 - **Progress Point chapter marker**（`components/ProgressPoint.tsx`，2026-09-05 取代球路曲線）：眉標列「01 / THE SPACE ─ ● COMING SOON」——48px 1px 短線＋9px Primary 實心點＋22px 12% 外圈；動線由左而右一次性（文字 reveal→點滑入 20px→外圈→徽章→大標），無 glow／pulse／曲線。禁止再用跨區大曲線
-- **Navbar hover system（locked，2026-09-05）**：`.pg-nav-link`——hover／active 文字 Secondary `#AFC4CF`＋1.5px 線（文字寬 55%）scaleX 由左展開＋5.5px 球沿線滑到末端右 3.5px，線與球共用 250ms ease-out（若真機看不出球在動，只把共同 duration 改 280ms，不加 delay）。色階：Logo＝Primary `#6F8FA3`（brand）／導覽預設＝首頁透明態白（與白 Logo 同色）、首頁玻璃淺色態 Charcoal、其他頁 ink-700／互動＝Secondary。**後續不要因其他頁修改而動它**
+- **Navbar hover system（locked，2026-09-05）**：`.pg-nav-link`——hover／active 文字 Secondary `#AFC4CF`＋1.5px 線（文字寬 55%）scaleX 由左展開＋5.5px 球沿線滑到末端右 3.5px，線與球共用 250ms ease-out（若真機看不出球在動，只把共同 duration 改 280ms，不加 delay）。色階：Logo＝Primary `#6F8FA3`（brand）／導覽預設＝首頁透明態 Sand（可讀性靠 Hero 頂部 scrim，Logo 字仍白）、首頁玻璃淺色態 Charcoal、其他頁 ink-700／互動＝Secondary。**後續不要因其他頁修改而動它**
 - **prefers-reduced-motion**：全部退成靜態（revealed 預填）
 - 觸發機制：自寫 scroll listener（單向鎖存 revealed Set），觸發線 lineFor() 依 id 分檔。**專案沒有 GSAP，使用者規格提到 GSAP 時一律用 CSS 等效實作、不加套件**
 
