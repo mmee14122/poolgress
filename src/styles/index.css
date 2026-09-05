@@ -61,6 +61,27 @@
   --spacing-header: 4rem;
 }
 
+/* ── 全站水平 Grid（2026-09-05）──
+   唯一的 container：Navbar 內容、Hero 文字、01／02 各段共用同一條左右基準線。
+   桌機 max 1680px、gutter clamp(32px, 3.5vw, 64px)；手機 gutter 20px。
+   不要再各自用 max-w-*／px-* 做容器，會讓 Logo 與內容的左緣對不齊。 */
+:root {
+  --site-gutter: 20px;
+}
+@media (min-width: 768px) {
+  :root { --site-gutter: clamp(32px, 3.5vw, 64px); }
+}
+.site-container {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+}
+/* 手機出血：照片在 <768px 滿寬，桌機仍照 container 的 gutter 對齊 */
+@media (max-width: 767px) {
+  .site-container--bleed-sm { padding-inline: 0; }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

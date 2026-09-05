@@ -54,7 +54,7 @@ export default function App() {
       <div>
         <SectionTabs active={active} />
 
-        <div className="mx-auto w-full max-w-[90rem] px-4 sm:px-6">
+        <div className="site-container">
         <div className="lg:grid lg:grid-cols-[11rem_minmax(0,1fr)_21rem] lg:items-start lg:gap-8 xl:grid-cols-[13rem_minmax(0,1fr)_23rem] xl:gap-12">
           {/* 左欄：桌機專用錨點導覽。sticky 必須放在格線欄本身，
               內層元素會因 items-start 讓欄高縮成內容高而失效 */}

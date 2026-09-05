@@ -73,7 +73,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
   return (
     <footer className={t.shell}>
       {/* 最大寬度與導覽列、頁面主內容對齊 */}
-      <div className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:py-14">
+      <div className="site-container py-12 lg:py-14">
         {/* 四欄對齊頂部；最右下載區略寬，QR 與 badge 才不會擁擠 */}
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-10">
           <BrandColumn t={t} />

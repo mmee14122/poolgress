@@ -28,7 +28,7 @@ export function CourseHero() {
 
   return (
     <section className="flex items-center bg-[#e4eaf3] lg:min-h-[min(760px,calc(100svh-4rem-var(--promo-h,0px)))]">
-      <div className="mx-auto grid w-full max-w-[90rem] gap-8 px-4 py-8 pb-14 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
+      <div className="site-container grid gap-8 py-8 pb-14 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-12 lg:py-14">
         {/* 左：課程介紹影片位（素材待補） */}
         <div>
           <VideoPlaceholder />

@@ -112,6 +112,7 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 
 ## 6. 部署以外的既有紀律
 
+- **水平 grid 只有一套**：`.site-container`（styles/index.css，max 1680px、gutter `--site-gutter`＝手機 20px／≥768 clamp(32px,3.5vw,64px)）。Navbar 內容、Hero 文字、01／02 各段、Footer、course 頁都用它；**不要再各自寫 max-w-*／px-* 當容器**，Logo 與內容左緣會對不齊。照片要手機出血加 `site-container--bleed-sm`
 - 新頁面：html＋entry＋**vite.config.ts input 加一行**
 - 新 CSS 一律 `.pg-` 前綴放 styles/index.css；PowerShell 別碰中文檔（用 Git Bash / node 腳本），改完 `grep -rl '�' src`
 - 全站樣式表有 h1/h2 顏色規則，**深底標題要 inline 指定 color** 否則被蓋掉

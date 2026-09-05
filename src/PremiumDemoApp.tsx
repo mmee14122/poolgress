@@ -207,7 +207,7 @@ export default function PremiumDemoApp() {
           style={{ background: 'linear-gradient(to top, rgba(37,44,48,.85), transparent 55%)' }}
         />
 
-        <div className="relative w-full px-5 pb-16 sm:px-10 sm:pb-20">
+        <div className="site-container relative pb-16 sm:pb-20">
           {/* 宣言：由左至右快速連續 reveal——字與箭頭各自 clip 揭開，
               箭頭先畫出、35ms 後帶出下一個字，整串約 0.5s 一氣呵成。
               文字位置不動（無 translateX），完成後全部靜止。 */}
@@ -357,9 +357,9 @@ export default function PremiumDemoApp() {
             composition，用 justify-center 置中後再以「下留白大於上留白」的 padding
             把視覺中心壓到 section 高度 46–48%，下方留白較多，帶眼睛往場館圖走。
             高度改由 .pg-intro01 的 min/max-height 控制（見 styles/index.css）。 */}
-        <div className="pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
+        <div className="site-container pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
           <p
-            className="px-5 text-[11px] font-medium tracking-[0.3em] uppercase sm:pr-10 sm:pl-[10vw] sm:text-xs"
+            className="text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
             style={{ color: P.accent, ...reveal(on01, 0, 0.9) }}
           >
             01 / THE SPACE
@@ -372,7 +372,7 @@ export default function PremiumDemoApp() {
           </p>
           <h2
             ref={reg('intro01h')}
-            className="mt-5 px-5 sm:mt-6 sm:pr-10 sm:pl-[10vw]"
+            className="mt-5 sm:mt-6"
             style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
@@ -542,9 +542,9 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="flex items-center px-5 pt-16 pb-8 sm:px-10 lg:pt-20 lg:pb-8"
+      className="site-container flex items-center pt-16 pb-8 lg:pt-20 lg:pb-8"
     >
-      <div className="mx-auto w-full max-w-7xl">
+      <div className="w-full">
         <p
           className="text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
           style={{
@@ -621,7 +621,7 @@ function PillarBlock({
       <section
         ref={refCb}
         id={s.id}
-        className="relative mt-2 w-full overflow-hidden sm:mt-5 lg:mx-[5vw] lg:w-auto"
+        className="site-container site-container--bleed-sm relative mt-2 overflow-hidden sm:mt-5"
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
@@ -681,7 +681,7 @@ function PillarBlock({
             不再重複 COMING SOON（上方眉標已標示）、無卡片／陰影／邊框／裝飾。
             左緣 px-5 與「01 / THE SPACE」眉標同一條 20px grid。 */}
         {s.mobileTitle && (
-          <div className="px-5 pt-7 md:hidden">
+          <div className="px-[var(--site-gutter)] pt-7 md:hidden">
             <h3 className="text-[17px] leading-snug font-medium" style={{ color: P.text }}>
               {s.mobileTitle}
             </h3>
@@ -702,11 +702,11 @@ function PillarBlock({
   const d = { no: 0, en: st, zh: st * 2, body: st * 3, img: st * 4 }
   const up = (delay: number) => fadeUp(on, delay, dur)
   return (
-    <section ref={refCb} id={s.id} className="scroll-mt-16 px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 lg:pt-10 lg:pb-8">
+    <section ref={refCb} id={s.id} className="site-container scroll-mt-16 pt-10 pb-8 sm:pt-12 sm:pb-10 lg:pt-10 lg:pb-8">
       {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
           03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
       {!hideHeading && !hideChapterHead && (
-        <div className="mx-auto mb-8 max-w-7xl lg:mb-10">
+        <div className="mb-8 lg:mb-10">
           <span
             className="flex items-center gap-3 text-sm font-bold"
             style={{ color: P.accent, ...up(d.no) }}
@@ -730,7 +730,7 @@ function PillarBlock({
         </div>
       )}
       <div
-        className={`pg-feature-row mx-auto flex max-w-7xl flex-col gap-8 lg:items-center lg:gap-14 ${
+        className={`pg-feature-row flex flex-col gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
