@@ -44,7 +44,8 @@ export const pillarSections: Pillar[] = [
     en: 'YOUR TABLE. YOUR SPACE.',
     zh: '一張球桌，一個屬於你們的空間。',
     body: '我們正在打造 Poolgress 場館：完整的出桿空間、專屬座位與 Café，以及把闖關投影直接搬上桌面的互動球桌。',
-    image: null,
+    /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
+    image: './assets/hero/s01-venue.webp',
     imageHint: '場館願景圖（概念視覺，3200×1800）',
   },
   {
