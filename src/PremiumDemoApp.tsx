@@ -641,9 +641,20 @@ function PillarBlock({
             >
               {s.badge}
             </span>
-            <p className="mt-4 text-base leading-relaxed sm:text-lg" style={{ color: 'rgba(242,238,230,.9)' }}>
+            {/* 桌機：原本的單段文案（不動） */}
+            <p className="mt-4 hidden text-base leading-relaxed md:block sm:text-lg" style={{ color: 'rgba(242,238,230,.9)' }}>
               {s.body}
             </p>
+            {/* 手機（<768px）：重建層級——主訊息 17px medium ＋ 說明 14.5px／1.75，
+                顏色只用 palette 的 Background 米白；以「：」切成主訊息與說明 */}
+            <div className="mt-4 md:hidden">
+              <p className="text-[17px] leading-snug font-medium" style={{ color: P.bg }}>
+                {s.body.split('：')[0]}
+              </p>
+              <p className="mt-2 text-[14.5px]" style={{ color: P.bg, lineHeight: 1.75 }}>
+                {s.body.split('：').slice(1).join('：')}
+              </p>
+            </div>
           </div>
         </div>
       </section>
