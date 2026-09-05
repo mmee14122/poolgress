@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 import { Navbar } from './components/Navbar'
-import { TrajectoryMotif } from './components/TrajectoryMotif'
+import { ProgressPoint } from './components/ProgressPoint'
 
 /**
  * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
@@ -292,39 +292,24 @@ export default function PremiumDemoApp() {
       {/* id 給 Hero 的「探索 Poolgress」跳轉用：落在 01 章節開場（眉標＋大標），
           不是直接跳到照片；scroll-mt 抵掉 fixed Navbar 的 64px */}
       <div ref={reg('intro01')} id="the-space" className="relative scroll-mt-16">
-        {/* Trajectory Line（品牌 motif，見 components/TrajectoryMotif）：
-            桌機自 Hero 右下越界、收在標題右側負空間；手機縮短只留局部。
-            章節開場 reveal 時一次畫出，球在線末落定，指向下方的場館照片。 */}
-        <TrajectoryMotif
-          on={on01}
-          viewBox="0 0 1440 460"
-          path="M 1345 26 C 1230 130, 1130 220, 1050 292 C 985 350, 930 396, 872 428"
-          end={{ x: 872, y: 428 }}
-          className="absolute inset-x-0 -top-[220px] hidden h-[460px] w-full sm:block"
-        />
-        <TrajectoryMotif
-          on={on01}
-          viewBox="0 0 375 190"
-          path="M 344 16 C 312 62, 282 100, 244 132"
-          end={{ x: 244, y: 132 }}
-          strokeWidth={1}
-          className="absolute inset-x-0 -top-[95px] h-[190px] w-full sm:hidden"
-        />
-
         {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal。
             2026-09-05 使用者調整 optical balance：整組（眉標＋徽章＋大字）視為一個
             composition，用 justify-center 置中後再以「下留白大於上留白」的 padding
             把視覺中心壓到 section 高度 46–48%，下方留白較多，帶眼睛往場館圖走。
             高度改由 .pg-intro01 的 min/max-height 控制（見 styles/index.css）。 */}
         <div className="site-container pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
+          {/* 眉標列＝chapter heading system：01 / THE SPACE ─ ● COMING SOON。
+              動線由左而右：文字 reveal → Progress Point 由左滑入 → 外圈淡入 → 徽章 reveal，
+              之後才輪到大標兩行（見下方 delay）。 */}
           <p
-            className="text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
-            style={{ color: P.accent, ...reveal(on01, 0, 0.9) }}
+            className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
+            style={{ color: P.accent }}
           >
-            01 / THE SPACE
+            <span style={reveal(on01, 0, 0.9)}>01 / THE SPACE</span>
+            <ProgressPoint on={on01} delay={0.35} />
             <span
-              className="ml-4 rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em] normal-case"
-              style={{ background: P.neutral, color: P.text }}
+              className="rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em] normal-case"
+              style={{ background: P.neutral, color: P.text, ...reveal(on01, 0.75, 0.6) }}
             >
               COMING SOON
             </span>
@@ -337,7 +322,7 @@ export default function PremiumDemoApp() {
             {pillarSections[0].en.split('. ').map((line, i) => (
               /* 垂直 reveal（2026-08-17 使用者定稿）：line-mask 保留（overflow hidden），
                  內層自下而上浮現——opacity 0→1＋translateY 8px→0（0.52s ease-out），
-                 第二行晚 80ms。無 translateX、無水平慣性，完成後完全靜止。 */
+                 第二行晚 100ms；整體延到眉標列（文字→Progress Point→徽章）之後 0.95s 起。 */
               <span
                 key={line}
                 className="block overflow-hidden"
@@ -355,7 +340,7 @@ export default function PremiumDemoApp() {
                     lineHeight: 1.05,
                     opacity: on01 ? 1 : 0,
                     transform: on01 ? 'translateY(0)' : 'translateY(8px)',
-                    transition: `opacity 0.52s ${EASE2} ${0.12 + i * 0.08}s, transform 0.52s ${EASE2} ${0.12 + i * 0.08}s`,
+                    transition: `opacity 0.52s ${EASE2} ${0.95 + i * 0.1}s, transform 0.52s ${EASE2} ${0.95 + i * 0.1}s`,
                   }}
                 >
                   {line.endsWith('.') ? line : line + '.'}
@@ -501,7 +486,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="pg-app-intro site-container flex items-center pt-16 pb-12 lg:pt-20 lg:pb-8"
+      className="pg-app-intro site-container flex items-center pt-20 pb-12 lg:pb-8"
     >
       <div className="w-full">
         <p
@@ -633,13 +618,15 @@ function PillarBlock({
         {/* 手機（<768px）：照片下方回到米白底的純文字 editorial（2026-09-05 使用者規格）。
             不再重複 COMING SOON（上方眉標已標示）、無卡片／陰影／邊框／裝飾。
             左右 padding 12px（使用者 2026-09-05 指定「米色文字框寬一點」，由 gutter 20px 收窄；
-            文字寬 335 → 351px，代價是左緣比 grid 線內縮 8px）。 */}
+            文字寬 335 → 351px，代價是左緣比 grid 線內縮 8px）。
+            垂直節奏（使用者 2026-09-05）：照片→主標 40、主標→內文 18、內文→米白底結束 88，
+            讓色彩交界上下都有留白，硬切色才像 chapter transition 而不是兩個 div 拼接。 */}
         {s.mobileTitle && (
-          <div className="px-3 pt-7 md:hidden">
+          <div className="px-3 pt-10 pb-[88px] md:hidden">
             <h3 className="text-[17px] leading-snug font-medium" style={{ color: P.text }}>
               {s.mobileTitle}
             </h3>
-            <p className="mt-3 text-[15px]" style={{ color: 'rgba(37,44,48,.78)', lineHeight: 1.75 }}>
+            <p className="mt-[18px] text-[15px]" style={{ color: 'rgba(37,44,48,.78)', lineHeight: 1.75 }}>
               {s.mobileBody}
             </p>
           </div>

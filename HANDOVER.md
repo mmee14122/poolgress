@@ -82,7 +82,7 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 - **02–04 圖片**：本體全程靜態（opacity 1、無 transform）；上面一層**薄紗遮罩**（半透明底色 tint 上0.38/中0.48/下0.55）隨捲動溶解（95%→62% 區間、0.18s 平滑、雙向）
 - **CTA hover 定稿（無任何流光/glow/sheen）**：Primary＝底色暖亮4%(#DACCB9)＋按鈕-1px；Secondary＝rgba(210,194,173,.07)填色＋邊框.55→.8＋文字微亮＋-1px；in 320ms/out 480ms、cubic-bezier(0.22,1,0.36,1)；**hover 文字不位移**
 - **進場流光（entrance 專屬，非 hover）**：頁尾兩顆描邊鈕右上＋左下兩段定點流光，峰值 0.55、0.45s/0.6s 接力、只播一次（CSS `.pg-cta-sweep`）
-- **Trajectory Line 品牌 motif**（`components/TrajectoryMotif.tsx`，2026-09-05 定義）：Primary 灰藍 35% 的 1.2px 球路線＋11px 實心球＋26px 14% halo；章節 reveal 時一次畫出 1s、球 0.95s 後淡入＋scale .85→1，無 infinite。目前只在 01 / THE SPACE 開場，未來只放 chapter transition、不要每區都放、不要多顆球
+- **Progress Point chapter marker**（`components/ProgressPoint.tsx`，2026-09-05 取代球路曲線）：眉標列「01 / THE SPACE ─ ● COMING SOON」——48px 1px 短線＋9px Primary 實心點＋22px 12% 外圈；動線由左而右一次性（文字 reveal→點滑入 20px→外圈→徽章→大標），無 glow／pulse／曲線。禁止再用跨區大曲線
 - **prefers-reduced-motion**：全部退成靜態（revealed 預填）
 - 觸發機制：自寫 scroll listener（單向鎖存 revealed Set），觸發線 lineFor() 依 id 分檔。**專案沒有 GSAP，使用者規格提到 GSAP 時一律用 CSS 等效實作、不加套件**
 
