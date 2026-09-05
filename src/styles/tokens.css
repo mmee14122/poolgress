@@ -171,8 +171,8 @@
   --pg-space-finale-y: 3.5rem;          /* 頁尾 CTA py：56 / lg 80 */
   --pg-space-footer-y: 3rem;            /* Footer py：48 / lg 56 */
   --pg-feature-text-lift: 22px;         /* 桌機 02–04 文字欄上抬 */
-  --pg-feature-text-w: 38%;
-  --pg-feature-media-w: 62%;
+  --pg-feature-text-w: 44%;             /* 2026-09-06 使用者：圖欄 62→56 */
+  --pg-feature-media-w: 56%;
 
   /* ---------- Media ---------- */
   --pg-radius-media: 1rem;              /* 02–04 圖 rounded-2xl */
@@ -184,7 +184,7 @@
   --pg-nav-blur: 16px;
   --pg-banner-ratio: 23 / 9;            /* 桌機 01 橫幅（2026-09-05 使用者再裁扁：原 21/10） */
   --pg-banner-focus-desktop: 50% 61%;   /* 裁切焦點偏下：切掉天花板圓環、保留媽媽與球桌 */
-  --pg-feature-ratio: 16 / 9;
+  --pg-feature-ratio: 16 / 9;           /* 手機／平板維持 16:9；桌機 ≥1024 改 21:9（下方） */
   --pg-hero-peek-mobile: 32px;          /* 手機首屏底部露出下一區背景 32px 當 scroll cue（只露底色不露字） */
   --pg-hero-mobile-h: calc(100svh - var(--pg-hero-peek-mobile));
   --pg-hero-img-focus-mobile: 47% 100%; /* 2026-09-06：x 對準入口人物；y 貼底（配合放大裁掉上方招牌） */
@@ -243,6 +243,7 @@
     --pg-fs-h1: 72px;
     --pg-space-chapter-bottom: 2rem;
     --pg-space-feature-gap: 3.5rem;
+    --pg-feature-ratio: 21 / 9;         /* 2026-09-06 使用者：02–04 圖裁細長條 */
     --pg-space-finale-y: 5rem;
     --pg-space-footer-y: 3.5rem;
     --pg-peek: 56px;
