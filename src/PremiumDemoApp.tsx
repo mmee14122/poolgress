@@ -243,13 +243,15 @@ export default function PremiumDemoApp() {
             })}
           </p>
           {/* 主標：line-mask 包一層，內層由左而右揭開（2026-09-05 使用者改回中文大字，
-              英文與副標刪除） */}
+              英文與副標刪除；固定斷行「讓撞球成為／一家人的共同記憶」） */}
           <div className="overflow-hidden">
             <h1
               className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
               style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.12, 1.15) }}
             >
-              {hero.title}
+              {hero.titleLines[0]}
+              <br />
+              {hero.titleLines[1]}
             </h1>
           </div>
           {/* CTA 本體完全靜態：初始只有邊框＋文字，米杏色 fill 隨 Hero 標題節奏
