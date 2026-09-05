@@ -8,9 +8,10 @@ export function Logo({ className = '', dark = false }: { className?: string; dar
   return (
     <a href="./" className={`flex shrink-0 items-center gap-2 py-2 ${className}`}>
       {/* 公司正式標誌（2026-09-05 使用者提供，白底 PNG 已去背成透明）。
-          深色導覽列用白色版，淺色用黑色版；準星與內圓是鏤空，透出身後底色。 */}
+          深色導覽列用白色版，淺色用 Primary #6F8FA3 版（2026-09-05 使用者指定圖標與品牌字同色）；
+          準星與內圓是鏤空，透出身後底色。黑色版保留作其他用途。 */}
       <img
-        src={dark ? './assets/logo/logo-mark-white.png' : './assets/logo/logo-mark.png'}
+        src={dark ? './assets/logo/logo-mark-white.png' : './assets/logo/logo-mark-primary.png'}
         alt=""
         width={36}
         height={36}
