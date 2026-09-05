@@ -579,69 +579,31 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Left Editorial Annotation（2026-09-05 使用者規格 v5）：
-              文字回到左上 Café／店員區（照片天然的 secondary zone），無 card／rectangle／glass；
-              只在文字附近加一片很輕、無邊界的局部 scrim（radial，自然 feather，見 .pg-venue-scrim）。
-              視覺優先級：父女 > 媽媽 > 空間 > 文字。文字區 top 15%、最寬 400；
-              標題拆兩行成 editorial statement：我們正在打造／Poolgress 場館。 */}
+          {/* FUTURE SPACE teaser（2026-09-05 使用者規格）：這不是已落成的場館，是概念視覺。
+              整張圖壓一層 Charcoal veil（約 40%，左側略深保護文字），frame 是透明 1px 細框、
+              無底色／無陰影／radius 2px，內容：COMING SOON／POOLGRESS SPACE／一句中文／TAIWAN · 2026。
+              桌機／平板：框在左側、垂直置中，寬 400；手機：圖改直式 4:5 裁切，框寬 calc(100% - 40px) 置中。 */}
+          <div aria-hidden="true" className="pg-venue-veil pointer-events-none absolute inset-0" />
+          {s.teaser && (
           <div
-            aria-hidden="true"
-            className="pg-venue-scrim pointer-events-none absolute inset-0 hidden lg:block"
-          />
-          <div
-            className="pg-venue-copy absolute hidden lg:block"
+            className="pg-venue-teaser absolute"
             style={{
               opacity: on ? 1 : 0,
-              transition: `opacity 0.8s ${EASE2} 0.2s`,
+              transform: on ? 'translateY(-50%)' : 'translateY(calc(-50% + 10px))',
+              transition: `opacity 0.8s ${EASE2} 0.2s, transform 0.8s ${EASE2} 0.2s`,
             }}
           >
-            <span className="pg-t-badge-banner inline-flex items-center rounded-full">
-              {s.badge}
-            </span>
-            {/* 標題兩行（v6）：Coming Soon → 標題 40px、標題 → 說明 24px，三層分開；
-                標題 26 → 30px（+15%）、weight 不加粗、lh 1.3 */}
-            <h3>
-              我們正在打造
+            <p className="pg-venue-teaser__eyebrow">{s.teaser.eyebrow}</p>
+            <h3 className="pg-venue-teaser__title">
+              {s.teaser.titleLines[0]}
               <br />
-              Poolgress 場館
+              {s.teaser.titleLines[1]}
             </h3>
-            <p>
-              {s.body.split('：').slice(1).join('：')}
-            </p>
+            <p className="pg-venue-teaser__zh">{s.teaser.zh}</p>
+            <p className="pg-venue-teaser__meta">{s.teaser.meta}</p>
           </div>
+          )}
         </div>
-        {/* 平板（768–1023px）：照片保持乾淨，說明放照片正下方的兩欄 editorial caption
-            （左 COMING SOON、右 主標＋說明；延續 #F2EEE6、無卡片底、繼承 section 的
-            .site-container 對齊）。桌機 ≥1024 改為照片內左側 overlay（見上）。 */}
-        <div className="pg-venue-copy-tablet hidden md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:hidden">
-          <div style={fadeUp(on, 0.05, 0.7, 12)}>
-            <span
-              className="pg-t-badge inline-block rounded-full px-3 py-1"
-            >
-              {s.badge}
-            </span>
-          </div>
-          <div className="max-w-2xl" style={fadeUp(on, 0.15, 0.7, 12)}>
-            <h3 className="text-xl leading-snug font-medium lg:text-2xl" style={{ color: P.text }}>
-              {s.body.split('：')[0]}
-            </h3>
-            <p className="mt-3 text-base" style={{ color: P.textSoft, lineHeight: 1.75 }}>
-              {s.body.split('：').slice(1).join('：')}
-            </p>
-          </div>
-        </div>
-        {/* 手機（<768px）：照片下方回到米白底的純文字 editorial（2026-09-05 使用者規格）。
-            不再重複 COMING SOON（上方眉標已標示）、無卡片／陰影／邊框／裝飾。
-            左右 padding 12px（使用者 2026-09-05 指定「米色文字框寬一點」，由 gutter 20px 收窄；
-            文字寬 335 → 351px，代價是左緣比 grid 線內縮 8px）。
-            垂直節奏（使用者 2026-09-05）：照片→主標 40、主標→內文 18、內文→米白底結束 88，
-            讓色彩交界上下都有留白，硬切色才像 chapter transition 而不是兩個 div 拼接。 */}
-        {s.mobileTitle && (
-          <div className="pg-venue-copy-mobile md:hidden">
-            <h3>{s.mobileTitle}</h3>
-            <p>{s.mobileBody}</p>
-          </div>
-        )}
       </section>
     )
   }

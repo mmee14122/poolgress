@@ -35,9 +35,11 @@ export type Pillar = {
   eyebrow?: string
   zh: string
   body: string
-  /** 手機（<768px）照片下方的 editorial 文字：標題＋一句說明（僅 01 使用） */
+  /** 手機（<768px）照片下方的 editorial 文字：標題＋一句說明（2026-09-05 起改用 teaser，保留欄位） */
   mobileTitle?: string
   mobileBody?: string
+  /** 01 FUTURE SPACE teaser frame 的內容（僅 01 使用） */
+  teaser?: { eyebrow: string; titleLines: [string, string]; zh: string; meta: string }
   image: string | null
   /** 手機（≤768px）專用直式圖；null＝沿用 image＋手機 object-position */
   imageMobile?: string | null
@@ -55,6 +57,8 @@ export const pillarSections: Pillar[] = [
     body: '我們正在打造 Poolgress 場館：完整的出桿空間、專屬座位與 Café，以及把闖關投影直接搬上桌面的互動球桌。',
     mobileTitle: '我們正在打造 Poolgress 場館',
     mobileBody: '完整的出桿空間、專屬座位與 Café，讓打球成為值得停留的日常。',
+    /** 概念視覺 teaser（2026-09-05 使用者規格）：不是介紹設備，是「未來真的會有實體空間」的期待感 */
+    teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'SPACE'], zh: '一個全新的撞球空間，正在發生。', meta: 'TAIWAN · 2026' },
     /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
     image: './assets/hero/s01-venue.webp',
     imageMobile: null,

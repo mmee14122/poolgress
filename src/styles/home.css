@@ -108,26 +108,9 @@
   padding-bottom: var(--pg-space-intro-bottom);
 }
 .pg-venue-section { margin-top: var(--pg-space-banner-top); }
-.pg-venue-copy-tablet {
-  padding-top: var(--pg-space-venue-tablet-top);
-  padding-bottom: var(--pg-space-venue-tablet-bottom);
-}
-.pg-venue-copy-mobile {
-  padding-inline: var(--venue-mobile-copy-inset);
-  padding-top: var(--pg-space-venue-mobile-top);
-  padding-bottom: var(--pg-space-venue-mobile-bottom);
-}
-.pg-venue-copy-mobile h3 {
-  font-size: var(--pg-fs-venue-h3-mobile);
-  line-height: var(--pg-lh-venue-h3-mobile);
-  font-weight: 500;
-  color: var(--pg-charcoal);
-}
-.pg-venue-copy-mobile p {
-  margin-top: 18px;
-  font-size: var(--pg-fs-body-mobile);
-  line-height: var(--pg-lh-body-mobile);
-  color: var(--pg-text-body);
+/* 手機：照片下方保留 88px 米白呼吸（原本在文字區下方），讓 01→02 的色彩交界仍像章節切換 */
+@media (max-width: 767px) {
+  .pg-venue-section { padding-bottom: var(--pg-space-venue-mobile-bottom); }
 }
 .pg-app-intro {
   padding-top: var(--pg-space-chapter-top);
@@ -158,27 +141,63 @@
   aspect-ratio: var(--pg-feature-ratio);
 }
 
-/* 桌機橫幅 overlay 文字（Left Editorial Annotation，使用者反覆調到定案的位置） */
-.pg-venue-copy {
+/* ---------- 01 FUTURE SPACE teaser（2026-09-05 使用者規格）----------
+   veil：整張 Charcoal 約 40%，左側略深（文字區）；仍看得到陽光、木質、球桌與人物。
+   frame：透明底、1px ivory 38% 細框、radius 2、無陰影；桌機／平板靠左垂直置中、寬 400、內距 36；
+   手機寬 calc(100% - 40px) 水平置中。字全用 ivory。 */
+.pg-venue-veil { background: var(--pg-teaser-veil); }
+.pg-venue-teaser {
   left: var(--site-gutter);
-  top: var(--pg-venue-copy-top);
-  max-width: var(--pg-venue-copy-max);
+  top: 50%;
+  width: var(--pg-teaser-w);
+  max-width: calc(100% - var(--site-gutter) * 2);
+  padding: var(--pg-teaser-pad);
+  border: 1px solid var(--pg-teaser-border);
+  border-radius: var(--pg-teaser-radius);
+  color: var(--pg-ivory);
 }
-.pg-venue-copy h3 {
-  margin-top: 40px;
-  font-size: var(--pg-fs-venue-h3);
+.pg-venue-teaser__eyebrow {
+  font-size: var(--pg-fs-teaser-eyebrow);
+  letter-spacing: var(--pg-ls-teaser-eyebrow);
+  text-transform: uppercase;
   font-weight: 500;
-  line-height: var(--pg-lh-venue-h3);
-  max-width: var(--pg-venue-copy-max);
-  color: var(--pg-text-on-photo);
+  line-height: 1.4;
+  color: rgba(var(--pg-ivory-rgb), 0.85);
 }
-.pg-venue-copy p {
-  margin-top: 24px;
-  font-size: var(--pg-fs-venue-p);
-  font-weight: 400;
-  line-height: var(--pg-lh-venue-p);
-  max-width: var(--pg-venue-copy-max);
-  color: var(--pg-text-on-photo-soft);
+.pg-venue-teaser__title {
+  margin-top: 22px;
+  font-family: var(--pg-font-serif);
+  font-size: var(--pg-fs-teaser-title);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: var(--pg-ivory);
+}
+.pg-venue-teaser__zh {
+  margin-top: 22px;
+  font-size: var(--pg-fs-teaser-zh);
+  line-height: 1.7;
+  color: rgba(var(--pg-ivory-rgb), 0.88);
+}
+.pg-venue-teaser__meta {
+  margin-top: 28px;
+  font-size: var(--pg-fs-teaser-meta);
+  letter-spacing: var(--pg-ls-teaser-meta);
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: rgba(var(--pg-ivory-rgb), 0.6);
+}
+@media (max-width: 767px) {
+  .pg-venue-veil { background: var(--pg-teaser-veil-mobile); }
+  .pg-venue-teaser {
+    left: 20px;
+    width: calc(100% - 40px);
+    max-width: none;
+    padding: var(--pg-teaser-pad-mobile);
+  }
+  .pg-venue-teaser__title { margin-top: 18px; font-size: var(--pg-fs-teaser-title-mobile); }
+  .pg-venue-teaser__zh { margin-top: 18px; }
+  .pg-venue-teaser__meta { margin-top: 22px; }
 }
 
 /* ---------- Hero ---------- */
@@ -234,19 +253,13 @@
 }
 
 /* ---------- 01 場館滿版橫幅 ----------
-   手機（<768）：完整顯示橫向圖不裁切，圖改流式、容器高度由圖決定。
+   手機（<768）：直式 4:5 裁切（teaser 需要直式安全區），焦點見 --pg-banner-focus-mobile。
    平板（768–1023）：clamp(400px, 66svh, 560px) cover。
-   桌機（≥1024）：21:10 扁橫幅，不跟視窗高度走。 */
+   桌機（≥1024）：23:9 扁橫幅，不跟視窗高度走。 */
 .pg-venue-banner { height: auto; aspect-ratio: auto; min-height: 0; }
 @media (max-width: 767px) {
-  .pg-venue-img {
-    position: static;
-    width: 100%;
-    height: auto;
-    object-fit: initial;
-    object-position: initial;
-    display: block;
-  }
+  .pg-venue-banner { aspect-ratio: var(--pg-banner-ratio-mobile); }
+  .pg-venue-img { object-position: var(--pg-banner-focus-mobile); }
 }
 @media (min-width: 768px) {
   .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
@@ -254,17 +267,6 @@
 @media (min-width: 1024px) {
   .pg-venue-banner { height: auto; aspect-ratio: var(--pg-banner-ratio); }
   .pg-venue-img { object-position: var(--pg-banner-focus-desktop); }
-}
-/* 照片左上的局部 scrim（桌機）：無邊界 radial，只服務 COMING SOON／標題／說明，
-   在抵達媽媽臉（y ≥50%）之前衰減到 0；父女、球桌、右側維持原曝光。 */
-.pg-venue-scrim {
-  background: radial-gradient(
-    ellipse 34% 24% at 10% 22%,
-    rgba(var(--pg-charcoal-rgb), 0.62) 0%,
-    rgba(var(--pg-charcoal-rgb), 0.42) 42%,
-    rgba(var(--pg-charcoal-rgb), 0.16) 76%,
-    rgba(var(--pg-charcoal-rgb), 0) 100%
-  );
 }
 .pg-media-placeholder {
   background: linear-gradient(135deg, var(--pg-secondary), var(--pg-primary));
