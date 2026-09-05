@@ -609,7 +609,7 @@ function PillarBlock({
             style={{
               left: 'var(--site-gutter)',
               top: '15%',
-              maxWidth: 400,
+              maxWidth: 380,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
@@ -635,7 +635,7 @@ function PillarBlock({
                 fontSize: 30,
                 fontWeight: 500,
                 lineHeight: 1.3,
-                maxWidth: 400,
+                maxWidth: 380,
                 color: 'rgba(248,244,236,.97)',
               }}
             >
