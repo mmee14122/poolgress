@@ -594,10 +594,11 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Editorial text over photography（2026-09-05 使用者規格 v4，方案 A）：
-              不再有 card——只在照片左側加一層局部 scrim（52% 之後完全透明，右側父女與球桌維持
-              原亮度），文字直接浮在攝影上。文字區左緣用 --site-gutter 當 inset（與全站 grid token
-              一致）、垂直約圖高 18%、最寬 440px。無 rectangle／radius／blur／shadow。 */}
+          {/* 桌機（≥1024px）Editorial text over photography（2026-09-05 使用者規格 v4 方案 A，
+              後改為右上）：不再有 card——只在照片「右上角」加一層局部 scrim（水平由右往左 52%
+              消失、垂直 26% 起淡出、40% 以下全透明，見 .pg-venue-scrim），文字浮在右上的窗景／
+              樹影上；爸爸＋女兒（x 57–72%、y 38–62%）與主球桌完全在透明區。
+              文字區右緣用 --site-gutter 當 inset、top 10%、最寬 440。無 rectangle／radius／blur／shadow。 */}
           <div
             aria-hidden="true"
             className="pg-venue-scrim pointer-events-none absolute inset-0 hidden lg:block"
@@ -605,8 +606,8 @@ function PillarBlock({
           <div
             className="absolute hidden lg:block"
             style={{
-              left: 'var(--site-gutter)',
-              top: '18%',
+              right: 'var(--site-gutter)',
+              top: '10%',
               maxWidth: 440,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,

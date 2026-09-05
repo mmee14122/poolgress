@@ -957,14 +957,18 @@ html:has(.pg-home-root) {
   scroll-padding-top: 4rem;
 }
 
-/* 01 場館照片左側的局部 scrim（桌機）：只壓暗左側 Café 區當文字承載，52% 起完全透明。
+/* 01 場館照片右上的局部 scrim（桌機）：只壓暗右上窗景區當文字承載，水平 52%／垂直 40% 起完全透明。
    是照片上的 overlay layer，不是另一個矩形卡片。 */
 .pg-venue-scrim {
+  /* 右上角：水平由右往左，52% 起透明 */
   background: linear-gradient(
-    90deg,
+    270deg,
     rgba(37, 44, 48, 0.72) 0%,
     rgba(37, 44, 48, 0.5) 24%,
     rgba(37, 44, 48, 0.18) 40%,
     rgba(37, 44, 48, 0) 52%
   );
+  /* 垂直再收：26% 以上全效、40% 以下全透明，爸爸＋女兒（y ≥38%）不被壓暗 */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 40%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 40%);
 }
