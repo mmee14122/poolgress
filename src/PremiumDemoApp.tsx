@@ -202,7 +202,7 @@ export default function PremiumDemoApp() {
               Navbar 本身仍是透明的、不形成矩形底 */}
         <div
           aria-hidden="true"
-          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[140px] md:block"
+          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[112px] md:block"
         />
         {/* 2) Hero copy scrim：左側水平漸層，只墊在文案後方，68% 之後完全透明，右側場館維持原亮度 */}
         <div
@@ -639,15 +639,16 @@ function PillarBlock({
             >
               {s.badge}
             </span>
-            {/* 標題兩行：Coming Soon → 標題留較大呼吸（32px），標題 → 說明較小（14px） */}
+            {/* 標題兩行（v6）：Coming Soon → 標題 40px、標題 → 說明 24px，三層分開；
+                標題 26 → 30px（+15%）、weight 不加粗、lh 1.3 */}
             <h3
               style={{
-                marginTop: 32,
-                fontSize: 26,
+                marginTop: 40,
+                fontSize: 30,
                 fontWeight: 500,
-                lineHeight: 1.35,
+                lineHeight: 1.3,
                 maxWidth: 400,
-                color: 'rgba(248,244,236,.96)',
+                color: 'rgba(248,244,236,.97)',
               }}
             >
               我們正在打造
@@ -656,12 +657,12 @@ function PillarBlock({
             </h3>
             <p
               style={{
-                marginTop: 14,
+                marginTop: 24,
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
-                maxWidth: 400,
-                color: 'rgba(248,244,236,.86)',
+                maxWidth: 380,
+                color: 'rgba(248,244,236,.88)',
               }}
             >
               {s.body.split('：').slice(1).join('：')}

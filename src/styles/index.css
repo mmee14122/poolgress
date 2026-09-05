@@ -867,15 +867,15 @@
 
 /* 首頁 Hero 的兩層 scrim（桌機）。顏色只用 Charcoal #252C30 的透明度，不做全圖濾鏡。 */
 .pg-hero-scrim-top {
-  /* 2026-09-05 使用者規格：只負責 Navbar 對比，不是 Navbar 背景；
-     用偏冷的 rgb(20,29,34) 壓木質招牌，四段自然消失 */
-  /* 2026-09-05 使用者回饋 Navbar 對比仍不夠：.48→.62／.30→.42／.10→.16，高度 124→140 */
+  /* 2026-09-05 使用者規格（v3）：edge-to-edge transparent dark veil——整個 viewport 寬、
+     從頁面最上緣開始、在 Hero 圖之上、Navbar 內容之下，往下自然 fade。
+     不是 Navbar 的底框：無 rectangle／glass／border／shadow／blur／text-shadow。 */
   background: linear-gradient(
     to bottom,
-    rgba(20, 29, 34, 0.62) 0%,
-    rgba(20, 29, 34, 0.42) 45%,
-    rgba(20, 29, 34, 0.16) 75%,
-    rgba(20, 29, 34, 0) 100%
+    rgba(37, 44, 48, 0.46) 0%,
+    rgba(37, 44, 48, 0.32) 55%,
+    rgba(37, 44, 48, 0.12) 82%,
+    rgba(37, 44, 48, 0) 100%
   );
 }
 .pg-hero-scrim-copy {
@@ -964,15 +964,14 @@ html:has(.pg-home-root) {
 /* 01 場館照片左上的局部 scrim（桌機）：無邊界 radial，只讓左上 Café 區更適合讀字。
    是照片上的 overlay layer，不是另一個矩形卡片。 */
 .pg-venue-scrim {
-  /* 左上局部、無邊界的攝影式壓暗（radial，自然 feather）：只讓左上更適合讀字，
-     不是一層可辨識的背景；右側父女、球桌與左下媽媽在 0 區 */
-  /* 2026-09-05 使用者回饋字不夠明顯：中心 .58→.74、40% 處 .40→.56、72% 處 .16→.24，
-     橢圓略放大（52%×54%），仍無邊界 feather；右側父女與左下媽媽仍在 0 區 */
-  background: radial-gradient(
-    ellipse 52% 54% at 14% 24%,
-    rgba(37, 44, 48, 0.74) 0%,
-    rgba(37, 44, 48, 0.56) 40%,
-    rgba(37, 44, 48, 0.24) 72%,
-    rgba(37, 44, 48, 0) 100%
+  /* 2026-09-05 使用者規格 v6：文字區再深一點、更快向右淡出（46% 起完全透明），
+     看不見邊界的 photographic shadow zone；爸爸、女兒、球桌與右側曝光不變 */
+  background: linear-gradient(
+    90deg,
+    rgba(37, 44, 48, 0.68) 0%,
+    rgba(37, 44, 48, 0.58) 14%,
+    rgba(37, 44, 48, 0.34) 26%,
+    rgba(37, 44, 48, 0.12) 36%,
+    rgba(37, 44, 48, 0) 46%
   );
 }
