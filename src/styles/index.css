@@ -866,7 +866,7 @@
 }
 
 /* ── Navbar hover system（2026-09-05，全站桌機）──
-   Default 白／墨字 → Hover 文字轉 Primary #6F8FA3＋左起 40% 寬、2px 的短 indicator
+   Default 白／墨字 → Hover 文字轉 Primary #6F8FA3＋左起 70% 寬、2px 的短 indicator
    由左向右展開 220ms → Active 同樣式但 indicator 常駐。
    無 full-width underline、無 pill、無 hover 底、無放大、無粗細跳動、無 glow。 */
 .pg-nav-link {
@@ -879,7 +879,7 @@
   left: 1rem;                              /* 對齊 px-4 的文字左緣 */
   bottom: 0;                               /* 文字底（py-2）下方 8px */
   height: 2px;
-  width: calc((100% - 2rem) * 0.4);        /* 文字寬度的 40%，靠左 */
+  width: calc((100% - 2rem) * 0.7);        /* 文字寬度的 70%（使用者回饋 40% 太短），靠左 */
   background: #6f8fa3;
   transform: scaleX(0);
   transform-origin: left;
