@@ -576,6 +576,7 @@
   .pg-finale .pg-t-cta {
     height: 40px;
     width: fit-content;
+    min-width: 136px;                    /* 三顆等寬（＝最寬的「App 遊戲闖關」），中間那顆才會正對中軸 */
     padding: 0 22px;
     border-radius: 0;
     box-shadow: none;
@@ -590,7 +591,7 @@
   }
   .pg-finale .pg-primary-cta { border: 1px solid var(--pg-sand); }
   .pg-finale .pg-cta-sweep { border-radius: 0; }
-  .pg-finale h2 + div { gap: 24px; }  /* 使用者：三顆間隔大一點（原 16） */
+  .pg-finale h2 + div { gap: 40px; }  /* 使用者：三顆間隔（16 → 24 → 40 定案） */
 }
 
 /* ---------- 手機（<768）Hero CTA 與「你想怎麼玩？」瘦身（2026-09-05 使用者規格）----------
