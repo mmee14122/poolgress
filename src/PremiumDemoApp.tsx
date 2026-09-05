@@ -592,12 +592,44 @@ function PillarBlock({
               </span>
             </div>
           )}
+          {/* 桌機（≥1024px）Editorial Glass Overlay（2026-09-05 使用者規格）：
+              刻意壓在照片左側 Café 吧檯／店員區（店員被部分遮擋是預期），
+              絕不碰右側爸爸＋女兒（照片 ≥57%），盡量避開左下媽媽。
+              left 10%／垂直中心 40%／寬 clamp(400,31%,460)：1440–2560 皆落在 10%→≤45%。
+              Charcoal 76%＋blur 10、radius 18、padding 30，無 border、無重 shadow。 */}
+          <div
+            className="absolute hidden lg:block"
+            style={{
+              left: '10%',
+              top: '40%',
+              width: 'clamp(400px, 31%, 460px)',
+              padding: 30,
+              borderRadius: 18,
+              background: 'rgba(37,44,48,.76)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              ...fadeUp(on, 0.2, 0.8, 12),
+              transform: on ? 'translateY(-50%)' : 'translateY(calc(-50% + 12px))',
+            }}
+          >
+            <span
+              className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
+              style={{ background: P.neutral, color: P.text }}
+            >
+              {s.badge}
+            </span>
+            <h3 className="mt-4 text-xl leading-snug font-medium" style={{ color: P.bg }}>
+              {s.body.split('：')[0]}
+            </h3>
+            <p className="mt-3 text-[15px]" style={{ color: 'rgba(242,238,230,.78)', lineHeight: 1.7 }}>
+              {s.body.split('：').slice(1).join('：')}
+            </p>
+          </div>
         </div>
-        {/* 桌機（≥768px）：照片保持乾淨、不放 floating card（2026-09-05 使用者規格，
-            原玻璃卡會遮到爸爸、女兒與球桌）。改成照片正下方的 editorial caption：
-            左欄 COMING SOON pill、右欄主標＋說明；延續 #F2EEE6、無卡片底、
-            直接繼承外層 section 的 .site-container 對齊。 */}
-        <div className="hidden pt-8 pb-2 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:pt-10 lg:gap-x-16">
+        {/* 平板（768–1023px）：照片保持乾淨，說明放照片正下方的兩欄 editorial caption
+            （左 COMING SOON、右 主標＋說明；延續 #F2EEE6、無卡片底、繼承 section 的
+            .site-container 對齊）。桌機 ≥1024 改為照片內左側 overlay（見上）。 */}
+        <div className="hidden pt-8 pb-2 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:hidden">
           <div style={fadeUp(on, 0.05, 0.7, 12)}>
             <span
               className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
