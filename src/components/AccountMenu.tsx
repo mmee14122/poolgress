@@ -45,7 +45,7 @@ const items = [
  * 桌機：滑鼠移入即展開，移出延遲 250ms 收起（與 mini cart 一致），
  * 點擊也可切換；手機（無 hover）用點擊。
  * 面板頂端為大頭像、名稱與星星數，頭像可直接點擊更換。
- * 深色導覽列時外框由 header.nav-hero 覆寫，面板維持白底深色字。
+ * 深色導覽列時觸發鈕（.pg-nav-trigger）由 nav state 變數上色，面板維持白底深色字。
  */
 export function AccountMenu({ user }: { user: Session }) {
   const [open, setOpen] = useState(false)
@@ -146,7 +146,7 @@ export function AccountMenu({ user }: { user: Session }) {
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={`帳號選單，${displayNameOf(user)}`}
-        className="flex items-center gap-1 rounded-full transition-[filter] duration-150 hover:brightness-110"
+        className="pg-nav-trigger flex items-center gap-1 rounded-full transition-[filter] duration-150 hover:brightness-110"
       >
         <Avatar user={user} />
         <svg

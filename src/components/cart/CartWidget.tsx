@@ -65,6 +65,7 @@ export function CartHover() {
     <div ref={rootRef} className="relative" onMouseEnter={openNow} onMouseLeave={scheduleClose}>
       <button
         type="button"
+        className="pg-nav-trigger"
         onClick={() => setOpen((v) => !v)}
         aria-label={`購物車，${count} 件商品`}
         aria-expanded={open}
@@ -122,6 +123,7 @@ export function CartDrawerButton() {
     <>
       <button
         type="button"
+        className="pg-nav-trigger"
         onClick={() => setOpen(true)}
         aria-label={`開啟購物車，${count} 件商品`}
         aria-expanded={open}

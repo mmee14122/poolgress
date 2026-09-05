@@ -108,15 +108,16 @@ export const finale = {
  * 小字對比度不足處見工程回報，深色由 Text 擔任。
  */
 export const palette = {
-  primary: '#6F8FA3',   // 灰藍：撞球軌跡、佔位圖
-  secondary: '#AFC4CF', // 淺灰藍：佔位圖漸層亮端
-  light: '#AFC4CF',     // （相容保留，同 secondary）
-  bg: '#F2EEE6',        // Background：頁面底、深底文字
-  neutral: '#D2C2AD',   // Sand：主按鈕底、徽章底、深底眉標
-  accent: '#816B59',    // Walnut：淺底眉標、編號
-  text: '#252C30',      // Charcoal：文字、深色段落底
+  /* 2026-09-05 Phase 1：值改讀 styles/tokens.css 的 CSS 變數（單一來源），色碼本身沒變 */
+  primary: 'var(--pg-primary)',     // #6F8FA3 灰藍：撞球軌跡、佔位圖
+  secondary: 'var(--pg-secondary)', // #AFC4CF 淺灰藍：佔位圖漸層亮端
+  light: 'var(--pg-secondary)',     // （相容保留，同 secondary）
+  bg: 'var(--pg-ivory)',            // #F2EEE6 Background：頁面底、深底文字
+  neutral: 'var(--pg-sand)',        // #D2C2AD Sand：主按鈕底、徽章底、深底眉標
+  accent: 'var(--pg-walnut)',       // #816B59 Walnut：淺底眉標、編號
+  text: 'var(--pg-charcoal)',       // #252C30 Charcoal：文字、深色段落底
   /** 深色段落的漸層亮端（charcoal 的提亮衍生色） */
-  textSoft: '#333c41',
+  textSoft: 'var(--pg-charcoal-soft)', // #333C41
 } as const
 
 export const brand = {

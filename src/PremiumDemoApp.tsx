@@ -18,9 +18,9 @@ import { ProgressPoint } from './components/ProgressPoint'
  * prefers-reduced-motion：全部直接顯示（revealed 預填）。
  */
 
-const SERIF = "'Noto Serif TC', 'Noto Sans TC', serif"
+/* 襯線字體與 easing 全部讀 styles/tokens.css；這裡只留 transition 字串用的 easing 名 */
 /** ≈ GSAP power4.out */
-const EASE = 'cubic-bezier(0.25, 1, 0.5, 1)'
+const EASE = 'var(--pg-ease-out-4)'
 
 /** 文字類 reveal：clip 由左而右揭開＋極輕 opacity 與 translateX */
 const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => ({
@@ -32,10 +32,10 @@ const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => (
 })
 
 /** ≈ GSAP power3.out（Final CTA 中文標題的落定感） */
-const EASE3 = 'cubic-bezier(0.33, 1, 0.68, 1)'
+const EASE3 = 'var(--pg-ease-out-3)'
 
 /** ≈ GSAP power2.out（02–04 的安靜 fade 用） */
-const EASE2 = 'cubic-bezier(0.5, 1, 0.89, 1)'
+const EASE2 = 'var(--pg-ease-out-2)'
 
 /** 02–04 文字：極輕的 fade-up（y 20px→0），不是飛入 */
 const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSProperties => ({
@@ -168,7 +168,7 @@ export default function PremiumDemoApp() {
              影片一填進 hero.video 就自動改播影片、這張變 poster */
           <picture>
             {/* 手機可換獨立直式圖；沒有就沿用桌機圖＋ .pg-hero-img 的手機 object-position */}
-            <source media="(max-width: 768px)" srcSet={hero.posterMobile ?? hero.poster} />
+            <source media="(max-width: 767px)" srcSet={hero.posterMobile ?? hero.poster} />
             <img
               src={hero.poster}
               alt=""
@@ -177,24 +177,18 @@ export default function PremiumDemoApp() {
             />
           </picture>
         ) : (
-          <div
-            className="absolute inset-0"
-            style={{ background: `linear-gradient(135deg, ${P.textSoft}, ${P.text})` }}
-          >
+          <div className="pg-hero-placeholder absolute inset-0">
             <div
               className="absolute inset-[4%] rounded-2xl border border-dashed"
-              style={{ borderColor: 'rgba(242,238,230,.18)' }}
+              style={{ borderColor: 'rgba(var(--pg-ivory-rgb),.18)' }}
             />
-            <span className="absolute top-20 left-6 text-xs sm:left-10" style={{ color: 'rgba(242,238,230,.45)' }}>
+            <span className="absolute top-20 left-6 text-xs sm:left-10" style={{ color: 'rgba(var(--pg-ivory-rgb),.45)' }}>
               HERO｜8 秒品牌影片佔位（1600×900 循環播放）
             </span>
           </div>
         )}
         {/* 文字可讀性暗角 */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(37,44,48,.85), transparent 55%)' }}
-        />
+        <div className="pg-hero-vignette absolute inset-0" />
         {/* 兩層獨立 scrim（2026-09-05 使用者規格，桌機 ≥768 才有；手機維持原設計）。
             位於底圖之上、所有文字與 fixed Navbar 之下（文字容器是 relative，
             Navbar 是 fixed z-40）。只用 Charcoal 的透明漸層，不動圖片亮度。 */}
@@ -202,7 +196,7 @@ export default function PremiumDemoApp() {
               Navbar 本身仍是透明的、不形成矩形底 */}
         <div
           aria-hidden="true"
-          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[112px] md:block"
+          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden md:block"
         />
         {/* 2) Hero copy scrim：左側水平漸層，只墊在文案後方，68% 之後完全透明，右側場館維持原亮度 */}
         <div
@@ -210,12 +204,12 @@ export default function PremiumDemoApp() {
           className="pg-hero-scrim-copy pointer-events-none absolute inset-0 hidden md:block"
         />
 
-        <div className="site-container relative pb-16 sm:pb-20">
+        <div className="site-container pg-hero-copy relative">
           {/* 宣言：由左至右快速連續 reveal——字與箭頭各自 clip 揭開，
               箭頭先畫出、35ms 後帶出下一個字，整串約 0.5s 一氣呵成。
               文字位置不動（無 translateX），完成後全部靜止。 */}
           <p
-            className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium tracking-[0.3em] sm:text-sm"
+            className="pg-t-manifesto flex flex-wrap items-center gap-x-3 gap-y-1"
             style={{ color: P.neutral }}
           >
             {hero.manifesto.map((w, i) => {
@@ -225,14 +219,14 @@ export default function PremiumDemoApp() {
               const mReveal = (delay: number): React.CSSProperties => ({
                 clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
                 opacity: shown('hero') ? 1 : 0,
-                transition: `clip-path 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+                transition: `clip-path 0.3s var(--pg-ease-spring) ${delay}s, opacity 0.3s var(--pg-ease-spring) ${delay}s`,
               })
               return (
                 <span key={w} className="flex items-center gap-3">
                   {i > 0 && (
                     <span
                       aria-hidden="true"
-                      style={{ color: 'rgba(242,238,230,.35)', ...mReveal(arrowDelay) }}
+                      style={{ color: 'rgba(var(--pg-ivory-rgb),.35)', ...mReveal(arrowDelay) }}
                     >
                       →
                     </span>
@@ -246,8 +240,8 @@ export default function PremiumDemoApp() {
               英文與副標刪除；固定斷行「讓撞球成為／一家人的共同記憶」） */}
           <div className="overflow-hidden">
             <h1
-              className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
-              style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.12, 1.15) }}
+              className="pg-t-h1 mt-5 max-w-3xl"
+              style={{ color: P.bg, ...reveal(shown('hero'), 0.12, 1.15) }}
             >
               {hero.titleLines[0]}
               <br />
@@ -258,8 +252,8 @@ export default function PremiumDemoApp() {
               由左而右灌入（獨立 fill layer 做 clip-path，按鈕本體零位移）。 */}
           <a
             href={hero.cta.href}
-            className="pg-hero-cta relative mt-9 inline-flex min-h-16 items-center justify-center overflow-hidden rounded-full border px-10 text-base font-semibold sm:text-lg"
-            style={{ background: 'transparent', borderColor: 'rgba(210,194,173,.85)' }}
+            className="pg-hero-cta pg-t-cta pg-t-cta--hero relative mt-9 inline-flex items-center justify-center overflow-hidden rounded-full border"
+            style={{ background: 'transparent', borderColor: 'rgba(var(--pg-sand-rgb),.85)' }}
           >
             {/* fill layer：左→右填滿，停在實心米杏色 */}
             <span
@@ -269,7 +263,7 @@ export default function PremiumDemoApp() {
                 background: P.neutral,
                 clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
                 transition:
-                  'clip-path 0.76s cubic-bezier(0.22, 1, 0.36, 1) 0.03s, background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+                  'clip-path var(--pg-dur-cta-fill) var(--pg-ease-spring) 0.03s, background-color 0.4s var(--pg-ease-spring)',
               }}
             />
             {/* fill 前緣柔光：同步右移，填滿時消失 */}
@@ -279,7 +273,7 @@ export default function PremiumDemoApp() {
             <span
               className="pg-cta-text relative z-[2]"
               style={{
-                color: shown('hero') ? P.text : 'rgba(242,238,230,.92)',
+                color: shown('hero') ? P.text : 'rgba(var(--pg-ivory-rgb),.92)',
                 transition: 'color 0.35s ease 0.33s',
               }}
             >
@@ -303,27 +297,25 @@ export default function PremiumDemoApp() {
             composition，用 justify-center 置中後再以「下留白大於上留白」的 padding
             把視覺中心壓到 section 高度 46–48%，下方留白較多，帶眼睛往場館圖走。
             高度改由 .pg-intro01 的 min/max-height 控制（見 styles/index.css）。 */}
-        <div className="site-container pg-intro01 flex flex-col justify-center pt-12 pb-14 sm:pt-[70px] sm:pb-[88px]">
+        <div className="site-container pg-intro01 flex flex-col justify-center">
           {/* 眉標列＝chapter heading system：01 / THE SPACE ─ ● COMING SOON。
               動線由左而右：文字 reveal → Progress Point 由左滑入 → 外圈淡入 → 徽章 reveal，
               之後才輪到大標兩行（見下方 delay）。 */}
           <p
-            className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
-            style={{ color: P.accent }}
+            className="pg-t-eyebrow flex flex-wrap items-center gap-x-3 gap-y-2"
           >
             <span style={reveal(on01, 0, 0.9)}>01 / THE SPACE</span>
             <ProgressPoint on={on01} delay={0.35} />
             <span
-              className="rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em] normal-case"
-              style={{ background: P.neutral, color: P.text, ...reveal(on01, 0.75, 0.6) }}
+              className="pg-t-badge rounded-full px-3 py-1 normal-case"
+              style={reveal(on01, 0.75, 0.6)}
             >
               COMING SOON
             </span>
           </p>
           <h2
             ref={reg('intro01h')}
-            className="mt-5 sm:mt-6"
-            style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
+            className="pg-t-serif-500 mt-5 sm:mt-6"
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
               /* 垂直 reveal（2026-08-17 使用者定稿）：line-mask 保留（overflow hidden），
@@ -336,14 +328,12 @@ export default function PremiumDemoApp() {
                   /* editorial stagger（2026-09-05 使用者定義）：第二行起點＝第一行
                      文字寬度的 30%。"YOUR TABLE." 實測寬 6.858em，故 0.30 × 6.858
                      ≈ 2.05em；用大字自己的 clamp 換算，桌機／手機自動等比縮放。 */
-                  i === 1 ? { marginLeft: 'calc(clamp(36px, 6.3vw, 97px) * 2.05)' } : undefined
+                  i === 1 ? { marginLeft: 'calc(var(--pg-fs-display) * var(--pg-display-stagger))' } : undefined
                 }
               >
                 <span
-                  className="block"
+                  className="pg-t-display block"
                   style={{
-                    fontSize: 'clamp(36px, 6.3vw, 97px)',
-                    lineHeight: 1.05,
                     opacity: on01 ? 1 : 0,
                     transform: on01 ? 'translateY(0)' : 'translateY(8px)',
                     transition: `opacity 0.52s ${EASE2} ${0.95 + i * 0.1}s, transform 0.52s ${EASE2} ${0.95 + i * 0.1}s`,
@@ -394,19 +384,19 @@ export default function PremiumDemoApp() {
       <section
         ref={reg('finale')}
         data-nav-dark="#252C30"
-        className="px-5 py-14 text-center sm:px-10 lg:py-20"
+        className="pg-finale text-center"
         style={{ background: P.text, color: P.bg }}
       >
+        <div className="site-container">
         <p
-          className="text-xs font-medium tracking-[0.3em] sm:text-sm"
+          className="pg-t-manifesto"
           style={{ color: P.neutral, ...fadeUp(shown('finale'), 0, 0.46, 10) }}
         >
           {finale.en}
         </p>
         <h2
-          className="mt-4 text-3xl font-bold sm:text-5xl"
+          className="pg-t-finale-h2 mt-4"
           style={{
-            fontFamily: SERIF,
             color: P.bg,
             opacity: shown('finale') ? 1 : 0,
             transform: shown('finale') ? 'translateY(0)' : 'translateY(16px)',
@@ -421,13 +411,13 @@ export default function PremiumDemoApp() {
             <a
               key={c.label}
               href={c.href}
-              className={`relative inline-flex min-h-16 w-full max-w-xs items-center justify-center rounded-full px-10 text-base font-semibold sm:w-auto ${
+              className={`pg-t-cta relative inline-flex w-full max-w-xs items-center justify-center rounded-full sm:w-auto ${
                 i === 0 ? 'pg-primary-cta' : 'pg-outline-cta'
               }`}
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
-                  : { border: '2px solid rgba(242,238,230,.55)', color: P.bg }
+                  : { border: '2px solid rgba(var(--pg-ivory-rgb),.55)', color: P.bg }
               }
             >
               {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
@@ -441,6 +431,7 @@ export default function PremiumDemoApp() {
               <span className="pg-cta-text relative z-[1]">{c.label}</span>
             </a>
           ))}
+        </div>
         </div>
       </section>
 
@@ -489,13 +480,12 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="pg-app-intro site-container flex items-center pt-20 pb-12 lg:pb-8"
+      className="pg-app-intro site-container flex items-center"
     >
       <div className="w-full">
         <p
-          className="text-[11px] font-medium tracking-[0.3em] uppercase sm:text-xs"
+          className="pg-t-eyebrow"
           style={{
-            color: P.accent,
             opacity: on ? 1 : 0,
             transform: on ? 'translateY(0)' : 'translateY(6px)',
             transition: `opacity 0.34s ${EASE2}, transform 0.34s ${EASE2}`,
@@ -505,8 +495,7 @@ function ChapterTransition({
         </p>
         <h2
           ref={headRefCb}
-          className="mt-3 sm:mt-4"
-          style={{ fontFamily: SERIF, fontWeight: 500, color: P.text }}
+          className="pg-t-serif-500 mt-3 sm:mt-4"
         >
           {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
             <span
@@ -516,14 +505,12 @@ function ChapterTransition({
                 /* 與 01 同一套 editorial stagger：第二行起點＝第一行文字寬度的 30%。
                    "THE GAME" 實測寬 5.494em，0.30 × 5.494 ≈ 1.65em；
                    用大字自己的 clamp 換算，桌機／手機自動等比。 */
-                i === 1 ? { marginLeft: 'calc(clamp(26px, 2.9vw, 44px) * 1.65)' } : undefined
+                i === 1 ? { marginLeft: 'calc(var(--pg-fs-chapter) * var(--pg-chapter-stagger))' } : undefined
               }
             >
               <span
-                className="block"
+                className="pg-t-chapter block"
                 style={{
-                  fontSize: 'clamp(26px, 2.9vw, 44px)',
-                  lineHeight: 1.08,
                   ...line(on, 0.06 + i * 0.08),
                 }}
               >
@@ -568,7 +555,7 @@ function PillarBlock({
       <section
         ref={refCb}
         id={s.id}
-        className="site-container site-container--bleed-sm relative mt-2 overflow-hidden sm:mt-5"
+        className="site-container site-container--bleed-sm pg-venue-section relative overflow-hidden"
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
@@ -578,7 +565,7 @@ function PillarBlock({
           {s.image ? (
             <picture>
               {/* 手機可換獨立直式圖（imageMobile）；沒有就沿用桌機圖＋ .pg-venue-img 的手機 object-position */}
-              <source media="(max-width: 768px)" srcSet={s.imageMobile ?? s.image} />
+              <source media="(max-width: 767px)" srcSet={s.imageMobile ?? s.image} />
               <img
                 src={s.image}
                 alt={s.zh}
@@ -586,11 +573,8 @@ function PillarBlock({
               />
             </picture>
           ) : (
-            <div
-              className="absolute inset-0"
-              style={{ background: `linear-gradient(135deg, ${P.secondary}, ${P.primary})` }}
-            >
-              <span className="absolute top-4 left-5 text-[11px]" style={{ color: 'rgba(37,44,48,.6)' }}>
+            <div className="pg-media-placeholder absolute inset-0">
+              <span className="absolute top-4 left-5 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
                 {s.imageHint}（滿版橫幅）
               </span>
             </div>
@@ -605,54 +589,23 @@ function PillarBlock({
             className="pg-venue-scrim pointer-events-none absolute inset-0 hidden lg:block"
           />
           <div
-            className="absolute hidden lg:block"
+            className="pg-venue-copy absolute hidden lg:block"
             style={{
-              left: 'var(--site-gutter)',
-              top: '12%',
-              maxWidth: 380,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
           >
-            <span
-              className="inline-flex items-center rounded-full font-semibold uppercase"
-              style={{
-                height: 25,
-                padding: '0 13px',
-                fontSize: 10.5,
-                letterSpacing: '0.18em',
-                background: 'rgba(210,194,173,.9)',
-                color: P.text,
-              }}
-            >
+            <span className="pg-t-badge-banner inline-flex items-center rounded-full">
               {s.badge}
             </span>
             {/* 標題兩行（v6）：Coming Soon → 標題 40px、標題 → 說明 24px，三層分開；
                 標題 26 → 30px（+15%）、weight 不加粗、lh 1.3 */}
-            <h3
-              style={{
-                marginTop: 40,
-                fontSize: 30,
-                fontWeight: 500,
-                lineHeight: 1.3,
-                maxWidth: 380,
-                color: 'rgba(248,244,236,.97)',
-              }}
-            >
+            <h3>
               我們正在打造
               <br />
               Poolgress 場館
             </h3>
-            <p
-              style={{
-                marginTop: 24,
-                fontSize: 16,
-                fontWeight: 400,
-                lineHeight: 1.8,
-                maxWidth: 380,
-                color: 'rgba(248,244,236,.88)',
-              }}
-            >
+            <p>
               {s.body.split('：').slice(1).join('：')}
             </p>
           </div>
@@ -660,11 +613,10 @@ function PillarBlock({
         {/* 平板（768–1023px）：照片保持乾淨，說明放照片正下方的兩欄 editorial caption
             （左 COMING SOON、右 主標＋說明；延續 #F2EEE6、無卡片底、繼承 section 的
             .site-container 對齊）。桌機 ≥1024 改為照片內左側 overlay（見上）。 */}
-        <div className="hidden pt-8 pb-2 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:hidden">
+        <div className="pg-venue-copy-tablet hidden md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:hidden">
           <div style={fadeUp(on, 0.05, 0.7, 12)}>
             <span
-              className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
-              style={{ background: P.neutral, color: P.text }}
+              className="pg-t-badge inline-block rounded-full px-3 py-1"
             >
               {s.badge}
             </span>
@@ -685,13 +637,9 @@ function PillarBlock({
             垂直節奏（使用者 2026-09-05）：照片→主標 40、主標→內文 18、內文→米白底結束 88，
             讓色彩交界上下都有留白，硬切色才像 chapter transition 而不是兩個 div 拼接。 */}
         {s.mobileTitle && (
-          <div className="px-3 pt-10 pb-[88px] md:hidden">
-            <h3 className="text-[17px] leading-snug font-medium" style={{ color: P.text }}>
-              {s.mobileTitle}
-            </h3>
-            <p className="mt-[18px] text-[15px]" style={{ color: 'rgba(37,44,48,.78)', lineHeight: 1.75 }}>
-              {s.mobileBody}
-            </p>
+          <div className="pg-venue-copy-mobile md:hidden">
+            <h3>{s.mobileTitle}</h3>
+            <p>{s.mobileBody}</p>
           </div>
         )}
       </section>
@@ -706,7 +654,7 @@ function PillarBlock({
   const d = { no: 0, en: st, zh: st * 2, body: st * 3, img: st * 4 }
   const up = (delay: number) => fadeUp(on, delay, dur)
   return (
-    <section ref={refCb} id={s.id} className="site-container scroll-mt-16 pt-10 pb-8 sm:pt-12 sm:pb-10 lg:pt-10 lg:pb-8">
+    <section ref={refCb} id={s.id} className="site-container pg-feature scroll-mt-16">
       {/* 章節頭：編號＋英文句橫跨整個版面。02 由上方 ChapterTransition 承擔，
           03/04 使用者指定不要（只留圖片＋旁邊的字），故僅在未隱藏時輸出 */}
       {!hideHeading && !hideChapterHead && (
@@ -734,7 +682,7 @@ function PillarBlock({
         </div>
       )}
       <div
-        className={`pg-feature-row flex flex-col-reverse gap-8 lg:items-center lg:gap-14 ${
+        className={`pg-feature-row flex flex-col-reverse lg:items-center ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
@@ -742,13 +690,13 @@ function PillarBlock({
             2026-09-05 使用者指定；DOM 順序仍是文字→圖，桌機 lg:flex-row 不受影響）。
             桌機上整欄再往上抬 22px——與圖片同組閱讀時，
             文字視覺中心落在圖高的 42–48%（1440 實測 45.0%），略高於數學置中。 */}
-        <div className="lg:w-[38%] lg:-translate-y-[22px]">
+        <div className="pg-feature-text">
           {/* 敘事標記：01 / PLAY → 02 / PROGRESS → 03 / TOGETHER。
               與「02 / THE APP」同一套 uppercase＋字距語言，但更小（10px／0.28em）。 */}
           {s.eyebrow && (
             <p
-              className="mb-4 text-[10px] font-medium tracking-[0.28em] uppercase"
-              style={{ color: P.accent, ...up(d.no) }}
+              className="pg-t-eyebrow-feature mb-4"
+              style={up(d.no)}
             >
               {s.eyebrow}
             </p>
@@ -756,16 +704,16 @@ function PillarBlock({
           {!hideHeading && (
             <div className="overflow-hidden">
               <h2
-                className="text-[clamp(24px,6.6vw,32px)] leading-snug font-bold sm:text-5xl"
-                style={{ fontFamily: SERIF, color: P.text, ...up(d.zh) }}
+                className="pg-t-feature-h2"
+                style={up(d.zh)}
               >
                 {s.zh}
               </h2>
             </div>
           )}
           <p
-            className="mt-4 max-w-md text-base leading-relaxed whitespace-pre-line sm:mt-5"
-            style={{ color: 'rgba(37,44,48,.78)', ...up(d.body) }}
+            className="pg-t-body mt-4 max-w-md whitespace-pre-line sm:mt-5"
+            style={up(d.body)}
           >
             {s.body}
           </p>
@@ -774,21 +722,17 @@ function PillarBlock({
             揭開由上層遮罩負責：底色遮罩隨捲動往下移出，底部 25% 羽化。 */}
         <div
           ref={imgRefCb}
-          className="relative overflow-hidden rounded-2xl lg:w-[62%]"
-          style={{ aspectRatio: '16/9' }}
+          className="pg-feature-media relative overflow-hidden"
         >
           {s.image ? (
             <img src={s.image} alt={s.zh} className="absolute inset-0 h-full w-full object-cover" />
           ) : (
-            <div
-              className="absolute inset-0"
-              style={{ background: `linear-gradient(135deg, ${P.secondary}, ${P.primary})` }}
-            >
+            <div className="pg-media-placeholder absolute inset-0">
               <div
                 className="absolute inset-[5%] rounded-xl border border-dashed"
-                style={{ borderColor: 'rgba(37,44,48,.25)' }}
+                style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
               />
-              <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(37,44,48,.6)' }}>
+              <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
                 {s.imageHint}
               </span>
             </div>
@@ -797,13 +741,8 @@ function PillarBlock({
               圖片從一開始就看得到，只是柔霧；不做 translateY 移板。 */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-[2]"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(242,238,230,0.38) 0%, rgba(242,238,230,0.48) 55%, rgba(242,238,230,0.55) 100%)',
-              opacity: 1 - maskProgress,
-              transition: 'opacity 0.18s linear',
-            }}
+            className="pg-feature-mask pointer-events-none absolute inset-0 z-[2]"
+            style={{ opacity: 1 - maskProgress }}
           />
         </div>
       </div>

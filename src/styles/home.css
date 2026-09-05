@@ -1,0 +1,407 @@
+/* ==================================================================
+   Premium 首頁（index.html → PremiumDemoApp）專用 CSS。
+   2026-09-05 Phase 1：從 index.css 搬出＋數值全部改讀 tokens.css（值不變）。
+   斷點：mobile <768、tablet ≥768、desktop ≥1024（與 Tailwind md/lg 對齊，
+   不再用 768/769 自訂邊界）。
+   ================================================================== */
+
+/* ---------- Typography roles（Phase 1：命名現值，不收斂 scale） ---------- */
+.pg-t-h1 {
+  font-family: var(--pg-font-serif);
+  font-size: var(--pg-fs-h1);
+  line-height: var(--pg-lh-h1);
+  letter-spacing: var(--pg-ls-h1);
+  font-weight: 700;
+}
+.pg-t-display {
+  font-size: var(--pg-fs-display);
+  line-height: var(--pg-lh-display);
+}
+.pg-t-chapter {
+  font-size: var(--pg-fs-chapter);
+  line-height: var(--pg-lh-chapter);
+}
+/* 01／02 大標的容器：襯線、500、Charcoal（實際字重要靠 index.html 載入 Serif 500） */
+.pg-t-serif-500 {
+  font-family: var(--pg-font-serif);
+  font-weight: 500;
+  color: var(--pg-charcoal);
+}
+.pg-t-feature-h2 {
+  font-family: var(--pg-font-serif);
+  font-size: var(--pg-fs-feature-h2);
+  line-height: var(--pg-lh-feature-h2);
+  font-weight: 700;
+  color: var(--pg-charcoal);
+}
+.pg-t-finale-h2 {
+  font-family: var(--pg-font-serif);
+  font-size: var(--pg-fs-finale-h2);
+  line-height: var(--pg-lh-finale-h2);
+  font-weight: 700;
+}
+/* Hero 宣言、頁尾 CTA 眉標：不 uppercase、行高沿用 p 的 1.9 */
+.pg-t-manifesto {
+  font-size: var(--pg-fs-manifesto);
+  letter-spacing: var(--pg-ls-manifesto);
+  font-weight: 500;
+  line-height: 1.9;
+}
+/* 章節眉標 01 / THE SPACE、02 / THE APP */
+.pg-t-eyebrow {
+  font-size: var(--pg-fs-eyebrow);
+  letter-spacing: var(--pg-ls-eyebrow);
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--pg-walnut);
+}
+/* 02–04 三段小眉標 01 / PLAY */
+.pg-t-eyebrow-feature {
+  font-size: var(--pg-fs-eyebrow-feature);
+  letter-spacing: var(--pg-ls-eyebrow-feature);
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--pg-walnut);
+}
+/* COMING SOON 徽章（01 開場、平板 caption） */
+.pg-t-badge {
+  font-size: var(--pg-fs-badge);
+  letter-spacing: var(--pg-ls-badge);
+  font-weight: 600;
+  /* line-height 不設：01 開場的徽章在 p 內繼承 1.9、平板 caption 的在 div 內繼承 1.5（與重構前相同） */
+  background: var(--pg-sand);
+  color: var(--pg-charcoal);
+}
+/* 桌機橫幅 overlay 上的徽章 */
+.pg-t-badge-banner {
+  height: var(--pg-badge-banner-h);
+  padding: 0 var(--pg-badge-banner-px);
+  font-size: var(--pg-fs-badge-banner);
+  letter-spacing: var(--pg-ls-badge-banner);
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(var(--pg-sand-rgb), 0.9);
+  color: var(--pg-charcoal);
+}
+.pg-t-body {
+  font-size: var(--pg-fs-body);
+  line-height: var(--pg-lh-body);
+  color: var(--pg-text-body);
+}
+.pg-t-cta {
+  font-size: var(--pg-fs-cta);
+  line-height: 1.5;
+  font-weight: var(--pg-fw-cta);
+  min-height: var(--pg-cta-min-h);
+  padding-inline: var(--pg-cta-px);
+}
+@media (min-width: 640px) {
+  .pg-t-cta--hero { font-size: 18px; line-height: 28px; }
+}
+
+/* ---------- Section spacing（讀 tokens；值＝重構前） ---------- */
+.pg-hero-copy { padding-bottom: var(--pg-space-hero-bottom); }
+.pg-intro01 {
+  padding-top: var(--pg-space-intro-top);
+  padding-bottom: var(--pg-space-intro-bottom);
+}
+.pg-venue-section { margin-top: var(--pg-space-banner-top); }
+.pg-venue-copy-tablet {
+  padding-top: var(--pg-space-venue-tablet-top);
+  padding-bottom: var(--pg-space-venue-tablet-bottom);
+}
+.pg-venue-copy-mobile {
+  padding-inline: var(--venue-mobile-copy-inset);
+  padding-top: var(--pg-space-venue-mobile-top);
+  padding-bottom: var(--pg-space-venue-mobile-bottom);
+}
+.pg-venue-copy-mobile h3 {
+  font-size: var(--pg-fs-venue-h3-mobile);
+  line-height: var(--pg-lh-venue-h3-mobile);
+  font-weight: 500;
+  color: var(--pg-charcoal);
+}
+.pg-venue-copy-mobile p {
+  margin-top: 18px;
+  font-size: var(--pg-fs-body-mobile);
+  line-height: var(--pg-lh-body-mobile);
+  color: var(--pg-text-body);
+}
+.pg-app-intro {
+  padding-top: var(--pg-space-chapter-top);
+  padding-bottom: var(--pg-space-chapter-bottom);
+}
+.pg-feature {
+  padding-top: var(--pg-space-feature-top);
+  padding-bottom: var(--pg-space-feature-bottom);
+}
+.pg-feature-row { gap: var(--pg-space-feature-gap); }
+.pg-finale {
+  padding-top: var(--pg-space-finale-y);
+  padding-bottom: var(--pg-space-finale-y);
+}
+.pg-footer-shell { padding-block: var(--pg-space-footer-y); }
+
+/* 桌機 02–04：文字欄 38%、圖 62%、文字上抬 22px（光學置中） */
+@media (min-width: 1024px) {
+  .pg-feature-text {
+    width: var(--pg-feature-text-w);
+    /* 用 translate 屬性而非 transform，與 Tailwind 的 -translate-y-* 一致 */
+    translate: 0 calc(var(--pg-feature-text-lift) * -1);
+  }
+  .pg-feature-media { width: var(--pg-feature-media-w); }
+}
+.pg-feature-media {
+  border-radius: var(--pg-radius-media);
+  aspect-ratio: var(--pg-feature-ratio);
+}
+
+/* 桌機橫幅 overlay 文字（Left Editorial Annotation，使用者反覆調到定案的位置） */
+.pg-venue-copy {
+  left: var(--site-gutter);
+  top: var(--pg-venue-copy-top);
+  max-width: var(--pg-venue-copy-max);
+}
+.pg-venue-copy h3 {
+  margin-top: 40px;
+  font-size: var(--pg-fs-venue-h3);
+  font-weight: 500;
+  line-height: var(--pg-lh-venue-h3);
+  max-width: var(--pg-venue-copy-max);
+  color: var(--pg-text-on-photo);
+}
+.pg-venue-copy p {
+  margin-top: 24px;
+  font-size: var(--pg-fs-venue-p);
+  font-weight: 400;
+  line-height: var(--pg-lh-venue-p);
+  max-width: var(--pg-venue-copy-max);
+  color: var(--pg-text-on-photo-soft);
+}
+
+/* ---------- Hero ---------- */
+/* 高度＝100svh - peek（桌機 56／平板 44／手機 32）；手機縮到 78svh——
+   16:9 的圖用 cover 塞進直式滿屏時可見寬只剩圖的 27%，店招塞不下；
+   78svh 時可見寬約 34%，焦點放 44.5% 就能把整塊店招框進來。 */
+.pg-hero { min-height: calc(100svh - var(--pg-peek, 56px)); }
+@media (max-width: 767px) {
+  .pg-hero { min-height: var(--pg-hero-mobile-h); }
+  .pg-hero-img { object-position: var(--pg-hero-img-focus-mobile); }
+}
+/* 文字可讀性暗角（底部） */
+.pg-hero-vignette {
+  background: linear-gradient(to top, rgba(var(--pg-charcoal-rgb), 0.85), transparent 55%);
+}
+/* 兩層獨立 scrim（桌機 ≥768 才有）。只用 Charcoal 的透明漸層，不動圖片亮度。
+   1) edge-to-edge transparent dark veil：整個 viewport 寬、從頁面最上緣開始、
+      在 Hero 圖之上、Navbar 內容之下，往下自然 fade。不是 Navbar 的底框。 */
+.pg-hero-scrim-top {
+  height: 112px;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--pg-charcoal-rgb), 0.46) 0%,
+    rgba(var(--pg-charcoal-rgb), 0.32) 55%,
+    rgba(var(--pg-charcoal-rgb), 0.12) 82%,
+    rgba(var(--pg-charcoal-rgb), 0) 100%
+  );
+}
+/* 2) copy scrim：左側水平漸層，只墊在文案後方，68% 之後完全透明 */
+.pg-hero-scrim-copy {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--pg-charcoal-rgb), 0.55) 0%,
+    rgba(var(--pg-charcoal-rgb), 0.34) 28%,
+    rgba(var(--pg-charcoal-rgb), 0.1) 48%,
+    rgba(var(--pg-charcoal-rgb), 0) 68%
+  );
+}
+/* 佔位框（沒圖也沒影片時） */
+.pg-hero-placeholder {
+  background: linear-gradient(135deg, var(--pg-charcoal-soft), var(--pg-charcoal));
+}
+
+/* ---------- 01 THE SPACE 章節開場高度 ----------
+   高度由內容決定，min-height 只是短視窗時的地板。桌機實測 416px（≈46vh）。
+   手機不設地板：Header 下方不留無意義的米白空白。 */
+.pg-intro01 { min-height: 0; }
+@media (min-width: 768px) {
+  .pg-intro01 { min-height: clamp(240px, 30vh, 330px); }
+}
+@media (min-width: 1024px) {
+  .pg-intro01 { min-height: clamp(400px, 46.2vh, 440px); }
+}
+
+/* ---------- 01 場館滿版橫幅 ----------
+   手機（<768）：完整顯示橫向圖不裁切，圖改流式、容器高度由圖決定。
+   平板（768–1023）：clamp(400px, 66svh, 560px) cover。
+   桌機（≥1024）：21:10 扁橫幅，不跟視窗高度走。 */
+.pg-venue-banner { height: auto; aspect-ratio: auto; min-height: 0; }
+@media (max-width: 767px) {
+  .pg-venue-img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+    object-position: initial;
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
+}
+@media (min-width: 1024px) {
+  .pg-venue-banner { height: auto; aspect-ratio: var(--pg-banner-ratio); }
+}
+/* 照片左上的局部 scrim（桌機）：無邊界 radial，只服務 COMING SOON／標題／說明，
+   在抵達媽媽臉（y ≥50%）之前衰減到 0；父女、球桌、右側維持原曝光。 */
+.pg-venue-scrim {
+  background: radial-gradient(
+    ellipse 34% 24% at 10% 22%,
+    rgba(var(--pg-charcoal-rgb), 0.62) 0%,
+    rgba(var(--pg-charcoal-rgb), 0.42) 42%,
+    rgba(var(--pg-charcoal-rgb), 0.16) 76%,
+    rgba(var(--pg-charcoal-rgb), 0) 100%
+  );
+}
+.pg-media-placeholder {
+  background: linear-gradient(135deg, var(--pg-secondary), var(--pg-primary));
+}
+
+/* ---------- 02 THE APP world 底色 ----------
+   Secondary 22% 混入 Background（桌機）／18%（手機）；第一行是舊瀏覽器 fallback。 */
+.pg-app-world {
+  background: var(--pg-app-world-bg-fallback);
+  background: var(--pg-app-world-bg);
+}
+@media (max-width: 767px) {
+  .pg-app-world {
+    background: var(--pg-app-world-bg-mobile-fallback);
+    background: var(--pg-app-world-bg-mobile);
+  }
+}
+
+/* 02–04 圖片上的薄紗遮罩：隨捲動整層溶解 */
+.pg-feature-mask {
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--pg-ivory-rgb), 0.38) 0%,
+    rgba(var(--pg-ivory-rgb), 0.48) 55%,
+    rgba(var(--pg-ivory-rgb), 0.55) 100%
+  );
+  transition: opacity var(--pg-dur-mask) linear;
+}
+
+/* ---------- CTA ---------- */
+/* Hero CTA entrance fill 的前緣柔光：跟著填色右移的一小段模糊亮光，填滿即淡出 */
+.pg-cta-fill-edge {
+  top: -20%;
+  height: 140%;
+  width: 30px;
+  background: rgba(255, 252, 245, 0.55);
+  filter: blur(11px);
+  opacity: 0;
+  animation: pg-cta-fill-edge var(--pg-dur-cta-fill) var(--pg-ease-spring) 0.03s 1 both;
+}
+@keyframes pg-cta-fill-edge {
+  0% { left: -8%; opacity: 0; }
+  12% { opacity: 0.16; }
+  82% { opacity: 0.16; }
+  100% { left: 102%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-cta-fill-edge { display: none; }
+}
+
+/* 頁尾 outline CTA：兩段定點流光（不繞圈），只播一次 */
+@property --pg-sweep-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.pg-cta-sweep {
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--pg-sweep-angle),
+    transparent 0deg,
+    transparent 26deg,
+    rgba(245, 232, 207, 0.25) 38deg,
+    rgba(255, 248, 235, 0.9) 52deg,
+    rgba(245, 232, 207, 0.25) 66deg,
+    transparent 78deg,
+    transparent 206deg,
+    rgba(245, 232, 207, 0.25) 218deg,
+    rgba(255, 248, 235, 0.9) 232deg,
+    rgba(245, 232, 207, 0.25) 246deg,
+    transparent 258deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  animation: pg-cta-sweep 0.9s var(--pg-ease-sweep) 0.45s 1 both;
+}
+@keyframes pg-cta-sweep {
+  0% { --pg-sweep-angle: -14deg; opacity: 0; }
+  18% { opacity: 0.55; }
+  80% { opacity: 0.55; }
+  100% { --pg-sweep-angle: 22deg; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-cta-sweep { display: none; }
+}
+
+/* 全站 CTA hover（2026-08-17 定稿）：luxury editorial 克制回饋。
+   Primary（Sand 實心）＝底色暖亮 4%＋按鈕 -1px。Secondary（描邊）＝極淡填色＋邊框變實＋文字微亮。
+   hover in 320ms／out 480ms。 */
+.pg-hero-cta,
+.pg-primary-cta,
+.pg-outline-cta {
+  transition:
+    transform var(--pg-dur-cta-out) var(--pg-ease-spring),
+    background-color var(--pg-dur-cta-out) var(--pg-ease-spring),
+    border-color var(--pg-dur-cta-out) var(--pg-ease-spring),
+    color var(--pg-dur-cta-out) var(--pg-ease-spring);
+}
+.pg-hero-cta:hover,
+.pg-primary-cta:hover,
+.pg-outline-cta:hover {
+  transition:
+    transform var(--pg-dur-cta-in) var(--pg-ease-spring),
+    background-color var(--pg-dur-cta-in) var(--pg-ease-spring),
+    border-color var(--pg-dur-cta-in) var(--pg-ease-spring),
+    color var(--pg-dur-cta-in) var(--pg-ease-spring);
+  transform: translateY(-1px);
+}
+.pg-primary-cta:hover {
+  background-color: var(--pg-sand-hover) !important;
+}
+.pg-hero-cta:hover .pg-cta-fill {
+  background-color: var(--pg-sand-hover) !important;
+}
+.pg-outline-cta:hover {
+  background-color: rgba(var(--pg-sand-rgb), 0.07);
+  border-color: rgba(var(--pg-ivory-rgb), 0.8) !important;
+  color: var(--pg-cream-bright) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-hero-cta:hover,
+  .pg-primary-cta:hover,
+  .pg-outline-cta:hover {
+    transform: none;
+  }
+}
+
+/* ---------- 錨點偏移 ----------
+   全站 html 的 scroll-padding-top 是 96px（舊站 sticky Navbar＋章節 tabs 用），
+   首頁只有一條 64px 的 fixed Navbar，錨點（#the-space）要剛好停在 Navbar 底下。 */
+html:has(.pg-home-root) {
+  scroll-padding-top: 4rem;
+}

@@ -6,16 +6,23 @@ import { Logo } from './Logo'
 import { AccountMenu } from './AccountMenu'
 import { useSession } from '../lib/session'
 
-
 type NavTheme = 'light' | 'hero'
 
-/** 導覽連結樣式（2026-09-05 hover system）：文字轉 Primary 灰藍＋左起 40% 短 indicator
- *  （.pg-nav-link，見 styles/index.css）；深淺兩態只差預設字色，尺寸完全相同。
- *  無 hover 底、無 pill、無放大、無粗細變化。 */
-const navLinkClass = (dark: boolean, active = false) =>
-  `pg-nav-link px-4 py-2 text-sm font-medium ${dark ? 'text-white/85' : 'text-ink-700'} ${
-    active ? 'pg-nav-link--active' : ''
-  }`
+/**
+ * Navbar state（2026-09-05 Phase 1 state architecture，樣式見 styles/nav.css）：
+ *   transparent-light  深色影像上的透明態（首頁 Hero 頂端）
+ *   transparent-dark   亮底上的透明態（目前沒有頁面使用，預留）
+ *   solid-light        淺色實底：首頁捲動後的 Ivory floating、其他頁的白色 sticky
+ *   solid-dark         深色實底：舊首頁 data-nav-dark 區塊上方
+ * surface 決定容器形狀：none（透明）／floating（首頁浮板）／page（其他頁 sticky）。
+ * 顏色一律由 nav.css 的 state 變數決定，這個檔案不再寫任何顏色。
+ */
+export type NavState = 'transparent-light' | 'transparent-dark' | 'solid-light' | 'solid-dark'
+type NavSurface = 'none' | 'floating' | 'page'
+
+/** 導覽連結：尺寸與 hover system 見 .pg-nav-link；顏色來自 state 變數 */
+const navLinkClass = (active = false) =>
+  `pg-nav-link px-4 py-2 text-sm font-medium ${active ? 'pg-nav-link--active' : ''}`
 
 /** 目前頁面＝該連結（比對檔名；首頁 './' 不會命中任何主導覽項） */
 const isActive = (href: string) => {
@@ -24,33 +31,23 @@ const isActive = (href: string) => {
   return href.replace('./', '') === page
 }
 
-/** 深色態預設底色（與 Hero 同色）；區塊可用 data-nav-dark 指定自己的色值 */
+/** 舊首頁 solid-dark 的預設底色（與 Hero 同色）；區塊可用 data-nav-dark 指定自己的色值 */
 const DEFAULT_DARK_BG = '#0f1e33'
 
 /**
  * 主導覽列。
  *
- * theme='hero'（僅首頁）：導覽列會跟著「身後是哪一個深色區塊」走。
+ * theme='hero'（舊首頁 home-legacy）：導覽列會跟著「身後是哪一個深色區塊」走。
+ * 任何區塊只要加上 `data-nav-dark="#色碼"`，導覽列捲到它上方時就會變成 solid-dark，
+ * 且底色直接採用該區塊自己的色值。離開最後一個深色區塊後切回 solid-light（page）。
+ * 判定方式：量測「導覽列底線」這條水平線落在哪個區塊身上（rAF 節流的 scroll listener，
+ * 不用 IntersectionObserver——它在分頁不可見時不會回呼，無法在自動化環境驗證）。
  *
- * 任何區塊只要加上 `data-nav-dark="#色碼"`，導覽列捲到它上方時就會變成深色，
- * 且底色直接採用該區塊自己的色值 —— 所以導覽列與身後背景永遠是相近的顏色，
- * 不會出現「深藍區塊上壓著另一個更深的深藍長條」。離開最後一個深色區塊後切回白色。
- *
- * 判定方式：直接量測「導覽列底線」這條水平線落在哪個區塊身上（getBoundingClientRect）。
- *
- * 為什麼不用 IntersectionObserver：它的回呼在分頁不可見時完全不會送出，
- * 導致無法在自動化環境中驗證，也曾造成首頁一載入就誤判成淺色。
- * 這裡改用 rAF 節流的 scroll listener，每幀最多算一次、只讀兩個矩形，
- * 判定與捲動位置同步且可被直接量測驗證。
- */
-/**
- * glass（僅 premium 首頁）：透明玻璃變體。
- * - 深色態：不用實色底，改成「上深下透明」的漸層壓在 Hero 影像上
- * - 淺色態：米白 82% 半透明＋backdrop-blur（與首頁玻璃卡同語言），不是純白
- * - 用 fixed 而非 sticky：首頁 Hero 是 100svh 滿屏，sticky 會把它往下推 64px
+ * glass（premium 首頁）：Adobe-inspired dual state——
+ *   State A（scrollY < 24）：transparent-light，透明、全寬，屬於 Hero 攝影
+ *   State B（離開頂端）：solid-light + floating surface（.pg-nav-floating）
+ * 用 fixed 而非 sticky：首頁 Hero 是 100svh 滿屏，sticky 會把它往下推 64px。
  * 功能（導覽、購物車、登入、語言、手機漢堡）與其他頁完全相同。
- * 註：backdrop-filter 捲動時會逐幀重繪，這是使用者為首頁選的視覺（方案 B），
- * 其他 28 頁仍走純色底、不受影響。
  */
 export function Navbar({
   theme = 'light',
@@ -68,10 +65,6 @@ export function Navbar({
       setDark(false)
       return
     }
-    /* glass（premium 首頁）：Adobe-inspired dual state——
-       State A（scrollY ≈ 0）：透明、全寬、白 Logo、Sand 導覽，屬於 Hero 攝影
-       State B（離開頂端）：morph 成 Ivory floating surface（見 .pg-nav-floating）
-       不看 data-nav-dark 區塊，只看 scrollY，24px 為切換點 */
     if (glass) {
       const applyGlass = () => setDark(window.scrollY < 24)
       applyGlass()
@@ -88,9 +81,8 @@ export function Navbar({
     }
 
     const apply = () => {
-      /* 判定線＝導覽列自己的底線（實測而非寫死 64px：
-         促銷列高度、1px 下邊框、瀏覽器縮放都會讓實際位置不同，
-         寫死會在捲到最頂端時差 1px，剛好判成「沒有任何區塊」＝白色） */
+      /* 判定線＝導覽列自己的底線（實測而非寫死 64px：促銷列、1px 下邊框、瀏覽器縮放
+         都會讓實際位置不同，寫死會在捲到最頂端時差 1px，剛好判成「沒有任何區塊」） */
       const line = headerRef.current?.getBoundingClientRect().bottom ?? 64
       /* 由後往前找：交界處若同時命中兩區，取 DOM 順序較後者 */
       let active: HTMLElement | null = null
@@ -105,9 +97,6 @@ export function Navbar({
       if (active) setDarkBg(active.dataset.navDark || DEFAULT_DARK_BG)
     }
 
-    /* 不套 requestAnimationFrame：rAF 在分頁不可見時不會執行，會讓判定停在舊值，
-       而且瀏覽器本來就把 scroll 事件對齊到每幀最多一次。
-       每次只讀 3 個矩形、不寫入樣式，不會觸發額外的版面重算。 */
     apply()
     window.addEventListener('scroll', apply, { passive: true })
     window.addEventListener('resize', apply)
@@ -125,37 +114,49 @@ export function Navbar({
     }
   }, [menuOpen])
 
+  /* state × surface：三種既有行為路徑各自對應 */
+  const state: NavState = glass
+    ? dark
+      ? 'transparent-light'
+      : 'solid-light'
+    : dark
+      ? 'solid-dark'
+      : 'solid-light'
+  const surface: NavSurface = glass ? (dark ? 'none' : 'floating') : 'page'
+  const tone = state === 'transparent-light' || state === 'solid-dark' ? 'dark' : 'light'
+
   return (
-    /* 背景用純色：backdrop-filter 在捲動時整條列逐幀重繪，是滾動卡頓來源之一。
-       深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。 */
+    /* 深淺兩態高度完全相同（h-16），切換不會造成頁面跳動。
+       glass：fixed 基底＋floating 修飾（.pg-nav-glass／.pg-nav-floating）；
+       其他頁：sticky 白底＋下邊線（solid-dark 時邊線透明、底色由 --nav-dark-bg 決定） */
     <header
       ref={headerRef}
+      data-nav-state={state}
+      data-nav-surface={surface}
+      data-nav-tone={tone}
       className={
         glass
-          ? `pg-nav-glass z-40 ${dark ? 'nav-hero' : 'pg-nav-floating'}`
-          : `sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
-              dark ? 'nav-hero border-transparent' : 'border-line bg-white'
+          ? `pg-nav pg-nav-glass z-40 ${surface === 'floating' ? 'pg-nav-floating' : ''}`
+          : `pg-nav sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
+              state === 'solid-dark' ? 'border-transparent' : 'border-line bg-white'
             }`
       }
-      /* 深色態底色取自身後區塊的 data-nav-dark，兩者永遠同色；glass 改用透明漸層 */
       style={
-        dark
-          ? glass
-            ? { background: 'linear-gradient(to bottom, rgba(37,44,48,.55), transparent)' }
-            : { backgroundColor: darkBg }
+        state === 'solid-dark'
+          ? ({ '--nav-dark-bg': darkBg } as React.CSSProperties)
           : undefined
       }
     >
       <div className="site-container flex h-16 items-center justify-between gap-4">
         {/* 左：Logo + 主導覽連結 */}
         <div className="flex min-w-0 items-center gap-4">
-          <Logo dark={dark} />
+          <Logo dark={tone === 'dark'} />
           <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
             {site.nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className={navLinkClass(dark, isActive(item.href))}
+                className={navLinkClass(isActive(item.href))}
                 aria-current={isActive(item.href) ? 'page' : undefined}
               >
                 {item.label}
@@ -168,7 +169,7 @@ export function Navbar({
             .pg-nav-utils：購物車與語言只做字／icon 轉 Primary，不加 indicator、不加 hover 底 */}
         <div className="pg-nav-utils hidden items-center gap-1 lg:flex">
           {user && (
-            <a href="./my-courses.html" className={navLinkClass(dark, isActive('./my-courses.html'))}>
+            <a href="./my-courses.html" className={navLinkClass(isActive('./my-courses.html'))}>
               我的課程
             </a>
           )}
@@ -182,7 +183,7 @@ export function Navbar({
               <AccountMenu user={user} />
             </div>
           ) : (
-            <a href={site.loginUrl} className={navLinkClass(dark)}>
+            <a href={site.loginUrl} className={navLinkClass()}>
               登入／註冊
             </a>
           )}
@@ -205,9 +206,9 @@ export function Navbar({
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? '關閉選單' : '開啟選單'}
-            className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-ivory-100"
+            className="pg-nav-burger flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-ivory-100"
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-6 w-6 transition-colors duration-250 ${dark ? "fill-white" : "fill-ink-900"}`}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 transition-colors duration-250">
               {menuOpen ? (
                 <path d="M6.4 5l12.6 12.6-1.4 1.4L5 6.4z M19 6.4L6.4 19 5 17.6 17.6 5z" />
               ) : (
@@ -218,6 +219,7 @@ export function Navbar({
         </div>
       </div>
 
+      {/* 手機選單：自己擁有白底深字，不受 nav state 影響 */}
       {menuOpen && (
         <div id="mobile-menu" className="border-t border-line bg-white lg:hidden">
           <nav aria-label="行動版導覽" className="px-4 py-3">

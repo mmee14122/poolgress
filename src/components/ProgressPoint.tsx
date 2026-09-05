@@ -8,9 +8,10 @@
  *
  * 動態（一次性，順著文字由左而右的 reveal）：
  * 點由左 20px 滑入並淡入（delay 後 0.5s），外圈晚 0.2s 淡入。
+ * 顏色與 easing 讀 tokens.css（--pg-primary／--pg-ease-spring）。
  */
-const PRIMARY = '#6F8FA3'
-const EASE_OUT = 'cubic-bezier(0.22, 1, 0.36, 1)'
+const PRIMARY = 'var(--pg-primary)'
+const EASE_OUT = 'var(--pg-ease-spring)'
 
 export function ProgressPoint({
   on,
@@ -50,7 +51,7 @@ export function ProgressPoint({
         <span
           className="absolute inset-0 rounded-full"
           style={{
-            background: 'rgba(111,143,163,0.12)',
+            background: 'rgba(var(--pg-primary-rgb), 0.12)',
             opacity: on ? 1 : 0,
             transition: `opacity 0.4s ${EASE_OUT} ${delay + 0.35}s`,
           }}

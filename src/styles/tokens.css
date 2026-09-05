@@ -1,0 +1,206 @@
+/* ==================================================================
+   Poolgress 首頁 Design Tokens（2026-09-05 Phase 1：Safe Refactor）
+
+   原則：每個 token 的值＝重構前頁面上實際存在的數值，只命名、不改值。
+   要調視覺請改這裡，不要回 TSX／其他 CSS 寫死數字。
+   命名：--pg-<類別>-<語義>。Phase 2 Visual Normalization 才會收斂 scale。
+   ================================================================== */
+
+:root {
+  /* ---------- 色彩：premium palette（唯一正式色系） ---------- */
+  --pg-charcoal: #252c30;       /* Text／深色段落底 */
+  --pg-charcoal-soft: #333c41;  /* 深色漸層亮端 */
+  --pg-ivory: #f2eee6;          /* Background */
+  --pg-ivory-nav: #f2eee8;      /* Navbar floating surface（比 Background 暖 2 階） */
+  --pg-sand: #d2c2ad;           /* 主按鈕底、徽章底、深底眉標、透明態導覽字 */
+  --pg-sand-hover: #daccb9;     /* Sand 暖亮 4%（CTA hover） */
+  --pg-walnut: #816b59;         /* 淺底眉標、編號 */
+  --pg-primary: #6f8fa3;        /* 灰藍：Logo、Progress Point、floating 態互動 */
+  --pg-secondary: #afc4cf;      /* 淺灰藍：透明態導覽 hover／indicator */
+  --pg-white: #ffffff;
+  --pg-cream: #f8f4ec;          /* 照片上的文字白（rgba(248,244,236)） */
+  --pg-cream-bright: #fffdf6;   /* outline CTA hover 文字 */
+
+  /* rgb 三元組：給 rgba(var(--x-rgb), a) 用，透明度各處自己決定 */
+  --pg-charcoal-rgb: 37, 44, 48;
+  --pg-ivory-rgb: 242, 238, 230;
+  --pg-sand-rgb: 210, 194, 173;
+  --pg-primary-rgb: 111, 143, 163;
+  --pg-cream-rgb: 248, 244, 236;
+
+  /* 常用透明度組合（目前實際值） */
+  --pg-text-body: rgba(37, 44, 48, 0.78);          /* 02–04 內文、手機 01 內文 */
+  --pg-text-on-photo: rgba(248, 244, 236, 0.97);   /* 橫幅 overlay 標題 */
+  --pg-text-on-photo-soft: rgba(248, 244, 236, 0.88); /* 橫幅 overlay 說明 */
+  --pg-app-world-bg: color-mix(in srgb, #afc4cf 22%, #f2eee6);        /* 02 THE APP 底（桌機） */
+  --pg-app-world-bg-fallback: #e3e5e1;
+  --pg-app-world-bg-mobile: color-mix(in srgb, #afc4cf 18%, #f2eee6); /* 手機 18% */
+  --pg-app-world-bg-mobile-fallback: #e6e7e2;
+
+  /* ---------- Grid ---------- */
+  --site-gutter: 20px;                 /* 手機；≥768 見下方 media */
+  --site-max: 1680px;
+  --venue-mobile-copy-inset: 12px;     /* 手機 01 照片下文字的左右內距（intentional exception，
+                                          比 gutter 少 8px，使用者 2026-09-05 指定「米色文字框寬一點」） */
+
+  /* ---------- Typography（字體） ---------- */
+  --pg-font-serif: 'Noto Serif TC', 'Noto Sans TC', serif;
+
+  /* ---------- Typography（目前各角色的實際尺寸；手機值，桌機在 media 內覆寫） ---------- */
+  --pg-fs-h1: 36px;                     /* Hero 主標：36 / sm 60 / lg 72 */
+  --pg-lh-h1: 1.25;
+  --pg-ls-h1: -0.025em;
+
+  --pg-fs-display: clamp(36px, 6.3vw, 97px);   /* 01 大標 YOUR TABLE. */
+  --pg-lh-display: 1.05;
+  --pg-display-stagger: 2.05;           /* 第二行縮排＝字級 × 2.05（≈首行寬 30%） */
+
+  --pg-fs-chapter: clamp(26px, 2.9vw, 44px);   /* 02 轉場大標 THE GAME */
+  --pg-lh-chapter: 1.08;
+  --pg-chapter-stagger: 1.65;
+
+  --pg-fs-feature-h2: clamp(24px, 6.6vw, 32px); /* 02–04 標題；sm 48px */
+  --pg-lh-feature-h2: 1.375;
+
+  --pg-fs-finale-h2: 30px;              /* 頁尾 CTA 標；sm 48px */
+  --pg-lh-finale-h2: 36px;              /* sm：48px（＝1） */
+
+  --pg-fs-manifesto: 12px;              /* Hero 宣言、頁尾 CTA 眉標：12 / sm 14，不 uppercase */
+  --pg-ls-manifesto: 0.3em;
+
+  --pg-fs-eyebrow: 11px;                /* 01 / THE SPACE、02 / THE APP：11 / sm 12，uppercase */
+  --pg-ls-eyebrow: 0.3em;
+
+  --pg-fs-eyebrow-feature: 10px;        /* 01 / PLAY 等三段小眉標（Phase 2 再決定是否併入 eyebrow） */
+  --pg-ls-eyebrow-feature: 0.28em;
+
+  --pg-fs-badge: 10px;                  /* COMING SOON 徽章（01 開場、平板 caption） */
+  --pg-ls-badge: 0.15em;
+  --pg-fs-badge-banner: 10.5px;         /* 桌機橫幅 overlay 上的徽章 */
+  --pg-ls-badge-banner: 0.18em;
+  --pg-badge-banner-h: 25px;
+  --pg-badge-banner-px: 13px;
+
+  --pg-fs-body: 16px;                   /* 02–04 內文 */
+  --pg-lh-body: 1.625;
+  --pg-fs-body-mobile: 15px;            /* 手機 01 內文 */
+  --pg-lh-body-mobile: 1.75;
+
+  --pg-fs-venue-h3: 30px;               /* 桌機橫幅 overlay 標題 */
+  --pg-lh-venue-h3: 1.3;
+  --pg-fs-venue-p: 16px;
+  --pg-lh-venue-p: 1.8;
+  --pg-venue-copy-max: 380px;
+  --pg-venue-copy-top: 12%;
+  --pg-fs-venue-h3-tablet: 20px;        /* 平板 caption 標（text-xl）*/
+  --pg-fs-venue-h3-mobile: 17px;        /* 手機照片下標題 */
+  --pg-lh-venue-h3-mobile: 1.375;
+
+  --pg-fs-cta: 16px;                    /* 三顆 CTA；Hero 的 sm 18px */
+  --pg-fw-cta: 600;
+  --pg-cta-min-h: 4rem;                 /* min-h-16 */
+  --pg-cta-px: 2.5rem;                  /* px-10 */
+
+  --pg-fs-nav: 14px;
+  --pg-fw-nav: 500;
+
+  /* ---------- Section spacing（目前各段實際 padding；手機值，桌機見 media） ---------- */
+  --pg-space-hero-bottom: 4rem;         /* Hero 文字容器 pb：64 / sm 80 */
+  --pg-space-intro-top: 3rem;           /* 01 開場 pt：48 / sm 70 */
+  --pg-space-intro-bottom: 3.5rem;      /* 01 開場 pb：56 / sm 88 */
+  --pg-space-banner-top: 0.5rem;        /* 01 橫幅 mt：8 / sm 20 */
+  --pg-space-venue-mobile-top: 2.5rem;  /* 手機照片→標題 40 */
+  --pg-space-venue-mobile-bottom: 88px; /* 手機內文→米白底結束 88 */
+  --pg-space-venue-tablet-top: 2rem;    /* 平板 caption pt 32 */
+  --pg-space-venue-tablet-bottom: 0.5rem;
+  --pg-space-chapter-top: 5rem;         /* 02 轉場 pt 80 */
+  --pg-space-chapter-bottom: 3rem;      /* 02 轉場 pb：48 / lg 32 */
+  --pg-space-feature-top: 2.5rem;       /* 02–04 pt：40 / sm 48 / lg 40 */
+  --pg-space-feature-bottom: 2rem;      /* 02–04 pb：32 / sm 40 / lg 32 */
+  --pg-space-feature-gap: 24px;         /* 02–04 圖文間距：24 / sm 32 / lg 56 */
+  --pg-space-finale-y: 3.5rem;          /* 頁尾 CTA py：56 / lg 80 */
+  --pg-space-footer-y: 3rem;            /* Footer py：48 / lg 56 */
+  --pg-feature-text-lift: 22px;         /* 桌機 02–04 文字欄上抬 */
+  --pg-feature-text-w: 38%;
+  --pg-feature-media-w: 62%;
+
+  /* ---------- Media ---------- */
+  --pg-radius-media: 1rem;              /* 02–04 圖 rounded-2xl */
+  --pg-radius-nav: 18px;                /* Navbar floating */
+  --pg-banner-ratio: 21 / 10;           /* 桌機 01 橫幅 */
+  --pg-feature-ratio: 16 / 9;
+  --pg-hero-mobile-h: 78svh;
+  --pg-hero-img-focus-mobile: 44.5% 0;
+  --pg-peek: 32px;                      /* Hero 底部露出下一章：32 / sm 44 / lg 56 */
+
+  /* ---------- Motion（目前實際 easing／duration） ---------- */
+  --pg-ease-out-4: cubic-bezier(0.25, 1, 0.5, 1);    /* ≈ power4.out：文字 reveal */
+  --pg-ease-out-3: cubic-bezier(0.33, 1, 0.68, 1);   /* ≈ power3.out：頁尾標題 */
+  --pg-ease-out-2: cubic-bezier(0.5, 1, 0.89, 1);    /* ≈ power2.out：02–04 fade */
+  --pg-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);  /* Navbar、CTA、Progress Point */
+  --pg-ease-sweep: cubic-bezier(0.45, 0, 0.55, 1);   /* outline CTA 光帶 */
+  --pg-dur-reveal: 0.9s;
+  --pg-dur-reveal-title: 1.15s;
+  --pg-dur-fade: 0.7s;
+  --pg-dur-fade-mobile: 0.8s;
+  --pg-dur-nav-morph: 350ms;
+  --pg-dur-nav-color: 220ms;
+  --pg-dur-nav-indicator: 250ms;
+  --pg-dur-nav-ball-fade: 120ms;
+  --pg-dur-cta-in: 0.32s;
+  --pg-dur-cta-out: 0.48s;
+  --pg-dur-cta-fill: 0.76s;
+  --pg-dur-mask: 0.18s;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --pg-fs-h1: 60px;
+    --pg-fs-feature-h2: 48px;
+    --pg-fs-finale-h2: 48px;
+    --pg-lh-finale-h2: 1;
+    --pg-fs-manifesto: 14px;
+    --pg-fs-eyebrow: 12px;
+    --pg-space-hero-bottom: 5rem;
+    --pg-space-intro-top: 70px;
+    --pg-space-intro-bottom: 88px;
+    --pg-space-banner-top: 1.25rem;
+    --pg-space-feature-top: 3rem;
+    --pg-space-feature-bottom: 2.5rem;
+    --pg-space-feature-gap: 32px;
+    --pg-peek: 44px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --site-gutter: clamp(32px, 3.5vw, 64px);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --pg-fs-h1: 72px;
+    --pg-space-chapter-bottom: 2rem;
+    --pg-space-feature-top: 2.5rem;
+    --pg-space-feature-bottom: 2rem;
+    --pg-space-feature-gap: 3.5rem;
+    --pg-space-finale-y: 5rem;
+    --pg-space-footer-y: 3.5rem;
+    --pg-peek: 56px;
+  }
+}
+
+/* ── 全站水平 Grid（2026-09-05）──
+   唯一的 container：Navbar 內容、Hero 文字、01／02 各段、頁尾 CTA、Footer 共用同一條左右基準線。
+   桌機實測左緣 50.4px（1440），不要再各自用 max-w-*／px-* 做容器。 */
+.site-container {
+  width: 100%;
+  max-width: var(--site-max);
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+}
+/* 手機出血：照片在 <768px 滿寬，桌機仍照 container 的 gutter 對齊 */
+@media (max-width: 767px) {
+  .site-container--bleed-sm { padding-inline: 0; }
+}

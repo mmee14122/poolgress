@@ -1,0 +1,220 @@
+/* ==================================================================
+   Navbar（全站共用元件）— State Architecture（2026-09-05 Phase 1）
+
+   header.pg-nav 由兩個 data attribute 決定外觀，顏色全部走 CSS 變數：
+     data-nav-state   transparent-light ｜ transparent-dark ｜ solid-light ｜ solid-dark
+     data-nav-surface none（透明）｜ floating（首頁捲動後的 Ivory 浮板）｜ page（其他頁 sticky 白底）
+     data-nav-tone    light ｜ dark（由 state 推得，給子元件選 icon／Logo 版本用）
+
+   變數：
+     --nav-fg          導覽連結／trigger 文字
+     --nav-fg-hover    hover／active 文字
+     --nav-indicator   hover 底線＋球
+     --nav-logo        Logo 品牌字
+     --nav-icon        trigger 內 svg
+     --nav-burger      手機漢堡 svg
+     --nav-surface     底色（solid 態）
+
+   Phase 1 只是把重構前的實際顏色搬進 state，視覺零改動。
+   已知的歷史差異（留 Phase 2 收斂）：page surface 的連結色是舊站 ink-700 #33393f、
+   hover 是 Secondary；floating surface 是 Charcoal #252C30、hover 是 Primary。
+   ================================================================== */
+
+.pg-nav {
+  --nav-fg: var(--pg-charcoal);
+  --nav-fg-hover: var(--pg-primary);
+  --nav-indicator: var(--pg-primary);
+  --nav-logo: var(--pg-primary);
+  --nav-icon: currentColor;
+  --nav-burger: var(--color-ink-900);
+  --nav-surface: transparent;
+}
+
+/* ── 四個 state ── */
+.pg-nav[data-nav-state='transparent-light'] {
+  --nav-fg: var(--pg-sand);
+  --nav-fg-hover: var(--pg-secondary);
+  --nav-indicator: var(--pg-secondary);
+  --nav-logo: var(--pg-white);
+  --nav-icon: var(--pg-sand);
+  --nav-burger: var(--pg-sand);   /* 重構前：.nav-hero button svg 蓋過 fill-white，實際是 Sand */
+  /* 透明態不用實色底：上深下透明的漸層壓在 Hero 影像上；可讀性靠 Hero 的 top veil */
+  background: linear-gradient(to bottom, rgba(var(--pg-charcoal-rgb), 0.55), transparent);
+}
+.pg-nav[data-nav-state='transparent-dark'] {
+  --nav-fg: var(--pg-charcoal);
+  --nav-fg-hover: var(--pg-primary);
+  --nav-indicator: var(--pg-primary);
+  --nav-logo: var(--pg-primary);
+  --nav-icon: var(--pg-charcoal);
+  --nav-burger: var(--color-ink-900);
+  background: transparent;
+}
+.pg-nav[data-nav-state='solid-light'] {
+  --nav-fg: var(--pg-charcoal);
+  --nav-fg-hover: var(--pg-primary);
+  --nav-indicator: var(--pg-primary);
+  --nav-logo: var(--pg-primary);
+  --nav-burger: var(--color-ink-900);
+}
+.pg-nav[data-nav-state='solid-dark'] {
+  --nav-fg: var(--pg-sand);
+  --nav-fg-hover: var(--pg-secondary);
+  --nav-indicator: var(--pg-secondary);
+  --nav-logo: var(--pg-white);
+  --nav-icon: var(--pg-sand);
+  --nav-burger: var(--pg-sand);
+  /* 舊站首頁：底色取自身後區塊的 data-nav-dark（由 Navbar.tsx 寫入 --nav-dark-bg） */
+  --nav-surface: var(--nav-dark-bg, var(--color-brand-950));
+  background-color: var(--nav-surface);
+}
+
+/* ── surface：page（其他頁 sticky 白底，沿用舊站色）──
+   只在 solid-light 時覆寫顏色；舊首頁的 solid-dark 也是 page surface，但顏色歸 state 管。 */
+.pg-nav[data-nav-state='solid-light'][data-nav-surface='page'] {
+  --nav-fg: var(--color-ink-700);
+  --nav-fg-hover: var(--pg-secondary);
+  --nav-indicator: var(--pg-secondary);
+  --nav-surface: var(--pg-white);
+}
+
+/* ── surface：floating（首頁捲動後）──
+   .pg-nav-glass 是首頁基底：fixed、全寬、透明；加 .pg-nav-floating 後
+   平滑 morph 成 Ivory floating surface（Adobe-inspired dual state）。
+   左右離 viewport 20px、top 10px、radius 18、極淡陰影、輕微 blur；
+   內層 .site-container 扣掉 20px inset，內容左緣仍在全站 grid 線上。 */
+.pg-nav-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: 0 0 0 rgba(var(--pg-charcoal-rgb), 0);
+  transition:
+    top var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    left var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    right var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    border-radius var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    box-shadow var(--pg-dur-nav-morph) var(--pg-ease-spring);
+}
+.pg-nav-floating {
+  --nav-surface: var(--pg-ivory-nav);
+  background-color: var(--nav-surface);
+  box-shadow: 0 6px 24px rgba(var(--pg-charcoal-rgb), 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+@media (min-width: 768px) {
+  .pg-nav-floating {
+    top: 10px;
+    left: 20px;
+    right: 20px;
+    border-radius: var(--pg-radius-nav);
+  }
+  .pg-nav-floating .site-container {
+    padding-inline: calc(var(--site-gutter) - 20px);
+  }
+}
+
+/* ── Logo：品牌字顏色由 --logo-color 決定；Navbar 內接 --nav-logo ── */
+.pg-logo {
+  --logo-color: var(--pg-primary);
+}
+.pg-logo--on-dark {
+  --logo-color: var(--pg-white);
+}
+.pg-nav .pg-logo {
+  --logo-color: var(--nav-logo);
+}
+.pg-logo-text {
+  color: var(--logo-color);
+}
+
+/* ── 導覽連結 + hover system（Billiard Line + Ball，2026-09-05 locked）──
+   Hover：文字轉 --nav-fg-hover；文字左緣起一條 1.5px、寬＝文字寬 80% 的細線由左向右
+   scaleX(0→1)，同時一顆 6px 的球從線的起點滑到文字右緣，線畫完球剛好停住。
+   Active：同樣式、停在完成位置。無 ring／glow／shadow／bounce／full-width underline。 */
+.pg-nav-link {
+  --pg-ind-w: calc((100% - 2rem) * 0.8);   /* 文字寬度（去掉 px-4）的 80% */
+  position: relative;
+  color: var(--nav-fg);
+  transition: color var(--pg-dur-nav-color) var(--pg-ease-spring);
+}
+.pg-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  bottom: 0;
+  height: 1.5px;
+  width: var(--pg-ind-w);
+  background: var(--nav-indicator);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--pg-dur-nav-indicator) var(--pg-ease-spring);
+}
+.pg-nav-link::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  bottom: -2.25px;                         /* 6px 球置中於 1.5px 線 */
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nav-indicator);
+  opacity: 0;
+  transition:
+    left var(--pg-dur-nav-indicator) var(--pg-ease-spring),
+    opacity var(--pg-dur-nav-ball-fade) var(--pg-ease-spring);
+}
+.pg-nav-link:hover,
+.pg-nav-link--active {
+  color: var(--nav-fg-hover);
+}
+.pg-nav-link:hover::after,
+.pg-nav-link--active::after {
+  transform: scaleX(1);
+}
+.pg-nav-link:hover::before,
+.pg-nav-link--active::before {
+  left: calc(100% - 1rem - 6px);           /* 球右緣貼齊文字右緣 */
+  opacity: 1;
+}
+
+/* ── Trigger（購物車、語言、帳號的觸發鈕）──
+   只有 .pg-nav-trigger 本身吃 nav 變數；彈出面板（role=menu／region／dialog、#mobile-menu）
+   是自己的白底深字，不再靠「全域塗色後 revert-layer 反向排除」。
+   深色態（tone=dark）：文字／icon 轉 --nav-fg／--nav-icon；淺色態沿用子元件自己的 Tailwind 色
+   （購物車 ink-700、語言 ink-700／ink-500／ink-400），與重構前一致。 */
+.pg-nav[data-nav-tone='dark'] .pg-nav-trigger {
+  color: var(--nav-fg);
+}
+.pg-nav[data-nav-tone='dark'] .pg-nav-trigger svg {
+  fill: var(--nav-icon);
+  transition: fill 250ms ease;
+}
+/* 購物車數量徽章：深底上改用品牌金＋深藍字，維持高辨識度 */
+.pg-nav[data-nav-tone='dark'] .pg-nav-trigger .bg-brand-600 {
+  background-color: var(--color-brass-300);
+  color: var(--color-brand-950);
+}
+/* hover：trigger 只變色，不加底、不加 indicator（兩態皆同） */
+.pg-nav-trigger:hover,
+.pg-nav-trigger:hover > span.hover\:bg-ivory-100 {
+  background-color: transparent;
+}
+.pg-nav-utils .pg-nav-trigger:hover {
+  color: var(--pg-primary);
+}
+.pg-nav-utils .pg-nav-trigger:hover svg {
+  fill: var(--pg-primary);
+}
+
+/* 手機漢堡：svg 顏色跟 state 走；深色態 hover 不加底 */
+.pg-nav-burger svg {
+  fill: var(--nav-burger);
+}
+.pg-nav[data-nav-tone='dark'] .pg-nav-burger:hover {
+  background-color: transparent;
+}

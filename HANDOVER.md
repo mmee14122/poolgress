@@ -91,7 +91,7 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 
 ### peek 構圖（曾出過事故，小心）
 
-`--pg-peek`（styles/index.css 的 `.pg-home-root`：桌機 56/平板 44/手機 32px）驅動 Hero 與 01 橫幅高度 `calc(100svh - var(--pg-peek, 56px))`。
+`--pg-peek`（styles/tokens.css 的 `:root`：桌機 56/平板 44/手機 32px）驅動 Hero 與 01 橫幅高度 `calc(100svh - var(--pg-peek, 56px))`。
 **⚠️ 事故紀錄**：曾用「從標記刪到檔尾」清 CSS 把這段誤刪 → Hero 塌版。現在有 `, 56px` 預設值防呆，但**清 CSS 區塊時務必確認範圍、改完重驗整頁**。
 
 ### 等使用者的素材（全部平面圖，不分層、圖裡不放字）
@@ -116,11 +116,24 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 
 ## 6. 部署以外的既有紀律
 
-- **水平 grid 只有一套**：`.site-container`（styles/index.css，max 1680px、gutter `--site-gutter`＝手機 20px／≥768 clamp(32px,3.5vw,64px)）。Navbar 內容、Hero 文字、01／02 各段、Footer、course 頁都用它；**不要再各自寫 max-w-*／px-* 當容器**，Logo 與內容左緣會對不齊。照片要手機出血加 `site-container--bleed-sm`
+- **水平 grid 只有一套**：`.site-container`（styles/tokens.css，max 1680px、gutter `--site-gutter`＝手機 20px／≥768 clamp(32px,3.5vw,64px)）。Navbar 內容、Hero 文字、01／02 各段、Footer、course 頁都用它；**不要再各自寫 max-w-*／px-* 當容器**，Logo 與內容左緣會對不齊。照片要手機出血加 `site-container--bleed-sm`
 - 新頁面：html＋entry＋**vite.config.ts input 加一行**
-- 新 CSS 一律 `.pg-` 前綴放 styles/index.css；PowerShell 別碰中文檔（用 Git Bash / node 腳本），改完 `grep -rl '�' src`
+- 新 CSS 一律 `.pg-` 前綴；首頁放 styles/home.css、Navbar 放 nav.css、數值先進 tokens.css（見 §6a）；PowerShell 別碰中文檔（用 Git Bash / node 腳本），改完 `grep -rl '�' src`
 - 全站樣式表有 h1/h2 顏色規則，**深底標題要 inline 指定 color** 否則被蓋掉
 - 滿版元素做 scale 動畫會水平溢位 → reveal 放內層、外層 overflow-hidden
+
+### 6a. Design System Phase 1（2026-09-05 Safe Refactor，已上線）
+
+CSS 拆成四檔（index.css 只留 Tailwind @theme／base／課程頁 Hero 動畫／reduced-motion）：
+- `styles/tokens.css`：`--pg-*` design tokens＝重構前的實際數值，**只命名不改值**（色彩、gutter、字級／行高／字距、各段 padding、media 比例／圓角、easing／duration）＋ `.site-container`
+- `styles/nav.css`：Navbar state architecture——`header.pg-nav[data-nav-state]`＝`transparent-light｜transparent-dark｜solid-light｜solid-dark`，`[data-nav-surface]`＝`none｜floating｜page`；顏色全走 `--nav-fg／--nav-fg-hover／--nav-indicator／--nav-logo／--nav-icon／--nav-burger`。Logo 品牌字讀 `--logo-color`（`.pg-logo` Primary、`.pg-logo--on-dark` 白、Navbar 內接 `--nav-logo`）。觸發鈕加 `.pg-nav-trigger` 才吃 nav 顏色，popover／手機選單自己白底深字，**不再有 revert-layer**
+- `styles/home.css`：首頁 typography roles（`.pg-t-h1／display／chapter／feature-h2／finale-h2／manifesto／eyebrow／eyebrow-feature／badge／body／cta`）與各段 spacing class，全部讀 tokens
+- `styles/legacy-home.css`：舊首頁 `.hs-*／.one-*／.pg-illus-*／.pg-route`
+- 已知歷史差異（Phase 2 再收斂）：page surface 連結色 ink-700／hover Secondary，floating 是 Charcoal／hover Primary；眉標 10／11／12／14px 四種；Footer charcoal 主題仍寫 hex
+- 斷點統一：mobile <768、tablet ≥768（自訂 CSS 不再用 768/769）
+- `index.html` 字體改載 Serif 500+700、Sans 400/500/600（01／02 大標終於是真 500，字寬窄 2.3%；內文各 OS 一致）
+- 手機 01 文字左右 12px 是 intentional exception，token `--venue-mobile-copy-inset`
+- Phase 2（Visual Normalization，未做、需使用者批准）：typography scale 收斂、vertical rhythm、Section primitive、PillarBlock 拆分、04→CTA 段距
 
 ## 7. ⚠️ 驗證環境的真相（本 session 實測確認，比舊手冊更嚴重）
 
