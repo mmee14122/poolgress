@@ -151,17 +151,24 @@
    層級：COMING SOON pill → POOLGRESS SPACE（ivory serif 主視覺）→ 40px 短 rule → 一句中文 → TAIWAN · 2026（.18em） */
 .pg-venue-veil { background: var(--pg-teaser-veil); }
 .pg-venue-glow { background: var(--pg-teaser-glow); }
+/* v5 Luxury Editorial Frame（2026-09-05 使用者規格）：
+   .pg-venue-teaser 本身就是大型構圖框——absolute inset 幾乎包覆整張照片（桌機左右 clamp(40,4vw,64)、
+   上下 16%；手機 16px／9%），1px hairline rgba(255,255,255,.5)、直角、無陰影／blur／底色。
+   文字用 flex 靠左、垂直置中後以 padding-bottom 上抬，視覺中心落在框高約 45%（手機約 41%）。 */
 .pg-venue-teaser {
-  left: var(--site-gutter);
-  top: 50%;
-  width: var(--pg-teaser-w);
-  max-width: calc(100% - var(--site-gutter) * 2);
-  padding: var(--pg-teaser-pad);
-  border: 1px solid var(--pg-teaser-border);   /* v3：細框加回，更淡、更鬆、更大 */
-  border-radius: 2px;
+  left: var(--pg-frame-inset-x);
+  right: var(--pg-frame-inset-x);
+  top: var(--pg-frame-inset-y);
+  bottom: var(--pg-frame-inset-y);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 var(--pg-frame-text-x) var(--pg-frame-text-lift) var(--pg-frame-text-x);
+  border: 1px solid var(--pg-teaser-border);
+  border-radius: 0;
   color: var(--pg-ivory);
 }
-/* v3：COMING SOON 回到純文字 label（無 pill） */
 .pg-venue-teaser__pill {
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -199,20 +206,24 @@
   line-height: 1.4;
   color: rgba(var(--pg-ivory-rgb), 0.62);
 }
-@media (min-width: 768px) and (max-width: 1023px) {
-  .pg-venue-teaser { padding: var(--pg-teaser-pad-tablet); }
+@media (min-width: 768px) and (max-width: 1279px) {
+  /* 平板／小桌機橫幅較矮（360–373）：上下 inset 收到 11%，字級 clamp 下限給 40 */
+  .pg-venue-teaser { top: 11%; bottom: 11%; padding-bottom: var(--pg-frame-text-lift-tablet); }
+  .pg-venue-teaser__title { font-size: clamp(40px, 3.6vw, 52px); }
 }
-@media (min-width: 1024px) and (max-width: 1279px) {
-  /* 1024 的 23:9 橫幅只有 373 高，框縮回 520×(44×48) 才放得下 */
-  .pg-venue-teaser { width: 520px; padding: 44px 48px; }
+@media (max-width: 359px) {
+  /* 提高特異度，蓋過下方 <768 區塊的 shorthand */
+  .pg-venue-teaser .pg-venue-teaser__title { font-size: 32px; }
+  .pg-venue-banner .pg-venue-teaser { padding-bottom: var(--pg-frame-text-lift-xs); }
 }
 @media (max-width: 767px) {
   .pg-venue-glow { background: var(--pg-teaser-glow-mobile); }
   .pg-venue-teaser {
-    left: 20px;
-    width: calc(100% - 40px);
-    max-width: none;
-    padding: var(--pg-teaser-pad-mobile);
+    left: var(--pg-frame-inset-x-mobile);
+    right: var(--pg-frame-inset-x-mobile);
+    top: var(--pg-frame-inset-y-mobile);
+    bottom: var(--pg-frame-inset-y-mobile);
+    padding: 0 var(--pg-frame-text-x-mobile) var(--pg-frame-text-lift-mobile) var(--pg-frame-text-x-mobile);
   }
   .pg-venue-teaser__title { margin-top: 16px; font-size: var(--pg-fs-teaser-title-mobile); }
   .pg-venue-teaser__rule { margin-top: 16px; }

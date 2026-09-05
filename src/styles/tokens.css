@@ -91,17 +91,24 @@
   --pg-fs-venue-p: 16px;
   --pg-lh-venue-p: 1.8;
   /* 01 FUTURE SPACE teaser（2026-09-05） */
-  --pg-teaser-w: 580px;                 /* 桌機細框寬（v4：再大一點；1024–1279 用 520） */
-  --pg-teaser-pad: 56px 60px;           /* v4：再鬆一點；1024–1279 用 44×48 */
-  --pg-teaser-pad-mobile: 32px 28px;
-  --pg-teaser-pad-tablet: 36px 40px;
+  /* v5 Luxury Editorial Frame：框＝構圖元素（幾乎包覆整張照片），不是文字容器 */
+  --pg-frame-inset-x: clamp(40px, 4vw, 64px);   /* 桌機左右離照片邊 */
+  --pg-frame-inset-y: 16%;                      /* 桌機上下＝照片高 16% */
+  --pg-frame-inset-x-mobile: 16px;
+  --pg-frame-inset-y-mobile: 9%;
+  --pg-frame-text-x: clamp(28px, 3vw, 44px);    /* 文字距框左 */
+  --pg-frame-text-x-mobile: 24px;
+  --pg-frame-text-lift: 36px;                   /* padding-bottom（% 會以寬計算，故用 px）：桌機框 356 高→中心約 45% */
+  --pg-frame-text-lift-tablet: 28px;
+  --pg-frame-text-lift-mobile: 52px;            /* 手機框 ~290 高→中心約 41%，避開左下的媽媽 */
+  --pg-frame-text-lift-xs: 8px;                 /* ≤359：框只有 239 高 */
   --pg-banner-h-tablet: clamp(360px, 40vw, 430px); /* Phase 2：768–1023 不再用 66svh（768 時 560 高像方圖） */
-  --pg-teaser-border: rgba(242, 238, 230, 0.26); /* v3：更淡（v1 .38） */
-  --pg-teaser-veil: rgba(37, 44, 48, 0.28);  /* 全圖 veil 25–30% */
+  --pg-teaser-border: rgba(255, 255, 255, 0.5);  /* v5 hairline：.55 太亮則降 .45 */
+  --pg-teaser-veil: rgba(37, 44, 48, 0.18);  /* v5：全圖只留極輕 18% */
   /* 左側 localized gradient：最深 60% → 中央 0，佔寬約 55%；手機從左緣 → 70% */
   /* v4 readability veil（使用者規格）：左 16% → 7% → 3% → 0，無明顯邊界、不以 frame 為界 */
-  --pg-teaser-glow: linear-gradient(90deg, rgba(37, 44, 48, 0.16) 0%, rgba(37, 44, 48, 0.07) 22%, rgba(37, 44, 48, 0.03) 38%, rgba(37, 44, 48, 0) 56%);
-  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(37, 44, 48, 0.18) 0%, rgba(37, 44, 48, 0.07) 40%, rgba(37, 44, 48, 0.03) 60%, rgba(37, 44, 48, 0) 80%);
+  --pg-teaser-glow: linear-gradient(90deg, rgba(10, 10, 8, 0.25) 0%, rgba(10, 10, 8, 0.08) 38%, rgba(10, 10, 8, 0) 65%);   /* v5 使用者規格 */
+  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(10, 10, 8, 0.3) 0%, rgba(10, 10, 8, 0.1) 45%, rgba(10, 10, 8, 0) 75%);
   --pg-fs-teaser-title: clamp(46px, 3.6vw, 52px);  /* v2：比 v1 放大約 18% */
   --pg-fs-teaser-title-mobile: 38px;
   --pg-fs-teaser-zh: 14px;

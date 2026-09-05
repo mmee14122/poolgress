@@ -590,7 +590,7 @@ function PillarBlock({
             className="pg-venue-teaser absolute"
             style={{
               opacity: on ? 1 : 0,
-              transform: on ? 'translateY(-50%)' : 'translateY(calc(-50% + 10px))',
+              transform: on ? 'translateY(0)' : 'translateY(10px)',
               transition: `opacity 0.8s ${EASE2} 0.2s, transform 0.8s ${EASE2} 0.2s`,
             }}
           >
