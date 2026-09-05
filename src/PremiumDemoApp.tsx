@@ -531,12 +531,10 @@ function ChapterTransition({
             </div>
           </div>
           {/* 手機專用下載 CTA */}
-          <a
-            href={appChapter.cta.href}
-            className="pg-t-cta pg-primary-cta pg-app-intro__cta inline-flex items-center justify-center md:hidden"
-            style={{ background: P.neutral, color: P.text, ...line(on, 0.34) }}
-          >
-            {appChapter.cta.label}
+          {/* 2026-09-06：手機改 editorial text link——斜體一行＋尾端箭頭＋細底線，去掉按鈕底框 */}
+          <a href={appChapter.cta.href} className="pg-app-intro__link md:hidden" style={line(on, 0.34)}>
+            <span className="pg-app-intro__link-text">{appChapter.cta.label}</span>
+            <span className="pg-app-intro__link-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>

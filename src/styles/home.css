@@ -601,6 +601,24 @@
   .pg-app-intro { padding-bottom: 56px; }   /* + feature pt 56 ＝ Intro → PLAY 112 */
 }
 .pg-app-intro__cta { margin-top: 30px; }
+/* 手機 THE APP 下載連結（2026-09-06）：serif 斜體 + 尾端箭頭 + 1px 細底線，精品感但可辨識為連結 */
+.pg-app-intro__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 28px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), .35);
+  color: var(--pg-charcoal);
+  font-family: var(--pg-font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: .01em;
+  line-height: 1;
+  text-decoration: none;
+}
+.pg-app-intro__link-arrow { font-style: normal; font-size: 15px; transform: translateY(-1px); }
 .pg-qr-unit { display: none; }   /* 手機不顯示 QR（改下載 CTA）；≥768 才並排 */
 @media (min-width: 768px) {
   .pg-qr-unit { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
