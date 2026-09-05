@@ -730,11 +730,13 @@ function PillarBlock({
         </div>
       )}
       <div
-        className={`pg-feature-row flex flex-col gap-8 lg:items-center lg:gap-14 ${
+        className={`pg-feature-row flex flex-col-reverse gap-8 lg:items-center lg:gap-14 ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
-        {/* 文字欄。桌機上整欄再往上抬 22px——與圖片同組閱讀時，
+        {/* 文字欄（手機用 flex-col-reverse 排在圖片之後：先圖、再 01 / PLAY 與標題，
+            2026-09-05 使用者指定；DOM 順序仍是文字→圖，桌機 lg:flex-row 不受影響）。
+            桌機上整欄再往上抬 22px——與圖片同組閱讀時，
             文字視覺中心落在圖高的 42–48%（1440 實測 45.0%），略高於數學置中。 */}
         <div className="lg:w-[38%] lg:-translate-y-[22px]">
           {/* 敘事標記：01 / PLAY → 02 / PROGRESS → 03 / TOGETHER。
