@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 import { Navbar } from './components/Navbar'
 
@@ -394,22 +394,37 @@ export default function PremiumDemoApp() {
       </div>
 
       {/* ---------- 01–04 價值階梯（奶油白底，隨內容高） ---------- */}
-      {pillarSections.map((s, i) => (
-        <Fragment key={s.id}>
-          {s.id === 's02' && <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />}
+      {/* 01 THE SPACE：暖米白世界（main 的 Background 底） */}
+      <PillarBlock
+        s={pillarSections[0]}
+        flip={false}
+        on={shown(pillarSections[0].id)}
+        refCb={reg(pillarSections[0].id)}
+        imgRefCb={reg(pillarSections[0].id + '-img')}
+        maskProgress={maskP[pillarSections[0].id] ?? 0}
+        hideHeading
+        quick={narrow}
+      />
+
+      {/* 02 THE APP：從章節開場到 04 結束共享同一個極淡灰藍底
+          （Secondary 22% × Background，見 .pg-app-world），用顏色說
+          「實體空間（暖）→ 數位體驗（冷）」；眉標仍 Walnut、大標仍 Charcoal */}
+      <div className="pg-app-world">
+        <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
+        {pillarSections.slice(1).map((s, i) => (
           <PillarBlock
+            key={s.id}
             s={s}
-            flip={i % 2 === 1}
+            flip={i % 2 === 0}
             on={shown(s.id)}
             refCb={reg(s.id)}
             imgRefCb={reg(s.id + '-img')}
             maskProgress={maskP[s.id] ?? 0}
-            hideHeading={i === 0}
-            hideChapterHead={i > 0}
+            hideChapterHead
             quick={narrow}
           />
-        </Fragment>
-      ))}
+        ))}
+      </div>
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section

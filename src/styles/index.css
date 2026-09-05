@@ -819,6 +819,14 @@
   .pg-feature-row { gap: var(--pg-gap-mid, 24px); }
 }
 
+/* 02 THE APP 整段的底色（2026-09-05 使用者定義）：不是新品牌色，是
+   Secondary #AFC4CF 22% 混入 Background #F2EEE6 的 tint。
+   第一行是不支援 color-mix 的舊瀏覽器用的預算值（#E3E5E1）。 */
+.pg-app-world {
+  background: #e3e5e1;
+  background: color-mix(in srgb, #afc4cf 22%, #f2eee6);
+}
+
 /* 首頁 Navbar 的玻璃淺色態（方案 B）：米白 82%＋模糊，捲到米白區塊時用。
    深色態由 .nav-hero＋inline 漸層負責（見 Navbar.tsx 的 glass）。 */
 .pg-nav-glass-light {
