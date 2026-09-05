@@ -830,14 +830,9 @@
   background: color-mix(in srgb, #afc4cf 22%, #f2eee6);
 }
 
-/* 手機（<768px）：02 章節開場（02 / THE APP＋THE GAME GOES WITH YOU.）維持 Background
-   米白，當 editorial chapter divider；淡灰藍從 01 / PLAY 的 App 內容才開始。
-   結構＝THE SPACE(#F2EEE6) → 章節開場(#F2EEE6) → App 內容(淡灰藍)。
-   桌機維持使用者先前定案：整段 THE APP（含開場）同一個淡灰藍底。 */
+/* 手機（<768px）：02 章節開場與下方 01 / PLAY 共用同一個淡灰藍底（2026-09-05 使用者
+   最終決定：開場不留米白）。手機 App World 底用 Secondary 18%，桌機維持先前定案的 22%。 */
 @media (max-width: 767px) {
-  .pg-app-intro { background: #f2eee6; }
-  /* 手機 App World 底：Secondary 18%（桌機維持先前定案的 22%）。三層色階＝
-     Ivory（Brand／Editorial）→ 極淡灰藍（App World）→ Secondary／Primary（App 畫面） */
   .pg-app-world {
     background: #e6e7e2;
     background: color-mix(in srgb, #afc4cf 18%, #f2eee6);
