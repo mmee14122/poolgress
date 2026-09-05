@@ -961,14 +961,16 @@ html:has(.pg-home-root) {
    是照片上的 overlay layer，不是另一個矩形卡片。 */
 .pg-venue-scrim {
   /* 右上角：水平由右往左，52% 起透明 */
+  /* 2026-09-05 使用者回饋字看不清：對比拉高（.72→.84 起手） */
   background: linear-gradient(
     270deg,
-    rgba(37, 44, 48, 0.72) 0%,
-    rgba(37, 44, 48, 0.5) 24%,
-    rgba(37, 44, 48, 0.18) 40%,
+    rgba(37, 44, 48, 0.84) 0%,
+    rgba(37, 44, 48, 0.66) 24%,
+    rgba(37, 44, 48, 0.3) 40%,
     rgba(37, 44, 48, 0) 52%
   );
-  /* 垂直再收：26% 以上全效、40% 以下全透明，爸爸＋女兒（y ≥38%）不被壓暗 */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 40%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 40%);
+  /* 垂直再收：文字往下移到 15% 起，mask 全效延到 32%、42% 以下全透明；
+     爸爸頭頂約 38%，只有 38–42% 這一小段會被極淡地壓到 */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 32%, transparent 42%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 32%, transparent 42%);
 }

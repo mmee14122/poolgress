@@ -604,7 +604,7 @@ function PillarBlock({
             className="absolute hidden lg:block"
             style={{
               right: 'var(--site-gutter)',
-              top: '10%',
+              top: '15%',
               maxWidth: 440,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
@@ -641,7 +641,7 @@ function PillarBlock({
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
-                color: 'rgba(248,244,236,.74)',
+                color: 'rgba(248,244,236,.86)',
               }}
             >
               {s.body.split('：').slice(1).join('：')}
