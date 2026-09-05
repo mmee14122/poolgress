@@ -19,7 +19,9 @@ export const hero = {
   /** 手機（≤768px）專用直式主視覺（4:5 或 3:4）；null＝沿用 poster＋手機 object-position */
   posterMobile: null as string | null,
   manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
-  title: '從玩撞球，開始真正學會撞球。',
+  /** 主標兩行英文 serif（2026-09-05 使用者改）＋中文副標 */
+  titleLines: ['ONE TABLE.', 'EVERY GENERATION.'],
+  subtitle: '讓撞球，成為一家人的共同記憶。',
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
   cta: { label: '探索 Poolgress', href: '#the-space' },
 }
