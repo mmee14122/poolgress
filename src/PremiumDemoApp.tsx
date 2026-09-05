@@ -501,7 +501,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="pg-app-intro site-container flex items-center pt-16 pb-10 lg:pt-20 lg:pb-8"
+      className="pg-app-intro site-container flex items-center pt-16 pb-12 lg:pt-20 lg:pb-8"
     >
       <div className="w-full">
         <p

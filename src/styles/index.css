@@ -836,6 +836,12 @@
    桌機維持使用者先前定案：整段 THE APP（含開場）同一個淡灰藍底。 */
 @media (max-width: 767px) {
   .pg-app-intro { background: #f2eee6; }
+  /* 手機 App World 底：Secondary 18%（桌機維持先前定案的 22%）。三層色階＝
+     Ivory（Brand／Editorial）→ 極淡灰藍（App World）→ Secondary／Primary（App 畫面） */
+  .pg-app-world {
+    background: #e6e7e2;
+    background: color-mix(in srgb, #afc4cf 18%, #f2eee6);
+  }
 }
 
 /* 首頁 Navbar 的玻璃淺色態（方案 B）：米白 82%＋模糊，捲到米白區塊時用。
