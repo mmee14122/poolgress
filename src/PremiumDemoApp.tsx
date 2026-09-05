@@ -594,37 +594,61 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Editorial Glass Overlay（2026-09-05 使用者規格，v2 refinement）：
-              刻意壓在照片左上 Café 吧檯／店員區（店員被部分遮擋是預期），絕不碰右側爸爸＋女兒
-              （照片 ≥57%）。left 用 --site-gutter 當 inset（不貼圖邊、跟全站 grid token 走）、
-              top 64px、寬 36% 上限 560。Charcoal 72%＋blur 12，無 border、無重 shadow。
-              不用 transform 定位／進場（backdrop-filter＋transform 在部分 GPU 會合成出白色矩形），
-              只做 opacity 淡入；banner 加 isolation 隔離合成層。 */}
+          {/* 桌機（≥1024px）Coming Soon caption panel（2026-09-05 使用者規格 v3：
+              PHOTO FIRST / TEXT SECOND / UI LAST）。浮在照片左上 Café／店員區的 editorial caption，
+              不是功能卡：寬 clamp(360px,30vw,500px)、inset left/top clamp(40px,5vw,80/72px)
+              與全站 editorial axis 同一套 5vw 尺度；半透明 warm black rgba(30,32,31,.78)＋
+              blur 8px；無 border、無 glow、無 shadow、無 hover 動畫。
+              不用 transform（backdrop-filter＋transform 在部分 GPU 會合成出白色矩形）。 */}
           <div
             className="absolute hidden lg:block"
             style={{
-              left: 'var(--site-gutter)',
-              top: 64,
-              width: 'min(36%, 560px)',
-              padding: 36,
-              borderRadius: 18,
-              background: 'rgba(37,44,48,.72)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
+              left: 'clamp(40px, 5vw, 80px)',
+              top: 'clamp(40px, 5vw, 72px)',
+              width: 'clamp(360px, 30vw, 500px)',
+              padding: '32px 36px',
+              borderRadius: 16,
+              background: 'rgba(30,32,31,.78)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
           >
+            {/* Eyebrow 狀態標籤，不是按鈕：25px 高、字距 .18em、Sand 降一點對比 */}
             <span
-              className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
-              style={{ background: P.neutral, color: P.text }}
+              className="inline-flex items-center rounded-full font-semibold uppercase"
+              style={{
+                height: 25,
+                padding: '0 13px',
+                fontSize: 10.5,
+                letterSpacing: '0.18em',
+                background: 'rgba(210,194,173,.85)',
+                color: P.text,
+              }}
             >
               {s.badge}
             </span>
-            <h3 className="mt-[30px] text-xl leading-snug font-medium" style={{ color: P.bg }}>
+            <h3
+              style={{
+                marginTop: 28,
+                fontSize: 26,
+                fontWeight: 500,
+                lineHeight: 1.35,
+                color: 'rgba(248,244,236,.96)',
+              }}
+            >
               {s.body.split('：')[0]}
             </h3>
-            <p className="mt-[22px] text-[15px]" style={{ color: 'rgba(242,238,230,.72)', lineHeight: 1.7 }}>
+            <p
+              style={{
+                marginTop: 20,
+                fontSize: 16,
+                fontWeight: 400,
+                lineHeight: 1.8,
+                color: 'rgba(248,244,236,.72)',
+              }}
+            >
               {s.body.split('：').slice(1).join('：')}
             </p>
           </div>
