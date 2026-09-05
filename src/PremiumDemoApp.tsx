@@ -619,14 +619,14 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 可讀性漸層：往卡片側加深 */}
+          {/* 可讀性漸層：往卡片側加深（手機卡片已移到圖下方，這層不顯示） */}
           <div
-            className="absolute inset-0"
+            className="pg-venue-shade absolute inset-0"
             style={{ background: 'linear-gradient(to right, transparent 30%, rgba(37,44,48,.35))' }}
           />
           {/* 玻璃卡：桌機置右垂直置中，手機貼底滿寬 */}
           <div
-            className="absolute inset-x-4 bottom-5 rounded-2xl p-6 sm:inset-x-auto sm:top-1/2 sm:right-[6%] sm:bottom-auto sm:max-w-xl sm:-translate-y-1/2 sm:p-10"
+            className="pg-venue-card absolute inset-x-4 bottom-5 rounded-2xl p-6 sm:inset-x-auto sm:top-1/2 sm:right-[6%] sm:bottom-auto sm:max-w-xl sm:-translate-y-1/2 sm:p-10"
             style={{
               background: 'rgba(37,44,48,.55)',
               backdropFilter: 'blur(10px)',

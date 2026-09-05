@@ -764,10 +764,28 @@
 
 /* 01 場館滿版橫幅：手機／平板不做滿屏，避免標題後接一整頁圖；
    桌機（≥1024px）維持原本的 100svh - peek，不動。 */
-/* 手機（≤768px）：不繼承桌機高度，改用直式 4:5 比例，圖不會被無限制放大裁切；
-   焦點先用 65% center（爸爸、女兒與球桌在畫面右半），之後換獨立直式圖時
-   只要填 imageMobile／posterMobile，這裡不用動。 */
-.pg-venue-banner { height: auto; aspect-ratio: 4 / 5; min-height: 0; }
+/* 手機（≤768px）：完整顯示桌機那張橫向圖，不裁切（2026-09-05 使用者改為此方案）。
+   圖改成一般流式排版 width:100%／height:auto，容器高度由圖決定；
+   玻璃卡從「疊在圖上」改為「接在圖下方」，否則 375 寬時卡片會蓋掉整張圖的人物。
+   桌機（≥769px）維持滿版 cover＋卡片疊圖，數值未動。 */
+.pg-venue-banner { height: auto; aspect-ratio: auto; min-height: 0; }
+@media (max-width: 768px) {
+  .pg-venue-img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+    object-position: initial;
+    display: block;
+  }
+  .pg-venue-shade { display: none; }
+  .pg-venue-card {
+    position: static;
+    margin: 16px;
+    transform: none;
+    max-width: none;
+  }
+}
 @media (min-width: 769px) {
   .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
 }
@@ -775,7 +793,6 @@
   .pg-venue-banner { height: calc(100svh - var(--pg-peek, 56px)); }
 }
 @media (max-width: 768px) {
-  .pg-venue-img,
   .pg-hero-img { object-position: 65% center; }
 }
 
