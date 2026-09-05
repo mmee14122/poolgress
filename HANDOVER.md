@@ -37,6 +37,8 @@ cd ~/poolgress-website && git pull --rebase origin main
 git rm -rq ui/ ; cp -r "C:/Users/User/Documents/Poolgress/dist/." ui/
 git add ui/ && git commit -q -m "更新 ui/：說明" && git push origin main
 ```
+- **推完 ui/ 之後一定要打 Vercel Deploy Hook**：`curl -s -X POST "$(cat ~/.poolgress-vercel-hook)"`（hook 網址存在本機 `~/.poolgress-vercel-hook`，不進 repo）。2026-09-05 發生過 GitHub→Vercel 通知失聯，連續 7 次推送都沒部署，靠這個 hook 才上線。驗證方式：`curl -s https://www.poolgress.com/ui/ | grep -o 'premium-demo-entry-[A-Za-z0-9_-]*\.js'` 要等於 `dist/index.html` 裡的檔名
+- 多個小改動盡量**合併成一次 ui/ 推送**，不要每項推一次
 - HTML 有 ~10 分鐘 CDN 快取；cp 噴大量 CRLF warning 是正常的
 - commit 結尾加 `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`
 - 只改文件（.md）不用同步 ui/
