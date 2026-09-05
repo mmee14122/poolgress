@@ -399,35 +399,34 @@
    → 回縮 96.5% → 落定 100%，共 460ms、一次回彈；文字在 fill 掃過文字區時（~250ms）才轉 Charcoal。
    按鈕本體、文字、箭頭全程不動。手機：無 hover 動畫，:active 只做極輕 feedback。 */
 .pg-cta-book {
-  --pg-book-icon: 44px;
+  --pg-book-icon: 36px;
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
   width: fit-content;
-  height: 56px;
+  height: 48px;                                  /* 2026-09-06 v2：更細長（56 → 48） */
   margin-top: var(--button-ghost-mt);
-  padding: 6px 6px 6px 26px;
+  padding: 5px 5px 5px 22px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(var(--pg-charcoal-rgb), 0.2);
-  -webkit-backdrop-filter: blur(2rem);
-  backdrop-filter: blur(2rem);
-  box-shadow:
-    inset 1px 1px 1px 1px rgba(250, 250, 249, 0.05),
-    inset -1px -1px 1px 1px rgba(var(--pg-charcoal-rgb), 0.05);
+  background: rgba(var(--pg-charcoal-rgb), 0.1); /* 更透（.2 → .1），精品感靠細框而不是深底 */
+  border: 1px solid rgba(255, 250, 242, 0.35);   /* 細邊框 */
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: none;
   color: rgba(var(--pg-ivory-rgb), 0.94);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
   text-decoration: none;
-  transition: color 0.25s ease;
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
 .pg-cta-book__fill {
   position: absolute;
-  inset: 6px;
+  inset: 5px;
   display: flex;
   justify-content: flex-end;
   border-radius: 999px;
@@ -482,7 +481,7 @@
 }
 .pg-cta-book:active { opacity: 0.92; }
 @media (max-width: 767px) {
-  .pg-cta-book { --pg-book-icon: 38px; height: 50px; padding: 6px 6px 6px 22px; gap: 18px; font-size: 14px; }
+  .pg-cta-book { --pg-book-icon: 32px; height: 44px; padding: 5px 5px 5px 20px; gap: 16px; font-size: 13.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-cta-book:hover .pg-cta-book__fill::before { animation: none; width: 100%; transition: none; }

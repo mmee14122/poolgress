@@ -88,7 +88,9 @@ export default function PremiumDemoApp() {
                 ? 0.92
                 : id === 's02' || id === 's03' || id === 's04'
                   ? (narrow ? 0.8 : 0.9) /* 02–04 內容提前淡入；手機要等文字進來約 90px 才動 */
-                  : 0.8)
+                  : id === 'intro01'
+                    ? 0.9 /* 桌機 01：peek 露出的 intro 頂端在 844，滑鼠一往下（約 30px）就觸發 */
+                    : 0.8)
       setRevealed((prev) => {
         let changed = false
         const next = new Set(prev)
@@ -296,7 +298,7 @@ export default function PremiumDemoApp() {
             <ProgressPoint on={on01} delay={0.35} />
             <span
               className="pg-t-badge rounded-full px-3 py-1 normal-case"
-              style={reveal(on01, 0.75, 0.6)}
+              style={reveal(on01, 0.45, 0.6)}
             >
               COMING SOON
             </span>
@@ -324,7 +326,7 @@ export default function PremiumDemoApp() {
                   style={{
                     opacity: on01 ? 1 : 0,
                     transform: on01 ? 'translateY(0)' : 'translateY(8px)',
-                    transition: `opacity 0.52s ${EASE2} ${0.95 + i * 0.1}s, transform 0.52s ${EASE2} ${0.95 + i * 0.1}s`,
+                    transition: `opacity 0.52s ${EASE2} ${0.3 + i * 0.1}s, transform 0.52s ${EASE2} ${0.3 + i * 0.1}s`,
                   }}
                 >
                   {line.endsWith('.') ? line : line + '.'}
