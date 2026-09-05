@@ -957,20 +957,16 @@ html:has(.pg-home-root) {
   scroll-padding-top: 4rem;
 }
 
-/* 01 場館照片右上的局部 scrim（桌機）：只壓暗右上窗景區當文字承載，水平 52%／垂直 40% 起完全透明。
+/* 01 場館照片左上的局部 scrim（桌機）：無邊界 radial，只讓左上 Café 區更適合讀字。
    是照片上的 overlay layer，不是另一個矩形卡片。 */
 .pg-venue-scrim {
-  /* 右上角：水平由右往左，52% 起透明 */
-  /* 2026-09-05 使用者回饋字看不清：對比拉高（.72→.84 起手） */
-  background: linear-gradient(
-    270deg,
-    rgba(37, 44, 48, 0.84) 0%,
-    rgba(37, 44, 48, 0.66) 24%,
-    rgba(37, 44, 48, 0.3) 40%,
-    rgba(37, 44, 48, 0) 52%
+  /* 左上局部、無邊界的攝影式壓暗（radial，自然 feather）：只讓左上更適合讀字，
+     不是一層可辨識的背景；右側父女、球桌與左下媽媽在 0 區 */
+  background: radial-gradient(
+    ellipse 48% 50% at 14% 24%,
+    rgba(37, 44, 48, 0.58) 0%,
+    rgba(37, 44, 48, 0.4) 40%,
+    rgba(37, 44, 48, 0.16) 72%,
+    rgba(37, 44, 48, 0) 100%
   );
-  /* 垂直再收：文字往下移到 15% 起，mask 全效延到 32%、42% 以下全透明；
-     爸爸頭頂約 38%，只有 38–42% 這一小段會被極淡地壓到 */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 32%, transparent 42%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 32%, transparent 42%);
 }

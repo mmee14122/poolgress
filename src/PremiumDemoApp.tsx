@@ -591,11 +591,11 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Editorial text over photography（2026-09-05 使用者規格 v4 方案 A，
-              後改為右上）：不再有 card——只在照片「右上角」加一層局部 scrim（水平由右往左 52%
-              消失、垂直 26% 起淡出、40% 以下全透明，見 .pg-venue-scrim），文字浮在右上的窗景／
-              樹影上；爸爸＋女兒（x 57–72%、y 38–62%）與主球桌完全在透明區。
-              文字區右緣用 --site-gutter 當 inset、top 10%、最寬 440。無 rectangle／radius／blur／shadow。 */}
+          {/* 桌機（≥1024px）Left Editorial Annotation（2026-09-05 使用者規格 v5）：
+              文字回到左上 Café／店員區（照片天然的 secondary zone），無 card／rectangle／glass；
+              只在文字附近加一片很輕、無邊界的局部 scrim（radial，自然 feather，見 .pg-venue-scrim）。
+              視覺優先級：父女 > 媽媽 > 空間 > 文字。文字區 top 15%、最寬 400；
+              標題拆兩行成 editorial statement：我們正在打造／Poolgress 場館。 */}
           <div
             aria-hidden="true"
             className="pg-venue-scrim pointer-events-none absolute inset-0 hidden lg:block"
@@ -603,14 +603,13 @@ function PillarBlock({
           <div
             className="absolute hidden lg:block"
             style={{
-              right: 'var(--site-gutter)',
+              left: 'var(--site-gutter)',
               top: '15%',
-              maxWidth: 440,
+              maxWidth: 400,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
           >
-            {/* Eyebrow 狀態標籤（左側唯一的小型 UI 元素） */}
             <span
               className="inline-flex items-center rounded-full font-semibold uppercase"
               style={{
@@ -624,23 +623,28 @@ function PillarBlock({
             >
               {s.badge}
             </span>
+            {/* 標題兩行：Coming Soon → 標題留較大呼吸（32px），標題 → 說明較小（14px） */}
             <h3
               style={{
-                marginTop: 28,
+                marginTop: 32,
                 fontSize: 26,
                 fontWeight: 500,
                 lineHeight: 1.35,
+                maxWidth: 400,
                 color: 'rgba(248,244,236,.96)',
               }}
             >
-              {s.body.split('：')[0]}
+              我們正在打造
+              <br />
+              Poolgress 場館
             </h3>
             <p
               style={{
-                marginTop: 20,
+                marginTop: 14,
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
+                maxWidth: 400,
                 color: 'rgba(248,244,236,.86)',
               }}
             >
