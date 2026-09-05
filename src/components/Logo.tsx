@@ -16,11 +16,11 @@ export function Logo({ className = '', dark = false }: { className?: string; dar
         height={36}
         className="h-9 w-9 shrink-0"
       />
-      {/* 品牌字：淺色態 Primary 灰藍 #6F8FA3、深色（首頁透明導覽列）態 Sand #D2C2AD
-          （2026-09-05 使用者指定），不再是舊站的深藍／白 */}
+      {/* 品牌字＝brand identity 層：淺色態 Primary #6F8FA3（locked，不跟導覽 hover 的 Secondary 統一）；
+          深色態白字，與導覽列文字（Sand）分開，維持 Logo／導覽／互動三層色階 */}
       <span
         className="font-logo text-xl font-semibold tracking-tight transition-colors duration-250"
-        style={{ color: dark ? '#D2C2AD' : '#6F8FA3' }}
+        style={{ color: dark ? '#ffffff' : '#6F8FA3' }}
       >
         {site.brandName}
       </span>
