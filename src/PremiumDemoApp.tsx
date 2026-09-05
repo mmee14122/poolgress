@@ -594,28 +594,25 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 桌機（≥1024px）Coming Soon caption panel（2026-09-05 使用者規格 v3：
-              PHOTO FIRST / TEXT SECOND / UI LAST）。浮在照片左上 Café／店員區的 editorial caption，
-              不是功能卡：寬 clamp(360px,30vw,500px)、inset left/top clamp(40px,5vw,80/72px)
-              與全站 editorial axis 同一套 5vw 尺度；半透明 warm black rgba(30,32,31,.78)＋
-              blur 8px；無 border、無 glow、無 shadow、無 hover 動畫。
-              不用 transform（backdrop-filter＋transform 在部分 GPU 會合成出白色矩形）。 */}
+          {/* 桌機（≥1024px）Editorial text over photography（2026-09-05 使用者規格 v4，方案 A）：
+              不再有 card——只在照片左側加一層局部 scrim（52% 之後完全透明，右側父女與球桌維持
+              原亮度），文字直接浮在攝影上。文字區左緣用 --site-gutter 當 inset（與全站 grid token
+              一致）、垂直約圖高 18%、最寬 440px。無 rectangle／radius／blur／shadow。 */}
+          <div
+            aria-hidden="true"
+            className="pg-venue-scrim pointer-events-none absolute inset-0 hidden lg:block"
+          />
           <div
             className="absolute hidden lg:block"
             style={{
-              left: 'clamp(40px, 5vw, 80px)',
-              top: 'clamp(40px, 5vw, 72px)',
-              width: 'clamp(360px, 30vw, 500px)',
-              padding: '32px 36px',
-              borderRadius: 16,
-              background: 'rgba(30,32,31,.78)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
+              left: 'var(--site-gutter)',
+              top: '18%',
+              maxWidth: 440,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
             }}
           >
-            {/* Eyebrow 狀態標籤，不是按鈕：25px 高、字距 .18em、Sand 降一點對比 */}
+            {/* Eyebrow 狀態標籤（左側唯一的小型 UI 元素） */}
             <span
               className="inline-flex items-center rounded-full font-semibold uppercase"
               style={{
@@ -623,7 +620,7 @@ function PillarBlock({
                 padding: '0 13px',
                 fontSize: 10.5,
                 letterSpacing: '0.18em',
-                background: 'rgba(210,194,173,.85)',
+                background: 'rgba(210,194,173,.9)',
                 color: P.text,
               }}
             >
@@ -646,7 +643,7 @@ function PillarBlock({
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
-                color: 'rgba(248,244,236,.72)',
+                color: 'rgba(248,244,236,.74)',
               }}
             >
               {s.body.split('：').slice(1).join('：')}

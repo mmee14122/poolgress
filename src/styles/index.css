@@ -956,3 +956,15 @@
 html:has(.pg-home-root) {
   scroll-padding-top: 4rem;
 }
+
+/* 01 場館照片左側的局部 scrim（桌機）：只壓暗左側 Café 區當文字承載，52% 起完全透明。
+   是照片上的 overlay layer，不是另一個矩形卡片。 */
+.pg-venue-scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(37, 44, 48, 0.72) 0%,
+    rgba(37, 44, 48, 0.5) 24%,
+    rgba(37, 44, 48, 0.18) 40%,
+    rgba(37, 44, 48, 0) 52%
+  );
+}
