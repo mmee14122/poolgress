@@ -78,11 +78,13 @@
   --nav-surface: var(--pg-white);
 }
 
-/* ── surface：floating（首頁捲動後）──
-   2026-09-05 v2（使用者規格）：quiet luxury / editorial——不再是 pill 浮板。
-   .pg-nav-glass 是首頁基底：fixed、全寬、透明；加 .pg-nav-floating 後只換成
-   Ivory 實底＋底部 1px 髮絲線（350ms），無圓角、無陰影、無 blur、無 inset，
-   內容仍在全站 .site-container 的 grid 線上。高度桌機 72、手機 64（.pg-nav-bar）。 */
+/* ── surface：floating（首頁捲動後，桌機＋手機同一套）──
+   2026-09-05 v3（使用者規格）：transparent → translucent。
+   .pg-nav-glass 是首頁基底：fixed、全寬、透明、blur(0)；加 .pg-nav-floating 後變成
+   Ivory 86%＋backdrop blur 16px 的一層浮在內容上方（不是實心米白橫條），
+   底部 1px 髮絲線、無圓角、無陰影、無 inset，內容仍在 .site-container 的 grid 線上。
+   background-color／border-color／backdrop-filter 一起 350ms transition；高度桌機 72、手機 64，
+   捲動時不變。不支援 backdrop-filter 的瀏覽器退回 96% 近實色；iOS Safari 走 -webkit- 前綴。 */
 .pg-nav-glass {
   position: fixed;
   top: 0;
@@ -91,42 +93,28 @@
   border-radius: 0;
   background-color: transparent;
   border-bottom: 1px solid transparent;
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
   transition:
     background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    border-color var(--pg-dur-nav-morph) var(--pg-ease-spring);
+    border-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    -webkit-backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring),
+    backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring);
 }
 .pg-nav-floating {
-  --nav-surface: var(--pg-ivory-nav);
+  --nav-surface: var(--pg-nav-scrolled-surface);
   background-color: var(--nav-surface);
   border-bottom-color: var(--pg-nav-hairline);
+  -webkit-backdrop-filter: blur(var(--pg-nav-blur));
+  backdrop-filter: blur(var(--pg-nav-blur));
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .pg-nav-floating {
+    --nav-surface: var(--pg-nav-scrolled-surface-fallback);
+  }
 }
 .pg-nav-glass .pg-nav-bar {
   height: var(--pg-nav-h-mobile);
-}
-/* 手機（<768）捲動態（2026-09-05 使用者規格）：transparent → translucent。
-   不是實心米白橫條，而是 Ivory 86%＋blur 16px 的一層浮在內容上方；髮絲線同桌機、無陰影。
-   base 先給 blur(0) 讓 backdrop-filter 可以被 transition；不支援 backdrop-filter 的瀏覽器
-   （舊 Android WebView）退回 96% 近實色，iOS Safari 走 -webkit- 前綴。高度／layout 不變。 */
-@media (max-width: 767px) {
-  .pg-nav-glass {
-    -webkit-backdrop-filter: blur(0);
-    backdrop-filter: blur(0);
-    transition:
-      background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-      border-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-      -webkit-backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring),
-      backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring);
-  }
-  .pg-nav-floating {
-    --nav-surface: var(--pg-nav-mobile-surface);
-    -webkit-backdrop-filter: blur(var(--pg-nav-mobile-blur));
-    backdrop-filter: blur(var(--pg-nav-mobile-blur));
-  }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .pg-nav-floating {
-      --nav-surface: var(--pg-nav-mobile-surface-fallback);
-    }
-  }
 }
 @media (min-width: 768px) {
   .pg-nav-glass .pg-nav-bar {
