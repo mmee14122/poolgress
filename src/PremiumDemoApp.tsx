@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 import { Navbar } from './components/Navbar'
+import { Footer } from './components/Footer'
 import { ProgressPoint } from './components/ProgressPoint'
 
 /**
@@ -440,13 +441,9 @@ export default function PremiumDemoApp() {
         </div>
       </section>
 
-      {/* ---------- FOOTER（佔位；正式版沿用全站 Footer） ---------- */}
-      <footer
-        className="px-5 pb-10 text-center text-xs sm:px-10"
-        style={{ background: P.text, color: 'rgba(242,238,230,.4)' }}
-      >
-        FOOTER｜正式版沿用全站頁尾
-      </footer>
+      {/* ---------- FOOTER：沿用全站 Footer（2026-09-05 使用者指定，桌機與手機皆同）。
+          用 light 主題：深底 CTA 之後接米白頁尾才分得開，dark 主題是舊站深藍會撞色 ---------- */}
+      <Footer theme="light" />
     </main>
   )
 }
