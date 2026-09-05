@@ -589,42 +589,36 @@
   }
 }
 
-/* ---------- 02 / THE APP Intro（2026-09-06 v2：兩欄 editorial composition＋QR download unit） ----------
-   ≥1024：58% / 42% 兩欄、垂直置中；大標→文案 40；文案最寬 480、行高 1.7；Intro → 01 / PLAY 112。
-   768–1023：同兩欄（QR 顯示）。<768：單欄，QR 隱藏、顯示下載 CTA；文案→CTA 30、CTA→01 / PLAY 68。 */
-.pg-app-intro__grid { display: grid; grid-template-columns: 1fr; align-items: center; gap: 40px; }
-/* 2026-09-06 修正：寬螢幕上 58/42 會把 QR 推到很遠；改成「文案欄最寬 560 ＋ QR 欄自適應」，
-   QR 固定離文案 96px（1440 以上都一樣近），不再跟著 viewport 拉開 */
-@media (min-width: 768px) {
-  .pg-app-intro__grid { grid-template-columns: minmax(0, 560px) auto; column-gap: 96px; justify-content: start; }
-  .pg-app-intro__qr { justify-content: flex-start; }
-}
-.pg-app-intro__desc { margin-top: 24px; max-width: 480px; line-height: 1.7; }
+/* ---------- 02 / THE APP Intro（2026-09-06 v3：文案列＋QR 並排） ----------
+   說明文字（最寬 480、行高 1.7）右側 96px 放 QR 單元；單元高度＝文字段高度，
+   QR 方塊貼上緣、「下載 Poolgress App」貼下緣（與最後一行切齊）。<768：QR 隱藏、改下載 CTA。 */
+.pg-app-intro__grid { display: block; }
+.pg-app-intro__row { display: flex; align-items: stretch; gap: 96px; margin-top: 24px; }
+.pg-app-intro__desc { max-width: 480px; line-height: 1.7; margin: 0; }
 @media (min-width: 1024px) {
-  .pg-app-intro__desc { margin-top: 40px; }
+  .pg-app-intro__row { margin-top: 40px; }
   .pg-app-intro { padding-bottom: 56px; }   /* + feature pt 56 ＝ Intro → PLAY 112 */
 }
 .pg-app-intro__cta { margin-top: 30px; }
-.pg-app-intro__qr { justify-content: flex-start; align-self: center; }
-.pg-qr-unit { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.pg-qr-unit { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
 .pg-qr-unit__code {
   display: grid;
   place-items: center;
-  width: 112px;
-  height: 112px;
-  padding: 10px;
+  height: 0;                 /* 由 flex 撐開：段落高 − 標籤高 − 間距 */
+  flex: 1 1 auto;
+  aspect-ratio: 1 / 1;
+  padding: 6px;
   border: 1px solid rgba(var(--pg-charcoal-rgb), 0.14);
-  border-radius: 8px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.55);
   color: var(--pg-charcoal);
 }
 .pg-qr-unit__code img { width: 100%; height: 100%; object-fit: contain; }
-.pg-qr-unit__label { margin-top: 14px; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--pg-charcoal); }
-.pg-qr-unit__meta { margin-top: 6px; font-size: 10px; letter-spacing: 0.2em; line-height: 1.4; text-transform: uppercase; color: rgba(var(--pg-charcoal-rgb), 0.6); }
+.pg-qr-unit__label { margin-top: 8px; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--pg-charcoal); white-space: nowrap; }
 @media (max-width: 767px) {
+  .pg-app-intro__row { gap: 0; }
   .pg-app-world .pg-app-intro { padding-bottom: 38px !important; }   /* + feature pt 30 ＝ CTA → 01 / PLAY 68 */
 }
-
 /* ---------- 錨點偏移 ----------
    全站 html 的 scroll-padding-top 是 96px（舊站 sticky Navbar＋章節 tabs 用），
    首頁只有一條 64px 的 fixed Navbar，錨點（#the-space）要剛好停在 Navbar 底下。 */

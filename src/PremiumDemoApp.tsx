@@ -511,10 +511,26 @@ function ChapterTransition({
               </span>
             ))}
           </h2>
-          <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
-            {appChapter.body}
-          </p>
-          {/* 手機專用下載 CTA（桌機的下載入口只有右側 QR，避免兩個 CTA 重複） */}
+          {/* 文案列：說明文字與 QR 單元並排——QR 上緣對齊文字第一行、「下載 Poolgress App」底緣對齊最後一行
+              （2026-09-06 使用者手繪版面）。手機：QR 隱藏、改下載 CTA。 */}
+          <div className="pg-app-intro__row">
+            <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
+              {appChapter.body}
+            </p>
+            <div className="pg-qr-unit hidden md:flex" style={line(on, 0.3)}>
+              <div className="pg-qr-unit__code">
+                {site.appDownload.qrCode ? (
+                  <img src={site.appDownload.qrCode} alt="下載 Poolgress App 的 QR code" />
+                ) : (
+                  <svg viewBox="0 0 24 24" aria-label="QR code 待補" className="h-7 w-7 fill-current opacity-40">
+                    <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
+                  </svg>
+                )}
+              </div>
+              <p className="pg-qr-unit__label">{appChapter.cta.label}</p>
+            </div>
+          </div>
+          {/* 手機專用下載 CTA */}
           <a
             href={appChapter.cta.href}
             className="pg-t-cta pg-primary-cta pg-app-intro__cta inline-flex items-center justify-center md:hidden"
@@ -522,23 +538,6 @@ function ChapterTransition({
           >
             {appChapter.cta.label}
           </a>
-        </div>
-
-        {/* QR download unit（≥768）：112px QR、極淡框、下方兩行文字置中；是 secondary action，不能比大標搶眼 */}
-        <div className="pg-app-intro__qr hidden md:flex" style={line(on, 0.3)}>
-          <div className="pg-qr-unit">
-            <div className="pg-qr-unit__code">
-              {site.appDownload.qrCode ? (
-                <img src={site.appDownload.qrCode} alt="下載 Poolgress App 的 QR code" width={112} height={112} />
-              ) : (
-                <svg viewBox="0 0 24 24" aria-label="QR code 待補" className="h-10 w-10 fill-current opacity-40">
-                  <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
-                </svg>
-              )}
-            </div>
-            <p className="pg-qr-unit__label">{appChapter.cta.label}</p>
-            <p className="pg-qr-unit__meta">SCAN TO DOWNLOAD</p>
-          </div>
         </div>
       </div>
     </section>
