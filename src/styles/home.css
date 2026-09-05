@@ -405,13 +405,13 @@
   align-items: center;
   gap: 28px;
   width: fit-content;
-  height: 46px;
+  height: 40px;                                  /* v4：上下更窄 */
   margin-top: var(--button-ghost-mt);
   padding: 0 18px 0 20px;
-  border-radius: 10px;                           /* v3：微圓角矩形（使用者參考圖），不是 pill */
+  border-radius: 0;                              /* v4：直角方框 */
   overflow: hidden;
   background: rgba(var(--pg-charcoal-rgb), 0.1); /* 更透（.2 → .1），精品感靠細框而不是深底 */
-  border: 1px solid rgba(255, 250, 242, 0.35);   /* 細邊框 */
+  border: 1px solid rgba(var(--pg-sand-rgb), 0.85);   /* v4：米色（Sand）細框 */
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   box-shadow: none;
@@ -429,7 +429,7 @@
   inset: 0;
   display: flex;
   justify-content: flex-end;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
   pointer-events: none;
 }
@@ -437,7 +437,7 @@
   content: '';
   width: var(--pg-book-icon);
   height: 100%;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--pg-sand);
   transition: width 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);   /* 離開：依影片量測，約 0.17–0.3s 快速平順縮回右側圓，無回彈 */
 }
@@ -482,7 +482,7 @@
 }
 .pg-cta-book:active { opacity: 0.92; }
 @media (max-width: 767px) {
-  .pg-cta-book { height: 44px; padding: 0 16px 0 18px; gap: 24px; font-size: 13.5px; }
+  .pg-cta-book { height: 38px; padding: 0 16px 0 18px; gap: 24px; font-size: 13.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-cta-book:hover .pg-cta-book__fill::before { animation: none; width: 100%; transition: none; }
