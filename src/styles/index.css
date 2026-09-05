@@ -750,7 +750,10 @@
   .pg-intro01 { min-height: clamp(240px, 30vh, 330px); }
 }
 @media (min-width: 1024px) {
-  .pg-intro01 { min-height: clamp(380px, 44vh, 420px); }
+  /* 2026-09-05 大標縮 10% 後文字組矮了約 26px；使用者要求米白區高度維持原版
+     （1440×900 實測 416px），所以地板抬到 416px，由 justify-center＋下大上小的
+     padding 維持原本的光學中心。 */
+  .pg-intro01 { min-height: clamp(400px, 46.2vh, 440px); }
 }
 
 /* ── 02 THE APP / 01 THE SPACE 的 RWD（2026-09-05）。

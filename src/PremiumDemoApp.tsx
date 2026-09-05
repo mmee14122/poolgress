@@ -57,6 +57,8 @@ export default function PremiumDemoApp() {
   )
   /* 圖片遮罩揭開進度（0=全遮、1=全開），只作用於 overlay，不作用於圖片 */
   const [maskP, setMaskP] = useState<Record<string, number>>({})
+  /* 01 軌跡線的捲動進度（0=未畫、1=畫到球桌照片）：跟著 01 開場區的位置走 */
+  const [trajP, setTrajP] = useState(0)
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function PremiumDemoApp() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
+      setTrajP(1)
       return
     }
     const check = () => {
@@ -99,6 +102,16 @@ export default function PremiumDemoApp() {
       })
       /* 圖片遮罩進度：圖頂到達視窗 90% 開始、約 58% 完成（各段微差）。
          值四捨五入到 1%，快速捲動時不會過度重繪；平滑由 CSS transition 負責 */
+      /* 軌跡：01 開場區頂緣從視窗 95% 走到 20% 的過程中，線由右上緩慢延伸到
+         左下、圓點在末段落定，把視線帶向下方的場館照片。四捨五入到 1%。 */
+      {
+        const el = refs.current.get('intro01')
+        if (el) {
+          const t = el.getBoundingClientRect().top / window.innerHeight
+          const p = Math.round(Math.min(1, Math.max(0, (0.95 - t) / 0.75)) * 100) / 100
+          setTrajP((prev) => (prev === p ? prev : p))
+        }
+      }
       setMaskP((prev) => {
         let changed = false
         const next = { ...prev }
@@ -291,8 +304,8 @@ export default function PremiumDemoApp() {
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
-            strokeDashoffset={on01 ? 0 : 1}
-            style={{ transition: `stroke-dashoffset 1.1s ${EASE} 0.15s` }}
+            strokeDashoffset={1 - trajP}
+            style={{ transition: 'stroke-dashoffset 0.35s linear' }}
           />
           <circle
             cx="872"
@@ -300,9 +313,10 @@ export default function PremiumDemoApp() {
             r="4"
             fill={P.primary}
             style={{
-              opacity: on01 ? 0.3 : 0,
-              transform: on01 ? 'none' : 'translate(-22px, -12px)',
-              transition: `opacity 0.9s ${EASE} 0.5s, transform 0.9s ${EASE} 0.5s`,
+              /* 圓點只在軌跡最後 25% 現身，跟著線端落定 */
+              opacity: 0.3 * Math.min(1, Math.max(0, (trajP - 0.75) / 0.25)),
+              transform: trajP >= 1 ? 'none' : 'translate(-22px, -12px)',
+              transition: 'opacity 0.35s linear, transform 0.5s ease-out',
             }}
           />
         </svg>
@@ -322,8 +336,8 @@ export default function PremiumDemoApp() {
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray="1"
-            strokeDashoffset={on01 ? 0 : 1}
-            style={{ transition: `stroke-dashoffset 1s ${EASE} 0.15s` }}
+            strokeDashoffset={1 - trajP}
+            style={{ transition: 'stroke-dashoffset 0.35s linear' }}
           />
           <circle
             cx="244"
@@ -331,9 +345,9 @@ export default function PremiumDemoApp() {
             r="3"
             fill={P.primary}
             style={{
-              opacity: on01 ? 0.3 : 0,
-              transform: on01 ? 'none' : 'translate(-12px, -7px)',
-              transition: `opacity 0.8s ${EASE} 0.4s, transform 0.8s ${EASE} 0.4s`,
+              opacity: 0.3 * Math.min(1, Math.max(0, (trajP - 0.75) / 0.25)),
+              transform: trajP >= 1 ? 'none' : 'translate(-12px, -7px)',
+              transition: 'opacity 0.35s linear, transform 0.5s ease-out',
             }}
           />
         </svg>
@@ -372,13 +386,13 @@ export default function PremiumDemoApp() {
                   /* editorial stagger（2026-09-05 使用者定義）：第二行起點＝第一行
                      文字寬度的 30%。"YOUR TABLE." 實測寬 6.858em，故 0.30 × 6.858
                      ≈ 2.05em；用大字自己的 clamp 換算，桌機／手機自動等比縮放。 */
-                  i === 1 ? { marginLeft: 'calc(clamp(36px, 7vw, 108px) * 2.05)' } : undefined
+                  i === 1 ? { marginLeft: 'calc(clamp(36px, 6.3vw, 97px) * 2.05)' } : undefined
                 }
               >
                 <span
                   className="block"
                   style={{
-                    fontSize: 'clamp(36px, 7vw, 108px)',
+                    fontSize: 'clamp(36px, 6.3vw, 97px)',
                     lineHeight: 1.05,
                     opacity: on01 ? 1 : 0,
                     transform: on01 ? 'translateY(0)' : 'translateY(8px)',
@@ -607,7 +621,7 @@ function PillarBlock({
       <section
         ref={refCb}
         id={s.id}
-        className="relative mt-2 w-full overflow-hidden sm:mt-5"
+        className="relative mt-2 w-full overflow-hidden sm:mt-5 lg:mx-[5vw] lg:w-auto"
       >
         {/* 場館願景圖不做特效（2026-08-17 使用者指定）：靜態顯示，只有玻璃卡保留 reveal */}
         <div
@@ -641,11 +655,13 @@ function PillarBlock({
           />
           {/* 玻璃卡：桌機置右垂直置中，手機貼底滿寬 */}
           <div
-            className="pg-venue-card absolute inset-x-4 bottom-5 rounded-2xl p-6 sm:inset-x-auto sm:top-1/2 sm:right-[6%] sm:bottom-auto sm:max-w-xl sm:-translate-y-1/2 sm:p-10"
+            className="pg-venue-card absolute inset-x-4 bottom-5 rounded-lg p-6 sm:inset-x-auto sm:top-1/2 sm:right-[7%] sm:bottom-auto sm:max-w-sm sm:-translate-y-1/2 sm:p-8"
             style={{
-              background: 'rgba(37,44,48,.55)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
+              /* 2026-09-05 精修：遮罩 .55→.32、blur 10→6、圓角 16→8、寬 xl→sm、
+                 padding 40→32——安靜的 hospitality 註記，不是 SaaS card */
+              background: 'rgba(37,44,48,.32)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
               color: P.bg,
               ...fadeUp(on, 0.2, 0.8), /* 玻璃卡改漸層浮出（使用者指定），不再左至右揭開 */
             }}
@@ -657,7 +673,7 @@ function PillarBlock({
               {s.badge}
             </span>
             {/* 桌機：原本的單段文案（不動） */}
-            <p className="mt-4 hidden text-base leading-relaxed md:block sm:text-lg" style={{ color: 'rgba(242,238,230,.9)' }}>
+            <p className="mt-5 hidden text-base leading-loose md:block" style={{ color: 'rgba(242,238,230,.9)' }}>
               {s.body}
             </p>
             {/* 手機（<768px）：重建層級——主訊息 17px medium ＋ 說明 14.5px／1.75，
