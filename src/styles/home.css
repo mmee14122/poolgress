@@ -141,63 +141,71 @@
   aspect-ratio: var(--pg-feature-ratio);
 }
 
-/* ---------- 01 FUTURE SPACE teaser（2026-09-05 使用者規格）----------
-   veil：整張 Charcoal 約 40%，左側略深（文字區）；仍看得到陽光、木質、球桌與人物。
-   frame：透明底、1px ivory 38% 細框、radius 2、無陰影；桌機／平板靠左垂直置中、寬 400、內距 36；
-   手機寬 calc(100% - 40px) 水平置中。字全用 ivory。 */
+/* ---------- 01 FUTURE SPACE teaser v2（2026-09-05 使用者規格：cinematic editorial）----------
+   veil：全圖 Charcoal 28%，讓暖色、陽光、人物都在。
+   glow：左側 localized gradient（60% → 0，佔寬 55%），文字從場景浮現，不是色塊。
+   文字組：無框、無底、無陰影；左側垂直置中、最大寬 440；手機 74vw、人物留在右側。
+   層級：COMING SOON pill → POOLGRESS SPACE（ivory serif 主視覺）→ 40px 短 rule → 一句中文 → TAIWAN · 2026（.18em） */
 .pg-venue-veil { background: var(--pg-teaser-veil); }
+.pg-venue-glow { background: var(--pg-teaser-glow); }
 .pg-venue-teaser {
   left: var(--site-gutter);
   top: 50%;
   width: var(--pg-teaser-w);
   max-width: calc(100% - var(--site-gutter) * 2);
-  padding: var(--pg-teaser-pad);
-  border: 1px solid var(--pg-teaser-border);
-  border-radius: var(--pg-teaser-radius);
   color: var(--pg-ivory);
 }
-.pg-venue-teaser__eyebrow {
-  font-size: var(--pg-fs-teaser-eyebrow);
-  letter-spacing: var(--pg-ls-teaser-eyebrow);
+.pg-venue-teaser__pill {
+  height: 24px;
+  padding: 0 12px;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  font-weight: 500;
-  line-height: 1.4;
-  color: rgba(var(--pg-ivory-rgb), 0.85);
+  font-weight: 600;
+  line-height: 1;
+  background: rgba(var(--pg-sand-rgb), 0.92);
+  color: var(--pg-charcoal);
 }
 .pg-venue-teaser__title {
-  margin-top: 22px;
+  margin-top: 20px;
   font-family: var(--pg-font-serif);
   font-size: var(--pg-fs-teaser-title);
   font-weight: 500;
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: 0.01em;
   color: var(--pg-ivory);
 }
+.pg-venue-teaser__rule {
+  margin-top: 18px;
+  width: var(--pg-teaser-rule-w);
+  height: 1px;
+  background: rgba(var(--pg-ivory-rgb), 0.55);
+}
 .pg-venue-teaser__zh {
-  margin-top: 22px;
+  margin-top: 16px;
   font-size: var(--pg-fs-teaser-zh);
   line-height: 1.7;
-  color: rgba(var(--pg-ivory-rgb), 0.88);
+  color: rgba(var(--pg-ivory-rgb), 0.9);
 }
 .pg-venue-teaser__meta {
-  margin-top: 28px;
+  margin-top: 14px;
   font-size: var(--pg-fs-teaser-meta);
   letter-spacing: var(--pg-ls-teaser-meta);
   text-transform: uppercase;
   line-height: 1.4;
-  color: rgba(var(--pg-ivory-rgb), 0.6);
+  color: rgba(var(--pg-ivory-rgb), 0.62);
 }
 @media (max-width: 767px) {
-  .pg-venue-veil { background: var(--pg-teaser-veil-mobile); }
+  .pg-venue-glow { background: var(--pg-teaser-glow-mobile); }
   .pg-venue-teaser {
     left: 20px;
-    width: calc(100% - 40px);
+    width: var(--pg-teaser-w-mobile);
     max-width: none;
-    padding: var(--pg-teaser-pad-mobile);
   }
-  .pg-venue-teaser__title { margin-top: 18px; font-size: var(--pg-fs-teaser-title-mobile); }
-  .pg-venue-teaser__zh { margin-top: 18px; }
-  .pg-venue-teaser__meta { margin-top: 22px; }
+  .pg-venue-teaser__title { margin-top: 16px; font-size: var(--pg-fs-teaser-title-mobile); }
+  .pg-venue-teaser__rule { margin-top: 16px; }
+  .pg-venue-teaser__zh { margin-top: 14px; }
+  .pg-venue-teaser__meta { margin-top: 12px; }
 }
 
 /* ---------- Hero ---------- */

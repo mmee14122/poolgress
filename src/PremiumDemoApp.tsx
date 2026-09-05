@@ -579,11 +579,12 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* FUTURE SPACE teaser（2026-09-05 使用者規格）：這不是已落成的場館，是概念視覺。
-              整張圖壓一層 Charcoal veil（約 40%，左側略深保護文字），frame 是透明 1px 細框、
-              無底色／無陰影／radius 2px，內容：COMING SOON／POOLGRESS SPACE／一句中文／TAIWAN · 2026。
-              桌機／平板：框在左側、垂直置中，寬 400；手機：圖改直式 4:5 裁切，框寬 calc(100% - 40px) 置中。 */}
+          {/* FUTURE SPACE teaser v2（2026-09-05 使用者規格，cinematic editorial）：這不是已落成的場館，
+              是概念視覺。全圖 Charcoal veil 約 28%，另在左側文字區加 localized gradient（最深 60% → 中央 0，
+              佔寬約 55%），文字從場景浮現、無框／無卡／無陰影。內容：COMING SOON pill／POOLGRESS SPACE（主視覺）／
+              短 rule／一句中文／TAIWAN · 2026。桌機：左側垂直置中；手機：4:5 直式、文字組 74vw、人物在右。 */}
           <div aria-hidden="true" className="pg-venue-veil pointer-events-none absolute inset-0" />
+          <div aria-hidden="true" className="pg-venue-glow pointer-events-none absolute inset-0" />
           {s.teaser && (
           <div
             className="pg-venue-teaser absolute"
@@ -593,12 +594,15 @@ function PillarBlock({
               transition: `opacity 0.8s ${EASE2} 0.2s, transform 0.8s ${EASE2} 0.2s`,
             }}
           >
-            <p className="pg-venue-teaser__eyebrow">{s.teaser.eyebrow}</p>
+            <p>
+              <span className="pg-venue-teaser__pill inline-flex items-center rounded-full">{s.teaser.eyebrow}</span>
+            </p>
             <h3 className="pg-venue-teaser__title">
               {s.teaser.titleLines[0]}
               <br />
               {s.teaser.titleLines[1]}
             </h3>
+            <span aria-hidden="true" className="pg-venue-teaser__rule block" />
             <p className="pg-venue-teaser__zh">{s.teaser.zh}</p>
             <p className="pg-venue-teaser__meta">{s.teaser.meta}</p>
           </div>

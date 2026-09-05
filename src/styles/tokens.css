@@ -91,22 +91,20 @@
   --pg-fs-venue-p: 16px;
   --pg-lh-venue-p: 1.8;
   /* 01 FUTURE SPACE teaser（2026-09-05） */
-  --pg-teaser-w: 400px;                 /* 桌機框寬（360–440） */
-  --pg-teaser-pad: 36px;                /* 桌機框內距（32–40） */
-  --pg-teaser-pad-mobile: 28px 24px;
-  --pg-teaser-border: rgba(242, 238, 230, 0.38); /* 1px ivory 細框 */
-  --pg-teaser-radius: 2px;
-  --pg-teaser-veil: linear-gradient(90deg, rgba(37, 44, 48, 0.46) 0%, rgba(37, 44, 48, 0.4) 45%, rgba(37, 44, 48, 0.34) 100%); /* 整張約 35–45% */
-  --pg-teaser-veil-mobile: linear-gradient(180deg, rgba(37, 44, 48, 0.38) 0%, rgba(37, 44, 48, 0.44) 60%, rgba(37, 44, 48, 0.5) 100%);
-  --pg-fs-teaser-eyebrow: 11px;
-  --pg-ls-teaser-eyebrow: 0.22em;
-  --pg-fs-teaser-title: clamp(34px, 3vw, 44px);
-  --pg-fs-teaser-title-mobile: 32px;
+  --pg-teaser-w: 440px;                 /* 桌機文字組最大寬 */
+  --pg-teaser-w-mobile: 74vw;           /* 手機文字組寬（70–78vw） */
+  --pg-teaser-veil: rgba(37, 44, 48, 0.28);  /* 全圖 veil 25–30% */
+  /* 左側 localized gradient：最深 60% → 中央 0，佔寬約 55%；手機從左緣 → 70% */
+  --pg-teaser-glow: linear-gradient(90deg, rgba(37, 44, 48, 0.6) 0%, rgba(37, 44, 48, 0.42) 18%, rgba(37, 44, 48, 0.18) 38%, rgba(37, 44, 48, 0) 55%);
+  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(37, 44, 48, 0.62) 0%, rgba(37, 44, 48, 0.4) 30%, rgba(37, 44, 48, 0.12) 55%, rgba(37, 44, 48, 0) 72%);
+  --pg-fs-teaser-title: clamp(46px, 3.6vw, 52px);  /* v2：比 v1 放大約 18% */
+  --pg-fs-teaser-title-mobile: 38px;
   --pg-fs-teaser-zh: 14px;
   --pg-fs-teaser-meta: 10px;
-  --pg-ls-teaser-meta: 0.2em;
+  --pg-ls-teaser-meta: 0.18em;
+  --pg-teaser-rule-w: 40px;             /* 標題下的短 editorial rule */
   --pg-banner-ratio-mobile: 4 / 5;      /* 手機直式裁切 */
-  --pg-banner-focus-mobile: 62% 55%;    /* 手機焦點：父女＋球桌（4:5 只看得到原圖 45% 寬，媽媽放不進） */
+  --pg-banner-focus-mobile: 56% 55%;    /* 手機焦點：4:5 只看得到原圖 45% 寬，取 30–75%：左側留字、父女在右側完整入鏡 */
   --pg-fs-venue-h3-tablet: 20px;        /* 平板 caption 標（text-xl）*/
   --pg-fs-venue-h3-mobile: 17px;        /* 手機照片下標題 */
   --pg-lh-venue-h3-mobile: 1.375;
