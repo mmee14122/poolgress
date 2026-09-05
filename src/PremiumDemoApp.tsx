@@ -149,8 +149,8 @@ export default function PremiumDemoApp() {
       <section
         ref={reg('hero')}
         data-nav-dark="#252C30"
-        className="relative flex items-end overflow-hidden"
-        style={{ background: P.text, color: P.bg, minHeight: 'calc(100svh - var(--pg-peek, 56px))' }}
+        className="pg-hero relative flex items-end overflow-hidden"
+        style={{ background: P.text, color: P.bg }}
       >
         {hero.video ? (
           <video

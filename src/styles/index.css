@@ -812,8 +812,14 @@
 @media (min-width: 1024px) {
   .pg-venue-banner { height: calc(100svh - var(--pg-peek, 56px)); }
 }
-@media (max-width: 768px) {
-  .pg-hero-img { object-position: 65% center; }
+/* Hero 高度：桌機滿屏減 peek（原 inline 值搬來這裡）；手機縮到 78svh——
+   16:9 的圖用 cover 塞進直式滿屏時可見寬只剩圖的 27%，店招「Poolgress」＋logo（圖的
+   x 30–61%）塞不下；78svh 時可見寬約 34%，把焦點放 44.5% 就能把整塊店招框進來
+   （2026-09-05 使用者要求）。文字仍貼底，78svh 放得下。 */
+.pg-hero { min-height: calc(100svh - var(--pg-peek, 56px)); }
+@media (max-width: 767px) {
+  .pg-hero { min-height: 78svh; }
+  .pg-hero-img { object-position: 44.5% 0; }
 }
 
 /* 02–04 每一組 feature 的欄間距。手機是「description → image」的中層間距，
