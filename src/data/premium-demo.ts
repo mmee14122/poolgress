@@ -110,7 +110,7 @@ export const finale = {
   en: 'HOW DO YOU WANT TO PLAY?',
   zh: '你想怎麼玩？',
   ctas: [
-    { label: '開始玩', href: './challenges.html' },
+    { label: 'App 遊戲闖關', href: './challenges.html' },
     { label: '線上課程', href: './course.html' },
     { label: '預約教練', href: './coach.html' },
   ],
