@@ -782,29 +782,8 @@
     display: block;
   }
   .pg-venue-shade { display: none; }
-  /* 手機 Coming Soon block（2026-09-05 使用者規格）：平面色塊、不透明 Charcoal、
-     radius 12、padding 24、左右 16px、無陰影無邊框。桌機仍是疊圖的半透明玻璃卡
-     （inline style），所以這裡必須用 !important 蓋掉 inline 的 rgba 底與 blur。
-     與下一段 02 / THE APP 的距離＝card 無下邊距 ＋ 02 區 pt-16(64px) ＝ 64px。 */
-  .pg-venue-card {
-    position: static;
-    margin: 16px 16px 0;
-    transform: none;
-    max-width: none;
-    padding: 24px;
-    border-radius: 12px;
-    background: #252c30 !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-    box-shadow: none;
-    border: 0;
-  }
-  .pg-venue-card > span {
-    /* Coming Soon pill：字距拉開、細一點，不像 CTA */
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    padding: 4px 12px;
-  }
+  /* 手機的 Coming Soon 卡片已移除（2026-09-05 使用者規格），改為照片下方的
+     純文字 editorial（見 PremiumDemoApp 的 mobileTitle）；卡片只在 md 以上顯示。 */
 }
 @media (min-width: 769px) {
   .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }

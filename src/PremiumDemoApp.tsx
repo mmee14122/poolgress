@@ -655,7 +655,7 @@ function PillarBlock({
           />
           {/* 玻璃卡：桌機置右垂直置中，手機貼底滿寬 */}
           <div
-            className="pg-venue-card absolute inset-x-4 bottom-5 rounded-lg p-6 sm:inset-x-auto sm:top-1/2 sm:right-[7%] sm:bottom-auto sm:max-w-sm sm:-translate-y-1/2 sm:p-8"
+            className="pg-venue-card absolute hidden rounded-lg p-6 md:block sm:inset-x-auto sm:top-1/2 sm:right-[7%] sm:bottom-auto sm:max-w-sm sm:-translate-y-1/2 sm:p-8"
             style={{
               /* 2026-09-05 精修：遮罩 .55→.32、blur 10→6、圓角 16→8、寬 xl→sm、
                  padding 40→32——安靜的 hospitality 註記，不是 SaaS card */
@@ -672,22 +672,24 @@ function PillarBlock({
             >
               {s.badge}
             </span>
-            {/* 桌機：原本的單段文案（不動） */}
-            <p className="mt-5 hidden text-base leading-loose md:block" style={{ color: 'rgba(242,238,230,.9)' }}>
+            <p className="mt-5 text-base leading-loose" style={{ color: 'rgba(242,238,230,.9)' }}>
               {s.body}
             </p>
-            {/* 手機（<768px）：重建層級——主訊息 17px medium ＋ 說明 14.5px／1.75，
-                顏色只用 palette 的 Background 米白；以「：」切成主訊息與說明 */}
-            <div className="mt-4 md:hidden">
-              <p className="text-[17px] leading-snug font-medium" style={{ color: P.bg }}>
-                {s.body.split('：')[0]}
-              </p>
-              <p className="mt-2 text-[14.5px]" style={{ color: P.bg, lineHeight: 1.75 }}>
-                {s.body.split('：').slice(1).join('：')}
-              </p>
-            </div>
           </div>
         </div>
+        {/* 手機（<768px）：照片下方回到米白底的純文字 editorial（2026-09-05 使用者規格）。
+            不再重複 COMING SOON（上方眉標已標示）、無卡片／陰影／邊框／裝飾。
+            左緣 px-5 與「01 / THE SPACE」眉標同一條 20px grid。 */}
+        {s.mobileTitle && (
+          <div className="px-5 pt-7 md:hidden">
+            <h3 className="text-[17px] leading-snug font-medium" style={{ color: P.text }}>
+              {s.mobileTitle}
+            </h3>
+            <p className="mt-3 text-[15px]" style={{ color: 'rgba(37,44,48,.78)', lineHeight: 1.75 }}>
+              {s.mobileBody}
+            </p>
+          </div>
+        )}
       </section>
     )
   }
