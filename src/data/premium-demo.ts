@@ -59,7 +59,7 @@ export const pillarSections: Pillar[] = [
     mobileTitle: '我們正在打造 Poolgress 場館',
     mobileBody: '完整的出桿空間、專屬座位與 Café，讓打球成為值得停留的日常。',
     /** 概念視覺 teaser（2026-09-05 使用者規格）：不是介紹設備，是「未來真的會有實體空間」的期待感 */
-    teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'CLUB'], zh: '打造全新的撞球體驗', meta: 'TAIPEI · 2028' },
+    teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'CLUB'], zh: '球桌還在路上。', meta: 'TAIPEI · OPENING 2028' },
     /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
     image: './assets/hero/s01-venue.webp',
     imageMobile: null,

@@ -602,8 +602,13 @@ function PillarBlock({
               是概念視覺。全圖 Charcoal veil 約 28%，另在左側文字區加 localized gradient（最深 60% → 中央 0，
               佔寬約 55%），文字從場景浮現、無框／無卡／無陰影。內容：COMING SOON pill／POOLGRESS SPACE（主視覺）／
               短 rule／一句中文／TAIWAN · 2026。桌機：左側垂直置中；手機：4:5 直式、文字組 74vw、人物在右。 */}
-          <div aria-hidden="true" className="pg-venue-veil pointer-events-none absolute inset-0" />
-          <div aria-hidden="true" className="pg-venue-glow pointer-events-none absolute inset-0" />
+          {/* 中央水平霧化帶（2026-09-06 v6 Coming Soon）：backdrop blur 8px＋mask 上下漸隱＋極輕深色 overlay；
+              上下照片維持清晰，沒有 card／框／陰影。進場：跟著 on 緩慢淡入（1.2s）。 */}
+          <div
+            aria-hidden="true"
+            className="pg-venue-blurband pointer-events-none absolute inset-x-0"
+            style={{ opacity: on ? 1 : 0, transition: `opacity 1.2s ${EASE2} 0.1s` }}
+          />
           {s.teaser && (
           <div
             className="pg-venue-teaser absolute"
@@ -621,7 +626,6 @@ function PillarBlock({
               <br />
               {s.teaser.titleLines[1]}
             </h3>
-            <span aria-hidden="true" className="pg-venue-teaser__rule block" />
             <p className="pg-venue-teaser__zh">{s.teaser.zh}</p>
             <p className="pg-venue-teaser__meta">{s.teaser.meta}</p>
           </div>

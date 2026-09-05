@@ -166,8 +166,6 @@
    glow：左側 localized gradient（60% → 0，佔寬 55%），文字從場景浮現，不是色塊。
    文字組：無框、無底、無陰影；左側垂直置中、最大寬 440；手機 74vw、人物留在右側。
    層級：COMING SOON pill → POOLGRESS SPACE（ivory serif 主視覺）→ 40px 短 rule → 一句中文 → TAIWAN · 2026（.18em） */
-.pg-venue-veil { background: var(--pg-teaser-veil); }
-.pg-venue-glow { background: var(--pg-teaser-glow); }
 /* v5 Luxury Editorial Frame（2026-09-05 使用者規格）：
    .pg-venue-teaser 本身就是大型構圖框——absolute inset 幾乎包覆整張照片（桌機左右 clamp(40,4vw,64)、
    上下 16%；手機 16px／9%），1px hairline rgba(255,255,255,.5)、直角、無陰影／blur／底色。
@@ -180,49 +178,54 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  padding: 0 var(--pg-frame-text-x) var(--pg-frame-text-lift) var(--pg-frame-text-x);
-  border: 1px solid var(--pg-teaser-border);
+  align-items: center;             /* v6：全部置中，沒有左側文字區 */
+  text-align: center;
+  padding: 0 var(--pg-frame-text-x);
+  border: 1px solid var(--pg-teaser-border);   /* 唯一明確邊界：外圍 1px 細框 */
   border-radius: 0;
   color: var(--pg-ivory);
 }
+/* 中央霧化帶：高度＝Hero 的 42%（手機 55%），blur 最強 8px 在中央，mask 讓上下 30% 各自漸隱到 0 */
+.pg-venue-blurband {
+  top: var(--pg-blurband-top);
+  height: var(--pg-blurband-h);
+  -webkit-backdrop-filter: blur(var(--pg-blurband-blur));
+  backdrop-filter: blur(var(--pg-blurband-blur));
+  background: rgba(15, 18, 17, var(--pg-blurband-tint));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+}
 .pg-venue-teaser__pill {
-  font-size: 11.5px;
-  letter-spacing: 0.2em;
+  font-size: var(--pg-fs-eyebrow);          /* 沿用 eyebrow token：11px／.3em／500 */
+  letter-spacing: var(--pg-ls-eyebrow);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
-  color: var(--pg-sand);              /* 與 Hero 眉標 SPACE · PLAY 同色：Sand #D2C2AD（2026-09-06） */
+  color: var(--pg-sand);
   text-shadow: var(--pg-teaser-shadow);
 }
 .pg-venue-teaser__title {
-  margin-top: 20px;
+  margin-top: 24px;                      /* COMING SOON → 標題 */
   font-family: var(--pg-font-serif);
   font-size: var(--pg-fs-teaser-title);
   font-weight: 500;
-  line-height: 0.95;
+  line-height: 0.92;
   letter-spacing: 0.01em;
   color: var(--pg-teaser-ink);
   text-shadow: var(--pg-teaser-shadow);
 }
-.pg-venue-teaser__rule {
-  margin-top: 18px;
-  width: var(--pg-teaser-rule-w);
-  height: 1px;
-  background: rgba(var(--pg-ivory-rgb), 0.55);
-}
 .pg-venue-teaser__zh {
-  margin-top: 16px;
+  margin-top: 28px;                      /* 標題 → 中文 */
   font-size: var(--pg-fs-teaser-zh);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.7;
   color: rgba(255, 250, 242, 0.92);
   text-shadow: var(--pg-teaser-shadow);
 }
 .pg-venue-teaser__meta {
-  margin-top: 14px;
+  margin-top: 20px;                      /* 中文 → 年份 */
   font-size: var(--pg-fs-teaser-meta);
-  letter-spacing: var(--pg-ls-teaser-meta);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   line-height: 1.4;
   color: rgba(255, 250, 242, 0.73);   /* TAIWAN · 2027 最弱一階 */
@@ -239,18 +242,22 @@
   .pg-venue-banner .pg-venue-teaser { padding-bottom: var(--pg-frame-text-lift-xs); }
 }
 @media (max-width: 767px) {
-  .pg-venue-glow { background: var(--pg-teaser-glow-mobile); }
   .pg-venue-teaser {
     left: var(--pg-frame-inset-x-mobile);
     right: var(--pg-frame-inset-x-mobile);
     top: var(--pg-frame-inset-y-mobile);
     bottom: var(--pg-frame-inset-y-mobile);
-    padding: 0 var(--pg-frame-text-x-mobile) var(--pg-frame-text-lift-mobile) var(--pg-frame-text-x-mobile);
+    padding: 0 var(--pg-frame-text-x-mobile);   /* v6：置中，不再上抬 */
   }
-  .pg-venue-teaser__title { margin-top: 16px; font-size: var(--pg-fs-teaser-title-mobile); }
-  .pg-venue-teaser__rule { margin-top: 16px; }
-  .pg-venue-teaser__zh { margin-top: 14px; }
-  .pg-venue-teaser__meta { margin-top: 12px; }
+  /* 手機：文字群較高，霧化帶 60%、上下漸隱縮到 22%、tint .18；字級與間距略收（36／20／22／16）讓群組落在帶內 */
+  .pg-venue-teaser__title { margin-top: 20px; font-size: 36px; }
+  .pg-venue-teaser__zh { margin-top: 22px; }
+  .pg-venue-teaser__meta { margin-top: 16px; }
+  .pg-venue-blurband {
+    --pg-blurband-top: 20%; --pg-blurband-h: 60%; --pg-blurband-tint: 0.18;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  }
 }
 
 /* ---------- Hero ---------- */
