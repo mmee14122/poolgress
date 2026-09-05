@@ -607,32 +607,26 @@ function PillarBlock({
               </span>
             </div>
           )}
-          {/* 可讀性漸層：往卡片側加深（手機卡片已移到圖下方，這層不顯示） */}
-          <div
-            className="pg-venue-shade absolute inset-0"
-            style={{ background: 'linear-gradient(to right, transparent 30%, rgba(37,44,48,.35))' }}
-          />
-          {/* 玻璃卡：桌機置右垂直置中，手機貼底滿寬 */}
-          <div
-            className="pg-venue-card absolute hidden rounded-lg p-6 md:block sm:inset-x-auto sm:top-1/2 sm:right-[7%] sm:bottom-auto sm:max-w-sm sm:-translate-y-1/2 sm:p-8"
-            style={{
-              /* 2026-09-05 精修：遮罩 .55→.32、blur 10→6、圓角 16→8、寬 xl→sm、
-                 padding 40→32——安靜的 hospitality 註記，不是 SaaS card */
-              background: 'rgba(37,44,48,.32)',
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
-              color: P.bg,
-              ...fadeUp(on, 0.2, 0.8), /* 玻璃卡改漸層浮出（使用者指定），不再左至右揭開 */
-            }}
-          >
+        </div>
+        {/* 桌機（≥768px）：照片保持乾淨、不放 floating card（2026-09-05 使用者規格，
+            原玻璃卡會遮到爸爸、女兒與球桌）。改成照片正下方的 editorial caption：
+            左欄 COMING SOON pill、右欄主標＋說明；延續 #F2EEE6、無卡片底、
+            直接繼承外層 section 的 .site-container 對齊。 */}
+        <div className="hidden pt-8 pb-2 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-x-10 lg:pt-10 lg:gap-x-16">
+          <div style={fadeUp(on, 0.05, 0.7, 12)}>
             <span
-              className="rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
+              className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.15em]"
               style={{ background: P.neutral, color: P.text }}
             >
               {s.badge}
             </span>
-            <p className="mt-5 text-base leading-loose" style={{ color: 'rgba(242,238,230,.9)' }}>
-              {s.body}
+          </div>
+          <div className="max-w-2xl" style={fadeUp(on, 0.15, 0.7, 12)}>
+            <h3 className="text-xl leading-snug font-medium lg:text-2xl" style={{ color: P.text }}>
+              {s.body.split('：')[0]}
+            </h3>
+            <p className="mt-3 text-base" style={{ color: P.textSoft, lineHeight: 1.75 }}>
+              {s.body.split('：').slice(1).join('：')}
             </p>
           </div>
         </div>

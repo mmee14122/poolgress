@@ -802,7 +802,6 @@
     object-position: initial;
     display: block;
   }
-  .pg-venue-shade { display: none; }
   /* 手機的 Coming Soon 卡片已移除（2026-09-05 使用者規格），改為照片下方的
      純文字 editorial（見 PremiumDemoApp 的 mobileTitle）；卡片只在 md 以上顯示。 */
 }
