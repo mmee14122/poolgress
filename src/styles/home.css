@@ -21,10 +21,11 @@
   font-size: var(--pg-fs-chapter);
   line-height: var(--pg-lh-chapter);
 }
-/* 01／02 大標的容器：襯線、500、Charcoal（實際字重要靠 index.html 載入 Serif 500） */
-.pg-t-serif-500 {
+/* Editorial Typography Family（Phase 2 定稿）：Display L1（YOUR TABLE.）與 Chapter L2（THE GAME）
+   同為 Noto Serif TC 600；字級／行高／stagger 各自保留。Feature L3（02–04 中文）仍 700。 */
+.pg-t-serif-editorial {
   font-family: var(--pg-font-serif);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--pg-charcoal);
 }
 .pg-t-feature-h2 {
@@ -121,6 +122,8 @@
   padding-bottom: var(--pg-space-feature-bottom);
 }
 .pg-feature-row { gap: var(--pg-space-feature-gap); }
+/* Phase 2 定稿：最後一段（04）到 Final CTA 深底 80px */
+.pg-app-world > .pg-feature:last-child { padding-bottom: var(--pg-space-feature-last-bottom); }
 .pg-finale {
   padding-top: var(--pg-space-finale-y);
   padding-bottom: var(--pg-space-finale-y);
@@ -195,6 +198,13 @@
   text-transform: uppercase;
   line-height: 1.4;
   color: rgba(var(--pg-ivory-rgb), 0.62);
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pg-venue-teaser { padding: var(--pg-teaser-pad-tablet); }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  /* 1024 的 23:9 橫幅只有 373 高，框縮回 520×(44×48) 才放得下 */
+  .pg-venue-teaser { width: 520px; padding: 44px 48px; }
 }
 @media (max-width: 767px) {
   .pg-venue-glow { background: var(--pg-teaser-glow-mobile); }
@@ -272,7 +282,9 @@
   .pg-venue-img { object-position: var(--pg-banner-focus-mobile); }
 }
 @media (min-width: 768px) {
-  .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
+  /* Phase 2：平板高度跟寬度走（40vw，320–430），768 時 704×320≈2.2:1，接近桌機比例；1024 起接 23:9 */
+  .pg-venue-banner { height: var(--pg-banner-h-tablet); aspect-ratio: auto; min-height: 0; }
+  .pg-venue-img { object-position: var(--pg-banner-focus-desktop); }
 }
 @media (min-width: 1024px) {
   .pg-venue-banner { height: auto; aspect-ratio: var(--pg-banner-ratio); }

@@ -68,10 +68,10 @@
   --pg-fs-manifesto: 12px;              /* Hero 宣言、頁尾 CTA 眉標：12 / sm 14，不 uppercase */
   --pg-ls-manifesto: 0.3em;
 
-  --pg-fs-eyebrow: 11px;                /* 01 / THE SPACE、02 / THE APP：11 / sm 12，uppercase */
+  --pg-fs-eyebrow: 11px;                /* Section eyebrow 定稿（Phase 2）：01／02／PLAY／TOGETHER／COMMUNITY 全部 11px */
   --pg-ls-eyebrow: 0.3em;
 
-  --pg-fs-eyebrow-feature: 10px;        /* 01 / PLAY 等三段小眉標（Phase 2 再決定是否併入 eyebrow） */
+  --pg-fs-eyebrow-feature: 11px;        /* Phase 2 定稿：併入 eyebrow system＝11px（原 10） */
   --pg-ls-eyebrow-feature: 0.28em;
 
   --pg-fs-badge: 10px;                  /* COMING SOON 徽章（01 開場、平板 caption） */
@@ -91,14 +91,17 @@
   --pg-fs-venue-p: 16px;
   --pg-lh-venue-p: 1.8;
   /* 01 FUTURE SPACE teaser（2026-09-05） */
-  --pg-teaser-w: 500px;                 /* 桌機細框寬（v3：比 v1 400 大） */
-  --pg-teaser-pad: 44px 48px;           /* v3：更鬆 */
+  --pg-teaser-w: 580px;                 /* 桌機細框寬（v4：再大一點；1024–1279 用 520） */
+  --pg-teaser-pad: 56px 60px;           /* v4：再鬆一點；1024–1279 用 44×48 */
   --pg-teaser-pad-mobile: 32px 28px;
+  --pg-teaser-pad-tablet: 36px 40px;
+  --pg-banner-h-tablet: clamp(360px, 40vw, 430px); /* Phase 2：768–1023 不再用 66svh（768 時 560 高像方圖） */
   --pg-teaser-border: rgba(242, 238, 230, 0.26); /* v3：更淡（v1 .38） */
   --pg-teaser-veil: rgba(37, 44, 48, 0.28);  /* 全圖 veil 25–30% */
   /* 左側 localized gradient：最深 60% → 中央 0，佔寬約 55%；手機從左緣 → 70% */
-  --pg-teaser-glow: linear-gradient(90deg, rgba(37, 44, 48, 0.6) 0%, rgba(37, 44, 48, 0.42) 18%, rgba(37, 44, 48, 0.18) 38%, rgba(37, 44, 48, 0) 55%);
-  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(37, 44, 48, 0.62) 0%, rgba(37, 44, 48, 0.4) 30%, rgba(37, 44, 48, 0.12) 55%, rgba(37, 44, 48, 0) 72%);
+  /* v4 readability veil（使用者規格）：左 16% → 7% → 3% → 0，無明顯邊界、不以 frame 為界 */
+  --pg-teaser-glow: linear-gradient(90deg, rgba(37, 44, 48, 0.16) 0%, rgba(37, 44, 48, 0.07) 22%, rgba(37, 44, 48, 0.03) 38%, rgba(37, 44, 48, 0) 56%);
+  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(37, 44, 48, 0.18) 0%, rgba(37, 44, 48, 0.07) 40%, rgba(37, 44, 48, 0.03) 60%, rgba(37, 44, 48, 0) 80%);
   --pg-fs-teaser-title: clamp(46px, 3.6vw, 52px);  /* v2：比 v1 放大約 18% */
   --pg-fs-teaser-title-mobile: 38px;
   --pg-fs-teaser-zh: 14px;
@@ -132,6 +135,7 @@
   --pg-space-chapter-bottom: 3rem;      /* 02 轉場 pb：48 / lg 32 */
   --pg-space-feature-top: 2.5rem;       /* 02–04 pt：40 / sm 48 / lg 40 */
   --pg-space-feature-bottom: 2rem;      /* 02–04 pb：32 / sm 40 / lg 32 */
+  --pg-space-feature-last-bottom: 80px; /* Phase 2 定稿：04 → Final CTA 80（原 32） */
   --pg-space-feature-gap: 24px;         /* 02–04 圖文間距：24 / sm 32 / lg 56 */
   --pg-space-finale-y: 3.5rem;          /* 頁尾 CTA py：56 / lg 80 */
   --pg-space-footer-y: 3rem;            /* Footer py：48 / lg 56 */
@@ -181,7 +185,6 @@
     --pg-fs-finale-h2: 48px;
     --pg-lh-finale-h2: 1;
     --pg-fs-manifesto: 14px;
-    --pg-fs-eyebrow: 12px;
     --pg-space-hero-bottom: 5rem;
     --pg-space-intro-top: 70px;
     --pg-space-intro-bottom: 88px;

@@ -315,7 +315,7 @@ export default function PremiumDemoApp() {
           </p>
           <h2
             ref={reg('intro01h')}
-            className="pg-t-serif-500 mt-5 sm:mt-6"
+            className="pg-t-serif-editorial mt-5 sm:mt-6"
           >
             {pillarSections[0].en.split('. ').map((line, i) => (
               /* 垂直 reveal（2026-08-17 使用者定稿）：line-mask 保留（overflow hidden），
@@ -495,7 +495,7 @@ function ChapterTransition({
         </p>
         <h2
           ref={headRefCb}
-          className="pg-t-serif-500 mt-3 sm:mt-4"
+          className="pg-t-serif-editorial mt-3 sm:mt-4"
         >
           {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
             <span
