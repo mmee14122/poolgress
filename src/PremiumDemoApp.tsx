@@ -290,8 +290,10 @@ export default function PremiumDemoApp() {
           先讀到 01 / THE SPACE，再讀到大字標題（逐行 mask reveal），最後才進場館圖。
           撞球軌跡是第二層細節：1.5px、13%、走大字右側負空間，不穿過文字。 */}
       {/* id 給 Hero 的「探索 Poolgress」跳轉用：落在 01 章節開場（眉標＋大標），
-          不是直接跳到照片；scroll-mt 抵掉 fixed Navbar 的 64px */}
-      <div ref={reg('intro01')} id="the-space" className="relative scroll-mt-16">
+          不是直接跳到照片。錨點偏移由 html 的 scroll-padding-top 統一處理
+          （首頁用 :has(.pg-home-root) 覆寫成 4rem＝fixed Navbar 高，見 index.css），
+          這裡不再加 scroll-mt，否則兩者相加會多出 96px。 */}
+      <div ref={reg('intro01')} id="the-space" className="relative">
         {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal。
             2026-09-05 使用者調整 optical balance：整組（眉標＋徽章＋大字）視為一個
             composition，用 justify-center 置中後再以「下留白大於上留白」的 padding

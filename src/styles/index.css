@@ -942,3 +942,10 @@
 .nav-hero .pg-nav-utils button:hover svg {
   fill: #6f8fa3;
 }
+
+/* 首頁（premium）錨點偏移：全站 html 的 scroll-padding-top 是 96px（舊站 sticky Navbar＋
+   章節 tabs 用），首頁只有一條 64px 的 fixed Navbar，錨點（#the-space）要剛好停在
+   Navbar 底下，所以覆寫成 4rem。 */
+html:has(.pg-home-root) {
+  scroll-padding-top: 4rem;
+}
