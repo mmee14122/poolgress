@@ -811,7 +811,9 @@
   .pg-venue-banner { height: clamp(400px, 66svh, 560px); aspect-ratio: auto; min-height: 400px; }
 }
 @media (min-width: 1024px) {
-  .pg-venue-banner { height: calc(100svh - var(--pg-peek, 56px)); }
+  /* 2026-09-05 使用者：桌機這張圖太高，改成 21:10 的扁橫幅（1440 → 1324×630，
+     原本 100svh-peek＝844），不再跟視窗高度走 */
+  .pg-venue-banner { height: auto; aspect-ratio: 21 / 10; }
 }
 /* Hero 高度：桌機滿屏減 peek（原 inline 值搬來這裡）；手機縮到 78svh——
    16:9 的圖用 cover 塞進直式滿屏時可見寬只剩圖的 27%，店招「Poolgress」＋logo（圖的
@@ -848,21 +850,57 @@
 
 /* 首頁 Navbar 的玻璃淺色態（方案 B）：米白 82%＋模糊，捲到米白區塊時用。
    深色態由 .nav-hero＋inline 漸層負責（見 Navbar.tsx 的 glass）。 */
-/* 首頁玻璃淺色態的導覽字色用 Charcoal #252C30（與 YOUR TABLE. 大標同色，
-   2026-09-05 使用者指定）；其他頁的白底 Navbar 維持 ink-700 */
-.pg-nav-glass-light .pg-nav-link {
+/* ── 首頁 Navbar dual state（2026-09-05，Adobe-inspired，非複製）──
+   .pg-nav-glass 是基底：fixed、全寬、透明；State B 加 .pg-nav-floating 後
+   平滑 morph 成 Ivory floating surface（350ms ease-out）。
+   State A（nav-hero）：透明、無容器、白 Logo、Sand 導覽，可讀性靠 Hero 的 top veil。
+   State B（floating）：Ivory #F2EEE8 底、Charcoal 字、hover／active＋線＋球 Primary #6F8FA3、
+   左右離 viewport 20px、top 10px、radius 18、極淡陰影、輕微 blur。
+   內層 .site-container 在 floating 時 padding 扣掉 20px inset，內容左緣仍在全站 grid 線上。 */
+.pg-nav-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: 0 0 0 rgba(37, 44, 48, 0);
+  transition:
+    top 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    right 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-nav-floating {
+  background-color: #f2eee8;
+  box-shadow: 0 6px 24px rgba(37, 44, 48, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+@media (min-width: 768px) {
+  .pg-nav-floating {
+    top: 10px;
+    left: 20px;
+    right: 20px;
+    border-radius: 18px;
+  }
+  .pg-nav-floating .site-container {
+    padding-inline: calc(var(--site-gutter) - 20px);
+  }
+}
+/* State B 色階：Charcoal 字、Primary 互動（含線＋球）、Logo 由 Logo.tsx 淺色態給 Primary */
+.pg-nav-floating .pg-nav-link {
   color: #252c30;
 }
-/* hover／active 仍走 locked 的 Secondary（同 specificity，放在後面才能贏） */
-.pg-nav-glass-light .pg-nav-link:hover,
-.pg-nav-glass-light .pg-nav-link--active {
-  color: #afc4cf;
+.pg-nav-floating .pg-nav-link:hover,
+.pg-nav-floating .pg-nav-link--active {
+  color: #6f8fa3;
 }
-.pg-nav-glass-light {
-  background: rgba(242, 238, 230, 0.82);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(37, 44, 48, 0.08);
+.pg-nav-floating .pg-nav-link::after,
+.pg-nav-floating .pg-nav-link::before {
+  background: #6f8fa3;
 }
 
 /* 首頁 Hero 的兩層 scrim（桌機）。顏色只用 Charcoal #252C30 的透明度，不做全圖濾鏡。 */

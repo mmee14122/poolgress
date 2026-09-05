@@ -68,6 +68,16 @@ export function Navbar({
       setDark(false)
       return
     }
+    /* glass（premium 首頁）：Adobe-inspired dual state——
+       State A（scrollY ≈ 0）：透明、全寬、白 Logo、Sand 導覽，屬於 Hero 攝影
+       State B（離開頂端）：morph 成 Ivory floating surface（見 .pg-nav-floating）
+       不看 data-nav-dark 區塊，只看 scrollY，24px 為切換點 */
+    if (glass) {
+      const applyGlass = () => setDark(window.scrollY < 24)
+      applyGlass()
+      window.addEventListener('scroll', applyGlass, { passive: true })
+      return () => window.removeEventListener('scroll', applyGlass)
+    }
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-nav-dark]'),
     )
@@ -105,7 +115,7 @@ export function Navbar({
       window.removeEventListener('scroll', apply)
       window.removeEventListener('resize', apply)
     }
-  }, [theme])
+  }, [theme, glass])
 
   // 開啟手機選單時鎖住背景捲動
   useEffect(() => {
@@ -122,9 +132,7 @@ export function Navbar({
       ref={headerRef}
       className={
         glass
-          ? `fixed inset-x-0 top-0 z-40 transition-colors duration-250 ease-out ${
-              dark ? 'nav-hero' : 'pg-nav-glass-light'
-            }`
+          ? `pg-nav-glass z-40 ${dark ? 'nav-hero' : 'pg-nav-floating'}`
           : `sticky top-(--promo-h) z-40 border-b transition-colors duration-250 ease-out ${
               dark ? 'nav-hero border-transparent' : 'border-line bg-white'
             }`

@@ -608,7 +608,7 @@ function PillarBlock({
             className="absolute hidden lg:block"
             style={{
               left: 'var(--site-gutter)',
-              top: '15%',
+              top: '12%',
               maxWidth: 380,
               opacity: on ? 1 : 0,
               transition: `opacity 0.8s ${EASE2} 0.2s`,
