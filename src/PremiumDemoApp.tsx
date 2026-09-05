@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
 import { Navbar } from './components/Navbar'
+import { TrajectoryMotif } from './components/TrajectoryMotif'
 
 /**
  * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
@@ -57,8 +58,6 @@ export default function PremiumDemoApp() {
   )
   /* 圖片遮罩揭開進度（0=全遮、1=全開），只作用於 overlay，不作用於圖片 */
   const [maskP, setMaskP] = useState<Record<string, number>>({})
-  /* 01 軌跡線的捲動進度（0=未畫、1=畫到球桌照片）：跟著 01 開場區的位置走 */
-  const [trajP, setTrajP] = useState(0)
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
@@ -66,7 +65,6 @@ export default function PremiumDemoApp() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
-      setTrajP(1)
       return
     }
     const check = () => {
@@ -102,16 +100,6 @@ export default function PremiumDemoApp() {
       })
       /* 圖片遮罩進度：圖頂到達視窗 90% 開始、約 58% 完成（各段微差）。
          值四捨五入到 1%，快速捲動時不會過度重繪；平滑由 CSS transition 負責 */
-      /* 軌跡：01 開場區頂緣從視窗 95% 走到 20% 的過程中，線由右上緩慢延伸到
-         左下、圓點在末段落定，把視線帶向下方的場館照片。四捨五入到 1%。 */
-      {
-        const el = refs.current.get('intro01')
-        if (el) {
-          const t = el.getBoundingClientRect().top / window.innerHeight
-          const p = Math.round(Math.min(1, Math.max(0, (0.95 - t) / 0.75)) * 100) / 100
-          setTrajP((prev) => (prev === p ? prev : p))
-        }
-      }
       setMaskP((prev) => {
         let changed = false
         const next = { ...prev }
@@ -304,69 +292,24 @@ export default function PremiumDemoApp() {
       {/* id 給 Hero 的「探索 Poolgress」跳轉用：落在 01 章節開場（眉標＋大標），
           不是直接跳到照片；scroll-mt 抵掉 fixed Navbar 的 64px */}
       <div ref={reg('intro01')} id="the-space" className="relative scroll-mt-16">
-        {/* 軌跡（桌機）：自 Hero 右下越界，收在標題右側負空間 */}
-        <svg
+        {/* Trajectory Line（品牌 motif，見 components/TrajectoryMotif）：
+            桌機自 Hero 右下越界、收在標題右側負空間；手機縮短只留局部。
+            章節開場 reveal 時一次畫出，球在線末落定，指向下方的場館照片。 */}
+        <TrajectoryMotif
+          on={on01}
           viewBox="0 0 1440 460"
-          preserveAspectRatio="xMidYMid meet"
-          fill="none"
-          className="pointer-events-none absolute inset-x-0 -top-[220px] hidden h-[460px] w-full sm:block"
-          aria-hidden="true"
-        >
-          <path
-            d="M 1345 26 C 1230 130, 1130 220, 1050 292 C 985 350, 930 396, 872 428"
-            stroke={P.primary}
-            strokeWidth="1.5"
-            strokeOpacity="0.13"
-            strokeLinecap="round"
-            pathLength={1}
-            strokeDasharray="1"
-            strokeDashoffset={1 - trajP}
-            style={{ transition: 'stroke-dashoffset 0.35s linear' }}
-          />
-          <circle
-            cx="872"
-            cy="428"
-            r="4"
-            fill={P.primary}
-            style={{
-              /* 圓點只在軌跡最後 25% 現身，跟著線端落定 */
-              opacity: 0.3 * Math.min(1, Math.max(0, (trajP - 0.75) / 0.25)),
-              transform: trajP >= 1 ? 'none' : 'translate(-22px, -12px)',
-              transition: 'opacity 0.35s linear, transform 0.5s ease-out',
-            }}
-          />
-        </svg>
-        {/* 軌跡（手機）：縮短、只保留局部 */}
-        <svg
+          path="M 1345 26 C 1230 130, 1130 220, 1050 292 C 985 350, 930 396, 872 428"
+          end={{ x: 872, y: 428 }}
+          className="absolute inset-x-0 -top-[220px] hidden h-[460px] w-full sm:block"
+        />
+        <TrajectoryMotif
+          on={on01}
           viewBox="0 0 375 190"
-          preserveAspectRatio="xMidYMid meet"
-          fill="none"
-          className="pointer-events-none absolute inset-x-0 -top-[95px] h-[190px] w-full sm:hidden"
-          aria-hidden="true"
-        >
-          <path
-            d="M 344 16 C 312 62, 282 100, 244 132"
-            stroke={P.primary}
-            strokeWidth="1.2"
-            strokeOpacity="0.13"
-            strokeLinecap="round"
-            pathLength={1}
-            strokeDasharray="1"
-            strokeDashoffset={1 - trajP}
-            style={{ transition: 'stroke-dashoffset 0.35s linear' }}
-          />
-          <circle
-            cx="244"
-            cy="132"
-            r="3"
-            fill={P.primary}
-            style={{
-              opacity: 0.3 * Math.min(1, Math.max(0, (trajP - 0.75) / 0.25)),
-              transform: trajP >= 1 ? 'none' : 'translate(-12px, -7px)',
-              transition: 'opacity 0.35s linear, transform 0.5s ease-out',
-            }}
-          />
-        </svg>
+          path="M 344 16 C 312 62, 282 100, 244 132"
+          end={{ x: 244, y: 132 }}
+          strokeWidth={1}
+          className="absolute inset-x-0 -top-[95px] h-[190px] w-full sm:hidden"
+        />
 
         {/* Typography：eyebrow 左緣約 10vw，大字兩行不對稱、逐行 mask reveal。
             2026-09-05 使用者調整 optical balance：整組（眉標＋徽章＋大字）視為一個
