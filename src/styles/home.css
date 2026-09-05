@@ -570,6 +570,29 @@
   }
 }
 
+/* ---------- 桌機（≥768）「你想怎麼玩？」三顆 CTA 比照 Hero 預約場館（2026-09-06 使用者）----------
+   直角方框、40 高、14px/500/.03em、1px 細框；主鈕 Sand 實心、次鈕透明＋Sand 細框。手機維持原版；hover 沿用既有。 */
+@media (min-width: 768px) {
+  .pg-finale .pg-t-cta {
+    height: 40px;
+    width: fit-content;
+    padding: 0 22px;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+  .pg-finale .pg-outline-cta {
+    background: rgba(var(--pg-charcoal-rgb), 0.03);
+    border: 1px solid rgba(129, 107, 89, 0.55) !important;  /* Walnut 55% */
+  }
+  .pg-finale .pg-primary-cta { border: 1px solid var(--pg-sand); }
+  .pg-finale .pg-cta-sweep { border-radius: 0; }
+  .pg-finale h2 + div { gap: 24px; }  /* 使用者：三顆間隔大一點（原 16） */
+}
+
 /* ---------- 手機（<768）Hero CTA 與「你想怎麼玩？」瘦身（2026-09-05 使用者規格）----------
    目標：Premium Lifestyle × Editorial × Quiet UI，降低 App UI／SaaS card 感。桌機不動。 */
 @media (max-width: 767px) {
