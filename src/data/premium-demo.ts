@@ -20,7 +20,8 @@ export const hero = {
   posterMobile: null as string | null,
   manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
   title: '從玩撞球，開始真正學會撞球。',
-  cta: { label: '探索 Poolgress', href: '#s01' },
+  /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
+  cta: { label: '探索 Poolgress', href: '#the-space' },
 }
 
 export type Pillar = {

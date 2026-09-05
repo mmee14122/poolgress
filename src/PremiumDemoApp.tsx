@@ -287,7 +287,9 @@ export default function PremiumDemoApp() {
           Typography first, graphic second：乾淨水平交界，140–220px 呼吸空間，
           先讀到 01 / THE SPACE，再讀到大字標題（逐行 mask reveal），最後才進場館圖。
           撞球軌跡是第二層細節：1.5px、13%、走大字右側負空間，不穿過文字。 */}
-      <div ref={reg('intro01')} className="relative">
+      {/* id 給 Hero 的「探索 Poolgress」跳轉用：落在 01 章節開場（眉標＋大標），
+          不是直接跳到照片；scroll-mt 抵掉 fixed Navbar 的 64px */}
+      <div ref={reg('intro01')} id="the-space" className="relative scroll-mt-16">
         {/* 軌跡（桌機）：自 Hero 右下越界，收在標題右側負空間 */}
         <svg
           viewBox="0 0 1440 460"
@@ -542,7 +544,7 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="site-container flex items-center pt-16 pb-8 lg:pt-20 lg:pb-8"
+      className="pg-app-intro site-container flex items-center pt-16 pb-10 lg:pt-20 lg:pb-8"
     >
       <div className="w-full">
         <p

@@ -830,6 +830,14 @@
   background: color-mix(in srgb, #afc4cf 22%, #f2eee6);
 }
 
+/* 手機（<768px）：02 章節開場（02 / THE APP＋THE GAME GOES WITH YOU.）維持 Background
+   米白，當 editorial chapter divider；淡灰藍從 01 / PLAY 的 App 內容才開始。
+   結構＝THE SPACE(#F2EEE6) → 章節開場(#F2EEE6) → App 內容(淡灰藍)。
+   桌機維持使用者先前定案：整段 THE APP（含開場）同一個淡灰藍底。 */
+@media (max-width: 767px) {
+  .pg-app-intro { background: #f2eee6; }
+}
+
 /* 首頁 Navbar 的玻璃淺色態（方案 B）：米白 82%＋模糊，捲到米白區塊時用。
    深色態由 .nav-hero＋inline 漸層負責（見 Navbar.tsx 的 glass）。 */
 .pg-nav-glass-light {
