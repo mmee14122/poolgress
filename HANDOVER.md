@@ -126,7 +126,7 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 
 CSS 拆成四檔（index.css 只留 Tailwind @theme／base／課程頁 Hero 動畫／reduced-motion）：
 - `styles/tokens.css`：`--pg-*` design tokens＝重構前的實際數值，**只命名不改值**（色彩、gutter、字級／行高／字距、各段 padding、media 比例／圓角、easing／duration）＋ `.site-container`
-- `styles/nav.css`：Navbar state architecture——`header.pg-nav[data-nav-state]`＝`transparent-light｜transparent-dark｜solid-light｜solid-dark`，`[data-nav-surface]`＝`none｜floating｜page`；顏色全走 `--nav-fg／--nav-fg-hover／--nav-indicator／--nav-logo／--nav-icon／--nav-burger`。Logo 品牌字讀 `--logo-color`（`.pg-logo` Primary、`.pg-logo--on-dark` 白、Navbar 內接 `--nav-logo`）。觸發鈕加 `.pg-nav-trigger` 才吃 nav 顏色，popover／手機選單自己白底深字，**不再有 revert-layer**
+- `styles/nav.css`：Navbar state architecture——`header.pg-nav[data-nav-state]`＝`transparent-light｜transparent-dark｜solid-light｜solid-dark`，`[data-nav-surface]`＝`none｜floating｜page`（floating 2026-09-05 v2＝全寬 Ivory 實底＋1px 髮絲線、radius 0、無陰影／blur，桌機 72px／手機 64px，token `--pg-nav-h-*`／`--pg-nav-hairline`；**不要再做 pill 浮板**）；顏色全走 `--nav-fg／--nav-fg-hover／--nav-indicator／--nav-logo／--nav-icon／--nav-burger`。Logo 品牌字讀 `--logo-color`（`.pg-logo` Primary、`.pg-logo--on-dark` 白、Navbar 內接 `--nav-logo`）。觸發鈕加 `.pg-nav-trigger` 才吃 nav 顏色，popover／手機選單自己白底深字，**不再有 revert-layer**
 - `styles/home.css`：首頁 typography roles（`.pg-t-h1／display／chapter／feature-h2／finale-h2／manifesto／eyebrow／eyebrow-feature／badge／body／cta`）與各段 spacing class，全部讀 tokens
 - `styles/legacy-home.css`：舊首頁 `.hs-*／.one-*／.pg-illus-*／.pg-route`
 - 已知歷史差異（Phase 2 再收斂）：page surface 連結色 ink-700／hover Secondary，floating 是 Charcoal／hover Primary；眉標 10／11／12／14px 四種；Footer charcoal 主題仍寫 hex

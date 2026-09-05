@@ -79,10 +79,10 @@
 }
 
 /* ── surface：floating（首頁捲動後）──
-   .pg-nav-glass 是首頁基底：fixed、全寬、透明；加 .pg-nav-floating 後
-   平滑 morph 成 Ivory floating surface（Adobe-inspired dual state）。
-   左右離 viewport 20px、top 10px、radius 18、極淡陰影、輕微 blur；
-   內層 .site-container 扣掉 20px inset，內容左緣仍在全站 grid 線上。 */
+   2026-09-05 v2（使用者規格）：quiet luxury / editorial——不再是 pill 浮板。
+   .pg-nav-glass 是首頁基底：fixed、全寬、透明；加 .pg-nav-floating 後只換成
+   Ivory 實底＋底部 1px 髮絲線（350ms），無圓角、無陰影、無 blur、無 inset，
+   內容仍在全站 .site-container 的 grid 線上。高度桌機 72、手機 64（.pg-nav-bar）。 */
 .pg-nav-glass {
   position: fixed;
   top: 0;
@@ -90,31 +90,22 @@
   right: 0;
   border-radius: 0;
   background-color: transparent;
-  box-shadow: 0 0 0 rgba(var(--pg-charcoal-rgb), 0);
+  border-bottom: 1px solid transparent;
   transition:
-    top var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    left var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    right var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    border-radius var(--pg-dur-nav-morph) var(--pg-ease-spring),
     background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    box-shadow var(--pg-dur-nav-morph) var(--pg-ease-spring);
+    border-color var(--pg-dur-nav-morph) var(--pg-ease-spring);
 }
 .pg-nav-floating {
   --nav-surface: var(--pg-ivory-nav);
   background-color: var(--nav-surface);
-  box-shadow: 0 6px 24px rgba(var(--pg-charcoal-rgb), 0.08);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  border-bottom-color: var(--pg-nav-hairline);
+}
+.pg-nav-glass .pg-nav-bar {
+  height: var(--pg-nav-h-mobile);
 }
 @media (min-width: 768px) {
-  .pg-nav-floating {
-    top: 10px;
-    left: 20px;
-    right: 20px;
-    border-radius: var(--pg-radius-nav);
-  }
-  .pg-nav-floating .site-container {
-    padding-inline: calc(var(--site-gutter) - 20px);
+  .pg-nav-glass .pg-nav-bar {
+    height: var(--pg-nav-h-desktop);
   }
 }
 

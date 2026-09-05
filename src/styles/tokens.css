@@ -126,7 +126,9 @@
 
   /* ---------- Media ---------- */
   --pg-radius-media: 1rem;              /* 02–04 圖 rounded-2xl */
-  --pg-radius-nav: 18px;                /* Navbar floating */
+  --pg-nav-h-desktop: 72px;             /* 首頁 Navbar 高度（≥768）；其他頁維持 h-16＝64 */
+  --pg-nav-h-mobile: 64px;
+  --pg-nav-hairline: rgba(37, 44, 48, 0.08); /* 捲動後底部 1px 髮絲線 */
   --pg-banner-ratio: 21 / 10;           /* 桌機 01 橫幅 */
   --pg-feature-ratio: 16 / 9;
   --pg-hero-mobile-h: 78svh;

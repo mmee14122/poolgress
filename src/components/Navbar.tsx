@@ -147,7 +147,7 @@ export function Navbar({
           : undefined
       }
     >
-      <div className="site-container flex h-16 items-center justify-between gap-4">
+      <div className="pg-nav-bar site-container flex h-16 items-center justify-between gap-4">
         {/* 左：Logo + 主導覽連結 */}
         <div className="flex min-w-0 items-center gap-4">
           <Logo dark={tone === 'dark'} />

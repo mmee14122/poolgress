@@ -403,5 +403,10 @@
    全站 html 的 scroll-padding-top 是 96px（舊站 sticky Navbar＋章節 tabs 用），
    首頁只有一條 64px 的 fixed Navbar，錨點（#the-space）要剛好停在 Navbar 底下。 */
 html:has(.pg-home-root) {
-  scroll-padding-top: 4rem;
+  scroll-padding-top: var(--pg-nav-h-mobile);
+}
+@media (min-width: 768px) {
+  html:has(.pg-home-root) {
+    scroll-padding-top: var(--pg-nav-h-desktop);
+  }
 }
