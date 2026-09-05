@@ -103,6 +103,31 @@
 .pg-nav-glass .pg-nav-bar {
   height: var(--pg-nav-h-mobile);
 }
+/* 手機（<768）捲動態（2026-09-05 使用者規格）：transparent → translucent。
+   不是實心米白橫條，而是 Ivory 86%＋blur 16px 的一層浮在內容上方；髮絲線同桌機、無陰影。
+   base 先給 blur(0) 讓 backdrop-filter 可以被 transition；不支援 backdrop-filter 的瀏覽器
+   （舊 Android WebView）退回 96% 近實色，iOS Safari 走 -webkit- 前綴。高度／layout 不變。 */
+@media (max-width: 767px) {
+  .pg-nav-glass {
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
+      border-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
+      -webkit-backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring),
+      backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring);
+  }
+  .pg-nav-floating {
+    --nav-surface: var(--pg-nav-mobile-surface);
+    -webkit-backdrop-filter: blur(var(--pg-nav-mobile-blur));
+    backdrop-filter: blur(var(--pg-nav-mobile-blur));
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .pg-nav-floating {
+      --nav-surface: var(--pg-nav-mobile-surface-fallback);
+    }
+  }
+}
 @media (min-width: 768px) {
   .pg-nav-glass .pg-nav-bar {
     height: var(--pg-nav-h-desktop);

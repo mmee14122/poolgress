@@ -129,6 +129,9 @@
   --pg-nav-h-desktop: 72px;             /* 首頁 Navbar 高度（≥768）；其他頁維持 h-16＝64 */
   --pg-nav-h-mobile: 64px;
   --pg-nav-hairline: rgba(37, 44, 48, 0.08); /* 捲動後底部 1px 髮絲線 */
+  --pg-nav-mobile-surface: rgba(242, 238, 232, 0.86); /* 手機捲動後：Ivory 86% translucent */
+  --pg-nav-mobile-surface-fallback: rgba(242, 238, 232, 0.96); /* 不支援 backdrop-filter 時 */
+  --pg-nav-mobile-blur: 16px;
   --pg-banner-ratio: 21 / 10;           /* 桌機 01 橫幅 */
   --pg-feature-ratio: 16 / 9;
   --pg-hero-mobile-h: 78svh;
