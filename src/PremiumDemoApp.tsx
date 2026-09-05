@@ -242,29 +242,15 @@ export default function PremiumDemoApp() {
               )
             })}
           </p>
-          {/* 主標：line-mask 包一層，內層由左而右揭開。兩行英文 serif（ONE TABLE. / EVERY
-              GENERATION.），下方中文副標稍晚 0.2s 同樣由左揭開（2026-09-05 使用者改） */}
+          {/* 主標：line-mask 包一層，內層由左而右揭開（2026-09-05 使用者改回中文大字，
+              英文與副標刪除） */}
           <div className="overflow-hidden">
             <h1
-              className="mt-5 max-w-3xl text-[30px] leading-tight font-bold sm:text-6xl lg:text-7xl"
+              className="mt-5 max-w-3xl text-4xl leading-tight font-bold sm:text-6xl lg:text-7xl"
               style={{ fontFamily: SERIF, color: P.bg, ...reveal(shown('hero'), 0.12, 1.15) }}
             >
-              {hero.titleLines[0]}
-              <br />
-              {hero.titleLines[1]}
+              {hero.title}
             </h1>
-          </div>
-          <div className="overflow-hidden">
-            <p
-              className="mt-4 max-w-2xl text-base sm:text-lg lg:text-xl"
-              style={{
-                color: 'rgba(242,238,230,.9)',
-                letterSpacing: '0.04em',
-                ...reveal(shown('hero'), 0.32, 1.0),
-              }}
-            >
-              {hero.subtitle}
-            </p>
           </div>
           {/* CTA 本體完全靜態：初始只有邊框＋文字，米杏色 fill 隨 Hero 標題節奏
               由左而右灌入（獨立 fill layer 做 clip-path，按鈕本體零位移）。 */}
