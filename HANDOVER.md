@@ -135,6 +135,14 @@ CSS 拆成四檔（index.css 只留 Tailwind @theme／base／課程頁 Hero 動�
 - 手機 01 文字左右 12px 是 intentional exception，token `--venue-mobile-copy-inset`
 - Phase 2（Visual Normalization，未做、需使用者批准）：typography scale 收斂、vertical rhythm、Section primitive、PillarBlock 拆分、04→CTA 段距
 
+### 6b. 2026-09-06 批次（已上線）
+
+- **Button Design System**（`styles/buttons.css`＋`--button-*` token）：Functional CTA＝10px 微圓角、桌機 54／手機 50；`ui/Button.tsx` 改掛 `.pg-btn`。層級：Hero 預約 CTA（pool.house 式磨砂 pill＋Sand 圓，hover elastic fill，`.pg-cta-book`）／Functional（10px）／Architectural frame（0）。例外：圓形 icon、chip、badge、Toast。
+- **首頁**：Hero CTA「預約場館」→ `booking.html`；Mobile Hero lockup（招牌裁掉 135% 貼底、`calc(100svh - 32px)` 露 32px peek、眉標 Sand 10px、主標 29、間距 32／14，token `--pg-hero-lockup-bottom-mobile`）；01 teaser＝Luxury Editorial Frame（inset clamp(40,4vw,64)／16%，手機 16／9%）＋左側對比保護；02 THE APP Intro 兩欄（58/42、右側 112px QR unit，手機改下載 CTA）；feature 手機順序 標籤→標題→內文→圖、gap 60（token `--pg-mobile-feature-gap`）、桌機 112（`--pg-desktop-feature-gap`）；頁尾 CTA 米白（桌機＋手機）。
+- **Navbar**：透明態漸層 `no-repeat border-box`（修 1px 暗線）、透明態不掛 backdrop-filter、捲動態 72%＋blur 16、手機捲動態無底線；導覽新增「球具選物」→ `shop.html`（只改 `data/site.ts` nav 陣列）。
+- **新頁**：`booking.html`＝品牌口吻 Coming Soon（inline 式訂位表單已做好在 `BookingForm.tsx`，接系統時換回）；`shop.html`＝球具選物（kshop 式架構，`data/shop.ts` 為示意資料、圖為佔位、卡片「即將開賣」）。
+- **文案**：teaser「打造全新的撞球體驗」／TAIPEI · 2028；02 TOGETHER「一個人的挑戰，兩個人的遊戲。」；THE APP intro 三行內文。
+
 ## 7. ⚠️ 驗證環境的真相（本 session 實測確認，比舊手冊更嚴重）
 
 預覽分頁是 `visibilityState: hidden`，以下**全部不會執行**：
