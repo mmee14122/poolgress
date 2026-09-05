@@ -167,7 +167,7 @@
   --pg-space-feature-label-gap: 20px;   /* 手機：標籤→標題、標題→內文 */
   --pg-mobile-feature-content-gap: 36px; /* 手機：內文 → 圖 */
   --pg-mobile-feature-gap: 60px;        /* 手機：圖 → 下一個 feature 標籤（同一 THE APP 內的同級 feature） */
-  --pg-desktop-feature-gap: 112px;      /* ≥768：feature 邊界 → 下一個 feature（上下各 56，2026-09-06） */
+  --pg-desktop-feature-gap: 80px;       /* ≥768：feature 邊界 → 下一個 feature（上下各 40；2026-09-06 由 112 縮短） */
   --pg-space-finale-y: 3.5rem;          /* 頁尾 CTA py：56 / lg 80 */
   --pg-space-footer-y: 3rem;            /* Footer py：48 / lg 56 */
   --pg-feature-text-lift: 22px;         /* 桌機 02–04 文字欄上抬 */
