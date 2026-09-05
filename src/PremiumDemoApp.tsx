@@ -202,7 +202,7 @@ export default function PremiumDemoApp() {
               Navbar 本身仍是透明的、不形成矩形底 */}
         <div
           aria-hidden="true"
-          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[124px] md:block"
+          className="pg-hero-scrim-top pointer-events-none absolute inset-x-0 top-0 hidden h-[140px] md:block"
         />
         {/* 2) Hero copy scrim：左側水平漸層，只墊在文案後方，68% 之後完全透明，右側場館維持原亮度 */}
         <div
@@ -760,7 +760,7 @@ function PillarBlock({
             </div>
           )}
           <p
-            className="mt-4 max-w-md text-base leading-relaxed sm:mt-5"
+            className="mt-4 max-w-md text-base leading-relaxed whitespace-pre-line sm:mt-5"
             style={{ color: 'rgba(37,44,48,.78)', ...up(d.body) }}
           >
             {s.body}
