@@ -43,7 +43,8 @@ git add ui/ && git commit -q -m "更新 ui/：說明" && git push origin main
 
 ## 3. 🎯 目前的主戰場：premium-demo.html（新首頁定案版）
 
-**首頁已整個重新設計**，工作稿在 `/ui/premium-demo.html`，**尚未取代正式首頁 index.html**（舊首頁還在線上照常運作）。等素材齊、使用者點頭才搬。
+**2026-09-05 起 premium 版已是正式首頁 `index.html`（/ui/）**；`premium-demo.html` 仍存在、內容相同（noindex），舊首頁改名保留在 `home-legacy.html`（noindex，vite input `homeLegacy`），使用者確認不需要後可刪。
+Header 已改用共用 `Navbar` 的 `glass` 變體（透明漸層／米白玻璃，功能與其他頁相同）。公司正式 logo 已接上 `Logo.tsx`（`public/assets/logo/logo-mark.png`／`-white.png`，白底 PNG 用 ffmpeg 去背，準星與內圓為鏤空）。
 
 檔案：`premium-demo.html`＋`src/premium-demo-entry.tsx`＋`src/PremiumDemoApp.tsx`＋`src/data/premium-demo.ts`（文案、色盤、時間表全在 data，改字不碰元件）。
 
@@ -93,8 +94,8 @@ Primary `#6F8FA3`(佔位圖/裝飾)｜Secondary `#AFC4CF`｜Bg `#F2EEE6`｜Sand 
 
 | 素材 | 規格 | 插槽 |
 |---|---|---|
-| 8 秒品牌影片 | 1600×900 MP4 循環 | `hero.video`（data） |
-| 01 場館願景圖 | 3200×1800 | `pillarSections[0].image` |
+| 8 秒品牌影片 | 1600×900 MP4 循環 | `hero.video`（data）；目前先放 `hero.poster` 靜態圖（外→內場館圖，已到） |
+| 01 場館願景圖 | 3200×1800 | `pillarSections[0].image`（已到，s01-venue.webp）；手機直式圖可另填 `imageMobile` |
 | 02 App 闖關圖 | 3200×1800 | 同上 [1] |
 | 03 好友圖 | 3200×1800 | [2] |
 | 04 BEYOND 圖 | 3200×1800（概念圖已給過聊天版，待存檔 `public/assets/hero/s04-beyond.png`） | [3] |

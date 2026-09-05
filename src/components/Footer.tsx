@@ -103,7 +103,7 @@ export function Footer({ theme = 'light' }: { theme?: FooterTheme }) {
 function BrandColumn({ t }: { t: Palette }) {
   return (
     <div className="max-w-sm">
-      <Logo dark={t.logoDark} className="-my-2 [&>span]:text-2xl [&>svg]:h-11 [&>svg]:w-11" />
+      <Logo dark={t.logoDark} className="-my-2 [&>span]:text-2xl [&>img]:h-11 [&>img]:w-11" />
 
       <address className="mt-4 space-y-2 not-italic">
         {site.companyAddress && (

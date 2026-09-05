@@ -9,9 +9,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     rollupOptions: {
-      // 雙頁面：/ 是品牌首頁，/course.html 是課程詳情頁
+      // / 是品牌首頁（2026-09-05 起為 premium 定案版），/course.html 是課程詳情頁
       input: {
         home: fileURLToPath(new URL('./index.html', import.meta.url)),
+        // 舊首頁保留備查（noindex），未來確認不需要再刪
+        homeLegacy: fileURLToPath(new URL('./home-legacy.html', import.meta.url)),
         course: fileURLToPath(new URL('./course.html', import.meta.url)),
         cart: fileURLToPath(new URL('./cart.html', import.meta.url)),
         checkout: fileURLToPath(new URL('./checkout.html', import.meta.url)),
