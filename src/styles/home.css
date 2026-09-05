@@ -399,16 +399,16 @@
    → 回縮 96.5% → 落定 100%，共 460ms、一次回彈；文字在 fill 掃過文字區時（~250ms）才轉 Charcoal。
    按鈕本體、文字、箭頭全程不動。手機：無 hover 動畫，:active 只做極輕 feedback。 */
 .pg-cta-book {
-  --pg-book-icon: 36px;
+  --pg-book-icon: 0px;                          /* v3：靜止時沒有 Sand 圓，箭頭直接站在右側 */
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  gap: 28px;
   width: fit-content;
-  height: 48px;                                  /* 2026-09-06 v2：更細長（56 → 48） */
+  height: 46px;
   margin-top: var(--button-ghost-mt);
-  padding: 5px 5px 5px 22px;
-  border-radius: 999px;
+  padding: 0 18px 0 20px;
+  border-radius: 10px;                           /* v3：微圓角矩形（使用者參考圖），不是 pill */
   overflow: hidden;
   background: rgba(var(--pg-charcoal-rgb), 0.1); /* 更透（.2 → .1），精品感靠細框而不是深底 */
   border: 1px solid rgba(255, 250, 242, 0.35);   /* 細邊框 */
@@ -426,10 +426,10 @@
 }
 .pg-cta-book__fill {
   position: absolute;
-  inset: 5px;
+  inset: 0;
   display: flex;
   justify-content: flex-end;
-  border-radius: 999px;
+  border-radius: 10px;
   overflow: hidden;
   pointer-events: none;
 }
@@ -437,7 +437,7 @@
   content: '';
   width: var(--pg-book-icon);
   height: 100%;
-  border-radius: 999px;
+  border-radius: 10px;
   background: var(--pg-sand);
   transition: width 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);   /* 離開：依影片量測，約 0.17–0.3s 快速平順縮回右側圓，無回彈 */
 }
@@ -449,11 +449,12 @@
 .pg-cta-book__icon {
   display: grid;
   place-items: center;
-  width: var(--pg-book-icon);
-  height: var(--pg-book-icon);
-  border-radius: 50%;
-  color: var(--pg-charcoal);
+  width: 18px;
+  height: 18px;
+  color: rgba(var(--pg-ivory-rgb), 0.94);
+  transition: color 0.25s ease;
 }
+.pg-cta-book:hover .pg-cta-book__icon { color: var(--pg-charcoal); }
 /* 球的跳動感（2026-09-06，依 pool.house 影片逐格量測的阻尼彈簧）：
    0.1s 內衝到底 → 彈回約 28% → 再撞到底 → 小抖 6% → 落定，共 480ms。 */
 @keyframes pg-book-fill {
@@ -481,7 +482,7 @@
 }
 .pg-cta-book:active { opacity: 0.92; }
 @media (max-width: 767px) {
-  .pg-cta-book { --pg-book-icon: 32px; height: 44px; padding: 5px 5px 5px 20px; gap: 16px; font-size: 13.5px; }
+  .pg-cta-book { height: 44px; padding: 0 16px 0 18px; gap: 24px; font-size: 13.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pg-cta-book:hover .pg-cta-book__fill::before { animation: none; width: 100%; transition: none; }
