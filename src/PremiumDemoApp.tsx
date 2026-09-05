@@ -441,9 +441,10 @@ export default function PremiumDemoApp() {
         </div>
       </section>
 
-      {/* ---------- FOOTER：沿用全站 Footer（2026-09-05 使用者指定，桌機與手機皆同）。
-          用 light 主題：深底 CTA 之後接米白頁尾才分得開，dark 主題是舊站深藍會撞色 ---------- */}
-      <Footer theme="light" />
+      {/* ---------- FOOTER：沿用全站 Footer（桌機與手機皆同）。
+          charcoal 主題：與上方頁尾 CTA「你想怎麼玩？」同一個 #252C30 底（使用者 2026-09-05 指定），
+          兩段連成一片深底收尾；分隔靠 Ivory 10% 的上邊線 ---------- */}
+      <Footer theme="charcoal" />
     </main>
   )
 }

@@ -12,7 +12,7 @@ import { Logo } from './Logo'
  * 所有網址、地址、Email、社群與 App 連結都來自 data/site.ts，
  * 元件本身不寫死任何資料。
  */
-export type FooterTheme = 'dark' | 'light'
+export type FooterTheme = 'dark' | 'light' | 'charcoal'
 
 type Palette = {
   shell: string
@@ -47,6 +47,24 @@ const themes: Record<FooterTheme, Palette> = {
     qrFrame: 'border-white/15 bg-white/5 text-white/45',
     badge: 'border-white/25 text-white hover:border-brass-300 hover:text-brass-300',
     badgeDisabled: 'border-white/15 text-white/55',
+    logoDark: true,
+  },
+  /* premium 首頁專用（2026-09-05 使用者指定與頁尾 CTA「你想怎麼玩？」同色）：
+     Charcoal #252C30 底、Ivory 字、Sand 眉標／hover，沿用首頁 palette，不用舊站深藍 */
+  charcoal: {
+    shell: 'bg-[#252C30] border-t border-[#F2EEE6]/10',
+    heading: 'text-[#F2EEE6]',
+    slogan: 'text-[#F2EEE6]/70',
+    label: 'text-[#D2C2AD]',
+    text: 'text-[#F2EEE6]/80',
+    link: 'text-[#F2EEE6]/80 hover:text-[#D2C2AD]',
+    icon: 'text-[#F2EEE6]/70 hover:text-[#D2C2AD]',
+    iconDisabled: 'text-[#F2EEE6]/35',
+    divider: 'border-[#F2EEE6]/10',
+    copyright: 'text-[#F2EEE6]/50',
+    qrFrame: 'border-[#F2EEE6]/15 bg-[#F2EEE6]/5 text-[#F2EEE6]/45',
+    badge: 'border-[#F2EEE6]/25 text-[#F2EEE6] hover:border-[#D2C2AD] hover:text-[#D2C2AD]',
+    badgeDisabled: 'border-[#F2EEE6]/15 text-[#F2EEE6]/50',
     logoDark: true,
   },
   light: {
