@@ -632,8 +632,8 @@
   gap: 10px;
   margin-top: 28px;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), .35);
-  color: var(--pg-charcoal);
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), .28);
+  color: rgba(var(--pg-charcoal-rgb), .5);   /* 2026-09-06 使用者：淺灰——主標最深、內文其次、App 補充最淺 */
   font-family: var(--pg-font-serif);
   font-style: italic;
   font-weight: 500;
