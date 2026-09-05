@@ -153,18 +153,19 @@
   top: 50%;
   width: var(--pg-teaser-w);
   max-width: calc(100% - var(--site-gutter) * 2);
+  padding: var(--pg-teaser-pad);
+  border: 1px solid var(--pg-teaser-border);   /* v3：細框加回，更淡、更鬆、更大 */
+  border-radius: 2px;
   color: var(--pg-ivory);
 }
+/* v3：COMING SOON 回到純文字 label（無 pill） */
 .pg-venue-teaser__pill {
-  height: 24px;
-  padding: 0 12px;
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  font-weight: 600;
-  line-height: 1;
-  background: rgba(var(--pg-sand-rgb), 0.92);
-  color: var(--pg-charcoal);
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(var(--pg-ivory-rgb), 0.85);
 }
 .pg-venue-teaser__title {
   margin-top: 20px;
@@ -199,8 +200,9 @@
   .pg-venue-glow { background: var(--pg-teaser-glow-mobile); }
   .pg-venue-teaser {
     left: 20px;
-    width: var(--pg-teaser-w-mobile);
+    width: calc(100% - 40px);
     max-width: none;
+    padding: var(--pg-teaser-pad-mobile);
   }
   .pg-venue-teaser__title { margin-top: 16px; font-size: var(--pg-fs-teaser-title-mobile); }
   .pg-venue-teaser__rule { margin-top: 16px; }

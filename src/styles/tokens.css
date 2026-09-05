@@ -91,8 +91,10 @@
   --pg-fs-venue-p: 16px;
   --pg-lh-venue-p: 1.8;
   /* 01 FUTURE SPACE teaser（2026-09-05） */
-  --pg-teaser-w: 440px;                 /* 桌機文字組最大寬 */
-  --pg-teaser-w-mobile: 74vw;           /* 手機文字組寬（70–78vw） */
+  --pg-teaser-w: 500px;                 /* 桌機細框寬（v3：比 v1 400 大） */
+  --pg-teaser-pad: 44px 48px;           /* v3：更鬆 */
+  --pg-teaser-pad-mobile: 32px 28px;
+  --pg-teaser-border: rgba(242, 238, 230, 0.26); /* v3：更淡（v1 .38） */
   --pg-teaser-veil: rgba(37, 44, 48, 0.28);  /* 全圖 veil 25–30% */
   /* 左側 localized gradient：最深 60% → 中央 0，佔寬約 55%；手機從左緣 → 70% */
   --pg-teaser-glow: linear-gradient(90deg, rgba(37, 44, 48, 0.6) 0%, rgba(37, 44, 48, 0.42) 18%, rgba(37, 44, 48, 0.18) 38%, rgba(37, 44, 48, 0) 55%);
@@ -103,8 +105,8 @@
   --pg-fs-teaser-meta: 10px;
   --pg-ls-teaser-meta: 0.18em;
   --pg-teaser-rule-w: 40px;             /* 標題下的短 editorial rule */
-  --pg-banner-ratio-mobile: 4 / 5;      /* 手機直式裁切 */
-  --pg-banner-focus-mobile: 56% 55%;    /* 手機焦點：4:5 只看得到原圖 45% 寬，取 30–75%：左側留字、父女在右側完整入鏡 */
+  --pg-banner-ratio-mobile: 11 / 10;    /* 手機：近方形（16:9 原圖只露 62% 寬，媽媽與父女都要入鏡，4:5 只露 45% 做不到） */
+  --pg-banner-focus-mobile: 29% 55%;    /* 手機焦點：露出原圖 11–73%：媽媽（左）到父女（右）都完整 */
   --pg-fs-venue-h3-tablet: 20px;        /* 平板 caption 標（text-xl）*/
   --pg-fs-venue-h3-mobile: 17px;        /* 手機照片下標題 */
   --pg-lh-venue-h3-mobile: 1.375;
