@@ -638,9 +638,10 @@ function PillarBlock({
         </div>
         {/* 手機（<768px）：照片下方回到米白底的純文字 editorial（2026-09-05 使用者規格）。
             不再重複 COMING SOON（上方眉標已標示）、無卡片／陰影／邊框／裝飾。
-            左緣 px-5 與「01 / THE SPACE」眉標同一條 20px grid。 */}
+            左右 padding 12px（使用者 2026-09-05 指定「米色文字框寬一點」，由 gutter 20px 收窄；
+            文字寬 335 → 351px，代價是左緣比 grid 線內縮 8px）。 */}
         {s.mobileTitle && (
-          <div className="px-[var(--site-gutter)] pt-7 md:hidden">
+          <div className="px-3 pt-7 md:hidden">
             <h3 className="text-[17px] leading-snug font-medium" style={{ color: P.text }}>
               {s.mobileTitle}
             </h3>
