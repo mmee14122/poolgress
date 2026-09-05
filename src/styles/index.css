@@ -139,11 +139,10 @@
   background-color: var(--color-brass-300);
   color: var(--color-brand-950);
 }
-.nav-hero button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+/* 2026-09-05 hover system：深色態也不做 hover 底，只變色（見 .pg-nav-* 區） */
+.nav-hero button:hover,
 .nav-hero span.hover\:bg-ivory-100:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: transparent;
 }
 /* 彈出面板不受深色覆寫影響（面板本身是白底） */
 .nav-hero [role='menu'],
@@ -864,4 +863,45 @@
     rgba(37, 44, 48, 0.1) 48%,
     rgba(37, 44, 48, 0) 68%
   );
+}
+
+/* ── Navbar hover system（2026-09-05，全站桌機）──
+   Default 白／墨字 → Hover 文字轉 Primary #6F8FA3＋左起 40% 寬、2px 的短 indicator
+   由左向右展開 220ms → Active 同樣式但 indicator 常駐。
+   無 full-width underline、無 pill、無 hover 底、無放大、無粗細跳動、無 glow。 */
+.pg-nav-link {
+  position: relative;
+  transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 1rem;                              /* 對齊 px-4 的文字左緣 */
+  bottom: 0;                               /* 文字底（py-2）下方 8px */
+  height: 2px;
+  width: calc((100% - 2rem) * 0.4);        /* 文字寬度的 40%，靠左 */
+  background: #6f8fa3;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-nav-link:hover,
+.pg-nav-link--active {
+  color: #6f8fa3;
+}
+.pg-nav-link:hover::after,
+.pg-nav-link--active::after {
+  transform: scaleX(1);
+}
+/* utility：購物車 icon、語言 selector 只變色，不加 indicator、不加底 */
+.pg-nav-utils button:hover,
+.pg-nav-utils [role='button']:hover,
+.pg-nav-utils span.hover\:bg-ivory-100:hover,
+.pg-nav-utils .hover\:bg-ivory-100:hover {
+  background-color: transparent;
+  color: #6f8fa3;
+}
+.pg-nav-utils button:hover svg,
+.nav-hero .pg-nav-utils button:hover svg {
+  fill: #6f8fa3;
 }

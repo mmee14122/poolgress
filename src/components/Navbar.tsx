@@ -9,13 +9,20 @@ import { useSession } from '../lib/session'
 
 type NavTheme = 'light' | 'hero'
 
-/** 導覽連結樣式：深色態白字、hover 轉品牌金；兩態尺寸完全相同 */
-const navLinkClass = (dark: boolean) =>
-  `rounded-full px-4 py-2 text-sm font-medium transition-colors duration-250 ${
-    dark
-      ? 'text-white/85 hover:bg-white/10 hover:text-brass-300'
-      : 'text-ink-700 hover:bg-ivory-100 hover:text-ink-900'
+/** 導覽連結樣式（2026-09-05 hover system）：文字轉 Primary 灰藍＋左起 40% 短 indicator
+ *  （.pg-nav-link，見 styles/index.css）；深淺兩態只差預設字色，尺寸完全相同。
+ *  無 hover 底、無 pill、無放大、無粗細變化。 */
+const navLinkClass = (dark: boolean, active = false) =>
+  `pg-nav-link px-4 py-2 text-sm font-medium ${dark ? 'text-white/85' : 'text-ink-700'} ${
+    active ? 'pg-nav-link--active' : ''
   }`
+
+/** 目前頁面＝該連結（比對檔名；首頁 './' 不會命中任何主導覽項） */
+const isActive = (href: string) => {
+  if (typeof window === 'undefined') return false
+  const page = window.location.pathname.split('/').pop() || 'index.html'
+  return href.replace('./', '') === page
+}
 
 /** 深色態預設底色（與 Hero 同色）；區塊可用 data-nav-dark 指定自己的色值 */
 const DEFAULT_DARK_BG = '#0f1e33'
@@ -140,7 +147,8 @@ export function Navbar({
               <a
                 key={item.href}
                 href={item.href}
-                className={navLinkClass(dark)}
+                className={navLinkClass(dark, isActive(item.href))}
+                aria-current={isActive(item.href) ? 'page' : undefined}
               >
                 {item.label}
               </a>
@@ -148,10 +156,11 @@ export function Navbar({
           </nav>
         </div>
 
-        {/* 右：我的課程（登入後）、購物車、頭像／登入、語言 */}
-        <div className="hidden items-center gap-1 lg:flex">
+        {/* 右：我的課程（登入後）、購物車、頭像／登入、語言。
+            .pg-nav-utils：購物車與語言只做字／icon 轉 Primary，不加 indicator、不加 hover 底 */}
+        <div className="pg-nav-utils hidden items-center gap-1 lg:flex">
           {user && (
-            <a href="./my-courses.html" className={navLinkClass(dark)}>
+            <a href="./my-courses.html" className={navLinkClass(dark, isActive('./my-courses.html'))}>
               我的課程
             </a>
           )}
