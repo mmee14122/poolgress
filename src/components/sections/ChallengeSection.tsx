@@ -71,7 +71,7 @@ export function ChallengeSection() {
                 type="button"
                 disabled
                 title="App 即將上架"
-                className="flex min-h-12 w-full cursor-not-allowed items-center justify-center rounded-full bg-brand-600 px-6 text-base font-semibold text-white opacity-60"
+                className="pg-btn-shape flex min-h-12 w-full cursor-not-allowed items-center justify-center bg-brand-600 px-6 text-base font-semibold text-white opacity-60"
               >
                 {challenge.ctaPrimary.label}
               </button>

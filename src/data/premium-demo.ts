@@ -22,7 +22,8 @@ export const hero = {
   /** 主標兩行（2026-09-05 使用者定案斷行：讓撞球成為／一家人的共同記憶） */
   titleLines: ['讓撞球成為', '一家人的共同記憶'],
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
-  cta: { label: '探索 Poolgress', href: '#the-space' },
+  /** 2026-09-06：預約場館 → booking.html（簡單訂位表單，送 mailto；之後接訂位系統只換該頁 submit） */
+  cta: { label: '預約場館', href: './booking.html' },
 }
 
 export type Pillar = {
@@ -58,7 +59,7 @@ export const pillarSections: Pillar[] = [
     mobileTitle: '我們正在打造 Poolgress 場館',
     mobileBody: '完整的出桿空間、專屬座位與 Café，讓打球成為值得停留的日常。',
     /** 概念視覺 teaser（2026-09-05 使用者規格）：不是介紹設備，是「未來真的會有實體空間」的期待感 */
-    teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'CLUB'], zh: '一個全新的撞球體驗，正在發生。', meta: 'TAIWAN · 2027' },
+    teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'CLUB'], zh: '打造全新的撞球體驗', meta: 'TAIPEI · 2028' },
     /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
     image: './assets/hero/s01-venue.webp',
     imageMobile: null,
@@ -80,8 +81,8 @@ export const pillarSections: Pillar[] = [
     no: '03',
     en: 'TOGETHER',
     eyebrow: '02 / TOGETHER',
-    zh: '找個搭檔，一起玩。',
-    body: '加好友、組隊闖關、比成績。\n一個人的挑戰，也可以變成兩個人的遊戲。',
+    zh: '一個人的挑戰，兩個人的遊戲。',
+    body: '加入好友、組隊闖關、登上排行榜。\n下一局，你想和誰一起？',
     image: null,
     imageHint: 'TOGETHER：好友／組隊闖關／比成績的 App 畫面（3200×1800）',
   },
@@ -96,6 +97,14 @@ export const pillarSections: Pillar[] = [
     imageHint: 'COMMUNITY：揪球友／活動／比賽／分享的 App 畫面（3200×1800）',
   },
 ]
+
+/** 02 / THE APP 章節開場（2026-09-06 加入內文與下載 CTA；商店連結尚未上架，先錨到 Footer 的下載區） */
+export const appChapter = {
+  eyebrow: '02 / THE APP',
+  titleLines: ['THE GAME', 'GOES WITH YOU.'] as [string, string],
+  body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',
+  cta: { label: '下載 Poolgress App', href: '#app-download' },
+}
 
 export const finale = {
   en: 'HOW DO YOU WANT TO PLAY?',

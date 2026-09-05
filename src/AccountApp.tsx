@@ -323,7 +323,7 @@ function ContactCoachButton({ coachId, className = '' }: { coachId: string; clas
       <span
         aria-disabled="true"
         title="這位教練的 LINE 尚未開放"
-        className={`inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold whitespace-nowrap text-ink-400 ring-1 ring-line sm:w-auto ${className}`}
+        className={`pg-btn-shape inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center gap-2 px-5 text-sm font-medium whitespace-nowrap text-ink-400 ring-1 ring-line sm:w-auto ${className}`}
       >
         <ChatIcon />
         聯絡教練

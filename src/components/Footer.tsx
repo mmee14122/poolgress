@@ -154,7 +154,7 @@ function AppColumn({ t }: { t: Palette }) {
   const { qrCode, outro, appStore, googlePlay } = site.appDownload
 
   return (
-    <div className="flex h-full max-w-md flex-col">
+    <div id="app-download" className="flex h-full max-w-md flex-col scroll-mt-24">
       <h2 className={`text-base font-bold ${t.heading}`}>下載 Poolgress App</h2>
       <p className={`mt-2 max-w-[22rem] text-sm leading-snug ${t.slogan}`}>{outro}</p>
 

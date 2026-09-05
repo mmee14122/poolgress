@@ -12,6 +12,7 @@
 @import './nav.css';
 @import './home.css';
 @import './legacy-home.css';
+@import './buttons.css';
 
 /* ------------------------------------------------------------------
    設計 token — 要換整站風格只改這一段

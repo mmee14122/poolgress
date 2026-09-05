@@ -39,7 +39,8 @@
   --nav-icon: var(--pg-sand);
   --nav-burger: var(--pg-sand);   /* 重構前：.nav-hero button svg 蓋過 fill-white，實際是 Sand */
   /* 透明態不用實色底：上深下透明的漸層壓在 Hero 影像上；可讀性靠 Hero 的 top veil */
-  background: linear-gradient(to bottom, rgba(var(--pg-charcoal-rgb), 0.55), transparent);
+  /* 漸層必須鋪滿 border-box 且不重複：否則 1px 透明 border 那一列會被漸層第一列（.55）重複填成暗線 */
+  background: linear-gradient(to bottom, rgba(var(--pg-charcoal-rgb), 0.55), transparent) no-repeat border-box;
 }
 .pg-nav[data-nav-state='transparent-dark'] {
   --nav-fg: var(--pg-charcoal);
@@ -93,13 +94,11 @@
   border-radius: 0;
   background-color: transparent;
   border-bottom: 1px solid transparent;
-  -webkit-backdrop-filter: blur(0);
-  backdrop-filter: blur(0);
+  /* 2026-09-06：透明態不掛 backdrop-filter（blur(0) 仍會建立濾鏡層，行動瀏覽器會在邊緣／角落
+     產生淡淡的輪廓線）；blur 只在 .pg-nav-floating 出現，底色仍有 350ms transition。 */
   transition:
     background-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    border-color var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    -webkit-backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring),
-    backdrop-filter var(--pg-dur-nav-morph) var(--pg-ease-spring);
+    border-color var(--pg-dur-nav-morph) var(--pg-ease-spring);
 }
 .pg-nav-floating {
   --nav-surface: var(--pg-nav-scrolled-surface);
@@ -111,6 +110,15 @@
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .pg-nav-floating {
     --nav-surface: var(--pg-nav-scrolled-surface-fallback);
+  }
+}
+/* 手機（<768）捲動態：純粹的 Warm Ivory 矩形平面——無底線、無陰影、無圓角、無 outline（2026-09-06 使用者規格） */
+@media (max-width: 767px) {
+  .pg-nav-floating {
+    border-bottom-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
   }
 }
 .pg-nav-glass .pg-nav-bar {

@@ -1,0 +1,83 @@
+/* ==================================================================
+   Button Design System（2026-09-05）— 全站「主要文字 CTA」共用規格
+   風格：Premium Lifestyle × Editorial × Hospitality——微圓角長方形，不是 pill。
+   .pg-btn        尺寸／形狀／字體／hover（顏色由 variant 或既有 Tailwind 色決定）
+   .pg-btn-shape  只要形狀（給首頁 Sand CTA 這類已有自己顏色系統的按鈕）
+   例外（不用這套）：圓形 icon 鈕、carousel／dots、tag／chip／badge、App 遊戲 UI、avatar、
+   toggle／segmented、Navbar 語言選單、Toast。
+   ================================================================== */
+.pg-btn-shape {
+  border-radius: var(--button-radius);
+}
+.pg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-arrow-gap);
+  height: var(--button-height-mobile);
+  padding-inline: var(--button-px-mobile);
+  border-radius: var(--button-radius);
+  font-size: var(--button-fs);
+  font-weight: var(--button-fw);
+  line-height: 1;
+  letter-spacing: var(--button-ls);
+  white-space: nowrap;
+  transition:
+    background-color var(--button-transition),
+    border-color var(--button-transition),
+    color var(--button-transition),
+    opacity var(--button-transition),
+    translate var(--button-transition);
+}
+@media (min-width: 768px) {
+  .pg-btn {
+    height: var(--button-height-desktop);
+    padding-inline: var(--button-px-desktop);
+  }
+}
+/* 表單／面板內的小型按鈕：維持較矮，radius 8 */
+.pg-btn--sm {
+  height: 36px;
+  padding-inline: 14px;
+  border-radius: var(--button-radius-sm);
+  font-size: 14px;
+}
+.pg-btn:hover:not(:disabled) {
+  translate: 0 -1px;
+}
+.pg-btn:disabled {
+  translate: 0;
+}
+/* 舊站三種 variant 的色（沿用品牌藍系，只換形狀與字重） */
+.pg-btn--primary {
+  background-color: var(--color-brand-600);
+  color: #fff;
+}
+.pg-btn--primary:hover:not(:disabled) { background-color: var(--color-brand-700); }
+.pg-btn--primary:active:not(:disabled) { background-color: var(--color-brand-900); }
+.pg-btn--secondary {
+  background-color: #fff;
+  color: var(--color-brand-700);
+  border: 1px solid var(--button-outline-on-light);
+}
+.pg-btn--secondary:hover:not(:disabled) { background-color: var(--color-brand-50); }
+.pg-btn--quiet {
+  color: var(--color-ink-700);
+}
+.pg-btn--quiet:hover:not(:disabled) { background-color: var(--color-ivory-100); }
+
+/* Arrow system：箭頭比文字小、與文字距 10px；hover 右移 3px，按鈕本體不動 */
+.pg-cta-arrow {
+  display: inline-block;
+  font-size: 0.85em;
+  line-height: 1;
+  transition: translate var(--button-transition);
+}
+.pg-btn:hover .pg-cta-arrow,
+.pg-hero-cta:hover .pg-cta-arrow {
+  translate: 3px 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-btn:hover:not(:disabled) { translate: 0; }
+  .pg-btn:hover .pg-cta-arrow, .pg-hero-cta:hover .pg-cta-arrow { translate: 0; }
+}

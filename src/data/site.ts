@@ -16,6 +16,7 @@ export const site = {
     { label: '實戰闖關', href: './challenges.html' },
     { label: '關於教練', href: './coach.html' },
     { label: '合作場館', href: './venues.html' },
+    { label: '球具選物', href: './shop.html' },
     /* 「關於 Poolgress」不放主導覽，入口在頁尾「關於」欄 */
   ] as NavLink[],
 

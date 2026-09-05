@@ -107,13 +107,15 @@
   --pg-teaser-veil: rgba(37, 44, 48, 0.18);  /* v5：全圖只留極輕 18% */
   /* 左側 localized gradient：最深 60% → 中央 0，佔寬約 55%；手機從左緣 → 70% */
   /* v4 readability veil（使用者規格）：左 16% → 7% → 3% → 0，無明顯邊界、不以 frame 為界 */
-  --pg-teaser-glow: linear-gradient(90deg, rgba(10, 10, 8, 0.25) 0%, rgba(10, 10, 8, 0.08) 38%, rgba(10, 10, 8, 0) 65%);   /* v5 使用者規格 */
-  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(10, 10, 8, 0.3) 0%, rgba(10, 10, 8, 0.1) 45%, rgba(10, 10, 8, 0) 75%);
-  --pg-fs-teaser-title: clamp(46px, 3.6vw, 52px);  /* v2：比 v1 放大約 18% */
-  --pg-fs-teaser-title-mobile: 38px;
-  --pg-fs-teaser-zh: 14px;
-  --pg-fs-teaser-meta: 10px;
-  --pg-ls-teaser-meta: 0.18em;
+  --pg-teaser-glow: linear-gradient(90deg, rgba(15, 14, 12, 0.34) 0%, rgba(15, 14, 12, 0.25) 28%, rgba(15, 14, 12, 0.1) 48%, rgba(15, 14, 12, 0) 68%); /* 2026-09-06 local contrast protection（使用者規格） */
+  --pg-teaser-glow-mobile: linear-gradient(90deg, rgba(15, 14, 12, 0.38) 0%, rgba(15, 14, 12, 0.3) 32%, rgba(15, 14, 12, 0.14) 55%, rgba(15, 14, 12, 0) 78%); /* 手機主標跨到 76% 寬，保護區延到 78% */
+  --pg-fs-teaser-title: clamp(50px, 4vw, 57px);    /* 2026-09-06 legibility：再 +10% */
+  --pg-fs-teaser-title-mobile: 42px;
+  --pg-fs-teaser-zh: 15px;
+  --pg-fs-teaser-meta: 10.5px;
+  --pg-ls-teaser-meta: 0.16em;
+  --pg-teaser-ink: rgba(255, 250, 242, 0.98);       /* 暖 ivory white，不是 pure white */
+  --pg-teaser-shadow: 0 2px 12px rgba(0, 0, 0, 0.22); /* optical shadow：只做 edge separation */
   --pg-teaser-rule-w: 40px;             /* 標題下的短 editorial rule */
   --pg-banner-ratio-mobile: 11 / 10;    /* 手機：近方形（16:9 原圖只露 62% 寬，媽媽與父女都要入鏡，4:5 只露 45% 做不到） */
   --pg-banner-focus-mobile: 29% 55%;    /* 手機焦點：露出原圖 11–73%：媽媽（左）到父女（右）都完整 */
@@ -121,10 +123,24 @@
   --pg-fs-venue-h3-mobile: 17px;        /* 手機照片下標題 */
   --pg-lh-venue-h3-mobile: 1.375;
 
-  --pg-fs-cta: 16px;                    /* 三顆 CTA；Hero 的 sm 18px */
-  --pg-fw-cta: 600;
-  --pg-cta-min-h: 4rem;                 /* min-h-16 */
-  --pg-cta-px: 2.5rem;                  /* px-10 */
+  /* ---------- Button Design System（2026-09-05 使用者規格，全站共用） ----------
+     Website CTA＝微圓角長方形 10px；Architectural frame＝0；Circular controls＝circle；App／chip 保留 pill。 */
+  --button-radius: 10px;
+  --button-radius-sm: 8px;
+  --button-height-desktop: 54px;
+  --button-height-mobile: 50px;
+  --button-px-desktop: 30px;
+  --button-px-mobile: 24px;
+  --button-fs: 15px;
+  --button-fw: 500;
+  --button-ls: 0.02em;
+  --button-transition: 200ms ease;
+  --button-outline-on-dark: rgba(255, 255, 255, 0.55);
+  --button-outline-on-light: rgba(20, 30, 35, 0.32);
+  --button-arrow-gap: 10px;
+  /* 兩個層級（2026-09-06）：Functional CTA＝48–50 高；Editorial／Hero CTA＝44–46 高、更窄 padding、更低視覺重量 */
+  --button-editorial-gap: 12px;                 /* 文字與箭頭 */
+  --button-ghost-mt: 28px;                      /* 主標 → CTA 呼吸 */
 
   --pg-fs-nav: 14px;
   --pg-fw-nav: 500;
@@ -139,11 +155,16 @@
   --pg-space-venue-tablet-top: 2rem;    /* 平板 caption pt 32 */
   --pg-space-venue-tablet-bottom: 0.5rem;
   --pg-space-chapter-top: 5rem;         /* 02 轉場 pt 80 */
+  --pg-space-chapter-top-mobile: 72px;  /* 手機：CLUB 圖底 → 02 眉標（2026-09-06） */
   --pg-space-chapter-bottom: 3rem;      /* 02 轉場 pb：48 / lg 32 */
   --pg-space-feature-top: 2.5rem;       /* 02–04 pt：40 / sm 48 / lg 40 */
-  --pg-space-feature-bottom: 2rem;      /* 02–04 pb：32 / sm 40 / lg 32 */
+  --pg-space-feature-bottom: 2.5rem;    /* 02–04 pb：手機 40（圖→下一組共 80，2026-09-06）/ sm 40 / lg 32 */
   --pg-space-feature-last-bottom: 80px; /* Phase 2 定稿：04 → Final CTA 80（原 32） */
-  --pg-space-feature-gap: 24px;         /* 02–04 圖文間距：24 / sm 32 / lg 56 */
+  --pg-space-feature-gap: var(--pg-mobile-feature-content-gap); /* 02–04 圖文間距：手機讀 token / sm 32 / lg 56 */
+  --pg-space-feature-label-gap: 20px;   /* 手機：標籤→標題、標題→內文 */
+  --pg-mobile-feature-content-gap: 36px; /* 手機：內文 → 圖 */
+  --pg-mobile-feature-gap: 60px;        /* 手機：圖 → 下一個 feature 標籤（同一 THE APP 內的同級 feature） */
+  --pg-desktop-feature-gap: 112px;      /* ≥768：feature 邊界 → 下一個 feature（上下各 56，2026-09-06） */
   --pg-space-finale-y: 3.5rem;          /* 頁尾 CTA py：56 / lg 80 */
   --pg-space-footer-y: 3rem;            /* Footer py：48 / lg 56 */
   --pg-feature-text-lift: 22px;         /* 桌機 02–04 文字欄上抬 */
@@ -161,8 +182,12 @@
   --pg-banner-ratio: 23 / 9;            /* 桌機 01 橫幅（2026-09-05 使用者再裁扁：原 21/10） */
   --pg-banner-focus-desktop: 50% 61%;   /* 裁切焦點偏下：切掉天花板圓環、保留媽媽與球桌 */
   --pg-feature-ratio: 16 / 9;
-  --pg-hero-mobile-h: 78svh;
-  --pg-hero-img-focus-mobile: 44.5% 0;
+  --pg-hero-peek-mobile: 32px;          /* 手機首屏底部露出下一區背景 32px 當 scroll cue（只露底色不露字） */
+  --pg-hero-mobile-h: calc(100svh - var(--pg-hero-peek-mobile));
+  --pg-hero-img-focus-mobile: 47% 100%; /* 2026-09-06：x 對準入口人物；y 貼底（配合放大裁掉上方招牌） */
+  --pg-hero-img-zoom-mobile: 135%;      /* 手機把圖放大 135%，上方 35% 出框 */
+  --pg-fs-h1-mobile: 29px;              /* 2026-09-06 v2：36 → 29 */
+  --pg-hero-lockup-bottom-mobile: 80px; /* 手機 Hero lockup 底到 Hero 底（含 32px peek 前的照片區） */
   --pg-peek: 32px;                      /* Hero 底部露出下一章：32 / sm 44 / lg 56 */
 
   /* ---------- Motion（目前實際 easing／duration） ---------- */
@@ -196,8 +221,8 @@
     --pg-space-intro-top: 70px;
     --pg-space-intro-bottom: 88px;
     --pg-space-banner-top: 1.25rem;
-    --pg-space-feature-top: 3rem;
-    --pg-space-feature-bottom: 2.5rem;
+    --pg-space-feature-top: calc(var(--pg-desktop-feature-gap) / 2);
+    --pg-space-feature-bottom: calc(var(--pg-desktop-feature-gap) / 2);
     --pg-space-feature-gap: 32px;
     --pg-peek: 44px;
   }
@@ -206,6 +231,7 @@
 @media (min-width: 768px) {
   :root {
     --site-gutter: clamp(32px, 3.5vw, 64px);
+    --button-ghost-mt: 32px;
   }
 }
 
@@ -213,8 +239,6 @@
   :root {
     --pg-fs-h1: 72px;
     --pg-space-chapter-bottom: 2rem;
-    --pg-space-feature-top: 2.5rem;
-    --pg-space-feature-bottom: 2rem;
     --pg-space-feature-gap: 3.5rem;
     --pg-space-finale-y: 5rem;
     --pg-space-footer-y: 3.5rem;

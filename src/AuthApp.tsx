@@ -559,7 +559,7 @@ function ProviderButton({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink-900 transition-colors hover:bg-ivory-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 active:bg-ivory-200"
+      className="pg-btn-shape inline-flex min-h-12 w-full items-center justify-center gap-2.5 border border-line bg-white px-4 py-3 text-sm font-medium text-ink-900 transition-colors hover:bg-ivory-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 active:bg-ivory-200"
     >
       {isApple ? (
         <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-ink-900">

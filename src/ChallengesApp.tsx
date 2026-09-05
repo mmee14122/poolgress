@@ -109,7 +109,7 @@ function ChallengeDetail({ challenge }: { challenge: Challenge }) {
                   在 App 中開啟
                 </Button>
               ) : (
-                <span className="inline-flex items-center rounded-full bg-white/10 px-6 py-3.5 text-base font-semibold text-white/60 ring-1 ring-white/20">
+                <span className="pg-btn-shape inline-flex items-center bg-white/10 px-6 py-3.5 text-base font-medium text-white/60 ring-1 ring-white/20">
                   App 即將上架
                 </span>
               )}

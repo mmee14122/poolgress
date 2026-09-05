@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { finale, hero, palette as P, pillarSections, type Pillar } from './data/premium-demo'
+import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } from './data/premium-demo'
+import { site } from './data/site'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { ProgressPoint } from './components/ProgressPoint'
@@ -226,9 +227,12 @@ export default function PremiumDemoApp() {
                   {i > 0 && (
                     <span
                       aria-hidden="true"
+                      className="pg-manifesto-sep"
                       style={{ color: 'rgba(var(--pg-ivory-rgb),.35)', ...mReveal(arrowDelay) }}
                     >
-                      →
+                      {/* 桌機箭頭；手機改用「·」（2026-09-06 降低 magazine 感） */}
+                      <span className="hidden md:inline">→</span>
+                      <span className="md:hidden">·</span>
                     </span>
                   )}
                   <span style={mReveal(wordDelay)}>{w}</span>
@@ -248,36 +252,20 @@ export default function PremiumDemoApp() {
               {hero.titleLines[1]}
             </h1>
           </div>
-          {/* CTA 本體完全靜態：初始只有邊框＋文字，米杏色 fill 隨 Hero 標題節奏
-              由左而右灌入（獨立 fill layer 做 clip-path，按鈕本體零位移）。 */}
+          {/* Hero Booking CTA（2026-09-06，參考 pool.house「Book a Table」）：磨砂玻璃 pill＋右側 Sand 圓形箭頭；
+              hover 時 Sand 圓從右往左長開填滿整顆（CSS @property 補間 --pg-book-fill，不用 JS）。
+              進場與眉標／主標同一套 reveal()。 */}
           <a
             href={hero.cta.href}
-            className="pg-hero-cta pg-t-cta pg-t-cta--hero relative mt-9 inline-flex items-center justify-center overflow-hidden rounded-full border"
-            style={{ background: 'transparent', borderColor: 'rgba(var(--pg-sand-rgb),.85)' }}
+            className="pg-hero-cta pg-cta-book"
+            style={reveal(shown('hero'), 0.26, 0.9)}
           >
-            {/* fill layer：左→右填滿，停在實心米杏色 */}
-            <span
-              aria-hidden="true"
-              className="pg-cta-fill pointer-events-none absolute inset-0 z-0 rounded-full"
-              style={{
-                background: P.neutral,
-                clipPath: shown('hero') ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-                transition:
-                  'clip-path var(--pg-dur-cta-fill) var(--pg-ease-spring) 0.03s, background-color 0.4s var(--pg-ease-spring)',
-              }}
-            />
-            {/* fill 前緣柔光：同步右移，填滿時消失 */}
-            {shown('hero') && (
-              <span aria-hidden="true" className="pg-cta-fill-edge pointer-events-none absolute z-[1]" />
-            )}
-            <span
-              className="pg-cta-text relative z-[2]"
-              style={{
-                color: shown('hero') ? P.text : 'rgba(var(--pg-ivory-rgb),.92)',
-                transition: 'color 0.35s ease 0.33s',
-              }}
-            >
-              {hero.cta.label}
+            <span aria-hidden="true" className="pg-cta-book__fill" />
+            <span className="pg-cta-text">{hero.cta.label}</span>
+            <span aria-hidden="true" className="pg-cta-book__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12h15M13 6l6 6-6 6" />
+              </svg>
             </span>
           </a>
         </div>
@@ -383,21 +371,20 @@ export default function PremiumDemoApp() {
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
-        data-nav-dark="#252C30"
         className="pg-finale text-center"
-        style={{ background: P.text, color: P.bg }}
+        style={{ background: P.bg, color: P.text }}
       >
         <div className="site-container">
         <p
           className="pg-t-manifesto"
-          style={{ color: P.neutral, ...fadeUp(shown('finale'), 0, 0.46, 10) }}
+          style={{ color: P.accent, ...fadeUp(shown('finale'), 0, 0.46, 10) }}
         >
           {finale.en}
         </p>
         <h2
           className="pg-t-finale-h2 mt-4"
           style={{
-            color: P.bg,
+            color: P.text,
             opacity: shown('finale') ? 1 : 0,
             transform: shown('finale') ? 'translateY(0)' : 'translateY(16px)',
             transition: `opacity 0.6s ${EASE3} 0.1s, transform 0.6s ${EASE3} 0.1s`,
@@ -411,20 +398,20 @@ export default function PremiumDemoApp() {
             <a
               key={c.label}
               href={c.href}
-              className={`pg-t-cta relative inline-flex w-full max-w-xs items-center justify-center rounded-full sm:w-auto ${
+              className={`pg-t-cta relative inline-flex w-full max-w-xs items-center justify-center sm:w-auto ${
                 i === 0 ? 'pg-primary-cta' : 'pg-outline-cta'
               }`}
               style={
                 i === 0
                   ? { background: P.neutral, color: P.text }
-                  : { border: '2px solid rgba(var(--pg-ivory-rgb),.55)', color: P.bg }
+                  : { border: '1px solid var(--button-outline-on-light)', color: P.text }
               }
             >
               {/* outline 按鈕限定：進場後邊框光帶繞一圈（第二顆晚 0.15s） */}
               {i > 0 && shown('finale') && (
                 <span
                   aria-hidden="true"
-                  className="pg-cta-sweep pointer-events-none absolute inset-0 rounded-full"
+                  className="pg-cta-sweep pg-btn-shape pointer-events-none absolute inset-0"
                   style={i === 2 ? { animationDelay: '0.6s' } : undefined}
                 />
               )}
@@ -480,45 +467,77 @@ function ChapterTransition({
     <section
       ref={refCb}
       id="s02-transition"
-      className="pg-app-intro site-container flex items-center"
+      className="pg-app-intro site-container"
     >
-      <div className="w-full">
-        <p
-          className="pg-t-eyebrow"
-          style={{
-            opacity: on ? 1 : 0,
-            transform: on ? 'translateY(0)' : 'translateY(6px)',
-            transition: `opacity 0.34s ${EASE2}, transform 0.34s ${EASE2}`,
-          }}
-        >
-          02 / THE APP
-        </p>
-        <h2
-          ref={headRefCb}
-          className="pg-t-serif-editorial mt-3 sm:mt-4"
-        >
-          {['THE GAME', 'GOES WITH YOU.'].map((t, i) => (
-            <span
-              key={t}
-              className="block overflow-hidden"
-              style={
-                /* 與 01 同一套 editorial stagger：第二行起點＝第一行文字寬度的 30%。
-                   "THE GAME" 實測寬 5.494em，0.30 × 5.494 ≈ 1.65em；
-                   用大字自己的 clamp 換算，桌機／手機自動等比。 */
-                i === 1 ? { marginLeft: 'calc(var(--pg-fs-chapter) * var(--pg-chapter-stagger))' } : undefined
-              }
-            >
+      {/* 2026-09-06 v2：兩欄 editorial composition——左：眉標／大標／體驗文案；右（≥768）：QR 下載單元；
+          手機（<768）：單欄，QR 不顯示，改「下載 Poolgress App」Functional CTA。 */}
+      <div className="pg-app-intro__grid">
+        <div className="pg-app-intro__copy">
+          <p
+            className="pg-t-eyebrow"
+            style={{
+              opacity: on ? 1 : 0,
+              transform: on ? 'translateY(0)' : 'translateY(6px)',
+              transition: `opacity 0.34s ${EASE2}, transform 0.34s ${EASE2}`,
+            }}
+          >
+            {appChapter.eyebrow}
+          </p>
+          <h2
+            ref={headRefCb}
+            className="pg-t-serif-editorial mt-3 sm:mt-4"
+          >
+            {appChapter.titleLines.map((t, i) => (
               <span
-                className="pg-t-chapter block"
-                style={{
-                  ...line(on, 0.06 + i * 0.08),
-                }}
+                key={t}
+                className="block overflow-hidden"
+                style={
+                  /* 與 01 同一套 editorial stagger：第二行起點＝第一行文字寬度的 30%。
+                     "THE GAME" 實測寬 5.494em，0.30 × 5.494 ≈ 1.65em；
+                     用大字自己的 clamp 換算，桌機／手機自動等比。 */
+                  i === 1 ? { marginLeft: 'calc(var(--pg-fs-chapter) * var(--pg-chapter-stagger))' } : undefined
+                }
               >
-                {t}
+                <span
+                  className="pg-t-chapter block"
+                  style={{
+                    ...line(on, 0.06 + i * 0.08),
+                  }}
+                >
+                  {t}
+                </span>
               </span>
-            </span>
-          ))}
-        </h2>
+            ))}
+          </h2>
+          <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
+            {appChapter.body}
+          </p>
+          {/* 手機專用下載 CTA（桌機的下載入口只有右側 QR，避免兩個 CTA 重複） */}
+          <a
+            href={appChapter.cta.href}
+            className="pg-t-cta pg-primary-cta pg-app-intro__cta inline-flex items-center justify-center md:hidden"
+            style={{ background: P.neutral, color: P.text, ...line(on, 0.34) }}
+          >
+            {appChapter.cta.label}
+          </a>
+        </div>
+
+        {/* QR download unit（≥768）：112px QR、極淡框、下方兩行文字置中；是 secondary action，不能比大標搶眼 */}
+        <div className="pg-app-intro__qr hidden md:flex" style={line(on, 0.3)}>
+          <div className="pg-qr-unit">
+            <div className="pg-qr-unit__code">
+              {site.appDownload.qrCode ? (
+                <img src={site.appDownload.qrCode} alt="下載 Poolgress App 的 QR code" width={112} height={112} />
+              ) : (
+                <svg viewBox="0 0 24 24" aria-label="QR code 待補" className="h-10 w-10 fill-current opacity-40">
+                  <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
+                </svg>
+              )}
+            </div>
+            <p className="pg-qr-unit__label">{appChapter.cta.label}</p>
+            <p className="pg-qr-unit__meta">SCAN TO DOWNLOAD</p>
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -648,12 +667,12 @@ function PillarBlock({
         </div>
       )}
       <div
-        className={`pg-feature-row flex flex-col-reverse lg:items-center ${
+        className={`pg-feature-row flex flex-col lg:items-center ${
           flip ? 'lg:flex-row-reverse' : 'lg:flex-row'
         }`}
       >
-        {/* 文字欄（手機用 flex-col-reverse 排在圖片之後：先圖、再 01 / PLAY 與標題，
-            2026-09-05 使用者指定；DOM 順序仍是文字→圖，桌機 lg:flex-row 不受影響）。
+        {/* 文字欄：手機依 DOM 自然順序 標籤 → 標題 → 內文 → 圖（2026-09-06 editorial storytelling order，
+            不再用 flex-col-reverse 反轉）；桌機 lg:flex-row／row-reverse 左右交錯不受影響。
             桌機上整欄再往上抬 22px——與圖片同組閱讀時，
             文字視覺中心落在圖高的 42–48%（1440 實測 45.0%），略高於數學置中。 */}
         <div className="pg-feature-text">

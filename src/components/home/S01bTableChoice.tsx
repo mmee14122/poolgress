@@ -472,7 +472,7 @@ const ResultPanel = ({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold text-white/75 underline underline-offset-4 transition-colors hover:text-white"
+            className="pg-btn-shape inline-flex min-h-11 items-center justify-center gap-2 px-4 text-sm font-medium text-white/75 underline underline-offset-4 transition-colors hover:text-white"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current">
               <path d="M12 5V2L7 6l5 4V7a5 5 0 11-5 5H5a7 7 0 107-7z" />

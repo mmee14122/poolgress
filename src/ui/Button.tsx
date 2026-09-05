@@ -25,18 +25,19 @@ type Props = Common &
       }
   )
 
+/* 2026-09-05 Button Design System：形狀／尺寸／字體／hover 由 styles/buttons.css 的 .pg-btn 決定，
+   這裡只掛 variant 與 size class（顏色仍是品牌藍系）。md＝lg＝標準 CTA（桌機 54／手機 50、radius 10）；
+   sm＝表單／面板內小按鈕（36 高、radius 8）。 */
 const variants: Record<Variant, string> = {
-  primary:
-    'bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-900 active:scale-[0.99]',
-  secondary:
-    'bg-white text-brand-700 ring-1 ring-brand-200 hover:bg-brand-50 active:bg-brand-100 active:scale-[0.99]',
-  quiet: 'text-ink-700 hover:bg-ivory-100 active:bg-ivory-200',
+  primary: 'pg-btn--primary',
+  secondary: 'pg-btn--secondary',
+  quiet: 'pg-btn--quiet',
 }
 
 const sizes: Record<Size, string> = {
-  sm: 'px-3.5 py-2 text-sm',
-  md: 'px-5 py-2.5 text-sm',
-  lg: 'px-6 py-3.5 text-base',
+  sm: 'pg-btn--sm',
+  md: '',
+  lg: '',
 }
 
 /**
@@ -53,7 +54,7 @@ export function Button({
   title,
   ...rest
 }: Props) {
-  const base = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-[background-color,transform] duration-150 disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 ${
+  const base = `pg-btn disabled:cursor-not-allowed disabled:opacity-60 ${
     variants[variant]
   } ${sizes[size]} ${block ? 'w-full' : ''} ${className}`
 
