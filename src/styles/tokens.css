@@ -116,11 +116,10 @@
   --pg-ls-teaser-meta: 0.16em;
   --pg-teaser-ink: rgba(255, 250, 242, 0.98);       /* 暖 ivory white，不是 pure white */
   --pg-teaser-shadow: 0 2px 12px rgba(0, 0, 0, 0.22); /* optical shadow：只做 edge separation */
-  /* v6 Coming Soon 中央霧化帶 */
-  --pg-blurband-top: 27.5%;             /* 桌機：帶高 45%，置中 */
-  --pg-blurband-h: 45%;
-  --pg-blurband-blur: 8px;              /* 中央最強 */
-  --pg-blurband-tint: 0.14;             /* rgba(15,18,17,.14)，只為白字可讀 */
+  /* v7 Coming Soon soft focus（2026-09-06：blur 8 → 中心 ≈4） */
+  --pg-soft-blur-outer: 2px;            /* 外層：長 feather 的 soft focus */
+  --pg-soft-blur-core: 3px;             /* 內層：只在 POOLGRESS CLUB 核心區，疊加後中心約 4px */
+  --pg-soft-veil: 0.11;                 /* 橢圓 dark veil 中心 rgba(15,18,17,.11) → 透明 */
   --pg-banner-ratio-mobile: 11 / 10;    /* 手機：近方形（16:9 原圖只露 62% 寬，媽媽與父女都要入鏡，4:5 只露 45% 做不到） */
   --pg-banner-focus-mobile: 29% 55%;    /* 手機焦點：露出原圖 11–73%：媽媽（左）到父女（右）都完整 */
   --pg-fs-venue-h3-tablet: 20px;        /* 平板 caption 標（text-xl）*/

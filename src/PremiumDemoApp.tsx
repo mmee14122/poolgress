@@ -604,10 +604,17 @@ function PillarBlock({
               短 rule／一句中文／TAIWAN · 2026。桌機：左側垂直置中；手機：4:5 直式、文字組 74vw、人物在右。 */}
           {/* 中央水平霧化帶（2026-09-06 v6 Coming Soon）：backdrop blur 8px＋mask 上下漸隱＋極輕深色 overlay；
               上下照片維持清晰，沒有 card／框／陰影。進場：跟著 on 緩慢淡入（1.2s）。 */}
+          {/* v7 soft focus（2026-09-06）：兩層滿版、用橢圓 mask 定形——外層 blur 2px＋極淡橢圓 veil、
+              長 feather；內層 blur 3px 只集中在 POOLGRESS CLUB 核心區。沒有任何矩形邊界。 */}
           <div
             aria-hidden="true"
-            className="pg-venue-blurband pointer-events-none absolute inset-x-0"
-            style={{ opacity: on ? 1 : 0, transition: `opacity 1.2s ${EASE2} 0.1s` }}
+            className="pg-venue-soft pointer-events-none absolute inset-0"
+            style={{ opacity: on ? 1 : 0, transition: `opacity 1.4s ${EASE2} 0.1s` }}
+          />
+          <div
+            aria-hidden="true"
+            className="pg-venue-soft pg-venue-soft--core pointer-events-none absolute inset-0"
+            style={{ opacity: on ? 1 : 0, transition: `opacity 1.4s ${EASE2} 0.2s` }}
           />
           {s.teaser && (
           <div

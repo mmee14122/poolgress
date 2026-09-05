@@ -185,15 +185,22 @@
   border-radius: 0;
   color: var(--pg-ivory);
 }
-/* 中央霧化帶：高度＝Hero 的 42%（手機 55%），blur 最強 8px 在中央，mask 讓上下 30% 各自漸隱到 0 */
-.pg-venue-blurband {
-  top: var(--pg-blurband-top);
-  height: var(--pg-blurband-h);
-  -webkit-backdrop-filter: blur(var(--pg-blurband-blur));
-  backdrop-filter: blur(var(--pg-blurband-blur));
-  background: rgba(15, 18, 17, var(--pg-blurband-tint));
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+/* soft focus（v7）：blur 不是主角。外層 2px、橢圓 mask 覆蓋約 Hero 高 70%（中心實、往外長 feather）＋
+   極淡橢圓 veil（中心 .11 → 透明）；內層 3px、橢圓 mask 只覆蓋核心約 28% 高。兩層疊加中心 ≈4px，
+   核心外迅速降到 2px、再以長 feather 回到 0。全部是 radial mask，沒有矩形。 */
+.pg-venue-soft {
+  -webkit-backdrop-filter: blur(var(--pg-soft-blur-outer));
+  backdrop-filter: blur(var(--pg-soft-blur-outer));
+  background: radial-gradient(ellipse 58% 42% at 50% 50%, rgba(15, 18, 17, var(--pg-soft-veil)) 0%, rgba(15, 18, 17, 0) 100%);
+  -webkit-mask-image: radial-gradient(ellipse 64% 36% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
+  mask-image: radial-gradient(ellipse 64% 36% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
+}
+.pg-venue-soft--core {
+  -webkit-backdrop-filter: blur(var(--pg-soft-blur-core));
+  backdrop-filter: blur(var(--pg-soft-blur-core));
+  background: none;
+  -webkit-mask-image: radial-gradient(ellipse 46% 15% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 46% 15% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
 }
 .pg-venue-teaser__pill {
   font-size: var(--pg-fs-eyebrow);          /* 沿用 eyebrow token：11px／.3em／500 */
@@ -253,10 +260,15 @@
   .pg-venue-teaser__title { margin-top: 20px; font-size: 36px; }
   .pg-venue-teaser__zh { margin-top: 22px; }
   .pg-venue-teaser__meta { margin-top: 16px; }
-  .pg-venue-blurband {
-    --pg-blurband-top: 20%; --pg-blurband-h: 60%; --pg-blurband-tint: 0.18;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  /* 手機：文字群較高，橢圓範圍放大（外層 42%／核心 22%），veil .14 */
+  .pg-venue-soft {
+    --pg-soft-veil: 0.16;
+    -webkit-mask-image: radial-gradient(ellipse 80% 46% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 46% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
+  }
+  .pg-venue-soft--core {
+    -webkit-mask-image: radial-gradient(ellipse 62% 22% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 62% 22% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
   }
 }
 
@@ -428,7 +440,7 @@
   height: 100%;
   border-radius: 999px;
   background: var(--pg-sand);
-  transition: width 0.3s var(--pg-ease-out-4);   /* 離開 hover 時平順縮回圓 */
+  transition: width 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);   /* 離開：依影片量測，約 0.17–0.3s 快速平順縮回右側圓，無回彈 */
 }
 .pg-cta-book .pg-cta-text,
 .pg-cta-book__icon {
@@ -458,8 +470,10 @@
   100% { width: 100%; }
 }
 @media (hover: hover) and (min-width: 768px) {
+  /* 進入：跳動 keyframes；同時把基礎寬度設 100%，離開時才會走下面的 width transition 快速滑回（動畫移除本身不會觸發 transition） */
   .pg-cta-book:hover .pg-cta-book__fill::before {
-    animation: pg-book-fill 480ms forwards;
+    width: 100%;
+    animation: pg-book-fill 480ms;   /* 不用 forwards：動畫結束落在基礎值 100%，離開時 width transition 才會真的跑 */
   }
   .pg-cta-book:hover {
     color: var(--pg-charcoal);
