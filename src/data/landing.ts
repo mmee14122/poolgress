@@ -104,8 +104,8 @@ export const appChapter = {
      檔案放 public/assets/app/ 後把路徑填進 src；poster 是封面圖。
      兩者留 null 時顯示同尺寸佔位框。例：src: './assets/app/intro.mp4' */
   video: {
-    src: null as string | null,
-    poster: null as string | null,
+    src: './assets/app/intro.mp4' as string | null,        /* 1920×1080 H.264，85 秒 */
+    poster: './assets/app/intro-poster.jpg' as string | null,
     hint: 'APP 介紹影片（16:9）',
   },
 }

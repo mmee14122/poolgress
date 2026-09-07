@@ -394,6 +394,35 @@ export default function LandingApp() {
         ))}
       </div>
 
+      {/* ---------- App 介紹影片（2026-09-06 使用者定案）----------
+          位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
+          這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
+          桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
+      <section className="pg-app-video-section site-container">
+        <div className="pg-app-video">
+          {appChapter.video.src ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src={appChapter.video.src}
+              poster={appChapter.video.poster ?? undefined}
+              controls
+              playsInline
+              preload="none"
+            />
+          ) : (
+            <div className="pg-media-placeholder absolute inset-0">
+              <div
+                className="absolute inset-[4%] rounded-lg border border-dashed"
+                style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
+              />
+              <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
+                {appChapter.video.hint}
+              </span>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
@@ -509,10 +538,6 @@ function ChapterTransition({
           >
             {appChapter.eyebrow}
           </p>
-          {/* 大標＋文案為左欄，影片在右欄與這一整欄等高（2026-09-06 使用者：
-              影片上緣切齊 THE GAME、下緣切齊文案最後一行） */}
-          <div className="pg-app-intro__cols">
-          <div className="pg-app-intro__main">
           <h2
             ref={headRefCb}
             className="pg-t-serif-editorial mt-3 sm:mt-4"
@@ -544,32 +569,6 @@ function ChapterTransition({
             <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
               {appChapter.body}
             </p>
-          </div>
-          </div>
-            {/* App 介紹影片（2026-09-06）：桌機在文案右側，手機落到文案下方。
-                data/landing.ts 的 video.src 填了才播，沒填顯示同樣尺寸的佔位框。 */}
-            <div className="pg-app-video" style={line(on, 0.3)}>
-              {appChapter.video.src ? (
-                <video
-                  className="absolute inset-0 h-full w-full object-cover"
-                  src={appChapter.video.src}
-                  poster={appChapter.video.poster ?? undefined}
-                  controls
-                  playsInline
-                  preload="metadata"
-                />
-              ) : (
-                <div className="pg-media-placeholder absolute inset-0">
-                  <div
-                    className="absolute inset-[4%] rounded-lg border border-dashed"
-                    style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
-                  />
-                  <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
-                    {appChapter.video.hint}
-                  </span>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>

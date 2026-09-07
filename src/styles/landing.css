@@ -24,40 +24,24 @@
   }
 }
 
-/* THE APP：右欄影片（2026-09-06 使用者定案）。
-   要求：影片上緣切齊 THE GAME 大標、下緣切齊文案最後一行。
-   做法：大標＋文案包成左欄；≥1024 時影片絕對定位在同一列的右側，top/bottom 都貼齊，
-   高度因此等於左欄，寬度再由 16:9 反推（框會比先前小，使用者已同意）。
-   <1024 沒有足夠橫向空間，影片改回文案下方整寬 16:9。 */
+/* App 介紹影片區（2026-09-06 使用者定案）：放在三塊功能之後、聯絡 CTA 之前，
+   桌機置中、最大寬 960，16:9；手機整寬。上下留白比照 feature 的節奏。 */
+.pg-landing-root .pg-app-video-section {
+  padding-top: 8px;
+  padding-bottom: 72px;
+}
+@media (min-width: 768px) {
+  .pg-landing-root .pg-app-video-section { padding-bottom: 96px; }
+}
 .pg-landing-root .pg-app-video {
   position: relative;
   width: 100%;
-  margin-top: 24px;
+  max-width: 960px;
+  margin-inline: auto;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--pg-radius-media);
-}
-/* 大標的 mt 移到 cols 上，避免 margin collapse 讓兩者頂端差 6px */
-.pg-landing-root .pg-app-intro__cols { margin-top: 12px; }
-.pg-landing-root .pg-app-intro__main > h2 { margin-top: 0; }
-@media (min-width: 640px) {
-  .pg-landing-root .pg-app-intro__cols { margin-top: 16px; }
-}
-@media (min-width: 1024px) {
-  .pg-landing-root .pg-app-intro__cols { position: relative; }
-  .pg-landing-root .pg-app-intro__main { max-width: 56%; }
-  .pg-landing-root .pg-app-video {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    margin-top: 0;
-  }
-}
-@media (max-width: 767px) {
-  .pg-landing-root .pg-app-intro__row { display: block; }
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
 }
 
 /* Hero 兩顆 CTA 並排（2026-09-06 使用者：認識場館 ＋ Poolgress App）。
