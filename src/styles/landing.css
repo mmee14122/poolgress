@@ -241,21 +241,30 @@
   }
   .pg-landing-root .pg-app-world > .pg-feature:last-of-type { padding-bottom: 40px; }
 }
-/* 手機（<768）：單欄，文字在上、圖片在下，間距 32；左右留白沿用全站 gutter，
-   不套用桌機那組 clamp(48,5vw,96)，否則手機圖片會被夾得太窄 */
+/* ---------- 手機（<768）：單欄 editorial（2026-09-06 使用者規格）----------
+   內文情境圖不是 Hero，所以不做滿版：文字左右 22、圖片左右 16，
+   圖片比文字向外多延伸 6px，水平置中；圓角最多 2px，不加框線陰影。 */
 @media (max-width: 767px) {
-  .pg-landing-root .pg-feature { padding-inline: var(--site-gutter); }
-  .pg-landing-root .pg-feature-row { gap: 32px; }
-  .pg-landing-root .pg-feature-media {
-    width: auto;
-    margin-inline: 0;
+  .pg-landing-root .pg-feature { padding-inline: 22px; }
+  /* 文字容器的底比最後一行文字高 20px（行框留白），所以 gap 設 50，
+     視覺上的「內文最後一行 → 圖片頂」才會是 30 */
+  .pg-landing-root .pg-feature-row { gap: 50px; }
+  /* 圖片底 → 下一段標題 60（同樣扣掉那 20 的行框差） */
+  .pg-landing-root .pg-app-world .pg-feature {
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
-}
-
-/* 圖片比例（2026-09-06 使用者定案）：2:1，比 16:9 再細長一點；
-   搭配 object-position 保留上緣，往下裁，人物與 App 介面不受影響。 */
-.pg-landing-root .pg-feature-media {
-  aspect-ratio: 2 / 1;
+  .pg-landing-root .pg-feature-media {
+    width: calc(100% + 12px);      /* 內容寬 ＋ 兩側各 6 ＝ 螢幕寬 − 32 */
+    margin-inline: -6px;
+    border-radius: 2px;
+  }
+  .pg-landing-root .pg-feature-media,
+  .pg-landing-root .pg-feature-media *,
+  .pg-landing-root .pg-feature-media img,
+  .pg-landing-root .pg-feature-mask {
+    border-radius: 2px;
+  }
 }
 
 /* 裁切位置（2026-09-06 使用者）：三張圖一律保留上緣、優先裁掉下方，
