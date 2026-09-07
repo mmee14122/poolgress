@@ -10,10 +10,15 @@ import { site } from '../data/site'
  *   （.pg-logo 預設 Primary、.pg-logo--on-dark 白；Navbar 內由 nav state 的 --nav-logo 接管，
  *   見 styles/nav.css）
  */
-export function Logo({ className = '', dark = false }: { className?: string; dark?: boolean }) {
+export function Logo({
+  className = '',
+  dark = false,
+  href = './',
+}: { className?: string; dark?: boolean; href?: string }) {
+  /* href 預設回首頁；一頁式 landing 傳 '#top'，點了只回到頁面最上方，不會離開這一頁 */
   return (
     <a
-      href="./"
+      href={href}
       className={`pg-logo ${dark ? 'pg-logo--on-dark' : ''} flex shrink-0 items-center gap-2 py-2 ${className}`}
     >
       <img

@@ -54,7 +54,8 @@ export function Navbar({
   glass = false,
   links,
   minimal = false,
-}: { theme?: NavTheme; glass?: boolean; links?: NavLink[]; minimal?: boolean } = {}) {
+  logoHref,
+}: { theme?: NavTheme; glass?: boolean; links?: NavLink[]; minimal?: boolean; logoHref?: string } = {}) {
   /* links 未給＝全站主導覽；minimal＝一頁式站台（landing）用，隱藏購物車／登入／語言 */
   const navLinks = links ?? site.nav
   const [menuOpen, setMenuOpen] = useState(false)
@@ -154,7 +155,7 @@ export function Navbar({
       <div className="pg-nav-bar site-container flex h-16 items-center justify-between gap-4">
         {/* 左：Logo + 主導覽連結 */}
         <div className="flex min-w-0 items-center gap-4">
-          <Logo dark={tone === 'dark'} />
+          <Logo dark={tone === 'dark'} href={logoHref} />
           <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
             {navLinks.map((item) => (
               <a
