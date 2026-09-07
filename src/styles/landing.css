@@ -69,7 +69,8 @@
   margin-top: var(--button-ghost-mt);
 }
 .pg-landing-root .pg-hero-cta.pg-cta-book {
-  --pg-book-icon: 0px;
+  --pg-book-icon: 0px;              /* 靜止：右側沒有米色方塊 */
+  --pg-book-square: 44px;           /* hover 第一段只填到這個寬度＝按鈕高度 */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -90,8 +91,8 @@
   letter-spacing: 0.06em;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-/* 米色填色層整個停用：靜止與 hover 都不再出現方塊或掃過的動畫 */
-.pg-landing-root .pg-hero-cta .pg-cta-book__fill { display: none; }
+/* 米色填色層：靜止時寬度 0（看不到方塊），hover 時才登場——見下方 keyframes */
+.pg-landing-root .pg-hero-cta .pg-cta-book__fill { display: flex; }
 .pg-landing-root .pg-hero-cta .pg-cta-text {
   flex: 0 1 auto;
   text-align: left;
@@ -104,20 +105,43 @@
   color: rgba(var(--pg-ivory-rgb), 0.9);
   transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
 }
+/* hover（2026-09-06 使用者：改回原本的米色填滿，但分兩段）：
+   0 → 0.5s 只有右側箭頭區域是米色方塊（提示「這裡可以按」），
+   0.5s 之後才往左長開填滿整顆，尾段沿用原本的阻尼彈簧手感。
+   文字等填色掃過去（0.56s）才轉深色；箭頭在方塊出現當下就轉深色。
+   離開：寬度直接 transition 回 0，快速平順收回右側。 */
+@keyframes pg-landing-book-fill {
+  0%   { width: 0; }
+  6%   { width: var(--pg-book-square); }
+  50%  { width: var(--pg-book-square); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  58%  { width: 96%;   animation-timing-function: ease-in; }
+  64%  { width: 90%;   animation-timing-function: ease-in-out; }
+  72%  { width: 78%;   animation-timing-function: ease-out; }
+  80%  { width: 96%;   animation-timing-function: ease-in-out; }
+  88%  { width: 94%;   animation-timing-function: ease-out; }
+  95%  { width: 99%; }
+  100% { width: 100%; }
+}
 @media (hover: hover) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__fill::before {
+    width: 100%;
+    animation: pg-landing-book-fill 1000ms;   /* 不用 forwards：結束落在基礎值 100%，離開才會走 width transition */
+  }
   .pg-landing-root .pg-hero-cta.pg-cta-book:hover {
-    color: rgba(var(--pg-ivory-rgb), 0.95);
-    background: rgba(var(--pg-charcoal-rgb), 0.3);
-    border-color: rgba(255, 255, 255, 0.55);
-    transition-delay: 0s;
+    background: rgba(var(--pg-charcoal-rgb), 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: var(--pg-charcoal);
+    transition: color 0.2s ease 0.56s, background-color 0.3s ease, border-color 0.3s ease;
   }
   .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__icon {
-    color: rgba(var(--pg-ivory-rgb), 0.95);
-    transform: translate(3px, -3px);
+    color: var(--pg-charcoal);
+    transition: color 0.18s ease 0.06s;
   }
 }
+
 @media (max-width: 767px) {
   .pg-landing-root .pg-hero-cta.pg-cta-book {
+    --pg-book-square: 42px;
     width: 186px;
     height: 42px;
     padding: 0 16px;
