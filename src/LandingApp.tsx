@@ -275,8 +275,9 @@ export default function LandingApp() {
               <span aria-hidden="true" className="pg-cta-book__fill" />
               <span className="pg-cta-text">{hero.cta.label}</span>
               <span aria-hidden="true" className="pg-cta-book__icon">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 12h15M13 6l6 6-6 6" />
+                {/* 細線斜角箭頭 ↗（2026-09-06 使用者：精品感，不用粗的水平箭頭） */}
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17 17 7M8.5 7H17v8.5" />
                 </svg>
               </span>
             </a>
@@ -288,8 +289,9 @@ export default function LandingApp() {
               <span aria-hidden="true" className="pg-cta-book__fill" />
               <span className="pg-cta-text">{hero.ctaSecondary.label}</span>
               <span aria-hidden="true" className="pg-cta-book__icon">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 12h15M13 6l6 6-6 6" />
+                {/* 細線斜角箭頭 ↗（2026-09-06 使用者：精品感，不用粗的水平箭頭） */}
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17 17 7M8.5 7H17v8.5" />
                 </svg>
               </span>
             </a>
@@ -392,36 +394,35 @@ export default function LandingApp() {
             quick={narrow}
           />
         ))}
-      </div>
-
       {/* ---------- App 介紹影片（2026-09-06 使用者定案）----------
-          位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
-          這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
-          桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
-      <section className="pg-app-video-section site-container">
-        <div className="pg-app-video">
-          {appChapter.video.src ? (
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src={appChapter.video.src}
-              poster={appChapter.video.poster ?? undefined}
-              controls
-              playsInline
-              preload="none"
-            />
-          ) : (
-            <div className="pg-media-placeholder absolute inset-0">
-              <div
-                className="absolute inset-[4%] rounded-lg border border-dashed"
-                style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
+            位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
+            這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
+            桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
+        <section className="pg-app-video-section site-container">
+          <div className="pg-app-video">
+            {appChapter.video.src ? (
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src={appChapter.video.src}
+                poster={appChapter.video.poster ?? undefined}
+                controls
+                playsInline
+                preload="none"
               />
-              <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
-                {appChapter.video.hint}
-              </span>
-            </div>
-          )}
-        </div>
-      </section>
+            ) : (
+              <div className="pg-media-placeholder absolute inset-0">
+                <div
+                  className="absolute inset-[4%] rounded-lg border border-dashed"
+                  style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
+                />
+                <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
+                  {appChapter.video.hint}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section

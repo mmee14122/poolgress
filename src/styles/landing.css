@@ -10,7 +10,8 @@
    共用檔（tokens.css／home.css／nav.css／buttons.css）在 landing 定案前不動。
    ========================================================================== */
 
-/* 錨點導覽：捲到 #the-space／#s02-transition 時，避開 fixed Navbar（桌機 72／手機 64） */
+/* ---------- 錨點導覽 ----------
+   捲到 #the-space／#s02-transition／#contact 時避開 fixed Navbar（桌機 72／手機 64） */
 .pg-landing-root #the-space,
 .pg-landing-root #s02-transition,
 .pg-landing-root #contact {
@@ -24,14 +25,24 @@
   }
 }
 
-/* App 介紹影片區（2026-09-06 使用者定案）：放在三塊功能之後、聯絡 CTA 之前，
-   桌機置中、最大寬 960，16:9；手機整寬。上下留白比照 feature 的節奏。 */
+/* ---------- 02 / THE APP 開場 ----------
+   QR 欄移除後只剩單欄文案；影片另外獨立成一區（見下） */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-app-intro__row { display: block; }
+}
+
+/* ---------- App 介紹影片區（2026-09-06 使用者定案）----------
+   位置：三塊功能之後、聯絡 CTA 之前，且放在 .pg-app-world 內，
+   底色因此與上方 THE APP 同一塊淺藍（2026-09-06 使用者指定，不是米色）。
+   桌機置中、最大寬 960、16:9；手機整寬。
+   影片成為 app-world 最後一個子元素後，原本給最後一段 feature 的 80 底距失效，
+   改由這一區的 padding-top 補回同樣的節奏。 */
 .pg-landing-root .pg-app-video-section {
-  padding-top: 8px;
+  padding-top: 40px;
   padding-bottom: 72px;
 }
 @media (min-width: 768px) {
-  .pg-landing-root .pg-app-video-section { padding-bottom: 96px; }
+  .pg-landing-root .pg-app-video-section { padding-top: 48px; padding-bottom: 96px; }
 }
 .pg-landing-root .pg-app-video {
   position: relative;
@@ -44,8 +55,12 @@
   background: rgba(var(--pg-charcoal-rgb), 0.06);
 }
 
-/* Hero 兩顆 CTA 並排（2026-09-06 使用者：認識場館 ＋ Poolgress App）。
-   margin-top 由 row 承擔，按鈕自己的 margin 歸零，兩顆才會對齊同一條基線。 */
+/* ---------- Hero 兩顆 CTA（2026-09-06 使用者重新設計）----------
+   精品飯店語彙，不是電商／控制面板按鈕：
+   - 拿掉右側米色方格與左右分格感：整顆是一個完整按鈕（fill 層停用）
+   - 低透明度深底 ＋ 1px 半透明白細框，靠 backdrop blur 站在照片上
+   - 文字靠左、細線 ↗ 靠右垂直置中；兩顆等寬等高
+   - hover 按鈕本身不位移，只有箭頭往右上滑 3px */
 .pg-landing-root .pg-hero-cta-row {
   display: flex;
   flex-wrap: wrap;
@@ -53,43 +68,63 @@
   gap: 14px;
   margin-top: var(--button-ghost-mt);
 }
-.pg-landing-root .pg-hero-cta-row .pg-hero-cta { margin-top: 0; }
-
-/* Hero CTA 微調（2026-09-06 使用者）：更細長、文字往中央、箭頭貼右側。
-   做法：左內距大於右內距，文字欄 flex:1 置中，箭頭固定在最右；高度 40→34，字距放寬。 */
 .pg-landing-root .pg-hero-cta.pg-cta-book {
-  height: 34px;
-  min-width: 176px;
-  padding: 0 12px 0 22px;
-  gap: 10px;
+  --pg-book-icon: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 200px;
+  height: 44px;
+  margin-top: 0;
+  padding: 0 18px;
+  border-radius: 0;
+  background: rgba(var(--pg-charcoal-rgb), 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: none;
+  color: rgba(var(--pg-ivory-rgb), 0.95);
   font-size: 13.5px;
+  font-weight: 500;
   letter-spacing: 0.06em;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+/* 米色填色層整個停用：靜止與 hover 都不再出現方塊或掃過的動畫 */
+.pg-landing-root .pg-hero-cta .pg-cta-book__fill { display: none; }
 .pg-landing-root .pg-hero-cta .pg-cta-text {
-  flex: 1 1 auto;
-  text-align: center;
+  flex: 0 1 auto;
+  text-align: left;
+  white-space: nowrap;
+}
+.pg-landing-root .pg-hero-cta .pg-cta-book__icon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: rgba(var(--pg-ivory-rgb), 0.9);
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+@media (hover: hover) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover {
+    color: rgba(var(--pg-ivory-rgb), 0.95);
+    background: rgba(var(--pg-charcoal-rgb), 0.3);
+    border-color: rgba(255, 255, 255, 0.55);
+    transition-delay: 0s;
+  }
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__icon {
+    color: rgba(var(--pg-ivory-rgb), 0.95);
+    transform: translate(3px, -3px);
+  }
 }
 @media (max-width: 767px) {
   .pg-landing-root .pg-hero-cta.pg-cta-book {
-    height: 32px;
-    min-width: 160px;
-    padding: 0 10px 0 18px;
+    width: 186px;
+    height: 42px;
+    padding: 0 16px;
     font-size: 13px;
   }
   .pg-landing-root .pg-hero-cta-row { gap: 10px; }
 }
-
-/* 靜止時右端就有一塊 Sand 方塊（2026-09-06 使用者）：讓人一眼知道箭頭可按；
-   hover 時沿用既有的阻尼彈簧動畫，從這塊往左長開填滿整顆。
-   方塊寬＝按鈕高（正方形）；右內距壓成 8，箭頭才會落在方塊正中央。 */
-.pg-landing-root .pg-hero-cta.pg-cta-book {
-  --pg-book-icon: 34px;
-  padding-right: 8px;
-}
-.pg-landing-root .pg-hero-cta .pg-cta-book__icon { color: var(--pg-charcoal); }
-@media (max-width: 767px) {
-  .pg-landing-root .pg-hero-cta.pg-cta-book {
-    --pg-book-icon: 32px;
-    padding-right: 7px;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .pg-landing-root .pg-hero-cta .pg-cta-book__icon { transition: none; }
 }
