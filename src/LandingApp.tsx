@@ -266,19 +266,34 @@ export default function LandingApp() {
           {/* Hero Booking CTA（2026-09-06，參考 pool.house「Book a Table」）：磨砂玻璃 pill＋右側 Sand 圓形箭頭；
               hover 時 Sand 圓從右往左長開填滿整顆（CSS @property 補間 --pg-book-fill，不用 JS）。
               進場與眉標／主標同一套 reveal()。 */}
-          <a
-            href={hero.cta.href}
-            className="pg-hero-cta pg-cta-book"
-            style={reveal(shown('hero'), 0.26, 0.9)}
-          >
-            <span aria-hidden="true" className="pg-cta-book__fill" />
-            <span className="pg-cta-text">{hero.cta.label}</span>
-            <span aria-hidden="true" className="pg-cta-book__icon">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 12h15M13 6l6 6-6 6" />
-              </svg>
-            </span>
-          </a>
+          <div className="pg-hero-cta-row">
+            <a
+              href={hero.cta.href}
+              className="pg-hero-cta pg-cta-book"
+              style={reveal(shown('hero'), 0.26, 0.9)}
+            >
+              <span aria-hidden="true" className="pg-cta-book__fill" />
+              <span className="pg-cta-text">{hero.cta.label}</span>
+              <span aria-hidden="true" className="pg-cta-book__icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 12h15M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </a>
+            <a
+              href={hero.ctaSecondary.href}
+              className="pg-hero-cta pg-cta-book"
+              style={reveal(shown('hero'), 0.34, 0.9)}
+            >
+              <span aria-hidden="true" className="pg-cta-book__fill" />
+              <span className="pg-cta-text">{hero.ctaSecondary.label}</span>
+              <span aria-hidden="true" className="pg-cta-book__icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 12h15M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 

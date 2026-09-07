@@ -49,3 +49,14 @@
 @media (max-width: 767px) {
   .pg-landing-root .pg-app-intro__row { display: block; }
 }
+
+/* Hero 兩顆 CTA 並排（2026-09-06 使用者：認識場館 ＋ Poolgress App）。
+   margin-top 由 row 承擔，按鈕自己的 margin 歸零，兩顆才會對齊同一條基線。 */
+.pg-landing-root .pg-hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: var(--button-ghost-mt);
+}
+.pg-landing-root .pg-hero-cta-row .pg-hero-cta { margin-top: 0; }
