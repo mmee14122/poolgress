@@ -57,7 +57,7 @@
   margin-inline: auto;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: var(--pg-radius-media);
+  border-radius: var(--pg-landing-photo-radius, 3px);
   background: rgba(var(--pg-charcoal-rgb), 0.06);
 }
 
@@ -159,9 +159,13 @@
   .pg-landing-root .pg-hero-cta .pg-cta-book__icon { transition: none; }
 }
 
-/* ---------- 02–04 主圖片一律直角（2026-09-06 使用者）----------
-   精品攝影排版，不是圓角 UI 卡片：圖框、圖片本身、佔位層與遮罩全部 radius 0，
-   桌機與手機都不再有任何圓角；尺寸、比例、object-fit、左右交錯版面都不動。 */
+/* ---------- 02–04 主圖片：低調的小圓角（2026-09-06 使用者）----------
+   完全直角太硬，圓角卡片又太 UI；折衷用 3px——遠看是直角，近看邊角有一點收，
+   精品攝影排版常見的處理。仍然不加外框、陰影或卡片底色。
+   影片框沿用同一個值，整頁的媒體邊角語言一致。 */
+.pg-landing-root {
+  --pg-landing-photo-radius: 3px;
+}
 .pg-landing-root .pg-feature-media,
 .pg-landing-root .pg-feature-media *,
 .pg-landing-root .pg-feature-media img,
@@ -170,7 +174,7 @@
 .pg-landing-root .pg-feature-media::before,
 .pg-landing-root .pg-feature-media::after,
 .pg-landing-root .pg-feature-mask {
-  border-radius: 0;
+  border-radius: var(--pg-landing-photo-radius);
 }
 
 /* ---------- 02–04 圖文編排（2026-09-06 使用者第二版規格）----------
@@ -192,11 +196,12 @@
   }
   .pg-landing-root .pg-feature-text {
     width: auto;
-    max-width: none;
+    max-width: 320px;     /* 比欄寬窄，justify-self 才推得動 */
     flex: initial;
     translate: none;
     grid-row: 1;
     grid-column: 1;       /* 圖在右時，文字在左欄 */
+    justify-self: end;    /* 文字整塊靠向圖片那一側，內部仍是左對齊 */
   }
   .pg-landing-root .pg-feature-media {
     width: auto;
@@ -210,7 +215,10 @@
     grid-template-columns: minmax(0, 62fr) minmax(280px, 30fr);
   }
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 1; }
-  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text { grid-column: 2; }
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text {
+    grid-column: 2;
+    justify-self: start;     /* 圖在左時，文字改靠左端，一樣貼著圖片 */
+  }
 
   /* 標題與內文是同一個 text block：標題 → 內文 28px */
   .pg-landing-root .pg-feature-text .pg-t-feature-h2 {
@@ -231,3 +239,7 @@
   }
 }
 
+/* 圖片比例：21:9 太細長，改 3:2（2026-09-06 使用者），桌機手機一致 */
+.pg-landing-root .pg-feature-media {
+  aspect-ratio: 3 / 2;
+}
