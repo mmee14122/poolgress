@@ -317,8 +317,11 @@ export default function LandingApp() {
           {/* 眉標列＝chapter heading system：01 / THE SPACE ─ ● COMING SOON。
               動線由左而右：文字 reveal → Progress Point 由左滑入 → 外圈淡入 → 徽章 reveal，
               之後才輪到大標兩行（見下方 delay）。 */}
+          {/* id 直接掛在眉標上（2026-09-06）：section 外層是滿版置中構圖，
+              捲到它的頂端會在導覽列下方留一大段空白，錨在這一行才會剛好 */}
           <p
-            className="pg-t-eyebrow flex flex-wrap items-center gap-x-3 gap-y-2"
+            id="space"
+            className="pg-anchor-line pg-t-eyebrow flex flex-wrap items-center gap-x-3 gap-y-2"
           >
             <span style={reveal(on01, 0, 0.9)}>01 / THE SPACE</span>
             <ProgressPoint on={on01} delay={0.35} />
@@ -529,8 +532,10 @@ function ChapterTransition({
       {/* 眉標／大標／體驗文案的單欄 editorial composition（QR 欄已移除） */}
       <div className="pg-app-intro__grid">
         <div className="pg-app-intro__copy">
+          {/* id 直接掛在眉標上：同上，避免捲到 section 頂端時多出一段空白 */}
           <p
-            className="pg-t-eyebrow"
+            id="app"
+            className="pg-anchor-line pg-t-eyebrow"
             style={{
               opacity: on ? 1 : 0,
               transform: on ? 'translateY(0)' : 'translateY(6px)',

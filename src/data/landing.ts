@@ -19,9 +19,9 @@ export const hero = {
   titleLines: ['讓撞球成為', '一家人的共同記憶'],
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
   /** 2026-09-06：預約場館 → 合作場館頁（booking.html 的 Coming Soon／BookingForm 保留，之後有訂位系統再改回） */
-  cta: { label: '認識場館', href: '#the-space' },   /* 一頁式：指向頁內 CLUB 段落，不外連 */
+  cta: { label: '認識場館', href: '#space' },       /* 一頁式：指向頁內 CLUB 段落，不外連 */
   /** 第二顆 Hero CTA（2026-09-06 使用者）：與第一顆同款，指向 02 / THE APP 章節 */
-  ctaSecondary: { label: 'Poolgress App', href: '#s02-transition' },
+  ctaSecondary: { label: 'Poolgress App', href: '#app' },
 }
 
 /* 2026-09-06 使用者：THE APP 內三塊不再顯示 01/02/03 標記——與上方「01 / THE SPACE」
@@ -145,7 +145,7 @@ export const brand = {
 
 /** 一頁式導覽：頁內錨點 ＋ App 下載頁（唯一對外連結） */
 export const landingNav = [
-  { label: '關於場館', href: '#the-space' },      /* 01 / THE SPACE 段落 */
-  { label: 'App 玩法', href: '#s02-transition' }, /* 02 / THE APP 章節開場 */
+  { label: '關於場館', href: '#space' },          /* 01 / THE SPACE 眉標處 */
+  { label: 'App 玩法', href: '#app' },            /* 02 / THE APP 眉標處 */
   { label: '聯絡我們', href: '#contact' },        /* 頁尾前的「想一起打造這件事？」 */
 ]

@@ -11,15 +11,21 @@
    ========================================================================== */
 
 /* ---------- 錨點導覽 ----------
-   捲到 #the-space／#s02-transition／#contact 時避開 fixed Navbar（桌機 72／手機 64） */
-.pg-landing-root #the-space,
-.pg-landing-root #s02-transition,
+   #space／#app 直接掛在眉標那一行（見 LandingApp）：
+   兩個 section 的頂端都有大量留白（01 是滿版置中構圖、THE APP 有 chapter padding），
+   直接捲到 section 頂端會在導覽列下方多出一大段空白，所以錨點下移到眉標。
+   html 已有 scroll-padding-top ＝ 導覽列高（home.css），所以這裡只補一段呼吸距離，
+   不要再把導覽列高度加一次，否則會多出約 70px 空白。 */
+.pg-landing-root .pg-anchor-line {
+  scroll-margin-top: 28px;
+}
 .pg-landing-root #contact {
   scroll-margin-top: var(--pg-nav-h-mobile);
 }
 @media (min-width: 768px) {
-  .pg-landing-root #the-space,
-  .pg-landing-root #s02-transition,
+  .pg-landing-root .pg-anchor-line {
+    scroll-margin-top: 32px;
+  }
   .pg-landing-root #contact {
     scroll-margin-top: var(--pg-nav-h-desktop);
   }
