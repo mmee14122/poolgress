@@ -22,9 +22,11 @@
   }
 }
 
-/* THE APP：文案右側的介紹影片欄（2026-09-06）。
-   桌機尺寸刻意與 01–03 的圖片一致（欄寬 56%、21:9），整頁的矩形節奏才一樣；
-   手機落到文案下方、整寬 16:9（直式螢幕上 21:9 太扁）。 */
+/* THE APP：右欄影片（2026-09-06 使用者定案）。
+   要求：影片上緣切齊 THE GAME 大標、下緣切齊文案最後一行。
+   做法：大標＋文案包成左欄；≥1024 時影片絕對定位在同一列的右側，top/bottom 都貼齊，
+   高度因此等於左欄，寬度再由 16:9 反推（框會比先前小，使用者已同意）。
+   <1024 沒有足夠橫向空間，影片改回文案下方整寬 16:9。 */
 .pg-landing-root .pg-app-video {
   position: relative;
   width: 100%;
@@ -33,17 +35,23 @@
   overflow: hidden;
   border-radius: var(--pg-radius-media);
 }
-@media (min-width: 768px) {
-  .pg-landing-root .pg-app-intro__row {
-    gap: 0;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .pg-landing-root .pg-app-intro__desc { flex: 0 1 auto; }
+/* 大標的 mt 移到 cols 上，避免 margin collapse 讓兩者頂端差 6px */
+.pg-landing-root .pg-app-intro__cols { margin-top: 12px; }
+.pg-landing-root .pg-app-intro__main > h2 { margin-top: 0; }
+@media (min-width: 640px) {
+  .pg-landing-root .pg-app-intro__cols { margin-top: 16px; }
+}
+@media (min-width: 1024px) {
+  .pg-landing-root .pg-app-intro__cols { position: relative; }
+  .pg-landing-root .pg-app-intro__main { max-width: 56%; }
   .pg-landing-root .pg-app-video {
-    flex: 0 0 var(--pg-feature-media-w);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
     margin-top: 0;
-    aspect-ratio: var(--pg-feature-ratio);
   }
 }
 @media (max-width: 767px) {

@@ -508,6 +508,10 @@ function ChapterTransition({
           >
             {appChapter.eyebrow}
           </p>
+          {/* 大標＋文案為左欄，影片在右欄與這一整欄等高（2026-09-06 使用者：
+              影片上緣切齊 THE GAME、下緣切齊文案最後一行） */}
+          <div className="pg-app-intro__cols">
+          <div className="pg-app-intro__main">
           <h2
             ref={headRefCb}
             className="pg-t-serif-editorial mt-3 sm:mt-4"
@@ -539,6 +543,8 @@ function ChapterTransition({
             <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
               {appChapter.body}
             </p>
+          </div>
+          </div>
             {/* App 介紹影片（2026-09-06）：桌機在文案右側，手機落到文案下方。
                 data/landing.ts 的 video.src 填了才播，沒填顯示同樣尺寸的佔位框。 */}
             <div className="pg-app-video" style={line(on, 0.3)}>
