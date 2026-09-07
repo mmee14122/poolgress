@@ -154,7 +154,7 @@ export default function LandingApp() {
   const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
   return (
-    <main className="pg-home-root" style={{ background: P.bg, color: P.text }}>
+    <main className="pg-home-root pg-landing-root" style={{ background: P.bg, color: P.text }}>
       {/* ---------- NAV：與其他頁同一顆 Navbar，首頁走透明玻璃變體（方案 B）。
           深色區塊加 data-nav-dark 讓它切成透明漸層＋白字，其餘落回米白玻璃 ---------- */}
       <Navbar theme="hero" glass links={landingNav} minimal />

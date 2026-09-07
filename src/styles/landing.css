@@ -1,0 +1,11 @@
+/* ==========================================================================
+   landing.css — 一頁式首頁（landing.html）專用樣式，2026-09-06 起。
+   只有 landing-entry.tsx 會載入，舊首頁（index.html）不會讀到這個檔。
+
+   規則：landing 的所有樣式調整都寫在這裡，且一律用 .pg-landing-root 開頭，
+   例如  .pg-landing-root .pg-hero .pg-t-h1 { ... }
+   這樣即使沿用 home.css 的 class 名稱，也只作用在這一頁；
+   舊首頁保持原樣，不需要為了 landing 去改共用檔。
+
+   共用檔（tokens.css／home.css／nav.css／buttons.css）在 landing 定案前不動。
+   ========================================================================== */
