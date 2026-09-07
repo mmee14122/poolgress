@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { site } from '../data/site'
+import { site, type NavLink } from '../data/site'
 import { LanguageMenu } from './LanguageMenu'
 import { CartHover, CartDrawerButton } from './cart/CartWidget'
 import { Logo } from './Logo'
@@ -52,7 +52,11 @@ const DEFAULT_DARK_BG = '#0f1e33'
 export function Navbar({
   theme = 'light',
   glass = false,
-}: { theme?: NavTheme; glass?: boolean } = {}) {
+  links,
+  minimal = false,
+}: { theme?: NavTheme; glass?: boolean; links?: NavLink[]; minimal?: boolean } = {}) {
+  /* links 未給＝全站主導覽；minimal＝一頁式站台（landing）用，隱藏購物車／登入／語言 */
+  const navLinks = links ?? site.nav
   const [menuOpen, setMenuOpen] = useState(false)
   const user = useSession()
   /* 首頁初始就是深色 → 第一幀不會閃白 */
@@ -152,7 +156,7 @@ export function Navbar({
         <div className="flex min-w-0 items-center gap-4">
           <Logo dark={tone === 'dark'} />
           <nav aria-label="主要導覽" className="hidden items-center gap-1 lg:flex">
-            {site.nav.map((item) => (
+            {navLinks.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -167,6 +171,7 @@ export function Navbar({
 
         {/* 右：我的課程（登入後）、購物車、頭像／登入、語言。
             .pg-nav-utils：購物車與語言只做字／icon 轉 Primary，不加 indicator、不加 hover 底 */}
+        {!minimal && (
         <div className="pg-nav-utils hidden items-center gap-1 lg:flex">
           {user && (
             <a href="./my-courses.html" className={navLinkClass(isActive('./my-courses.html'))}>
@@ -190,12 +195,13 @@ export function Navbar({
 
           <LanguageMenu />
         </div>
+        )}
 
         {/* 手機：購物車抽屜 ＋ 頭像（登入後）＋ 漢堡選單。
             順序與桌機一致：購物車在左、頭像在右 */}
         <div className="flex items-center gap-1 lg:hidden">
-          <CartDrawerButton />
-          {user && (
+          {!minimal && <CartDrawerButton />}
+          {!minimal && user && (
             <div className="mx-1">
               <AccountMenu user={user} />
             </div>
@@ -223,7 +229,7 @@ export function Navbar({
       {menuOpen && (
         <div id="mobile-menu" className="border-t border-line bg-white lg:hidden">
           <nav aria-label="行動版導覽" className="px-4 py-3">
-            {site.nav.map((item) => (
+            {navLinks.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -233,7 +239,7 @@ export function Navbar({
               </a>
             ))}
             {/* 手機導覽列放不下按鈕，「我的課程」改列在選單內 */}
-            {user && (
+            {!minimal && user && (
               <a
                 href="./my-courses.html"
                 className="block rounded-lg px-3 py-3 text-base font-medium text-ink-900 transition-colors hover:bg-ivory-100"
@@ -241,7 +247,7 @@ export function Navbar({
                 我的課程
               </a>
             )}
-            {!user && (
+            {!minimal && !user && (
               <a
                 href={site.loginUrl}
                 className="block rounded-lg px-3 py-3 text-base font-medium text-ink-900 transition-colors hover:bg-ivory-100"
@@ -250,10 +256,12 @@ export function Navbar({
               </a>
             )}
 
-            <div className="mt-2 flex items-center justify-between border-t border-line px-3 pt-3">
-              <span className="text-sm text-ink-500">語言</span>
-              <LanguageMenu />
-            </div>
+            {!minimal && (
+              <div className="mt-2 flex items-center justify-between border-t border-line px-3 pt-3">
+                <span className="text-sm text-ink-500">語言</span>
+                <LanguageMenu />
+              </div>
+            )}
           </nav>
         </div>
       )}
