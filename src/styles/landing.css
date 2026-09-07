@@ -60,3 +60,27 @@
   margin-top: var(--button-ghost-mt);
 }
 .pg-landing-root .pg-hero-cta-row .pg-hero-cta { margin-top: 0; }
+
+/* Hero CTA 微調（2026-09-06 使用者）：更細長、文字往中央、箭頭貼右側。
+   做法：左內距大於右內距，文字欄 flex:1 置中，箭頭固定在最右；高度 40→34，字距放寬。 */
+.pg-landing-root .pg-hero-cta.pg-cta-book {
+  height: 34px;
+  min-width: 176px;
+  padding: 0 12px 0 22px;
+  gap: 10px;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+}
+.pg-landing-root .pg-hero-cta .pg-cta-text {
+  flex: 1 1 auto;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book {
+    height: 32px;
+    min-width: 160px;
+    padding: 0 10px 0 18px;
+    font-size: 13px;
+  }
+  .pg-landing-root .pg-hero-cta-row { gap: 10px; }
+}
