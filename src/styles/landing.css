@@ -81,10 +81,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  width: 200px;
+  width: 158px;
   height: 44px;
   margin-top: 0;
-  padding: 0 18px;
+  padding: 0 14px;
   border-radius: 0;
   background: rgba(var(--pg-charcoal-rgb), 0.22);
   border: 1px solid rgba(255, 255, 255, 0.34);
@@ -148,9 +148,9 @@
 @media (max-width: 767px) {
   .pg-landing-root .pg-hero-cta.pg-cta-book {
     --pg-book-square: 42px;
-    width: 186px;
+    width: 150px;
     height: 42px;
-    padding: 0 16px;
+    padding: 0 12px;
     font-size: 13px;
   }
   .pg-landing-root .pg-hero-cta-row { gap: 10px; }
@@ -271,4 +271,17 @@
    人物與 App 介面都在畫面上半部，往下裁不會切到重點。 */
 .pg-landing-root .pg-feature-media img {
   object-position: 50% 0%;
+}
+
+/* 舊瀏覽器保底（主要是 iOS 15 之前）：不支援 aspect-ratio 時，
+   圖框高度會塌成 0，整頁圖片就都不見。改用 padding-top 百分比撐高。 */
+@supports not (aspect-ratio: 1 / 1) {
+  .pg-landing-root .pg-feature-media {
+    height: 0;
+    padding-top: 50%;            /* 2:1 */
+  }
+  .pg-landing-root .pg-app-video {
+    height: 0;
+    padding-top: 56.25%;         /* 16:9 */
+  }
 }
