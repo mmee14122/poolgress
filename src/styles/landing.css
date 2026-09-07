@@ -152,3 +152,17 @@
 @media (prefers-reduced-motion: reduce) {
   .pg-landing-root .pg-hero-cta .pg-cta-book__icon { transition: none; }
 }
+
+/* ---------- 02–04 主圖片一律直角（2026-09-06 使用者）----------
+   精品攝影排版，不是圓角 UI 卡片：圖框、圖片本身、佔位層與遮罩全部 radius 0，
+   桌機與手機都不再有任何圓角；尺寸、比例、object-fit、左右交錯版面都不動。 */
+.pg-landing-root .pg-feature-media,
+.pg-landing-root .pg-feature-media *,
+.pg-landing-root .pg-feature-media img,
+.pg-landing-root .pg-feature-media picture,
+.pg-landing-root .pg-feature-media video,
+.pg-landing-root .pg-feature-media::before,
+.pg-landing-root .pg-feature-media::after,
+.pg-landing-root .pg-feature-mask {
+  border-radius: 0;
+}
