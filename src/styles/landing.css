@@ -234,12 +234,12 @@
     margin-top: 28px;
   }
 
-  /* 區塊之間統一 72（上下各 36） */
+  /* 區塊之間統一 40（上下各 20；2026-09-06 使用者從 72 收緊，選 B 版） */
   .pg-landing-root .pg-app-world .pg-feature {
-    padding-top: 36px;
-    padding-bottom: 36px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
-  .pg-landing-root .pg-app-world > .pg-feature:last-of-type { padding-bottom: 48px; }
+  .pg-landing-root .pg-app-world > .pg-feature:last-of-type { padding-bottom: 40px; }
 }
 /* 手機（<768）：單欄，文字在上、圖片在下，間距 32；左右留白沿用全站 gutter，
    不套用桌機那組 clamp(48,5vw,96)，否則手機圖片會被夾得太窄 */
