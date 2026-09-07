@@ -84,3 +84,18 @@
   }
   .pg-landing-root .pg-hero-cta-row { gap: 10px; }
 }
+
+/* 靜止時右端就有一塊 Sand 方塊（2026-09-06 使用者）：讓人一眼知道箭頭可按；
+   hover 時沿用既有的阻尼彈簧動畫，從這塊往左長開填滿整顆。
+   方塊寬＝按鈕高（正方形）；右內距壓成 8，箭頭才會落在方塊正中央。 */
+.pg-landing-root .pg-hero-cta.pg-cta-book {
+  --pg-book-icon: 34px;
+  padding-right: 8px;
+}
+.pg-landing-root .pg-hero-cta .pg-cta-book__icon { color: var(--pg-charcoal); }
+@media (max-width: 767px) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book {
+    --pg-book-icon: 32px;
+    padding-right: 7px;
+  }
+}
