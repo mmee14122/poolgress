@@ -11,7 +11,7 @@ export const hero = {
   /** 8 秒品牌影片；null＝先顯示 poster 靜態圖，連 poster 都沒有才是深色佔位框 */
   video: null as string | null,
   /** 場館入口主視覺（使用者 2026-09-05 提供，1672×941 PNG → WebP） */
-  poster: './assets/hero/hero-entrance.webp' as string | null,
+  poster: '/ui/assets/hero/hero-entrance.webp' as string | null,
   /** 手機（≤768px）專用直式主視覺（4:5 或 3:4）；null＝沿用 poster＋手機 object-position */
   posterMobile: null as string | null,
   manifesto: ['SPACE', 'PLAY', 'TOGETHER', 'PROGRESS'],
@@ -61,7 +61,7 @@ export const pillarSections: Pillar[] = [
     /** 概念視覺 teaser（2026-09-05 使用者規格）：不是介紹設備，是「未來真的會有實體空間」的期待感 */
     teaser: { eyebrow: 'COMING SOON', titleLines: ['POOLGRESS', 'CLUB'], zh: '打造全新的撞球體驗', meta: 'TAIPEI · 2028' },
     /** 場館願景圖（使用者 2026-09-05 提供，PNG → WebP） */
-    image: './assets/hero/s01-venue.webp',
+    image: '/ui/assets/hero/s01-venue.webp',
     imageMobile: null,
     imageHint: '場館願景圖（概念視覺，3200×1800）',
   },
@@ -72,7 +72,7 @@ export const pillarSections: Pillar[] = [
     zh: '球桌，變成你的關卡。',
     /* 兩句以換行分開，渲染端用 whitespace-pre-line */
     body: '打開 App，跟著指引瞄準、闖關、拿星星。\n每一次上桌，都有新的挑戰。',
-    image: './assets/landing/play.webp',   /* 2026-09-06 使用者提供 */
+    image: '/ui/assets/landing/play.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'PLAY：真實撞球桌＋App 闖關介面（3200×1800）',
   },
   {
@@ -81,7 +81,7 @@ export const pillarSections: Pillar[] = [
     en: 'TOGETHER',
     zh: '一個人的挑戰，兩個人的遊戲。',
     body: '加入好友、組隊闖關、登上排行榜。\n下一局，你想和誰一起？',
-    image: './assets/landing/together.webp',   /* 2026-09-06 使用者提供 */
+    image: '/ui/assets/landing/together.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'TOGETHER：好友／組隊闖關／比成績的 App 畫面（3200×1800）',
   },
   {
@@ -90,7 +90,7 @@ export const pillarSections: Pillar[] = [
     en: 'COMMUNITY',
     zh: '下一場，就在這裡。',
     body: '揪球友、參加活動、報名比賽，也分享你的每一次精彩。\n從一張球桌，遇見更多一起玩的人。',
-    image: './assets/landing/community.webp',   /* 2026-09-06 使用者提供 */
+    image: '/ui/assets/landing/community.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'COMMUNITY：揪球友／活動／比賽／分享的 App 畫面（3200×1800）',
   },
 ]
@@ -102,10 +102,10 @@ export const appChapter = {
   body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',
   /* App 介紹影片（2026-09-06 使用者：放在文案右側）。
      檔案放 public/assets/app/ 後把路徑填進 src；poster 是封面圖。
-     兩者留 null 時顯示同尺寸佔位框。例：src: './assets/app/intro.mp4' */
+     兩者留 null 時顯示同尺寸佔位框。例：src: '/ui/assets/app/intro.mp4' */
   video: {
-    src: './assets/app/intro.mp4' as string | null,        /* 1920×1080 H.264，85 秒 */
-    poster: './assets/app/intro-poster.jpg' as string | null,
+    src: '/ui/assets/app/intro.mp4' as string | null,        /* 1920×1080 H.264，85 秒 */
+    poster: '/ui/assets/app/intro-poster.jpg' as string | null,
     hint: 'APP 介紹影片（16:9）',
   },
 }
