@@ -188,36 +188,40 @@
   padding-inline: clamp(32px, 5vw, 96px);
 }
 @media (min-width: 1024px) {
+  /* editorial scrolling layout（2026-09-06 使用者第三版）：
+     圖片改用固定寬度區間 clamp(620,44vw,700)，不再依欄位比例被撐大；
+     文字欄吃掉剩下的空間，兩者垂直置中、欄距 56–72，區塊之間 56。
+     目的：一個螢幕看得完一組圖文，捲動時下一段的圖片頂端會先露出來。 */
   .pg-landing-root .pg-feature-row {
     display: grid;
-    grid-template-columns: minmax(280px, 30fr) minmax(0, 62fr);
-    gap: clamp(48px, 4vw, 72px);
+    grid-template-columns: minmax(280px, 1fr) auto;   /* 圖在右 */
+    gap: clamp(56px, 4vw, 72px);
     align-items: center;
   }
   .pg-landing-root .pg-feature-text {
     width: auto;
-    max-width: 320px;     /* 比欄寬窄，justify-self 才推得動 */
+    max-width: 340px;
     flex: initial;
     translate: none;
     grid-row: 1;
-    grid-column: 1;       /* 圖在右時，文字在左欄 */
+    grid-column: 1;
     justify-self: end;    /* 文字整塊靠向圖片那一側，內部仍是左對齊 */
   }
   .pg-landing-root .pg-feature-media {
-    width: auto;
+    width: clamp(620px, 44vw, 700px);
+    max-width: 100%;
     flex: initial;
-    margin: 0;            /* 取消先前的出血負邊距 */
+    margin: 0;
     grid-row: 1;
     grid-column: 2;
   }
-  /* 交錯的另一組：圖在左、文字在右，欄位比例不變 */
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] {
-    grid-template-columns: minmax(0, 62fr) minmax(280px, 30fr);
+    grid-template-columns: auto minmax(280px, 1fr);   /* 圖在左 */
   }
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 1; }
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text {
     grid-column: 2;
-    justify-self: start;     /* 圖在左時，文字改靠左端，一樣貼著圖片 */
+    justify-self: start;
   }
 
   /* 標題與內文是同一個 text block：標題 → 內文 28px */
@@ -229,6 +233,13 @@
     max-width: none;
     margin-top: 28px;
   }
+
+  /* 區塊間距 56（上下各 28）：比先前的 80 緊，捲動節奏更連貫 */
+  .pg-landing-root .pg-app-world .pg-feature {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+  .pg-landing-root .pg-app-world > .pg-feature:last-of-type { padding-bottom: 40px; }
 }
 /* 手機（<768）：單欄，文字在上、圖片在下，間距 32；圖片不再左右出血 */
 @media (max-width: 767px) {
@@ -239,7 +250,14 @@
   }
 }
 
-/* 圖片比例：21:9 太細長，改 3:2（2026-09-06 使用者），桌機手機一致 */
+/* 圖片比例（2026-09-06 使用者，第三次調整）：21:9 太扁、3:2 太高，定在 16:9；
+   桌機手機一致，圖片本身用 object-fit: cover 裁切，內容不變。 */
 .pg-landing-root .pg-feature-media {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
+}
+
+/* 裁切位置（2026-09-06 使用者）：三張圖一律保留上緣、優先裁掉下方，
+   人物與 App 介面都在畫面上半部，往下裁不會切到重點。 */
+.pg-landing-root .pg-feature-media img {
+  object-position: 50% 0%;
 }
