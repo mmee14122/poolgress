@@ -22,6 +22,8 @@ export const hero = {
   cta: { label: '認識場館', href: '#the-space' },   /* 一頁式：指向頁內 CLUB 段落，不外連 */
 }
 
+/* 2026-09-06 使用者：THE APP 內三塊不再顯示 01/02/03 標記——與上方「01 / THE SPACE」
+   「02 / THE APP」是同一套字樣，並排時分不出層級。三塊只留中文主述與內文。 */
 export type Pillar = {
   id: string
   no: string
@@ -65,7 +67,6 @@ export const pillarSections: Pillar[] = [
     id: 's02',
     no: '02',
     en: 'THE APP',
-    eyebrow: '01 / PLAY',
     zh: '球桌，變成你的關卡。',
     /* 兩句以換行分開，渲染端用 whitespace-pre-line */
     body: '打開 App，跟著指引瞄準、闖關、拿星星。\n每一次上桌，都有新的挑戰。',
@@ -76,40 +77,45 @@ export const pillarSections: Pillar[] = [
     id: 's03',
     no: '03',
     en: 'TOGETHER',
-    eyebrow: '02 / TOGETHER',
     zh: '一個人的挑戰，兩個人的遊戲。',
     body: '加入好友、組隊闖關、登上排行榜。\n下一局，你想和誰一起？',
-    image: null,
+    image: './assets/landing/together.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'TOGETHER：好友／組隊闖關／比成績的 App 畫面（3200×1800）',
   },
   {
     id: 's04',
     no: '04',
     en: 'COMMUNITY',
-    eyebrow: '03 / COMMUNITY',
     zh: '下一場，就在這裡。',
     body: '揪球友、參加活動、報名比賽，也分享你的每一次精彩。\n從一張球桌，遇見更多一起玩的人。',
-    image: null,
+    image: './assets/landing/community.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'COMMUNITY：揪球友／活動／比賽／分享的 App 畫面（3200×1800）',
   },
 ]
 
-/** 02 / THE APP 章節開場（2026-09-06 加入內文與下載 CTA；商店連結尚未上架，先錨到 Footer 的下載區） */
+/** 02 / THE APP 章節開場。App 未上架：QR 與下載字樣全部移除，右側改放介紹影片（2026-09-06 使用者） */
 export const appChapter = {
   eyebrow: '02 / THE APP',
   titleLines: ['THE GAME', 'GOES WITH YOU.'] as [string, string],
   body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',
-  cta: { label: '下載 Poolgress App', href: './app.html' }, // 2026-09-06：先接 Coming Soon 頁，App 上架後改成商店跳轉
+  /* App 介紹影片（2026-09-06 使用者：放在文案右側）。
+     檔案放 public/assets/app/ 後把路徑填進 src；poster 是封面圖。
+     兩者留 null 時顯示同尺寸佔位框。例：src: './assets/app/intro.mp4' */
+  video: {
+    src: null as string | null,
+    poster: null as string | null,
+    hint: 'APP 介紹影片（16:9）',
+  },
 }
 
+/** landing 對外信箱（2026-09-06 使用者指定；與全站 site.contactEmail 分開，不影響舊站） */
+export const landingContactEmail = 'poolgresswork@gmail.com'
+
 export const finale = {
-  /* 一頁式：選項只剩「下載 App」與「合作洽詢」，標題改成不預設分岔的說法 */
-  en: 'START WITH THE APP',
-  zh: '先從下一局開始。',
-  ctas: [
-    { label: '下載 Poolgress App', href: './app.html' },
-    { label: '合作洽詢', href: 'mailto:support@poolgress.com' },
-  ],
+  /* 2026-09-06：App 未上架，下載入口全面移除，結尾只剩合作洽詢 */
+  en: 'LET US KNOW',
+  zh: '想一起打造這件事？',
+  ctas: [{ label: '合作洽詢', href: `mailto:${landingContactEmail}?subject=${encodeURIComponent('Poolgress 合作洽詢')}` }],
 }
 
 /**
@@ -137,7 +143,6 @@ export const brand = {
 
 /** 一頁式導覽：頁內錨點 ＋ App 下載頁（唯一對外連結） */
 export const landingNav = [
-  { label: '關於場館', href: '#the-space' },
-  { label: '玩法', href: '#s02' },
-  { label: '下載 App', href: './app.html' },
+  { label: '關於場館', href: '#the-space' },      /* 01 / THE SPACE 段落 */
+  { label: 'App 玩法', href: '#s02-transition' }, /* 02 / THE APP 章節開場 */
 ]

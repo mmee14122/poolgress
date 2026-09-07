@@ -9,3 +9,43 @@
 
    共用檔（tokens.css／home.css／nav.css／buttons.css）在 landing 定案前不動。
    ========================================================================== */
+
+/* 錨點導覽：捲到 #the-space／#s02-transition 時，避開 fixed Navbar（桌機 72／手機 64） */
+.pg-landing-root #the-space,
+.pg-landing-root #s02-transition {
+  scroll-margin-top: var(--pg-nav-h-mobile);
+}
+@media (min-width: 768px) {
+  .pg-landing-root #the-space,
+  .pg-landing-root #s02-transition {
+    scroll-margin-top: var(--pg-nav-h-desktop);
+  }
+}
+
+/* THE APP：文案右側的介紹影片欄（2026-09-06）。
+   桌機尺寸刻意與 01–03 的圖片一致（欄寬 56%、21:9），整頁的矩形節奏才一樣；
+   手機落到文案下方、整寬 16:9（直式螢幕上 21:9 太扁）。 */
+.pg-landing-root .pg-app-video {
+  position: relative;
+  width: 100%;
+  margin-top: 24px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--pg-radius-media);
+}
+@media (min-width: 768px) {
+  .pg-landing-root .pg-app-intro__row {
+    gap: 0;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .pg-landing-root .pg-app-intro__desc { flex: 0 1 auto; }
+  .pg-landing-root .pg-app-video {
+    flex: 0 0 var(--pg-feature-media-w);
+    margin-top: 0;
+    aspect-ratio: var(--pg-feature-ratio);
+  }
+}
+@media (max-width: 767px) {
+  .pg-landing-root .pg-app-intro__row { display: block; }
+}

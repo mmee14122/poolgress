@@ -1,4 +1,4 @@
-import { site } from '../data/site'
+import { landingContactEmail } from '../data/landing'
 import { Logo } from './Logo'
 
 /**
@@ -22,10 +22,10 @@ export function LandingFooter() {
 
           <div className="text-sm">
             <a
-              href={`mailto:${site.contactEmail}`}
+              href={`mailto:${landingContactEmail}`}
               className="text-[#F2EEE6]/80 underline-offset-4 transition-colors hover:text-[#D2C2AD] hover:underline"
             >
-              {site.contactEmail}
+              {landingContactEmail}
             </a>
             <p className="mt-3 text-[10px] tracking-[0.2em] text-[#F2EEE6]/45 uppercase">Taipei · Taiwan</p>
           </div>

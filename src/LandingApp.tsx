@@ -2,14 +2,13 @@
  * 一頁式首頁（landing.html）— 2026-09-06。
  *
  * 由現行首頁 PremiumDemoApp 複製而來，設計與動畫完全相同；差別只有三處：
- *   1. 內容讀 data/landing.ts（對外連結只留 App 下載頁與信箱）
+ *   1. 內容讀 data/landing.ts（對外連結只留 support 信箱）
  *   2. Navbar 走 minimal（頁內錨點導覽，無購物車／登入／語言）
  *   3. 頁尾換成精簡版 LandingFooter
  * 之後 landing 要改版型，改這個檔不會動到現行首頁。
  */
 import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } from './data/landing'
-import { site } from './data/site'
 import { landingNav } from './data/landing'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
@@ -481,8 +480,7 @@ function ChapterTransition({
       id="s02-transition"
       className="pg-app-intro site-container"
     >
-      {/* 2026-09-06 v2：兩欄 editorial composition——左：眉標／大標／體驗文案；右（≥768）：QR 下載單元；
-          手機（<768）：單欄，QR 不顯示，改「下載 Poolgress App」Functional CTA。 */}
+      {/* 眉標／大標／體驗文案的單欄 editorial composition（QR 欄已移除） */}
       <div className="pg-app-intro__grid">
         <div className="pg-app-intro__copy">
           <p
@@ -521,31 +519,36 @@ function ChapterTransition({
               </span>
             ))}
           </h2>
-          {/* 文案列：說明文字與 QR 單元並排——QR 上緣對齊文字第一行、「下載 Poolgress App」底緣對齊最後一行
-              （2026-09-06 使用者手繪版面）。手機：QR 隱藏、改下載 CTA。 */}
+          {/* 說明文案。QR 與下載 CTA 已於 2026-09-06 移除（App 尚未上架） */}
           <div className="pg-app-intro__row">
             <p className="pg-t-body pg-app-intro__desc whitespace-pre-line" style={line(on, 0.26)}>
               {appChapter.body}
             </p>
-            <div className="pg-qr-unit hidden md:flex" style={line(on, 0.3)}>
-              <div className="pg-qr-unit__code">
-                {site.appDownload.qrCode ? (
-                  <img src={site.appDownload.qrCode} alt="下載 Poolgress App 的 QR code" />
-                ) : (
-                  <svg viewBox="0 0 24 24" aria-label="QR code 待補" className="h-7 w-7 fill-current opacity-40">
-                    <path d="M3 3h8v8H3zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zM13 3h8v8h-8zm2 2v4h4V5zm-2 8h2v2h-2zm4 0h2v2h-2zm2 2h2v2h-2zm-4 2h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2z" />
-                  </svg>
-                )}
-              </div>
-              <p className="pg-qr-unit__label">{appChapter.cta.label}</p>
+            {/* App 介紹影片（2026-09-06）：桌機在文案右側，手機落到文案下方。
+                data/landing.ts 的 video.src 填了才播，沒填顯示同樣尺寸的佔位框。 */}
+            <div className="pg-app-video" style={line(on, 0.3)}>
+              {appChapter.video.src ? (
+                <video
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={appChapter.video.src}
+                  poster={appChapter.video.poster ?? undefined}
+                  controls
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <div className="pg-media-placeholder absolute inset-0">
+                  <div
+                    className="absolute inset-[4%] rounded-lg border border-dashed"
+                    style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
+                  />
+                  <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
+                    {appChapter.video.hint}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
-          {/* 手機專用下載 CTA */}
-          {/* 2026-09-06：手機改 editorial text link——斜體一行＋尾端箭頭＋細底線，去掉按鈕底框 */}
-          <a href={appChapter.cta.href} className="pg-app-intro__link" style={line(on, 0.34)}>
-            <span className="pg-app-intro__link-text">{appChapter.cta.label}</span>
-            <span className="pg-app-intro__link-arrow" aria-hidden="true">→</span>
-          </a>
         </div>
       </div>
     </section>
