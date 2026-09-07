@@ -106,20 +106,20 @@
   transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
 }
 /* hover（2026-09-06 使用者：改回原本的米色填滿，但分兩段）：
-   0 → 0.27s 只有右側箭頭區域是米色方塊（提示「這裡可以按」），
+   0 → 0.17s 只有右側箭頭區域是米色方塊（提示「這裡可以按」），
    之後才往左長開填滿整顆（全長 0.8s），尾段沿用原本的阻尼彈簧手感。
-   文字等填色掃過去（0.32s）才轉深色；箭頭在方塊出現當下就轉深色。
+   文字等填色掃過去（0.2s）才轉深色；箭頭在方塊出現當下就轉深色。
    離開：寬度直接 transition 回 0，快速平順收回右側。 */
 @keyframes pg-landing-book-fill {
   0%   { width: 0; }
-  8%   { width: var(--pg-book-square); }
-  34%  { width: var(--pg-book-square); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }  /* 0.27s 後才長開（2026-09-06 使用者：0.5s 太久） */
-  44%  { width: 96%;   animation-timing-function: ease-in; }
-  52%  { width: 90%;   animation-timing-function: ease-in-out; }
-  62%  { width: 78%;   animation-timing-function: ease-out; }
-  74%  { width: 96%;   animation-timing-function: ease-in-out; }
-  84%  { width: 94%;   animation-timing-function: ease-out; }
-  93%  { width: 99%; }
+  6%   { width: var(--pg-book-square); }
+  21%  { width: var(--pg-book-square); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }  /* 0.17s 後才長開（2026-09-06 使用者再縮短） */
+  32%  { width: 96%;   animation-timing-function: ease-in; }
+  42%  { width: 90%;   animation-timing-function: ease-in-out; }
+  54%  { width: 78%;   animation-timing-function: ease-out; }
+  68%  { width: 96%;   animation-timing-function: ease-in-out; }
+  80%  { width: 94%;   animation-timing-function: ease-out; }
+  91%  { width: 99%; }
   100% { width: 100%; }
 }
 @media (hover: hover) {
@@ -131,7 +131,7 @@
     background: rgba(var(--pg-charcoal-rgb), 0.22);
     border-color: rgba(255, 255, 255, 0.45);
     color: var(--pg-charcoal);
-    transition: color 0.18s ease 0.32s, background-color 0.3s ease, border-color 0.3s ease;
+    transition: color 0.18s ease 0.2s, background-color 0.3s ease, border-color 0.3s ease;
   }
   .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__icon {
     color: var(--pg-charcoal);
