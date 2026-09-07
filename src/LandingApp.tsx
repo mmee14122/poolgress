@@ -397,6 +397,7 @@ export default function LandingApp() {
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
         ref={reg('finale')}
+        id="contact"
         className="pg-finale text-center"
         style={{ background: P.bg, color: P.text }}
       >

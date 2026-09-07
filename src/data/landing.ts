@@ -147,4 +147,5 @@ export const brand = {
 export const landingNav = [
   { label: '關於場館', href: '#the-space' },      /* 01 / THE SPACE 段落 */
   { label: 'App 玩法', href: '#s02-transition' }, /* 02 / THE APP 章節開場 */
+  { label: '聯絡我們', href: '#contact' },        /* 頁尾前的「想一起打造這件事？」 */
 ]

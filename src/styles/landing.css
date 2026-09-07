@@ -12,12 +12,14 @@
 
 /* 錨點導覽：捲到 #the-space／#s02-transition 時，避開 fixed Navbar（桌機 72／手機 64） */
 .pg-landing-root #the-space,
-.pg-landing-root #s02-transition {
+.pg-landing-root #s02-transition,
+.pg-landing-root #contact {
   scroll-margin-top: var(--pg-nav-h-mobile);
 }
 @media (min-width: 768px) {
   .pg-landing-root #the-space,
-  .pg-landing-root #s02-transition {
+  .pg-landing-root #s02-transition,
+  .pg-landing-root #contact {
     scroll-margin-top: var(--pg-nav-h-desktop);
   }
 }
