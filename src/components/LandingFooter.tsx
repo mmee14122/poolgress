@@ -15,9 +15,9 @@ export function LandingFooter() {
         <div className="flex flex-col gap-8 border-t border-[rgba(242,238,230,.1)] pt-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <Logo dark />
-            {/* 2026-09-06 使用者指定英文標語；英文句用寬字距，與全站 eyebrow 語彙一致 */}
+            {/* 2026-09-06 使用者指定英文標語（第二版）；英文句用寬字距，與全站 eyebrow 語彙一致 */}
             <p className="mt-4 max-w-xs text-sm leading-relaxed tracking-[0.04em] text-[#F2EEE6]/70">
-              The future of pool starts here.
+              Better Pool. Better Life.
             </p>
           </div>
 
