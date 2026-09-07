@@ -72,7 +72,7 @@ export const pillarSections: Pillar[] = [
     zh: '球桌，變成你的關卡。',
     /* 兩句以換行分開，渲染端用 whitespace-pre-line */
     body: '打開 App，跟著指引瞄準、闖關、拿星星。\n每一次上桌，都有新的挑戰。',
-    image: null,
+    image: './assets/landing/play.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'PLAY：真實撞球桌＋App 闖關介面（3200×1800）',
   },
   {

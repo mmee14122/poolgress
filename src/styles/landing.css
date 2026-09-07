@@ -173,48 +173,61 @@
   border-radius: 0;
 }
 
-/* ---------- 02–04 圖文交錯：精品雜誌式編排（2026-09-06 使用者規格）----------
-   不是左右對半的模板卡片：文字欄收窄留白、圖片放大並往版面外側延伸貼齊頁面邊界，
-   一右一左交錯但共用同一組 grid、比例與垂直節奏。
-   桌機（≥1024）比例：文字 32%｜間距 10%｜圖 58%，圖再往外側多吃掉一個 gutter。
-   對齊：整列改為上緣對齊（原本是垂直置中＋上抬 22px），標題頂端與圖片頂端同一條線。 */
+/* ---------- 02–04 圖文編排（2026-09-06 使用者第二版規格）----------
+   目標：圖與文是同一組內容，不是兩個各自漂浮的元素。
+   做法：同一個 CSS Grid、共同的置中容器、垂直置中，欄距收在 48–72，
+   不再用出血負邊距或 translate 各自定位。
+   欄位比例：圖 62%｜文字 30%（minmax(280px) 保底），兩組完全一致。
+   交錯：非 reverse＝圖在右、reverse（Tailwind lg:flex-row-reverse）＝圖在左。 */
+.pg-landing-root .pg-feature {
+  max-width: 1760px;
+  padding-inline: clamp(32px, 5vw, 96px);
+}
 @media (min-width: 1024px) {
   .pg-landing-root .pg-feature-row {
-    align-items: flex-start;
-    gap: 10%;
+    display: grid;
+    grid-template-columns: minmax(280px, 30fr) minmax(0, 62fr);
+    gap: clamp(48px, 4vw, 72px);
+    align-items: center;
   }
   .pg-landing-root .pg-feature-text {
-    flex: 0 0 32%;
-    width: 32%;
-    translate: none;          /* 取消光學上抬，改走上緣對齊 */
+    width: auto;
+    max-width: none;
+    flex: initial;
+    translate: none;
+    grid-row: 1;
+    grid-column: 1;       /* 圖在右時，文字在左欄 */
   }
-  /* 圖片欄實際寬度＝58% ＋ 一個 gutter，再用同等負邊距往外推，
-     所以右邊界（或左邊界）正好落在頁面邊緣，而不是 container 的內縮線 */
   .pg-landing-root .pg-feature-media {
-    flex: 0 0 calc(58% + var(--site-gutter));
-    width: calc(58% + var(--site-gutter));
-    margin-right: calc(-1 * var(--site-gutter));   /* 圖在右：延伸貼齊頁面右邊界 */
+    width: auto;
+    flex: initial;
+    margin: 0;            /* 取消先前的出血負邊距 */
+    grid-row: 1;
+    grid-column: 2;
   }
-  /* 交錯的另一半（Tailwind lg:flex-row-reverse）：圖在左，改往左側延伸 */
-  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media {
-    margin-right: 0;
-    margin-left: calc(-1 * var(--site-gutter));
+  /* 交錯的另一組：圖在左、文字在右，欄位比例不變 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] {
+    grid-template-columns: minmax(0, 62fr) minmax(280px, 30fr);
   }
-  /* 標題縮小約 16%、字重 700 → 600，字體不變 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 1; }
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text { grid-column: 2; }
+
+  /* 標題與內文是同一個 text block：標題 → 內文 28px */
   .pg-landing-root .pg-feature-text .pg-t-feature-h2 {
     font-size: calc(var(--pg-fs-feature-h2) * 0.84);
     font-weight: 600;
   }
-  /* 內文行寬收斂，維持大量留白 */
   .pg-landing-root .pg-feature-text .pg-t-body {
-    max-width: 26em;
-    margin-top: 22px;
+    max-width: none;
+    margin-top: 28px;
   }
 }
-/* 手機（<768）：文字在上、圖片在下，圖片左右滿版出血，維持直角與同一個比例 */
+/* 手機（<768）：單欄，文字在上、圖片在下，間距 32；圖片不再左右出血 */
 @media (max-width: 767px) {
+  .pg-landing-root .pg-feature-row { gap: 32px; }
   .pg-landing-root .pg-feature-media {
     width: auto;
-    margin-inline: calc(-1 * var(--site-gutter));
+    margin-inline: 0;
   }
 }
+
