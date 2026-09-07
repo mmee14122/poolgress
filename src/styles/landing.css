@@ -166,3 +166,49 @@
 .pg-landing-root .pg-feature-mask {
   border-radius: 0;
 }
+
+/* ---------- 02–04 圖文交錯：精品雜誌式編排（2026-09-06 使用者規格）----------
+   不是左右對半的模板卡片：文字欄收窄留白、圖片放大並往版面外側延伸貼齊頁面邊界，
+   一右一左交錯但共用同一組 grid、比例與垂直節奏。
+   桌機（≥1024）比例：文字 32%｜間距 10%｜圖 58%，圖再往外側多吃掉一個 gutter。
+   對齊：整列改為上緣對齊（原本是垂直置中＋上抬 22px），標題頂端與圖片頂端同一條線。 */
+@media (min-width: 1024px) {
+  .pg-landing-root .pg-feature-row {
+    align-items: flex-start;
+    gap: 10%;
+  }
+  .pg-landing-root .pg-feature-text {
+    flex: 0 0 32%;
+    width: 32%;
+    translate: none;          /* 取消光學上抬，改走上緣對齊 */
+  }
+  /* 圖片欄實際寬度＝58% ＋ 一個 gutter，再用同等負邊距往外推，
+     所以右邊界（或左邊界）正好落在頁面邊緣，而不是 container 的內縮線 */
+  .pg-landing-root .pg-feature-media {
+    flex: 0 0 calc(58% + var(--site-gutter));
+    width: calc(58% + var(--site-gutter));
+    margin-right: calc(-1 * var(--site-gutter));   /* 圖在右：延伸貼齊頁面右邊界 */
+  }
+  /* 交錯的另一半（Tailwind lg:flex-row-reverse）：圖在左，改往左側延伸 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media {
+    margin-right: 0;
+    margin-left: calc(-1 * var(--site-gutter));
+  }
+  /* 標題縮小約 16%、字重 700 → 600，字體不變 */
+  .pg-landing-root .pg-feature-text .pg-t-feature-h2 {
+    font-size: calc(var(--pg-fs-feature-h2) * 0.84);
+    font-weight: 600;
+  }
+  /* 內文行寬收斂，維持大量留白 */
+  .pg-landing-root .pg-feature-text .pg-t-body {
+    max-width: 26em;
+    margin-top: 22px;
+  }
+}
+/* 手機（<768）：文字在上、圖片在下，圖片左右滿版出血，維持直角與同一個比例 */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-feature-media {
+    width: auto;
+    margin-inline: calc(-1 * var(--site-gutter));
+  }
+}
