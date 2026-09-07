@@ -21,8 +21,10 @@ export function Logo({
       href={href}
       className={`pg-logo ${dark ? 'pg-logo--on-dark' : ''} flex shrink-0 items-center gap-2 py-2 ${className}`}
     >
+      {/* 絕對路徑（2026-09-06）：landing 也被複製到網站根目錄當首頁，
+          相對路徑在根目錄會指到 /assets/… 而 404；所有 React 頁面都在 /ui/ 底下，絕對路徑兩邊都對 */}
       <img
-        src={dark ? './assets/logo/logo-mark-white.png' : './assets/logo/logo-mark-primary.png'}
+        src={dark ? '/ui/assets/logo/logo-mark-white.png' : '/ui/assets/logo/logo-mark-primary.png'}
         alt=""
         width={36}
         height={36}
