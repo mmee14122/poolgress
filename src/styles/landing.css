@@ -193,9 +193,10 @@
      兩組用完全相同的 grid，只交換欄位順序；除了交換之外不再有任何水平位移
      （先前的負邊距、translate、justify-self 偏移全部移除）。 */
   .pg-landing-root .pg-feature-row {
+    --pg-landing-col-gap: clamp(64px, 5vw, 88px);
     display: grid;
     grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.75fr);  /* 圖左｜文右 */
-    column-gap: clamp(64px, 5vw, 88px);
+    column-gap: var(--pg-landing-col-gap);
     align-items: center;
   }
   .pg-landing-root .pg-feature-media {
@@ -206,12 +207,17 @@
     grid-row: 1;
     grid-column: 1;
   }
+  /* 文字區在「淺色帶」裡水平置中（2026-09-09 使用者）：
+     淺色帶的左右邊界是上下兩張圖片的外側，也就是「文字欄 ＋ 欄距」這一整段。
+     做法：文字塊縮成內容寬（上限 340），先在自己的欄置中，再往圖片方向平移半個欄距，
+     兩者相加剛好等於「在整條淺色帶裡置中」。
+     垂直則補 -18px：box 本身偏差 0，但中文字身在行框裡偏下，實測視覺中心低 18px。 */
   .pg-landing-root .pg-feature-text {
-    width: auto;
-    max-width: none;
+    width: max-content;
+    max-width: 380px;
     flex: initial;
-    translate: none;
-    justify-self: stretch;   /* 文字填滿自己的欄，緊鄰圖片 */
+    justify-self: center;
+    translate: calc(var(--pg-landing-col-gap) / -2) -18px;  /* 圖在左：文字往左靠向圖片 */
     grid-row: 1;
     grid-column: 2;
   }
@@ -219,7 +225,11 @@
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] {
     grid-template-columns: minmax(320px, 0.75fr) minmax(0, 1.65fr);  /* 文左｜圖右 */
   }
-  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text { grid-column: 1; }
+  /* 鏡像的那一組：文字在左、圖片在右，平移方向相反 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text {
+    grid-column: 1;
+    translate: calc(var(--pg-landing-col-gap) / 2) -18px;   /* 圖在右：文字往右靠向圖片 */
+  }
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 2; }
 
   /* 兩組標題完全相同：字級、行高、最大寬度都一致，換行交給欄寬決定 */
@@ -265,6 +275,12 @@
   .pg-landing-root .pg-feature-mask {
     border-radius: 2px;
   }
+}
+
+/* 圖片比例（2026-09-06 使用者定案）：2:1，比 16:9 再細長一點。
+   註：這條曾在一次區塊改寫中被誤刪，導致線上回到 token 預設的 21:9（2026-09-09 補回）。 */
+.pg-landing-root .pg-feature-media {
+  aspect-ratio: 2 / 1;
 }
 
 /* 裁切位置（2026-09-06 使用者）：三張圖一律保留上緣、優先裁掉下方，
