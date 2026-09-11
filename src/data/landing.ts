@@ -116,8 +116,8 @@ export const landingContactEmail = 'poolgresswork@gmail.com'
 export const finale = {
   /* 2026-09-06：App 未上架，下載入口全面移除，結尾只剩合作洽詢 */
   en: 'LET US KNOW',
-  zh: '想一起打造這件事？',
-  ctas: [{ label: '合作洽詢', href: `mailto:${landingContactEmail}?subject=${encodeURIComponent('Poolgress 合作洽詢')}` }],
+  zh: '一起讓想法成真。',           /* 2026-09-11 使用者改稿 */
+  ctas: [{ label: '洽談合作', href: `mailto:${landingContactEmail}?subject=${encodeURIComponent('Poolgress 合作洽詢')}` }],
 }
 
 /**
