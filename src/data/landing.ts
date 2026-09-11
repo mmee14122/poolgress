@@ -69,7 +69,7 @@ export const pillarSections: Pillar[] = [
     id: 's02',
     no: '02',
     en: 'THE APP',
-    zh: '球桌，變成你的關卡。',
+    zh: '球桌\n變成你的關卡',        /* 2026-09-11 使用者：去標點，逗號處換行 */
     /* 兩句以換行分開，渲染端用 whitespace-pre-line */
     body: '打開 App，跟著指引瞄準、闖關、拿星星。\n每一次上桌，都有新的挑戰。',
     image: '/ui/assets/landing/play.webp',   /* 2026-09-06 使用者提供 */
@@ -79,7 +79,7 @@ export const pillarSections: Pillar[] = [
     id: 's03',
     no: '03',
     en: 'TOGETHER',
-    zh: '一個人的挑戰，兩個人的遊戲。',
+    zh: '一個人的挑戰\n兩個人的遊戲',
     body: '加入好友、組隊闖關、登上排行榜。\n下一局，你想和誰一起？',
     image: '/ui/assets/landing/together.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'TOGETHER：好友／組隊闖關／比成績的 App 畫面（3200×1800）',
@@ -88,7 +88,7 @@ export const pillarSections: Pillar[] = [
     id: 's04',
     no: '04',
     en: 'COMMUNITY',
-    zh: '下一場，就在這裡。',
+    zh: '下一場\n就在這裡',
     body: '揪球友、參加活動、報名比賽，也分享你的每一次精彩。\n從一張球桌，遇見更多一起玩的人。',
     image: '/ui/assets/landing/community.webp',   /* 2026-09-06 使用者提供 */
     imageHint: 'COMMUNITY：揪球友／活動／比賽／分享的 App 畫面（3200×1800）',

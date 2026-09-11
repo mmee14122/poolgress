@@ -738,8 +738,9 @@ function PillarBlock({
           )}
           {!hideHeading && (
             <div className="overflow-hidden">
+              {/* 標題以 \n 手動斷行（2026-09-11 使用者：去標點、逗號處換行） */}
               <h2
-                className="pg-t-feature-h2"
+                className="pg-t-feature-h2 whitespace-pre-line"
                 style={up(d.zh)}
               >
                 {s.zh}
