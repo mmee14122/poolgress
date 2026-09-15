@@ -370,9 +370,11 @@ export default function LandingApp() {
       <section
         ref={reg('coaches')}
         id="coaches"
-        className="pg-coaches site-container"
+        className="pg-coaches"
         style={{ color: P.text }}
       >
+        {/* 背景在最外層 section 滿版；內容寬度與左右邊距在這一層，與 01 的 .pg-feature 同一條對齊線 */}
+        <div className="pg-coaches__inner">
         <div className="pg-coaches__head">
           <p id="coach" className="pg-anchor-line pg-t-eyebrow" style={fadeUp(shown('coaches'), 0, 0.5, 8)}>
             {coachesSection.eyebrow}
@@ -394,6 +396,7 @@ export default function LandingApp() {
         </div>
 
         {/* 「查看全部教練」連結：2026-09-16 使用者要求移除（列表頁仍由導覽「合作教練」進入） */}
+        </div>
       </section>
 
       {/* ---------- Hero → 01 Editorial Typography Transition ----------

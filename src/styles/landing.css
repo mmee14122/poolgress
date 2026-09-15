@@ -308,9 +308,12 @@
    三張教練卡（樣式在 coach-card.css）；這裡只管區塊的容器、標題與底部連結。
    容器沿用 THE APP 的 1680 置中與內距；手機單欄。 */
 .pg-landing-root .pg-coaches {
-  max-width: 1680px;
+  padding: 88px 0 96px;             /* 滿版：背景由 section 從最左延伸到最右，上下留白放在章節內 */
+}
+.pg-landing-root .pg-coaches__inner {
+  max-width: 1680px;                /* 內容寬度與左右邊距與 01 的 .pg-feature 完全相同 */
   margin-inline: auto;
-  padding: 88px clamp(48px, 5vw, 96px) 96px;
+  padding-inline: clamp(48px, 5vw, 96px);
 }
 .pg-landing-root .pg-coaches__head { max-width: 640px; }
 .pg-landing-root .pg-coaches__title {
@@ -349,11 +352,13 @@
   .pg-landing-root .pg-coaches__link:hover svg { transform: translate(2px, -2px); }
 }
 @media (max-width: 1023px) {
-  .pg-landing-root .pg-coaches { padding: 72px clamp(32px, 5vw, 64px) 80px; }
+  .pg-landing-root .pg-coaches { padding: 72px 0 80px; }
+  .pg-landing-root .pg-coaches__inner { padding-inline: clamp(32px, 5vw, 64px); }
   .pg-landing-root .pg-coaches__grid { column-gap: 24px; }
 }
 @media (max-width: 767px) {
-  .pg-landing-root .pg-coaches { padding: 64px 22px 72px; }
+  .pg-landing-root .pg-coaches { padding: 56px 0 64px; }
+  .pg-landing-root .pg-coaches__inner { padding-inline: 22px; }
   .pg-landing-root .pg-coaches__grid {
     grid-template-columns: 1fr;
     row-gap: 48px;
@@ -362,8 +367,7 @@
   .pg-landing-root .pg-coaches__link { margin-top: 40px; }
 }
 
-/* ---------- 底色配置（2026-09-16 使用者定案 b）----------
-   THE APP 米白、教練淡藍、場館米白：藍色帶在中段，前後都是暖色。
-   （曾有 a／c 兩案與 ?tone= 預覽切換，定案後移除。） */
-.pg-landing-root .pg-app-world { background: var(--pg-ivory); }
-.pg-landing-root .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }
+/* ---------- 底色配置（2026-09-16 使用者最終指示）----------
+   01 THE APP 淺霧藍（沿用 home.css 的 --pg-app-world-bg）、02 教練與課程暖米白、03 場館米白。
+   兩段背景直接相接，中間沒有額外色帶。（曾有 a／b／c 三案與 ?tone= 預覽切換，已移除。） */
+.pg-landing-root .pg-coaches { background: var(--pg-ivory); }
