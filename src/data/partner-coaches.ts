@@ -208,7 +208,7 @@ export function coachById(id: string | null) {
 
 /** 詳細頁網址（根目錄與 /ui/ 兩邊都有這一頁，用相對路徑） */
 export function coachProfileHref(id: string) {
-  return `./coach-profile.html?id=${encodeURIComponent(id)}`
+  return `./coach-profile.html?id=${encodeURIComponent(id)}&tab=booking`
 }
 
 /** 卡片上的標籤文字（首頁區塊、列表頁、詳細頁共用） */

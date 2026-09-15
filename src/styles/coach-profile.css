@@ -437,7 +437,6 @@
     transform: translateY(0);
     transition: transform 0.35s var(--pg-ease-out-3), opacity 0.35s var(--pg-ease-out-3);
   }
-  .pg-profile-root[data-bar='0'] .pg-pf-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
   .pg-profile-root .pg-pf-bar__btn { width: 100%; }
 }
 @media (max-width: 767px) {
@@ -520,4 +519,71 @@
   .pg-profile-root .pg-bk-times { margin-top: 10px !important; padding-top: 8px; }
   .pg-profile-root .pg-bk-time { min-height: 30px; }
   .pg-profile-root .pg-bk-summary { margin-top: 8px; padding: 6px 12px; font-size: 12px; }
+}
+
+/* ==========================================================================
+   手機版預約流程（2026-09-16 使用者規格）：精簡摘要 → 頁籤 → 介紹／預約
+   桌機（≥1024）維持雙欄：摘要、頁籤、球館選單、地址展開、提示都隱藏。
+   ========================================================================== */
+.pg-profile-root .pg-pf-mini,
+.pg-profile-root .pg-pf-tabs,
+.pg-profile-root .pg-bk-venue-select,
+.pg-profile-root .pg-bk-venue-more { display: none; }
+.pg-profile-root .pg-bk-notice { margin: 8px 0 0; padding: 8px 12px; font-size: 12px; line-height: 1.6; color: var(--pg-charcoal); background: rgba(var(--pg-sand-rgb), 0.35); border-radius: 2px; }
+
+@media (max-width: 1023px) {
+  /* 精簡摘要 */
+  .pg-profile-root .pg-pf-mini { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .pg-profile-root .pg-pf-mini__avatar { width: 52px; height: 52px; flex: 0 0 52px; border-radius: 50%; overflow: hidden; background: rgba(var(--pg-charcoal-rgb), 0.06); }
+  .pg-profile-root .pg-pf-mini__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .pg-profile-root .pg-pf-mini__name { margin: 0; font-family: var(--pg-font-serif); font-size: 20px; font-weight: 600; line-height: 1.2; }
+  .pg-profile-root .pg-pf-mini__name .pg-pf-ph { margin-left: 8px; font-size: 10px; }
+  .pg-profile-root .pg-pf-mini__focus { margin: 2px 0 0; font-size: 12px; letter-spacing: 0.08em; color: var(--pg-walnut); }
+
+  /* 頁籤：sticky 在導覽列正下方；定位時 scroll-margin 讓它不被導覽列遮住 */
+  .pg-profile-root .pg-pf-tabs {
+    position: sticky; top: var(--pg-nav-h-mobile, 64px); z-index: 30;
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin: 14px calc(-1 * var(--pg-pf-pad)) 0; padding: 0 var(--pg-pf-pad);
+    background: var(--pg-ivory);
+    border-bottom: 1px solid var(--pg-pf-line);
+    scroll-margin-top: var(--pg-nav-h-mobile, 64px);
+  }
+  .pg-profile-root .pg-pf-tab {
+    height: 44px; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    background: transparent; color: rgba(var(--pg-charcoal-rgb), 0.55);
+    font: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; cursor: pointer;
+  }
+  .pg-profile-root .pg-pf-tab[aria-selected='true'] { color: var(--pg-charcoal); border-bottom-color: var(--pg-charcoal); }
+
+  /* 頁籤切換：兩個面板都在 DOM，只切顯示（保留預約已選狀態） */
+  .pg-profile-root .pg-pf-grid { margin-top: 0; padding-top: 0; border-top: 0; display: block; }
+  .pg-profile-root[data-tab='booking'] .pg-pf-main { display: none; }
+  .pg-profile-root[data-tab='about'] .pg-pf-side { display: none; }
+  .pg-profile-root .pg-pf-main { padding-top: 20px; }
+  .pg-profile-root .pg-pf-head__cta { display: none; }
+
+  /* 預約頁籤：面板不再有外框與雙層內距，日曆吃滿可用寬度 */
+  .pg-profile-root .pg-pf-side { position: static; }
+  .pg-profile-root .pg-pf-side__inner { scroll-margin-top: calc(var(--pg-nav-h-mobile, 64px) + 44px); }
+  .pg-profile-root .pg-bk { border: 0; border-radius: 0; background: transparent; }
+  .pg-profile-root .pg-bk__head { display: none; }
+  .pg-profile-root .pg-bk__body { padding: 14px 0 8px; }
+  .pg-profile-root .pg-bk__body > * + * { margin-top: 10px; }
+  .pg-profile-root .pg-bk-row { display: grid; row-gap: 10px; }
+  .pg-profile-root .pg-bk-venues { display: none; }
+  .pg-profile-root .pg-bk-venue-select { display: block; }
+  .pg-profile-root .pg-bk-venue-more { display: block; font-size: 12px; color: rgba(var(--pg-charcoal-rgb), 0.7); }
+  .pg-profile-root .pg-bk-venue-more summary { cursor: pointer; color: var(--pg-charcoal); font-weight: 500; }
+  .pg-profile-root .pg-bk-venue-more__addr { margin: 6px 0 2px; }
+  .pg-profile-root .pg-bk-venue-more__map { color: var(--pg-charcoal); border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35); text-decoration: none; }
+  .pg-profile-root .pg-bk-cal { max-width: none; }
+  .pg-profile-root .pg-bk-day { height: 44px; font-size: 15px; }
+  .pg-profile-root .pg-bk-times { margin-top: 16px !important; }
+  /* 摘要：逐列，不用兩欄 */
+  .pg-profile-root .pg-bk-summary--grid { grid-template-columns: 1fr; }
+
+  /* 底部固定按鈕只在介紹頁籤出現；內容底部預留空間＋安全邊距 */
+  .pg-profile-root[data-tab='booking'] .pg-pf-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
+  .pg-profile-root[data-tab='booking'] .pg-pf { padding-bottom: 48px; }
 }

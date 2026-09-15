@@ -61,6 +61,8 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
   const [mobileCode, setMobileCode] = useState('')
   const [certCode, setCertCode] = useState('')
   const [tried, setTried] = useState(false)
+  /** 換球館後原本選的日期／時段失效：顯示提示，直到重新選日期 */
+  const [venueChanged, setVenueChanged] = useState(false)
   const paying = useRef(false)
 
   const service = coach.services.find((s) => s.id === serviceId) ?? null
@@ -85,7 +87,9 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
     setSelectedTime(null)
   }
   function pickVenue(id: string) {
+    if (id === venueId) return
     setVenueId(id)
+    setVenueChanged(Boolean(selectedDate || selectedTime))
     setSelectedDate(null)
     setSelectedTime(null)
   }
@@ -301,10 +305,17 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             </div>
           )}
 
-          {/* ── 球館：一個以上才要選 ── */}
+          {/* ── 球館：一個以上才要選；桌機用按鈕、手機用緊湊選單（CSS 切換） ── */}
           {coach.venues.length > 1 ? (
             <div className="pg-bk-field">
-              <p className="pg-bk-field__label">授課球館</p>
+              <label htmlFor="bk-venue" className="pg-bk-field__label">授課球館</label>
+              <select id="bk-venue" value={venueId ?? ''} onChange={(e) => pickVenue(e.target.value)} className="pg-bk-select pg-bk-venue-select">
+                {coach.venues.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}・{v.city}
+                  </option>
+                ))}
+              </select>
               <div className="pg-bk-venues" role="radiogroup" aria-label="授課球館">
                 {coach.venues.map((v) => (
                   <button
@@ -331,6 +342,24 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             </div>
           ) : null}
           </div>
+
+          {/* 所選球館的地址與地圖：手機可展開查看（桌機隱藏） */}
+          {venue && (
+            <details className="pg-bk-venue-more">
+              <summary>{venue.name} 的地址與地圖</summary>
+              <p className="pg-bk-venue-more__addr">
+                {venue.city}・{venue.address}
+              </p>
+              {venue.mapUrl ? (
+                <a href={venue.mapUrl} target="_blank" rel="noopener noreferrer" className="pg-bk-venue-more__map">查看地圖 ↗</a>
+              ) : (
+                <span className="pg-bk-venue-more__pending">地圖連結待補</span>
+              )}
+            </details>
+          )}
+          {venueChanged && (
+            <p role="status" className="pg-bk-notice">已更換球館，原本選的日期與時段已清除，請重新選擇。</p>
+          )}
 
           {/* ── 日曆或空白狀態 ── */}
           {!venue ? (
@@ -383,6 +412,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                       onClick={() => {
                         setSelectedDate(key)
                         setSelectedTime(null)
+                        setVenueChanged(false)
                       }}
                       className="pg-bk-day"
                       data-state={active ? 'active' : open ? 'open' : past ? 'past' : 'closed'}

@@ -7,13 +7,17 @@ import { coachById, coachLabels, profilePage } from './data/partner-coaches'
 /**
  * 教練詳細頁（coach-profile.html?id=coach-a）— 2026-09-16。
  *
- * 桌機：左欄介紹（標頭、課程、球館、理念、經歷）／右欄 sticky 預約面板，預約入口第一屏可見。
- * 手機：標頭 → 「查看可預約時段」按鈕 → 介紹 → 預約面板；底部固定同一顆按鈕，
- *       點了平滑捲到預約區；預約區進入視窗後固定列自動收起，不擋內容。
+ * 桌機（≥1024）：左欄介紹（標頭、介紹、經歷與資格）／右欄 sticky 預約面板，維持雙欄。
+ * 手機（<1024，2026-09-16 使用者規格）：
+ *   精簡摘要（小頭像＋姓名＋教學方向）→ 「教練介紹／預約課程」頁籤（sticky 在導覽列下）
+ *   → 教練介紹：大照片、介紹、經歷與資格
+ *   → 預約課程：服務、球館、日曆、時段（不必滑過整篇介紹）
+ *   從卡片「查看課程與預約」進來預設開「預約課程」；?tab=about 才開介紹。
+ *   底部固定「查看可預約時段」只在介紹頁籤出現，點了切到預約頁籤並定位到頁籤頂。
+ *   兩個頁籤都常駐 DOM（CSS 切換顯示），切換不會丟掉已選的服務／球館／日期／時段。
  *
  * 資料來自 data/partner-coaches.ts（目前是示意資料，畫面標「示意」）。
- * 樣式在 styles/coach-profile.css（.pg-profile-root …），卡片列表與首頁不受影響。
- * id 不存在 → 顯示「找不到這位教練」並連回列表。
+ * 樣式在 styles/coach-profile.css（.pg-profile-root …）。id 不存在 → 「找不到這位教練」。
  */
 
 const nav = [
@@ -23,8 +27,13 @@ const nav = [
   { label: '聯絡我們', href: '/#contact' },
 ]
 
+type Tab = 'about' | 'booking'
+
 export default function CoachProfileApp() {
   const [coach] = useState(() => coachById(new URLSearchParams(window.location.search).get('id')))
+  const [tab, setTab] = useState<Tab>(() =>
+    new URLSearchParams(window.location.search).get('tab') === 'about' ? 'about' : 'booking',
+  )
 
   const [on, setOn] = useState(false)
   useEffect(() => {
@@ -32,22 +41,16 @@ export default function CoachProfileApp() {
     return () => cancelAnimationFrame(id)
   }, [])
 
-  /* 手機底部固定按鈕：預約區在視窗內時收起 */
-  const bookingRef = useRef<HTMLDivElement | null>(null)
-  const [bookingInView, setBookingInView] = useState(false)
-  useEffect(() => {
-    const el = bookingRef.current
-    if (!el || !('IntersectionObserver' in window)) return
-    const io = new IntersectionObserver(([e]) => setBookingInView(e.isIntersecting), { threshold: 0.15 })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [coach])
-
   useEffect(() => {
     if (coach) document.title = `${coach.name}｜${coach.focus}｜Poolgress`
   }, [coach])
 
-  const scrollToBooking = () => bookingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  /* 手機：切到預約頁籤並把頁籤列定位到導覽列正下方（scroll-margin-top 在 CSS） */
+  const tabsRef = useRef<HTMLDivElement | null>(null)
+  const goBooking = () => {
+    setTab('booking')
+    requestAnimationFrame(() => tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
 
   if (!coach) {
     return (
@@ -66,7 +69,7 @@ export default function CoachProfileApp() {
   const S = profilePage.sections
 
   return (
-    <div className="pg-profile-root" data-on={on ? '1' : '0'} data-bar={bookingInView ? '0' : '1'}>
+    <div className="pg-profile-root" data-on={on ? '1' : '0'} data-tab={tab}>
       <Navbar links={nav} minimal logoHref="/" />
 
       <main className="pg-pf">
@@ -77,9 +80,33 @@ export default function CoachProfileApp() {
           {profilePage.back}
         </a>
 
+        {/* ---------- 手機：精簡摘要（小頭像＋姓名＋教學方向）；桌機隱藏 ---------- */}
+        <div className="pg-pf-mini">
+          <div className="pg-pf-mini__avatar">
+            <img src={coach.photo} alt="" />
+          </div>
+          <div className="pg-pf-mini__text">
+            <p className="pg-pf-mini__name">
+              {coach.name}
+              {coach.placeholder && <span className="pg-pf-ph">{coachLabels.placeholder}</span>}
+            </p>
+            <p className="pg-pf-mini__focus">{coach.focus}</p>
+          </div>
+        </div>
+
+        {/* ---------- 手機：頁籤（sticky 在導覽列下）；桌機隱藏 ---------- */}
+        <div ref={tabsRef} className="pg-pf-tabs" role="tablist" aria-label="教練頁內容">
+          <button type="button" role="tab" aria-selected={tab === 'about'} className="pg-pf-tab" onClick={() => setTab('about')}>
+            教練介紹
+          </button>
+          <button type="button" role="tab" aria-selected={tab === 'booking'} className="pg-pf-tab" onClick={() => setTab('booking')}>
+            預約課程
+          </button>
+        </div>
+
         <div className="pg-pf-grid">
-          {/* ---------- 左欄：介紹 ---------- */}
-          <div className="pg-pf-main">
+          {/* ---------- 左欄／介紹頁籤 ---------- */}
+          <div className="pg-pf-main" role="tabpanel" aria-label="教練介紹">
             <header className="pg-pf-head">
               <div className="pg-pf-head__photo">
                 <img src={coach.photo} alt={coach.photoAlt} />
@@ -111,47 +138,42 @@ export default function CoachProfileApp() {
                     <dd>{coach.venues.map((v) => v.name).join('、') || '待補'}</dd>
                   </div>
                 </dl>
-                {/* 手機：標頭下方的預約入口（桌機隱藏，右欄本來就在第一屏） */}
-                <button type="button" className="pg-pf-btn pg-pf-head__cta" onClick={scrollToBooking}>
-                  {profilePage.mobileCta}
-                </button>
               </div>
             </header>
 
-            {/* 左欄資訊列（2026-09-16 使用者）：介紹 → 經歷與資格（建立信任，條列）；理念與課程區塊 2026-09-16 使用者要求移除；
-                預約資訊與球館在右欄預約面板，這裡不重複。各區高度依內容決定。 */}
+            {/* 左欄資訊列：介紹 → 經歷與資格（建立信任，條列）；理念與課程區塊已依使用者要求移除。 */}
             <div className="pg-pf-details">
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.about}</h2>
-              <p className="pg-pf-section__body">{coach.intro}</p>
-            </section>
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.credentials}</h2>
-              {coach.credentials.length === 0 ? (
-                <p className="pg-pf-empty">{profilePage.credentialsEmpty}</p>
-              ) : (
-                <ul className="pg-pf-credentials">
-                  {coach.credentials.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
-              )}
-            </section>
+              <section className="pg-pf-section">
+                <h2 className="pg-pf-section__title">{S.about}</h2>
+                <p className="pg-pf-section__body">{coach.intro}</p>
+              </section>
+              <section className="pg-pf-section">
+                <h2 className="pg-pf-section__title">{S.credentials}</h2>
+                {coach.credentials.length === 0 ? (
+                  <p className="pg-pf-empty">{profilePage.credentialsEmpty}</p>
+                ) : (
+                  <ul className="pg-pf-credentials">
+                    {coach.credentials.map((c) => (
+                      <li key={c}>{c}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
             </div>
           </div>
 
-          {/* ---------- 右欄：預約面板（桌機 sticky） ---------- */}
-          <aside className="pg-pf-side">
-            <div ref={bookingRef} id="booking" className="pg-pf-side__inner">
+          {/* ---------- 右欄／預約頁籤（桌機 sticky） ---------- */}
+          <aside className="pg-pf-side" role="tabpanel" aria-label="預約課程">
+            <div id="booking" className="pg-pf-side__inner">
               <ProfileBooking coach={coach} />
             </div>
           </aside>
         </div>
       </main>
 
-      {/* 手機底部固定按鈕：預約區在視窗內時收起 */}
-      <div className="pg-pf-bar" aria-hidden={bookingInView}>
-        <button type="button" className="pg-pf-btn pg-pf-bar__btn" onClick={scrollToBooking} tabIndex={bookingInView ? -1 : 0}>
+      {/* 手機底部固定按鈕：只在「教練介紹」頁籤出現，點了切到預約頁籤 */}
+      <div className="pg-pf-bar" aria-hidden={tab !== 'about'}>
+        <button type="button" className="pg-pf-btn pg-pf-bar__btn" onClick={goBooking} tabIndex={tab === 'about' ? 0 : -1}>
           {profilePage.mobileCta}
         </button>
       </div>
