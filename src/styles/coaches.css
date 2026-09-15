@@ -17,6 +17,10 @@
   padding-inline: var(--pg-cp-pad);
 }
 
+/* 導覽列與頁面同色（2026-09-16 使用者）：共用 Navbar 在其他頁是白底，這裡只在本頁覆寫成 Ivory */
+.pg-coaches-root .pg-nav { background: var(--pg-ivory) !important; border-bottom-color: rgba(var(--pg-charcoal-rgb), 0.1) !important; }
+.pg-coaches-root .pg-nav #mobile-menu { background: var(--pg-ivory) !important; }
+
 /* ---------- 進場：整頁一次淡入 ---------- */
 .pg-coaches-root .pg-cp-hero,
 .pg-coaches-root .pg-cp-item,
