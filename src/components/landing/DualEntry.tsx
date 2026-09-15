@@ -2,11 +2,13 @@ import { dualEntry } from '../../data/landing'
 import { fadeUp } from '../../LandingApp'
 
 /**
- * Hero 下方的 PLAY／LEARN 大型 Image Navigation（2026-09-16 使用者第二版規格）。
- * 左右各 50% 的情境大圖就是入口：預設照片是主角，只在左上角留極小的「01 — PLAY」「02 — LEARN」；
- * 桌機 hover：照片 scale(1.03)、charcoal 遮罩漸入約 55%、中央文字由下往上 12px 淡入（約 400ms）。
- * 不加框線、陰影、按鈕變色、卡片位移。手機沒有 hover：保留約 30% 漸層遮罩，標題與 CTA 常駐。
- * 整張圖都可點（單一 <a>），沒有實心 CTA 按鈕。樣式在 styles/landing-ia.css（.pg-landing-root .pg-dual…）。
+ * Hero 下方的 PLAY／LEARN Editorial Navigation（2026-09-16 使用者第三版規格）。
+ * 架構不變：眉標＋一句主標，下面左右兩張大型 landscape 情境圖（3:2）。
+ * 預設：照片乾淨呈現（沒有疊在角落的標籤），圖下才是 editorial 資訊層——
+ *   01 — PLAY ／ PLAY WITH APP ／ 一句短敘述。
+ * 桌機 hover：照片 scale(1.03)、charcoal 遮罩約 50%、中央淡入「EXPLORE APP ↗」（400ms，由下 12px 上來）。
+ * 不加框線、陰影、實心按鈕、位移。手機：上下排，圖上永久保留很淡的底部漸層＋「EXPLORE APP ↗」。
+ * 整張圖與圖下文字是同一個 <a>。樣式在 styles/landing-ia.css（.pg-landing-root .pg-dual…）。
  */
 export function DualEntry({ on, refCb }: { on: boolean; refCb: (el: HTMLElement | null) => void }) {
   const tiles = [dualEntry.play, dualEntry.learn]
@@ -25,25 +27,26 @@ export function DualEntry({ on, refCb }: { on: boolean; refCb: (el: HTMLElement 
               href={t.href}
               className="pg-dual__tile"
               style={fadeUp(on, 0.18 + i * 0.1, 0.9, 20)}
-              aria-label={`${t.title}：${t.tags}，${t.cta}`}
+              aria-label={`${t.title}：${t.desc}`}
             >
-              <img src={t.image} alt="" loading="lazy" />
-              <span className="pg-dual__veil" aria-hidden="true" />
-              {/* 左上角極小導覽提示 */}
-              <span className="pg-dual__corner" aria-hidden="true">
-                {t.no} — {t.short}
-              </span>
-              {t.imagePlaceholder && <span className="pg-dual__ph">示意圖・待更換</span>}
-              {/* hover（手機常駐）才出現的中央文字 */}
-              <span className="pg-dual__text">
-                <span className="pg-dual__text-title">{t.title}</span>
-                <span className="pg-dual__text-tags">{t.tags}</span>
-                <span className="pg-dual__text-cta">
-                  {t.cta}
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
+              <span className="pg-dual__media">
+                <img src={t.image} alt="" loading="lazy" />
+                <span className="pg-dual__veil" aria-hidden="true" />
+                {t.imagePlaceholder && <span className="pg-dual__ph">示意圖・待更換</span>}
+                {/* hover（手機常駐）才出現的大型文字 */}
+                <span className="pg-dual__hover" aria-hidden="true">
+                  {t.hover}
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 17 17 7M8.5 7H17v8.5" />
                   </svg>
                 </span>
+              </span>
+
+              {/* 圖下 editorial 資訊層 */}
+              <span className="pg-dual__caption">
+                <span className="pg-dual__no">{t.no} — {t.short}</span>
+                <span className="pg-dual__name">{t.title}</span>
+                <span className="pg-dual__desc">{t.desc}</span>
               </span>
             </a>
           ))}

@@ -169,8 +169,8 @@ export const dualEntry = {
     no: '01',
     short: 'PLAY',
     title: 'PLAY WITH APP',
-    tags: '闖關・排行・好友挑戰',
-    cta: '探索更多玩法',
+    desc: '闖關、挑戰，讓每一次上桌都有新的目標。',
+    hover: 'EXPLORE APP',
     href: '#app',
     image: '/ui/assets/landing/play.webp',       /* 玩家＋App 闖關情境（既有素材） */
     imagePlaceholder: false,
@@ -179,8 +179,8 @@ export const dualEntry = {
     no: '02',
     short: 'LEARN',
     title: 'LEARN WITH COACH',
-    tags: '專業・無菸・教練預約',
-    cta: '尋找適合你的教練',
+    desc: '找到適合你的教練，在舒適的環境開始學習。',
+    hover: 'FIND A COACH',
     href: '#coach',
     image: '/ui/assets/hero/s01-venue.webp',     /* 暫用場館願景圖，待「教練指導學生」實拍 */
     imagePlaceholder: true,
