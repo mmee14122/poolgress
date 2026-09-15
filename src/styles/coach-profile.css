@@ -457,3 +457,53 @@
   .pg-profile-root .pg-bk-day { min-height: 44px; }
   .pg-profile-root .pg-bk-venues { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   桌機：預約面板在任何視窗高度都不需捲動（2026-09-16 使用者）。
+   面板是 sticky，高度必須 ≤ 視窗高 − 導覽列 − 上下留白；依視窗高度分三檔收緊
+   格子高度、行距與內距（選了日期後多出時段列也要放得下）。
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .pg-profile-root .pg-pf { padding-top: 12px; }        /* 頁頂到內容再收 20px，讓面板在載入時就完整在視窗內 */
+  .pg-profile-root .pg-pf-grid { margin-top: 8px; }
+  .pg-profile-root .pg-pf-side { top: calc(var(--pg-nav-h-desktop, 72px) + 8px); }
+  .pg-profile-root .pg-bk { --bk-cell: 44px; --bk-gap: 12px; }
+  .pg-profile-root .pg-bk-day { height: var(--bk-cell); }
+  .pg-profile-root .pg-bk__body > * + * { margin-top: var(--bk-gap); }
+}
+@media (min-width: 1024px) and (max-height: 1000px) {
+  .pg-profile-root .pg-bk { --bk-cell: 40px; --bk-gap: 10px; }
+  .pg-profile-root .pg-bk__body { padding: 12px 20px 14px; }
+  .pg-profile-root .pg-bk-days { row-gap: 3px; }
+  .pg-profile-root .pg-bk-times { margin-top: 16px !important; padding-top: 10px; }
+  .pg-profile-root .pg-bk-time { min-height: 34px; }
+  .pg-profile-root .pg-bk-summary { margin-top: 10px; padding: 8px 12px; row-gap: 3px; }
+  .pg-profile-root .pg-bk-note { margin-top: 6px; }
+}
+@media (min-width: 1024px) and (max-height: 900px) {
+  .pg-profile-root .pg-bk { --bk-cell: 36px; --bk-gap: 8px; }
+  .pg-profile-root .pg-bk__head { padding: 10px 20px 8px; }
+  .pg-profile-root .pg-bk__body { padding: 10px 20px 12px; }
+  .pg-profile-root .pg-bk-month__nav { width: 30px; height: 30px; }
+  .pg-profile-root .pg-bk-legend { margin-top: 6px; }
+  .pg-profile-root .pg-bk-week { margin-top: 6px; }
+  .pg-profile-root .pg-bk-input, .pg-profile-root .pg-bk-select { min-height: 36px; }
+  .pg-profile-root .pg-bk-venue { min-height: 36px; }
+  .pg-profile-root .pg-bk-btn { height: 40px; }
+  .pg-profile-root .pg-bk-note { display: none; }
+}
+@media (min-width: 1024px) and (max-height: 780px) {
+  .pg-profile-root .pg-bk { --bk-cell: 30px; --bk-gap: 6px; }
+  .pg-profile-root .pg-bk-day { font-size: 13px; }
+  .pg-profile-root .pg-bk-legend { display: none; }
+  .pg-profile-root .pg-bk__head { padding: 8px 20px 6px; }
+  .pg-profile-root .pg-bk__title { font-size: 18px; }
+  .pg-profile-root .pg-bk-days { row-gap: 2px; }
+  .pg-profile-root .pg-bk-time { min-height: 28px; }
+  .pg-profile-root .pg-bk-btn { height: 36px; }
+  .pg-profile-root .pg-bk-month__count { display: none; }
+  .pg-profile-root .pg-bk-field__hint { display: none; }
+  .pg-profile-root .pg-bk-times { margin-top: 10px !important; padding-top: 8px; }
+  .pg-profile-root .pg-bk-time { min-height: 30px; }
+  .pg-profile-root .pg-bk-summary { margin-top: 8px; padding: 6px 12px; font-size: 12px; }
+}
