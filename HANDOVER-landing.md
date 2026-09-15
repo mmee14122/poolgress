@@ -32,8 +32,9 @@ git rm -rq ui/ && cp -r "C:/Users/User/Documents/Poolgress/dist/." ui/
 #    root/index.html   ← ui/landing.html
 #    root/coaches.html ← ui/coaches.html
 #    root/coach-profile.html ← ui/coach-profile.html
+#    root/app-play.html ← ui/app-play.html（對外網址 /app，靠 vercel.json rewrite：{"rewrites":[{"source":"/app","destination":"/app-play.html"}]}）
 python -c "import io
-for src,dst in [('landing.html','index.html'),('coaches.html','coaches.html'),('coach-profile.html','coach-profile.html')]:
+for src,dst in [('landing.html','index.html'),('coaches.html','coaches.html'),('coach-profile.html','coach-profile.html'),('app-play.html','app-play.html')]:
     s=io.open('ui/'+src,encoding='utf-8').read().replace('\"./assets/','\"/ui/assets/')
     io.open(dst,'w',encoding='utf-8').write(s)"
 
@@ -58,6 +59,8 @@ curl -s -X POST "$(cat ~/.poolgress-vercel-hook)"
 | `src/components/LandingFooter.tsx` | 精簡頁尾（Logo／Better Pool. Better Life.／信箱／版權） |
 | `coaches.html` / `src/coaches-entry.tsx` / `src/CoachesApp.tsx` / `src/styles/coaches.css` | 合作教練列表頁（`.pg-coaches-root …`） |
 | `src/components/landing/CoachCard.tsx` / `src/styles/coach-card.css` | 教練卡片（首頁 02 區塊與列表頁共用，`.pg-coach-card …`） |
+| `src/components/landing/DualEntry.tsx` / `AppPreview.tsx` / `src/styles/landing-ia.css` | 2026-09-16 資訊架構：Hero 下 PLAY／LEARN 雙入口、01 THE APP 精簡預覽 |
+| `app-play.html` / `src/app-play-entry.tsx` / `src/AppPlayApp.tsx` | App 玩法頁（對外 `/app`）：原首頁 App 三段長敘事整套搬來，直接重用 LandingApp 匯出的 `ChapterTransition`／`PillarBlock`／`useLandingReveal` |
 | `coach-profile.html` / `src/coach-profile-entry.tsx` / `src/CoachProfileApp.tsx` / `src/styles/coach-profile.css` | 教練詳細頁 `?id=coach-a`（`.pg-profile-root …`）：左介紹／右預約面板 |
 | `src/components/landing/ProfileBooking.tsx` | 預約面板：流程複製自舊站 `components/coach/CoachBooking.tsx`（前端模擬付款），外觀換成新站語彙 |
 | `src/data/partner-coaches.ts` | **三位教練資料（目前全部示意）**：教學方向／標籤／適合對象／球館與各館時段／服務與價格；卡片、列表、詳細頁共用 |

@@ -217,30 +217,34 @@ export const coachLabels = {
   format: '授課方式',
   venue: '授課地點',
   cta: '查看課程與預約',
-  /** 卡片 hover 時浮在照片上的提示 */
-  hoverHint: '查看教練頁',
+  /** 三張卡的學習層級（2026-09-16 使用者）：依卡片順序 01 START → 02 IMPROVE → 03 COMPETE */
+  levels3: [
+    { no: '01', en: 'START', zh: '新手入門' },
+    { no: '02', en: 'IMPROVE', zh: '技術進階' },
+    { no: '03', en: 'COMPETE', zh: '實戰競技' },
+  ],
   placeholder: '示意',
   placeholderPhoto: '示意照片',
 }
 
 /** 首頁區塊文案 */
 export const coachesSection = {
-  eyebrow: '02 / 撞球教練與課程預約',
-  title: '專業 × 無菸',
-  intro: '預約更舒適的撞球體驗',
+  eyebrow: '02 / COACHING',
+  title: '跟著教練，\n打出自己的節奏。',
+  intro: '專業 × 無菸，預約舒適的撞球學習體驗。',
   link: { label: '查看全部教練', href: './coaches.html' },
 }
 
 /** coaches.html 列表頁文案 */
 export const coachesPage = {
-  eyebrow: '撞球教練與課程預約',
-  title: '專業 × 無菸',
-  intro: '預約更舒適的撞球體驗',
+  eyebrow: 'COACHING',
+  title: '跟著教練，打出自己的節奏。',
+  intro: '專業 × 無菸，預約舒適的撞球學習體驗。',
   closing: {
     eyebrow: 'JOIN US',
-    title: '想成為 Poolgress 合作教練？',
-    body: '我們正在尋找認同「先理解，再練習」的教練一起合作。歡迎來信聊聊。',
-    ctaLabel: '洽談合作',
+    title: '和我們一起，讓撞球變得更好',
+    body: '成為 Poolgress 合作教練，和我們一起打造專業、無菸、讓更多人願意走進來的撞球學習環境。',
+    ctaLabel: '加入我們',
   },
 }
 

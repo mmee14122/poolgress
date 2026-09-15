@@ -75,13 +75,7 @@
 @media (min-width: 1200px) {
   .pg-coaches-root .pg-cp-list { grid-template-columns: repeat(3, 357px); justify-content: center; column-gap: 48px; }
 }
-/* 2026-09-16 使用者：桌機不捲動就能看完整三張卡——照片 3:2、卡內間距收緊 */
-.pg-coaches-root .pg-coach-card__photo { aspect-ratio: 3 / 2; }
-.pg-coaches-root .pg-coach-card__body { margin-top: 16px; padding-top: 12px; }
-.pg-coaches-root .pg-coach-card__pitch { margin-top: 8px; font-size: 14px; line-height: 1.6; }
-.pg-coaches-root .pg-coach-card__topics { margin-top: 12px; }
-.pg-coaches-root .pg-coach-card__facts { margin: 14px 0 16px; padding-top: 12px; row-gap: 6px; }
-.pg-coaches-root .pg-coach-card__cta { height: 42px; }
+/* 2026-09-16 第三版卡片：照片 4:5 直式為主視覺（不再為了一屏放完縮成 3:2） */
 .pg-coaches-root .pg-cp-item { display: flex; min-width: 0; scroll-margin-top: 88px; }
 .pg-coaches-root .pg-cp-item > .pg-coach-card { flex: 1 1 auto; }
 

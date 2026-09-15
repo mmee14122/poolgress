@@ -146,9 +146,56 @@ export const brand = {
 }
 
 /** 一頁式導覽：頁內錨點 ＋ App 下載頁（唯一對外連結） */
+/* 2026-09-16 使用者：導覽一律用絕對路徑，首頁與 /app 玩法頁共用；
+   在 /app 點「合作教練」「關於場館」「聯絡我們」會回首頁並定位到該區。 */
 export const landingNav = [
-  { label: 'App 玩法', href: '#app' },            /* 01 / THE APP 眉標處 */
-  { label: '合作教練', href: './coaches.html' },  /* 獨立分頁 */
-  { label: '關於場館', href: '#space' },          /* 03 / THE SPACE 眉標處 */
-  { label: '聯絡我們', href: '#contact' },        /* 頁尾前的「一起讓想法成真。」 */
+  { label: 'App 玩法', href: '/app' },     /* 獨立 App 玩法頁（完整三段敘事） */
+  { label: '合作教練', href: '/#coach' },  /* 首頁 02 / COACHING 眉標處 */
+  { label: '關於場館', href: '/#space' },  /* 首頁 03 / THE SPACE 眉標處 */
+  { label: '聯絡我們', href: '/#contact' }, /* 頁尾前的「一起讓想法成真。」 */
 ]
+
+/** /app 玩法頁的網址（部署 repo 用 vercel.json rewrite 把 /app 指到 app-play.html；本機鏡像產 site/app/index.html） */
+export const appPlayHref = '/app'
+
+/** Hero 下方 PLAY／LEARN 雙入口（2026-09-16 使用者規格） */
+export const dualEntry = {
+  eyebrow: 'PLAY. LEARN. PROGRESS.',
+  title: '從一場遊戲，到真正學會撞球。',
+  play: {
+    label: 'PLAY WITH APP',
+    tags: '闖關・排行・好友挑戰',
+    body: '讓每一次上桌，都有下一個挑戰。',
+    cta: { label: '探索 App', href: '#app' },
+  },
+  learn: {
+    label: 'LEARN WITH COACH',
+    tags: '專業・無菸・教練預約',
+    body: '找到適合你的教練，在舒適的環境開始學習。',
+    cta: { label: '尋找教練', href: '#coach' },
+  },
+}
+
+/** 01 / THE APP 首頁精簡預覽（2026-09-16 使用者規格）：主視覺沿用 play.webp，三行摘要，CTA 到 /app */
+export const appPreview = {
+  items: [
+    { en: 'CHALLENGE', zh: '闖關與個人挑戰' },
+    { en: 'COMPETE', zh: '好友與排行榜' },
+    { en: 'CONNECT', zh: '分享、揪團與下一場' },
+  ],
+  cta: { label: '探索 App 玩法', href: '/app' },
+  imageAlt: '真實撞球桌與 App 闖關介面',
+}
+
+/** /app 玩法頁：章節標籤（CHALLENGE → COMPETE → CONNECT）與收尾 */
+export const appPlayPage = {
+  chapterTags: { s02: 'CHALLENGE', s03: 'COMPETE', s04: 'CONNECT' } as Record<string, string>,
+  finale: {
+    en: 'PLAY. LEARN. PROGRESS.',
+    zh: '讓每一次上桌，都有下一個挑戰與下一場。',
+    ctas: [
+      { label: '尋找教練', href: '/#coach' },
+      { label: '回到首頁', href: '/' },
+    ],
+  },
+}

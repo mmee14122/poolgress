@@ -49,7 +49,7 @@ export default function CoachesApp() {
         <section className="pg-cp-list" aria-label="合作教練">
           {coaches.map((c, i) => (
             <div key={c.id} id={c.id} className="pg-cp-item" style={{ transitionDelay: `${0.1 + i * 0.08}s` }}>
-              <CoachCard coach={c} eager={i === 0} nameFirst />
+              <CoachCard coach={c} index={i} eager={i === 0} />
             </div>
           ))}
         </section>

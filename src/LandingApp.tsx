@@ -12,6 +12,8 @@ import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } f
 import { landingNav } from './data/landing'
 import { coaches, coachesSection } from './data/partner-coaches'
 import { CoachCard } from './components/landing/CoachCard'
+import { DualEntry } from './components/landing/DualEntry'
+import { AppPreview } from './components/landing/AppPreview'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { ProgressPoint } from './components/ProgressPoint'
@@ -32,10 +34,10 @@ import { ProgressPoint } from './components/ProgressPoint'
 
 /* 襯線字體與 easing 全部讀 styles/tokens.css；這裡只留 transition 字串用的 easing 名 */
 /** ≈ GSAP power4.out */
-const EASE = 'var(--pg-ease-out-4)'
+export const EASE = 'var(--pg-ease-out-4)'
 
 /** 文字類 reveal：clip 由左而右揭開＋極輕 opacity 與 translateX */
-const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => ({
+export const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => ({
   clipPath: on ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
   opacity: on ? 1 : 0.85,
   transform: on ? 'translateX(0)' : 'translateX(-8px)',
@@ -44,13 +46,13 @@ const reveal = (on: boolean, delay: number, dur = 0.9): React.CSSProperties => (
 })
 
 /** ≈ GSAP power3.out（Final CTA 中文標題的落定感） */
-const EASE3 = 'var(--pg-ease-out-3)'
+export const EASE3 = 'var(--pg-ease-out-3)'
 
 /** ≈ GSAP power2.out（02–04 的安靜 fade 用） */
-const EASE2 = 'var(--pg-ease-out-2)'
+export const EASE2 = 'var(--pg-ease-out-2)'
 
 /** 02–04 文字：極輕的 fade-up（y 20px→0），不是飛入 */
-const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSProperties => ({
+export const fadeUp = (on: boolean, delay: number, dur = 0.7, y = 20): React.CSSProperties => ({
   opacity: on ? 1 : 0,
   transform: on ? 'translateY(0)' : `translateY(${y}px)`,
   transition: `opacity ${dur}s ${EASE2} ${delay}s, transform ${dur}s ${EASE2} ${delay}s`,
@@ -63,7 +65,11 @@ const MASK_RANGES: Record<string, [number, number]> = {
   s04: [0.95, 0.62],
 }
 
-export default function LandingApp() {
+/**
+ * 捲動 reveal 狀態機（2026-09-16 抽成 hook，首頁與 /app 玩法頁共用，程式碼只有一份）。
+ * ids：這一頁要觀察的區塊 id；回傳 reg（掛 ref）、shown（是否已揭開）、narrow、maskP。
+ */
+export function useLandingReveal(ids: string[]) {
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
   /* <768px 視為手機：01／02 大標的 reveal 觸發對象改成大標本體（見 lineFor 註解） */
   const [narrow, setNarrow] = useState(
@@ -74,7 +80,6 @@ export default function LandingApp() {
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = ['hero', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'coaches', 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
@@ -138,7 +143,8 @@ export default function LandingApp() {
       window.removeEventListener('scroll', check)
       window.removeEventListener('resize', check)
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids.join(',')])
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
@@ -162,6 +168,14 @@ export default function LandingApp() {
     if (el) refs.current.set(id, el)
   }
   const shown = (id: string) => revealed.has(id)
+  return { reg, shown, narrow, maskP }
+}
+
+/* 首頁要觀察的區塊：hero、雙入口、01 場館、02 App（轉場＋預覽）、教練、finale */
+const HOME_IDS = ['hero', 'dual', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'coaches', 'finale']
+
+export default function LandingApp() {
+  const { reg, shown, narrow, maskP } = useLandingReveal(HOME_IDS)
   const on01 = shown(narrow ? 'intro01h' : 'intro01')
   const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
@@ -312,56 +326,16 @@ export default function LandingApp() {
         </div>
       </section>
 
-      {/* ---------- 頁面順序（2026-09-16 使用者定案）：Hero → 01 THE APP → 02 THE COACHES → 03 THE SPACE → CTA
-          場館最後才會出場，所以放在最後當作願景收尾；App 介紹影片先不放（Hero 之後會換成影片）。 */}
-      {/* 02 THE APP：從章節開場到 04 結束共享同一個極淡灰藍底
-          （Secondary 22% × Background，見 .pg-app-world），用顏色說
-          「實體空間（暖）→ 數位體驗（冷）」；眉標仍 Walnut、大標仍 Charcoal */}
+      {/* ---------- 首頁順序（2026-09-16 使用者最終定案）：
+          Hero → PLAY／LEARN 雙入口 → 01 THE APP（精簡預覽）→ 02 COACHING → 03 THE SPACE → CTA
+          App 的三段長敘事（球桌變成你的關卡／一個人的挑戰／下一場）沒有刪，整套搬到 /app 玩法頁（AppPlayApp）。 */}
+      <DualEntry on={shown('dual')} refCb={reg('dual')} />
+
+      {/* 01 THE APP：極淡灰藍底（見 .pg-app-world）。章節開場沿用 ChapterTransition（含 #app 錨點），
+          下面只放精簡預覽：主視覺（女孩打撞球＋關卡 UI）＋ CHALLENGE／COMPETE／CONNECT 三行摘要＋「探索 App 玩法 →」。 */}
       <div className="pg-app-world">
         <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
-        {pillarSections.slice(1).map((s, i) => (
-          <PillarBlock
-            key={s.id}
-            s={s}
-            flip={i % 2 === 0}
-            on={shown(s.id)}
-            refCb={reg(s.id)}
-            imgRefCb={reg(s.id + '-img')}
-            maskProgress={maskP[s.id] ?? 0}
-            hideChapterHead
-            quick={narrow}
-          />
-        ))}
-      {/* ---------- App 介紹影片（2026-09-06 使用者定案）----------
-            位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
-            這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
-            桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
-        {appChapter.video.show && (
-        <section className="pg-app-video-section site-container">
-          <div className="pg-app-video">
-            {appChapter.video.src ? (
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                src={appChapter.video.src}
-                poster={appChapter.video.poster ?? undefined}
-                controls
-                playsInline
-                preload="none"
-              />
-            ) : (
-              <div className="pg-media-placeholder absolute inset-0">
-                <div
-                  className="absolute inset-[4%] rounded-lg border border-dashed"
-                  style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
-                />
-                <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
-                  {appChapter.video.hint}
-                </span>
-              </div>
-            )}
-          </div>
-        </section>
-        )}
+        <AppPreview on={shown('s02')} refCb={reg('s02')} />
       </div>
 
       {/* ---------- 02 / THE COACHES（2026-09-16 重設計）：App 之後、場館之前 ----------
@@ -390,7 +364,7 @@ export default function LandingApp() {
         <div className="pg-coaches__grid" role="list" aria-label="合作教練">
           {coaches.map((c, i) => (
             <div key={c.id} role="listitem" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
-              <CoachCard coach={c} compact />
+              <CoachCard coach={c} index={i} />
             </div>
           ))}
         </div>
@@ -560,7 +534,7 @@ export default function LandingApp() {
  * 眉標 0s/0.34s → THE GAME 0.06s/0.46s → GOES WITH YOU. 0.14s/0.46s
  * （第二行晚 80ms），整串 0.60s 收完；位移只有 6px，完成後完全靜止。
  */
-function ChapterTransition({
+export function ChapterTransition({
   on,
   refCb,
   headRefCb,
@@ -634,7 +608,7 @@ function ChapterTransition({
   )
 }
 
-function PillarBlock({
+export function PillarBlock({
   s,
   flip,
   on,

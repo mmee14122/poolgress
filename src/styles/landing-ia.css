@@ -1,0 +1,197 @@
+/* ==========================================================================
+   landing-ia.css — 2026-09-16 資訊架構重組新增的兩個首頁區塊＋ /app 玩法頁微調。
+   landing-entry 與 app-play-entry 都載入；選擇器一律以 .pg-landing-root 開頭。
+   沿用 tokens.css 的字級／間距／色彩 token 與 landing.css 的容器（1680 ＋ clamp(48px,5vw,96px)）。
+   ========================================================================== */
+
+/* ---------- Hero 下方 PLAY／LEARN 雙入口 ----------
+   editorial 兩欄：眉標＋一句主標，下面左右各一組「大字標籤／一行關鍵詞／一句說明／細線 CTA」。
+   桌機高度 60–75vh 內（實作用內距控制，不用 100vh）。 */
+.pg-landing-root .pg-dual {
+  background: var(--pg-ivory);
+  padding: clamp(56px, 7vh, 88px) 0 clamp(48px, 6vh, 72px);
+}
+.pg-landing-root .pg-dual__inner {
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: clamp(48px, 5vw, 96px);
+}
+.pg-landing-root .pg-dual__head { max-width: 720px; }
+.pg-landing-root .pg-dual__title {
+  margin-top: 14px;
+  font-family: var(--pg-font-serif);
+  font-size: calc(var(--pg-fs-feature-h2) * 0.84);
+  font-weight: 600;
+  line-height: var(--pg-lh-feature-h2, 1.2);
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-dual__cols {
+  margin-top: clamp(36px, 4.5vh, 56px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(48px, 5vw, 88px);
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.16);
+}
+.pg-landing-root .pg-dual__col {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 8px;
+  color: var(--pg-charcoal);
+  text-decoration: none;
+  border-top: 1px solid transparent;
+  margin-top: -1px;
+  transition: border-color 0.3s var(--pg-ease-out-3);
+}
+.pg-landing-root .pg-dual__col + .pg-dual__col { position: relative; }
+.pg-landing-root .pg-dual__col + .pg-dual__col::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * clamp(48px, 5vw, 88px) / 2);
+  top: 28px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(var(--pg-charcoal-rgb), 0.12);
+}
+.pg-landing-root .pg-dual__label {
+  margin: 0;
+  font-family: var(--pg-font-serif);
+  font-size: clamp(24px, 2.2vw, 34px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+.pg-landing-root .pg-dual__tags {
+  margin: 12px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-dual__body {
+  margin: 16px 0 0;
+  font-size: var(--pg-fs-body, 16px);
+  line-height: var(--pg-lh-body, 1.8);
+  color: var(--pg-text-body);
+  max-width: 26em;
+}
+.pg-landing-root .pg-dual__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin-top: 24px;
+  padding-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  transition: border-color 0.3s var(--pg-ease-out-3);
+}
+.pg-landing-root .pg-dual__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
+@media (hover: hover) {
+  .pg-landing-root .pg-dual__col:hover { border-top-color: var(--pg-charcoal); }
+  .pg-landing-root .pg-dual__col:hover .pg-dual__cta { border-color: var(--pg-charcoal); }
+  .pg-landing-root .pg-dual__col:hover .pg-dual__cta svg { transform: translateX(3px); }
+}
+.pg-landing-root .pg-dual__col:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 4px; }
+
+/* ---------- 01 / THE APP 精簡預覽 ----------
+   主視覺沿用長敘事的 2:1 圖框語言；下面一列三行摘要＋細線 CTA。 */
+.pg-landing-root .pg-app-preview {
+  padding-top: 8px;
+  padding-bottom: var(--pg-space-feature-last-bottom, 96px);
+}
+.pg-landing-root .pg-app-preview__media {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border-radius: var(--pg-landing-photo-radius, 3px);
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
+}
+.pg-landing-root .pg-app-preview__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+.pg-landing-root .pg-app-preview__row {
+  max-width: 1200px;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 48px;
+  align-items: end;
+}
+.pg-landing-root .pg-app-preview__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 32px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.16);
+}
+.pg-landing-root .pg-app-preview__items li { padding-top: 18px; }
+.pg-landing-root .pg-app-preview__en {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-app-preview__zh {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-app-preview__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--pg-charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  white-space: nowrap;
+  transition: border-color 0.3s var(--pg-ease-out-3);
+}
+.pg-landing-root .pg-app-preview__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
+@media (hover: hover) {
+  .pg-landing-root .pg-app-preview__cta:hover { border-color: var(--pg-charcoal); }
+  .pg-landing-root .pg-app-preview__cta:hover svg { transform: translateX(3px); }
+}
+
+/* ---------- 02 教練區標題：兩行（\n） ---------- */
+.pg-landing-root .pg-coaches__title { white-space: pre-line; }
+
+/* ---------- /app 玩法頁：導覽列是 sticky 實底（不是首頁的透明 hero 變體），章節開場不需要 Hero 高度 ---------- */
+.pg-landing-root.pg-app-play-root .pg-app-world { padding-top: 8px; }
+
+/* ---------- 平板／手機 ---------- */
+@media (max-width: 1023px) {
+  .pg-landing-root .pg-dual__inner { padding-inline: clamp(32px, 5vw, 64px); }
+  .pg-landing-root .pg-dual__cols { column-gap: 32px; }
+  .pg-landing-root .pg-dual__col + .pg-dual__col::before { left: -16px; }
+}
+@media (max-width: 767px) {
+  .pg-landing-root .pg-dual { padding: 56px 0 40px; }
+  .pg-landing-root .pg-dual__inner { padding-inline: 22px; }
+  .pg-landing-root .pg-dual__cols { grid-template-columns: 1fr; margin-top: 28px; }
+  .pg-landing-root .pg-dual__col { padding: 24px 0 24px; border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.12); }
+  .pg-landing-root .pg-dual__col + .pg-dual__col::before { display: none; }
+  .pg-landing-root .pg-dual__col:last-child { border-bottom: 0; }
+  .pg-landing-root .pg-app-preview { padding-bottom: 56px; }
+  .pg-landing-root .pg-app-preview__media { margin-inline: -6px; width: auto; }
+  .pg-landing-root .pg-app-preview__row { margin-top: 28px; grid-template-columns: 1fr; row-gap: 24px; }
+  .pg-landing-root .pg-app-preview__items { grid-template-columns: 1fr; row-gap: 4px; }
+  .pg-landing-root .pg-app-preview__items li { padding: 14px 0; border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.1); }
+  .pg-landing-root .pg-app-preview__items li:last-child { border-bottom: 0; }
+  .pg-landing-root .pg-app-preview__zh { margin-top: 4px; }
+}
