@@ -217,6 +217,10 @@
 /* ---------- 01 THE APP 開場文案：改成同一行（2026-09-16 使用者），桌機解除 480px 上限；手機自然換行 ---------- */
 .pg-landing-root .pg-app-intro__desc { max-width: none; }
 
+/* ---------- 03 THE SPACE 開場：上下留白收緊（2026-09-16 使用者選 T2 的留白）----------
+   解除 home.css 的 min-height，上 32／下 40。大標字級見下方「三章標題統一」。只作用於首頁。 */
+.pg-landing-root .pg-intro01 { min-height: 0; padding-top: 32px; padding-bottom: 40px; }
+
 /* ---------- 02 教練區標題：兩行（\n） ---------- */
 .pg-landing-root .pg-coaches__title { white-space: pre-line; }
 
