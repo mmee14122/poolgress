@@ -217,6 +217,8 @@ export const coachLabels = {
   format: '授課方式',
   venue: '授課地點',
   cta: '查看課程與預約',
+  /** 卡片 hover 時浮在照片上的提示 */
+  hoverHint: '查看教練頁',
   placeholder: '示意',
   placeholderPhoto: '示意照片',
 }
@@ -249,7 +251,7 @@ export const profilePage = {
     about: '教練介紹',
     courses: '開設／參與的課程',
     venues: '授課球館',
-    philosophy: '教學理念',
+    philosophy: '教學方式與理念',
     credentials: '經歷與資格',
   },
   coursesEmpty: '課程籌備中，開課後會在這裡列出。',

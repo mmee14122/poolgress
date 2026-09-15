@@ -9,19 +9,24 @@ import { coachLabels, coachProfileHref, type PartnerCoach } from '../../data/par
  *   → 教學方向（最醒目）→ 姓名 → 一句教學說明 → 2–3 個項目標籤
  *   → 適合對象／授課方式／授課地點 → 主按鈕「查看課程與預約」（實底、永遠可見）
  *
+ * 整張卡都可點（主按鈕用 stretched-link 覆蓋整張卡），hover 時照片放大、浮出「查看教練頁 ↗」、
+ * 主按鈕加深——讓人一看就知道點照片會進教練頁（2026-09-16 使用者）。
+ * compact＝首頁用：不顯示「適合對象／授課方式／授課地點」三行，也不顯示「查看課程與預約」按鈕
+ *（2026-09-16 使用者）；連結仍在（視覺隱藏、鍵盤與讀屏可用），整張卡靠 hover 提示可點。列表頁維持完整。
+ *
  * 樣式在 styles/coach-card.css（.pg-coach-card 自成根，不依賴 landing/coaches root）。
  * 進場動畫由外層決定（首頁用 fadeUp 的 style，列表頁用 data-on）。
  */
 export function CoachCard({
   coach,
-  index,
   style,
   eager,
+  compact,
 }: {
   coach: PartnerCoach
-  index: number
   style?: React.CSSProperties
   eager?: boolean
+  compact?: boolean
 }) {
   const venueText =
     coach.venues.length === 0
@@ -31,14 +36,20 @@ export function CoachCard({
         : `${coach.venues[0].city}・${coach.venues[0].name} 等 ${coach.venues.length} 處`
 
   return (
-    <article className="pg-coach-card" style={style}>
+    <article className="pg-coach-card" style={style} data-compact={compact ? '1' : '0'}>
       <div className="pg-coach-card__photo">
         <img src={coach.photo} alt={coach.photoAlt} loading={eager ? 'eager' : 'lazy'} />
         {coach.placeholder && <span className="pg-coach-card__badge">{coachLabels.placeholderPhoto}</span>}
+        {/* hover 時浮出的提示：整張卡可點 */}
+        <span className="pg-coach-card__hint" aria-hidden="true">
+          {coachLabels.hoverHint}
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17 17 7M8.5 7H17v8.5" />
+          </svg>
+        </span>
       </div>
 
       <div className="pg-coach-card__body">
-        <p className="pg-coach-card__index">0{index + 1}</p>
         <h3 className="pg-coach-card__focus">{coach.focus}</h3>
         <p className="pg-coach-card__name">
           {coach.name}
@@ -52,6 +63,7 @@ export function CoachCard({
           ))}
         </ul>
 
+        {!compact && (
         <dl className="pg-coach-card__facts">
           <div>
             <dt>{coachLabels.levels}</dt>
@@ -66,6 +78,7 @@ export function CoachCard({
             <dd>{venueText}</dd>
           </div>
         </dl>
+        )}
 
         <a className="pg-coach-card__cta" href={coachProfileHref(coach.id)}>
           <span>{coachLabels.cta}</span>

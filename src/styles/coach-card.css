@@ -7,6 +7,7 @@
    ========================================================================== */
 
 .pg-coach-card {
+  position: relative;               /* stretched link 的定位基準 */
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -28,11 +29,48 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 18%;
-  transition: transform 1.2s var(--pg-ease-out-3);
+  transition: transform 0.9s var(--pg-ease-out-3);
 }
+/* 照片上的暗色薄紗（hover 才出現） */
+.pg-coach-card__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--pg-charcoal-rgb), 0);
+  transition: background 0.4s var(--pg-ease-out-3);
+  pointer-events: none;
+}
+/* hover 提示：照片中央的小標籤，靜止時隱藏 */
+.pg-coach-card__hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--pg-charcoal);
+  background: rgba(var(--pg-ivory-rgb), 0.94);
+  border-radius: 2px;
+  opacity: 0;
+  transform: translate(-50%, calc(-50% + 8px));
+  transition: opacity 0.35s var(--pg-ease-out-3), transform 0.45s var(--pg-ease-out-3);
+  pointer-events: none;
+}
+/* 整張卡的 hover 狀態（:hover 與 .is-hover 同義，後者給截圖工具用） */
 @media (hover: hover) {
-  .pg-coach-card:hover .pg-coach-card__photo img { transform: scale(1.02); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo img { transform: scale(1.04); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo::after { background: rgba(var(--pg-charcoal-rgb), 0.18); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__hint { opacity: 1; transform: translate(-50%, -50%); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__focus { color: var(--pg-walnut); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta { background: var(--pg-sand-hover, #c9b69f); border-color: var(--pg-sand-hover, #c9b69f); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta svg { transform: translateX(3px); }
 }
+.pg-coach-card__focus { transition: color 0.3s var(--pg-ease-out-3); }
 .pg-coach-card__badge {
   position: absolute;
   top: 12px;
@@ -105,8 +143,9 @@
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--pg-charcoal);
-  border: 1px solid var(--pg-secondary);            /* 淺藍框（2026-09-16 使用者：標籤太不明顯） */
-  background: rgba(255, 255, 255, 0.55);           /* 比 Ivory 更淺的底 */
+  border: 1px solid var(--pg-sand);                                   /* 金色框（2026-09-16 使用者選 ③） */
+  background: var(--pg-app-world-bg-fallback, #e5e6e2);
+  background: var(--pg-app-world-bg);                                 /* 淺藍底，與 THE APP 區同色 */
   border-radius: 2px;
 }
 /* 適合對象／授課方式／授課地點：標籤＋值，三行固定順序 */
@@ -155,15 +194,33 @@
   text-decoration: none;
   transition: background 0.3s var(--pg-ease-out-3), border-color 0.3s var(--pg-ease-out-3);
 }
-.pg-coach-card__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
-@media (hover: hover) {
-  .pg-coach-card__cta:hover { background: var(--pg-sand-hover, #c9b69f); border-color: var(--pg-sand-hover, #c9b69f); }
-  .pg-coach-card__cta:hover svg { transform: translateX(3px); }
+/* stretched link：按鈕的 ::after 蓋住整張卡，點照片、標題都會進教練頁 */
+.pg-coach-card__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
 }
+.pg-coach-card__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
 .pg-coach-card__cta:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 2px; }
 .pg-coach-card__body { justify-content: flex-start; }
 .pg-coach-card__cta { margin-top: auto; padding-top: 0; }
 .pg-coach-card__facts { margin-bottom: 22px; }
+/* compact（首頁）：沒有三行小資訊、沒有按鈕列；連結視覺隱藏但 ::after 仍蓋住整張卡 */
+.pg-coach-card[data-compact='1'] .pg-coach-card__topics { margin-bottom: 0; }
+.pg-coach-card[data-compact='1'] .pg-coach-card__cta {
+  position: static;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  font-size: 0;
+  color: transparent;
+  background: transparent;
+}
+.pg-coach-card[data-compact='1'] .pg-coach-card__cta:focus-visible { outline: none; }
+.pg-coach-card[data-compact='1']:has(.pg-coach-card__cta:focus-visible) { outline: 2px solid var(--pg-charcoal); outline-offset: 4px; }
 
 @media (max-width: 1023px) {
   .pg-coach-card__focus { font-size: 21px; }

@@ -184,11 +184,9 @@
    欄位比例：圖 62%｜文字 30%（minmax(280px) 保底），兩組完全一致。
    交錯：非 reverse＝圖在右、reverse（Tailwind lg:flex-row-reverse）＝圖在左。 */
 .pg-landing-root .pg-feature {
-  --pg-landing-pad: clamp(48px, 5vw, 96px);
-  --pg-landing-margin: max(0px, calc((100vw - 1680px) / 2));  /* 超過 1680 時容器兩側的外留白 */
   max-width: 1680px;
   margin-inline: auto;
-  padding-inline: var(--pg-landing-pad);
+  padding-inline: clamp(48px, 5vw, 96px);
 }
 @media (min-width: 1024px) {
   /* 統一的兩欄鏡像版面（2026-09-06 使用者第四版規格）：
@@ -214,15 +212,14 @@
      做法：文字塊縮成內容寬（上限 340），先在自己的欄置中，再往圖片方向平移半個欄距，
      兩者相加剛好等於「在整條淺色帶裡置中」。
      垂直則補 -18px：box 本身偏差 0，但中文字身在行框裡偏下，實測視覺中心低 18px。 */
-  /* 置中基準（2026-09-11 使用者定案）：照片旁到頁面邊緣的整片留白。
-     文字欄本身置中之後，欄中心與留白區中心差 (欄距 − 內距 − 外留白) / 2，
-     再往圖片方向平移這個量即可；文字框 = 實際文字寬（不再有最小寬度）。 */
+  /* 2026-09-16 使用者：曾試過改成「照片旁到頁面邊緣的整片留白」置中（超過 1680 寬時文字會更靠邊），
+     看過預覽後決定維持 9/11 線上版的做法，這裡與線上完全相同。 */
   .pg-landing-root .pg-feature-text {
     width: max-content;
-    max-width: 400px;        /* 第三列內文最長一句約 390，380 會折出孤行「彩。」 */
+    max-width: 380px;
     flex: initial;
     justify-self: center;
-    translate: calc((var(--pg-landing-col-gap) - var(--pg-landing-pad) - var(--pg-landing-margin)) / -2) -18px;  /* 圖在左、文在右 */
+    translate: calc(var(--pg-landing-col-gap) / -2) -18px;  /* 圖在左：文字往左靠向圖片 */
     grid-row: 1;
     grid-column: 2;
   }
@@ -233,7 +230,7 @@
   /* 鏡像的那一組：文字在左、圖片在右，平移方向相反 */
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text {
     grid-column: 1;
-    translate: calc((var(--pg-landing-col-gap) - var(--pg-landing-pad) - var(--pg-landing-margin)) / 2) -18px;   /* 圖在右、文在左 */
+    translate: calc(var(--pg-landing-col-gap) / 2) -18px;   /* 圖在右：文字往右靠向圖片 */
   }
   .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 2; }
 
@@ -242,6 +239,7 @@
     font-size: calc(var(--pg-fs-feature-h2) * 0.84);
     font-weight: 600;
     max-width: none;
+    min-width: 360px;
   }
   .pg-landing-root .pg-feature-text .pg-t-body {
     max-width: none;

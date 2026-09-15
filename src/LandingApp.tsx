@@ -308,9 +308,9 @@ export default function LandingApp() {
               <span aria-hidden="true" className="pg-cta-book__fill" />
               <span className="pg-cta-text">{hero.ctaSecondary.label}</span>
               <span aria-hidden="true" className="pg-cta-book__icon">
-                {/* 細線斜角箭頭 ↗（2026-09-06 使用者：精品感，不用粗的水平箭頭） */}
+                {/* 細線水平箭頭 →（2026-09-16 使用者：頁內往下捲到 02 教練區） */}
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M7 17 17 7M8.5 7H17v8.5" />
+                  <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </span>
             </a>
@@ -394,7 +394,7 @@ export default function LandingApp() {
         <div className="pg-coaches__grid" role="list" aria-label="合作教練">
           {coaches.map((c, i) => (
             <div key={c.id} role="listitem" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
-              <CoachCard coach={c} index={i} />
+              <CoachCard coach={c} compact />
             </div>
           ))}
         </div>
