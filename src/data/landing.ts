@@ -19,10 +19,10 @@ export const hero = {
   titleLines: ['讓撞球成為', '一家人的共同記憶'],
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
   /** 2026-09-06：預約場館 → 合作場館頁（booking.html 的 Coming Soon／BookingForm 保留，之後有訂位系統再改回） */
-  cta: { label: '探索 App', href: '#app' },       /* 一頁式：指向頁內 CLUB 段落，不外連 */
+  cta: { label: '探索 App', href: '/app' },       /* 2026-09-16 使用者：導到 App 玩法頁 */
   /** 第二顆 Hero CTA（2026-09-06 使用者）：與第一顆同款，指向 02 / THE APP 章節 */
   /** 2026-09-16 使用者：改成「尋找教練 →」，指向 02 教練區的眉標錨點 #coach；箭頭改水平（見 LandingApp） */
-  ctaSecondary: { label: '尋找教練', href: '#coach' },
+  ctaSecondary: { label: '尋找教練', href: '/coaches.html' },   /* 2026-09-16 使用者：導到合作教練列表頁 */
 }
 
 /* 2026-09-06 使用者：THE APP 內三塊不再顯示 01/02/03 標記——與上方「01 / THE SPACE」
