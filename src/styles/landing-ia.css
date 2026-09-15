@@ -221,11 +221,9 @@
 .pg-landing-root .pg-coaches__title { white-space: pre-line; }
 
 /* ---------- /app 玩法頁：導覽列是 sticky 實底（不是首頁的透明 hero 變體），章節開場不需要 Hero 高度 ----------
-   導覽列、頁面底、收尾 CTA 全部與內容區同一個淺藍（2026-09-16 使用者） */
+   頁面底與收尾 CTA 與內容區同一個淺藍；導覽列維持共用 Navbar 的白底（2026-09-16 使用者改回） */
 .pg-landing-root.pg-app-play-root .pg-app-world { padding-top: 8px; }
 .pg-landing-root.pg-app-play-root { background: var(--pg-app-world-bg-fallback) !important; background: var(--pg-app-world-bg) !important; }
-.pg-landing-root.pg-app-play-root .pg-nav { background: var(--pg-app-world-bg-fallback) !important; background: var(--pg-app-world-bg) !important; border-bottom-color: rgba(var(--pg-charcoal-rgb), 0.1) !important; }
-.pg-landing-root.pg-app-play-root .pg-nav #mobile-menu { background: var(--pg-app-world-bg) !important; }
 .pg-landing-root.pg-app-play-root #app-finale { background: var(--pg-app-world-bg-fallback) !important; background: var(--pg-app-world-bg) !important; }
 
 /* ---------- 平板／手機 ---------- */
