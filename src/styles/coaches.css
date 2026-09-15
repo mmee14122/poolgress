@@ -63,8 +63,9 @@
 /* ---------- 三張卡：桌機三欄等寬，按鈕齊底 ---------- */
 .pg-coaches-root .pg-cp-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 64px;                 /* 2026-09-16 使用者：三張卡間距加寬 */
+  grid-template-columns: repeat(3, 357px);   /* 2026-09-16 使用者定案：卡片固定 357 寬、三張置中、欄距 48 */
+  justify-content: center;
+  column-gap: 48px;
   row-gap: 64px;
   padding-top: 32px;
   padding-bottom: 72px;
@@ -109,7 +110,7 @@
 }
 
 @media (max-width: 1023px) {
-  .pg-coaches-root .pg-cp-list { column-gap: 28px; }
+  .pg-coaches-root .pg-cp-list { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 28px; }
 }
 /* ---------- 手機：單欄 ---------- */
 @media (max-width: 767px) {
