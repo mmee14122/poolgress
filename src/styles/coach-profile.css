@@ -724,7 +724,7 @@
   /* 面板：固定於底、左右貼齊、上圓角 18；高度約 82%，矮螢幕接近全高 */
   .pg-profile-root .pg-pf-side {
     display: block !important;
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 61;
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 61;   /* top:auto 覆蓋桌機 sticky 的 top，否則面板會被抬高 64px */
     height: min(82dvh, 100dvh - 48px);
     display: flex !important; flex-direction: column;
     background: #fdfcf9;
