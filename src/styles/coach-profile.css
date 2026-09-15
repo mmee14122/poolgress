@@ -117,7 +117,7 @@
 /* ---------- 標頭 ---------- */
 .pg-profile-root .pg-pf-head {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
+  grid-template-columns: 260px minmax(0, 1fr);   /* 2026-09-16 使用者選 P260：照片 260×325 */
   column-gap: 28px;
   align-items: start;
 }
