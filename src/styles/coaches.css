@@ -38,22 +38,27 @@
 }
 
 /* ---------- 開場 ---------- */
+/* 2026-09-16 使用者選 H3：矮版開場——眉標一行，標題與副標並排、底對齊（桌機高約 137px） */
 .pg-coaches-root .pg-cp-hero {
-  max-width: 720px;
-  padding-top: 96px;
-  padding-bottom: 64px;
+  padding-top: 40px;
+  padding-bottom: 28px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 40px;
+  align-items: end;
 }
+.pg-coaches-root .pg-cp-hero .pg-t-eyebrow { grid-column: 1 / -1; }
 .pg-coaches-root .pg-cp-title {
-  margin-top: 16px;
+  margin-top: 8px;
   font-family: var(--pg-font-serif);
-  font-size: clamp(34px, 4vw, 56px);
+  font-size: clamp(26px, 2.4vw, 36px);
   font-weight: 600;
   line-height: 1.16;
   letter-spacing: 0.01em;
   color: var(--pg-charcoal);
-  white-space: pre-line;
+  white-space: normal;
 }
-.pg-coaches-root .pg-cp-intro { margin-top: 24px; max-width: 36em; }
+.pg-coaches-root .pg-cp-intro { margin: 0 0 6px; max-width: 36em; }
 
 /* ---------- 三張卡：桌機三欄等寬，按鈕齊底 ---------- */
 .pg-coaches-root .pg-cp-list {
@@ -102,7 +107,8 @@
 /* ---------- 手機：單欄 ---------- */
 @media (max-width: 767px) {
   .pg-coaches-root main { padding-inline: 22px; }
-  .pg-coaches-root .pg-cp-hero { padding-top: 56px; padding-bottom: 40px; }
+  .pg-coaches-root .pg-cp-hero { padding-top: 32px; padding-bottom: 24px; grid-template-columns: 1fr; row-gap: 10px; }
+  .pg-coaches-root .pg-cp-intro { margin: 0; }
   .pg-coaches-root .pg-cp-list {
     grid-template-columns: 1fr;
     row-gap: 56px;
