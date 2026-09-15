@@ -413,7 +413,10 @@
    第二行相對第一行固定向右縮排 --pg-display-indent：桌機 90、平板等比、手機約 32。
    01（App Hero 圖上）、02、03 同一個 token、同一個字級／行高。
    ========================================================================== */
-.pg-landing-root { --pg-display-indent: clamp(32px, 6.25vw, 90px); }
+/* 2026-09-16 使用者：第二行錯位加大——桌機 ≥1200 = 140、平板 768–1199 = 80、手機 <768 = 32（同一個 token） */
+.pg-landing-root { --pg-display-indent: 32px; }
+@media (min-width: 768px) { .pg-landing-root { --pg-display-indent: 80px; } }
+@media (min-width: 1200px) { .pg-landing-root { --pg-display-indent: 140px; } }
 .pg-landing-root .pg-app-hero__line:nth-child(2) { margin-left: var(--pg-display-indent); }
 .pg-landing-root .pg-coaches__title-line { display: block; }
 .pg-landing-root .pg-coaches__title-line[data-line='1'] { margin-left: var(--pg-display-indent); }
