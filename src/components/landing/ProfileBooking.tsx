@@ -27,8 +27,6 @@ type Step = 'select' | 'payment' | 'processing' | 'done'
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
 /** 可往後看幾個月（含當月） */
 const MONTHS_AHEAD = 3
-/** 日期區固定六列，避免切換月份時面板高度跳動 */
-const CALENDAR_ROWS = 6
 
 /** 教練預約只收信用卡與 ATM 轉帳（與舊站相同） */
 const bookingPaymentOptions = paymentOptions.filter((o) => o.value === 'card' || o.value === 'atm')
@@ -340,19 +338,26 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             <EmptySlots text={`${venue.name} 目前沒有開放時段，請改選其他球館或稍後再看。`} />
           ) : (
             <>
+            <div className="pg-bk-cal">
               <div className="pg-bk-month">
                 <button type="button" onClick={() => goMonth(-1)} disabled={!canPrev} aria-label="上個月" className="pg-bk-month__nav">
                   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.7 4.7L11.3 3.3 4.6 10l6.7 6.7 1.4-1.4L7.4 10z" /></svg>
                 </button>
                 <div className="pg-bk-month__label">
                   <p className="pg-bk-month__title">{month.getFullYear()} 年 {month.getMonth() + 1} 月</p>
-                  <p className="pg-bk-month__count">尚有 <strong>{openCount}</strong> 天可預約 · 白底日期可預約</p>
+                  <p className="pg-bk-month__count">尚有 <strong>{openCount}</strong> 天可預約</p>
                 </div>
                 <button type="button" onClick={() => goMonth(1)} disabled={!canNext} aria-label="下個月" className="pg-bk-month__nav">
                   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.3 4.7l1.4-1.4L15.4 10l-6.7 6.7-1.4-1.4L12.6 10z" /></svg>
                 </button>
               </div>
 
+              {/* 圖例：與日期樣式一致的小色塊 */}
+              <ul className="pg-bk-legend" aria-label="圖例">
+                <li><span className="pg-bk-legend__sw pg-bk-legend__sw--open" />可預約</li>
+                <li><span className="pg-bk-legend__sw pg-bk-legend__sw--active" />已選取</li>
+                <li><span className="pg-bk-legend__sw pg-bk-legend__sw--today" />今天</li>
+              </ul>
               <div className="pg-bk-week" aria-hidden="true">
                 {WEEKDAYS.map((w) => (
                   <div key={w}>{w}</div>
@@ -393,6 +398,8 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                   )
                 })}
               </div>
+
+            </div>
 
               <div className="pg-bk-times">
                 {!selectedDate ? (
@@ -532,9 +539,10 @@ function buildMonthCells(month: Date): (Date | null)[] {
   return cells
 }
 
+/** 補到整週（7 的倍數）；列數依當月實際週數，不再固定六列（2026-09-16 使用者：移除底部多餘空白） */
 function padCells(cells: (Date | null)[]): (Date | null)[] {
-  const total = CALENDAR_ROWS * 7
-  return cells.length >= total ? cells : [...cells, ...Array(total - cells.length).fill(null)]
+  const rem = cells.length % 7
+  return rem === 0 ? cells : [...cells, ...Array(7 - rem).fill(null)]
 }
 
 function formatDate(key: string) {

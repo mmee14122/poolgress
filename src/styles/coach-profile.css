@@ -295,30 +295,32 @@
 .pg-profile-root .pg-bk-month__nav svg { width: 16px; height: 16px; fill: currentColor; }
 .pg-profile-root .pg-bk-month__nav:disabled { opacity: 0.3; cursor: not-allowed; }
 .pg-profile-root .pg-bk-month__label { text-align: center; }
-.pg-profile-root .pg-bk-month__title { margin: 0; font-family: var(--pg-font-serif); font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+/* 日曆：桌機置中、最大寬 480；手機隨容器縮放、維持七欄 */
+.pg-profile-root .pg-bk-cal { max-width: 480px; margin-inline: auto; }
+.pg-profile-root .pg-bk-month__title { margin: 0; font-family: inherit; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .pg-profile-root .pg-bk-month__count { margin: 0; font-size: 11px; color: rgba(var(--pg-charcoal-rgb), 0.55); }
 .pg-profile-root .pg-bk-month__count strong { color: var(--pg-charcoal); }
 
 /* 日曆 */
-.pg-profile-root .pg-bk-week { margin-top: 8px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; font-size: 11px; color: rgba(var(--pg-charcoal-rgb), 0.45); }
+.pg-profile-root .pg-bk-week { margin-top: 10px; display: grid; grid-template-columns: repeat(7, 1fr); column-gap: 4px; text-align: center; font-size: 11px; letter-spacing: 0.06em; color: rgba(var(--pg-charcoal-rgb), 0.5); }
 /* 日期：七欄；每格是置中的近正方形按鈕（44px、圓角 6），不拉成整欄長條。
    面板底色延續米色；「白色方塊」是每個可預約日期各自的按鈕（2026-09-16 使用者規格） */
-.pg-profile-root .pg-bk-days { margin-top: 3px; display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 4px; justify-items: center; }
+.pg-profile-root .pg-bk-days { margin-top: 4px; display: grid; grid-template-columns: repeat(7, 1fr); column-gap: 4px; row-gap: 4px; }
 .pg-profile-root .pg-bk-day {
   position: relative;
-  width: 44px; height: 44px;
-  display: flex; flex-direction: row; gap: 3px; align-items: center; justify-content: center;
-  border: 1px solid transparent; border-radius: 6px;
+  width: 100%; height: 44px;
+  display: flex; flex-direction: row; gap: 4px; align-items: center; justify-content: center;
+  border: 1px solid transparent; border-radius: 8px;
   background: transparent; color: var(--pg-charcoal);
   font: inherit; font-size: 14px; font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
 .pg-profile-root .pg-bk-day--empty { cursor: default; }
-/* 可預約、未選取：白底、深藍灰數字、淡灰細框 */
-.pg-profile-root .pg-bk-day[data-state='open'] { background: #fff; color: #2c3e4a; border-color: rgba(var(--pg-charcoal-rgb), 0.18); font-weight: 600; }
-/* 滑入：框加深、底略帶淺藍 */
-.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: #2c3e4a; background: #eef3f6; }
+/* 可預約、未選取：極淡霧藍底、柔和藍灰細框、深色數字 */
+.pg-profile-root .pg-bk-day[data-state='open'] { background: #eef3f6; color: var(--pg-charcoal); border-color: #b9cad3; font-weight: 600; }
+/* 滑入：框加深、底再藍一點 */
+.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: #2c3e4a; background: #dfe9ef; }
 /* 已選取：深藍灰底、白數字、白勾 */
 .pg-profile-root .pg-bk-day[data-state='active'] { border-color: #2c3e4a; background: #2c3e4a; color: #fff; font-weight: 600; }
 /* 不可預約／已過：無底無框、淡灰數字、不可點 */
@@ -328,9 +330,16 @@
 .pg-profile-root .pg-bk-day[data-today='1']::after { content: ''; position: absolute; left: 50%; bottom: 5px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--pg-walnut); }
 .pg-profile-root .pg-bk-day[data-today='1'][data-state='active']::after { background: #fff; }
 .pg-profile-root .pg-bk-day__tick { width: 9px; height: 9px; fill: #fff; }
+.pg-profile-root .pg-bk-legend { list-style: none; margin: 10px 0 0; justify-content: center; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: rgba(var(--pg-charcoal-rgb), 0.6); }
+.pg-profile-root .pg-bk-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.pg-profile-root .pg-bk-legend__sw { width: 14px; height: 10px; border-radius: 3px; border: 1px solid transparent; }
+.pg-profile-root .pg-bk-legend__sw--open { background: #eef3f6; border-color: #b9cad3; }
+.pg-profile-root .pg-bk-legend__sw--active { background: #2c3e4a; }
+.pg-profile-root .pg-bk-legend__sw--today { width: 10px; height: 10px; border-radius: 50%; background: transparent; position: relative; }
+.pg-profile-root .pg-bk-legend__sw--today::after { content: ''; position: absolute; left: 3px; top: 3px; width: 4px; height: 4px; border-radius: 50%; background: var(--pg-walnut); }
 
 /* 時段 */
-.pg-profile-root .pg-bk-times { padding-top: 10px; border-top: 1px solid var(--pg-pf-line-soft); }
+.pg-profile-root .pg-bk-times { margin-top: 24px !important; padding-top: 12px; border-top: 1px solid var(--pg-pf-line-soft); }
 .pg-profile-root .pg-bk-times__date { margin: 0; font-size: 14px; font-weight: 600; }
 .pg-profile-root .pg-bk-times__list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .pg-profile-root .pg-bk-time {
@@ -442,7 +451,7 @@
   .pg-profile-root .pg-bk-row { display: block; }
   .pg-profile-root .pg-bk-row > * + * { margin-top: 12px; }
   .pg-profile-root .pg-bk-times__list { grid-template-columns: repeat(3, 1fr); }
-  .pg-profile-root .pg-bk-day { width: 42px; height: 42px; }
+  .pg-profile-root .pg-bk-day { height: 44px; }
   .pg-profile-root .pg-bk__head { padding: 16px 18px 14px; }
   .pg-profile-root .pg-bk__body { padding: 18px 18px 20px; }
   .pg-profile-root .pg-bk-day { min-height: 44px; }
