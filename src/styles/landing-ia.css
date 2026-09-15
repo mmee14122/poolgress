@@ -113,10 +113,10 @@
   display: block;
   margin-top: 0;
   font-family: var(--pg-font-serif);
-  font-size: clamp(26px, 2.3vw, 36px);
+  font-size: clamp(22px, 1.7vw, 24px);              /* 2026-09-16 使用者選 N24（原 33） */
   font-weight: 600;
   letter-spacing: 0.03em;
-  line-height: 1.15;
+  line-height: 1.2;
   color: var(--pg-charcoal);
 }
 .pg-landing-root .pg-dual__desc {
@@ -262,7 +262,7 @@
   .pg-landing-root .pg-dual__tiles { grid-template-columns: 1fr; row-gap: 40px; margin-top: 28px; }
   .pg-landing-root .pg-dual__media { margin-inline: -6px; }
   .pg-landing-root .pg-dual__caption { padding-top: 16px; }
-  .pg-landing-root .pg-dual__name { font-size: 24px; }
+  .pg-landing-root .pg-dual__name { font-size: 22px; }
   .pg-landing-root .pg-dual__desc { margin-top: 8px; }
   .pg-landing-root .pg-app-preview { padding-bottom: 56px; }
   .pg-landing-root .pg-app-preview__media { margin-inline: -6px; width: auto; }
