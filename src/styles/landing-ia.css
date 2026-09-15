@@ -272,3 +272,22 @@
   .pg-landing-root .pg-app-preview__items li:last-child { border-bottom: 0; }
   .pg-landing-root .pg-app-preview__zh { margin-top: 4px; }
 }
+
+/* ==========================================================================
+   三章標題區塊格式統一（2026-09-16 使用者：以 03 為準）
+   左緣＝全站 site-container 內距（1440 時 50）、區塊頂到眉標 32、眉標到大標 24、大標字距 0；
+   有副標的章節：大標到副標 20、副標行高 1.7。只作用於首頁。
+   ========================================================================== */
+/* 01 THE APP */
+.pg-landing-root .pg-app-intro { padding-top: 26px; }                 /* 眉標行框偏移 6，實測區塊頂到眉標 32 */
+.pg-landing-root .pg-app-intro h2 { margin-top: 30px; }              /* 行框上緣偏移 6px，實測眉標到字 24 */
+.pg-landing-root .pg-app-intro .pg-t-chapter { letter-spacing: 0; }
+.pg-landing-root .pg-app-intro__row { margin-top: 0; }
+.pg-landing-root .pg-app-intro__desc { margin-top: 14px; line-height: 1.7; }   /* 實測大標到副標 20 */
+/* 02 COACHING：改用與 01／03 相同的 site-container 內距，不再跟 App 圖片的 72 對齊 */
+.pg-landing-root .pg-coaches { padding-top: 24px; }                   /* 實測區塊頂到眉標 32 */
+.pg-landing-root .pg-coaches__inner { max-width: var(--site-max, 1680px); padding-inline: var(--site-gutter); }
+.pg-landing-root .pg-coaches__title { margin-top: 12px; letter-spacing: 0; }   /* 實測眉標到大標 24 */
+.pg-landing-root .pg-coaches__intro { margin-top: 20px; line-height: 1.7; }
+/* 03 THE SPACE：基準，只確認字距 */
+.pg-landing-root .pg-intro01 .pg-t-display { letter-spacing: 0; }
