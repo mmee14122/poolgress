@@ -107,7 +107,7 @@
 .pg-profile-root .pg-pf-grid {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 500px;
+  grid-template-columns: minmax(0, 1fr) 580px;   /* 2026-09-16 使用者：預約面板橫向再寬一點（500 → 580） */
   column-gap: clamp(40px, 4vw, 72px);
   align-items: start;
 }
@@ -301,7 +301,8 @@
 
 /* 日曆 */
 .pg-profile-root .pg-bk-week { margin-top: 8px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; font-size: 11px; color: rgba(var(--pg-charcoal-rgb), 0.45); }
-.pg-profile-root .pg-bk-days { margin-top: 3px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+/* 日期方格底下鋪一層白色方塊（2026-09-16 使用者） */
+.pg-profile-root .pg-bk-days { margin-top: 3px; padding: 6px; background: #fff; border-radius: 2px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
 .pg-profile-root .pg-bk-day {
   min-height: 32px;
   display: flex; flex-direction: row; gap: 3px; align-items: center; justify-content: center;
@@ -311,7 +312,7 @@
   cursor: pointer;
 }
 .pg-profile-root .pg-bk-day--empty { cursor: default; }
-.pg-profile-root .pg-bk-day[data-state='open'] { border-color: rgba(var(--pg-charcoal-rgb), 0.22); background: rgba(var(--pg-sand-rgb), 0.28); }
+.pg-profile-root .pg-bk-day[data-state='open'] { border-color: rgba(var(--pg-charcoal-rgb), 0.22); background: rgba(var(--pg-sand-rgb), 0.38); }
 .pg-profile-root .pg-bk-day[data-state='open']:hover { border-color: var(--pg-charcoal); }
 .pg-profile-root .pg-bk-day[data-state='active'] { border-color: var(--pg-charcoal); background: var(--pg-charcoal); color: var(--pg-ivory); }
 .pg-profile-root .pg-bk-day[data-state='closed'],
