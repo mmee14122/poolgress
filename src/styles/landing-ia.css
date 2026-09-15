@@ -301,10 +301,10 @@
   --hero-ease: var(--pg-ease-out-3, cubic-bezier(0.22, 1, 0.36, 1));
   position: relative;
   display: block;
-  margin-inline: 24px;
+  margin-inline: 0;                                      /* 2026-09-16 使用者：真正 full-bleed，左右不留空隙 */
   height: clamp(420px, 50vh, 520px);
   overflow: hidden;
-  border-radius: var(--pg-landing-photo-radius, 3px);
+  border-radius: 0;
   background: rgba(var(--pg-charcoal-rgb), 0.06);
   color: #fff;
   text-decoration: none;
@@ -335,9 +335,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: max(12px, calc(var(--site-gutter) - 24px));    /* 文字起點＝眉標左緣（site-container 內距） */
-  padding-right: max(12px, calc(var(--site-gutter) - 24px));
-  max-width: calc(var(--site-max, 1680px) - 48px);
+  padding-left: var(--site-gutter);                     /* 文字起點＝網站 grid 左緣 */
+  padding-right: var(--site-gutter);
+  max-width: var(--site-max, 1680px);
   margin-inline: auto;
 }
 .pg-landing-root .pg-app-hero__title {
@@ -396,8 +396,8 @@
 @media (max-width: 767px) {
   .pg-landing-root .pg-app-hero { padding-bottom: 56px; }
   .pg-landing-root .pg-app-hero__eyebrow { margin-bottom: 24px; }
-  .pg-landing-root .pg-app-hero__banner { margin-inline: 16px; height: 76svh; min-height: 480px; max-height: 720px; }
-  .pg-landing-root .pg-app-hero__copy { justify-content: flex-end; padding: 0 20px 64px; }
+  .pg-landing-root .pg-app-hero__banner { margin-inline: 0; height: 76svh; min-height: 480px; max-height: 720px; }
+  .pg-landing-root .pg-app-hero__copy { justify-content: flex-end; padding: 0 var(--site-gutter) 64px; }
   .pg-landing-root .pg-app-hero__title { font-size: clamp(34px, 10vw, 44px); }
   .pg-landing-root .pg-app-hero__w1, .pg-landing-root .pg-app-hero__w2 { display: block; }
   .pg-landing-root .pg-app-hero__body { margin-top: 16px; font-size: 15px; line-height: 1.7; max-width: 22em; }
