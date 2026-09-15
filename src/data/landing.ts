@@ -150,7 +150,7 @@ export const brand = {
    在 /app 點「合作教練」「關於場館」「聯絡我們」會回首頁並定位到該區。 */
 export const landingNav = [
   { label: 'App 玩法', href: '/app' },     /* 獨立 App 玩法頁（完整三段敘事） */
-  { label: '合作教練', href: '/#coach' },  /* 首頁 02 / COACHING 眉標處 */
+  { label: '合作教練', href: '/coaches.html' },  /* 合作教練列表頁（2026-09-16 使用者：這頁要留著，導覽要能到） */
   { label: '關於場館', href: '/#space' },  /* 首頁 03 / THE SPACE 眉標處 */
   { label: '聯絡我們', href: '/#contact' }, /* 頁尾前的「一起讓想法成真。」 */
 ]
@@ -158,21 +158,32 @@ export const landingNav = [
 /** /app 玩法頁的網址（部署 repo 用 vercel.json rewrite 把 /app 指到 app-play.html；本機鏡像產 site/app/index.html） */
 export const appPlayHref = '/app'
 
-/** Hero 下方 PLAY／LEARN 雙入口（2026-09-16 使用者規格） */
+/** Hero 下方 PLAY／LEARN 大型 Image Navigation（2026-09-16 使用者第二版規格）：
+ *  預設只有情境大圖＋左上角極小提示，hover 才出現標題／關鍵詞／CTA。
+ *  ⚠️ LEARN 的「教練指導學生的乾淨球館場景」照片尚未提供，先借用場館願景圖並標「示意圖・待更換」；
+ *     拿到真實照片後把 image 換掉、imagePlaceholder 改 false 即可。 */
 export const dualEntry = {
   eyebrow: 'PLAY. LEARN. PROGRESS.',
-  title: '從一場遊戲，到真正學會撞球。',
+  title: '想玩、想學，都從這裡開始。',
   play: {
-    label: 'PLAY WITH APP',
+    no: '01',
+    short: 'PLAY',
+    title: 'PLAY WITH APP',
     tags: '闖關・排行・好友挑戰',
-    body: '讓每一次上桌，都有下一個挑戰。',
-    cta: { label: '探索 App', href: '#app' },
+    cta: '探索更多玩法',
+    href: '#app',
+    image: '/ui/assets/landing/play.webp',       /* 玩家＋App 闖關情境（既有素材） */
+    imagePlaceholder: false,
   },
   learn: {
-    label: 'LEARN WITH COACH',
+    no: '02',
+    short: 'LEARN',
+    title: 'LEARN WITH COACH',
     tags: '專業・無菸・教練預約',
-    body: '找到適合你的教練，在舒適的環境開始學習。',
-    cta: { label: '尋找教練', href: '#coach' },
+    cta: '尋找適合你的教練',
+    href: '#coach',
+    image: '/ui/assets/hero/s01-venue.webp',     /* 暫用場館願景圖，待「教練指導學生」實拍 */
+    imagePlaceholder: true,
   },
 }
 
