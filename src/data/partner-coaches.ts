@@ -230,8 +230,8 @@ export const coachLabels = {
 /** 首頁區塊文案 */
 export const coachesSection = {
   eyebrow: '02 / COACHING',
-  title: '專業 × 無菸',                       /* 2026-09-16 使用者：首頁 02 標題 */
-  intro: '預約舒適的撞球學習體驗。',
+  title: 'LEARN AT\nYOUR PACE.',              /* 2026-09-16 使用者：首頁 02 大標（兩行） */
+  intro: '專業 × 無菸。依照你的程度與步調，細心陪你練好每一步。',
   link: { label: '查看全部教練', href: './coaches.html' },
 }
 
