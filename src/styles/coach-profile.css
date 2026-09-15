@@ -107,7 +107,7 @@
 .pg-profile-root .pg-pf-grid {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 580px;   /* 2026-09-16 使用者：預約面板橫向再寬一點（500 → 580） */
+  grid-template-columns: minmax(0, 1fr) minmax(440px, 40%);   /* 2026-09-16 使用者：右欄改比例寬——1440 時約 560，125% 縮放（1152）時約 460，左欄不會被擠扁 */
   column-gap: clamp(40px, 4vw, 72px);
   align-items: start;
 }
