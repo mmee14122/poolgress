@@ -131,8 +131,9 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
     setTried(false)
   }
 
+  /* 付款畫面的摘要用 2 欄格，讓付款步驟也能整個放進視窗（2026-09-16 使用者：面板不需捲動） */
   const summary = (
-    <dl className="pg-bk-summary">
+    <dl className="pg-bk-summary pg-bk-summary--grid">
       <Row label="教練" value={coach.name} />
       <Row label="服務" value={service?.name ?? '待確認'} />
       <Row label="球館" value={venue?.name ?? '尚未選擇'} />

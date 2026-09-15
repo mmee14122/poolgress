@@ -471,6 +471,15 @@
   .pg-profile-root .pg-bk-day { height: var(--bk-cell); }
   .pg-profile-root .pg-bk__body > * + * { margin-top: var(--bk-gap); }
 }
+/* 付款畫面：桌機收緊選項卡與載具列，讓付款步驟也不需捲動 */
+@media (min-width: 1024px) {
+  .pg-profile-root .pg-bk-choice { padding: 8px 12px; }
+  .pg-profile-root .pg-bk-choice__desc { font-size: 11px; }
+  .pg-profile-root .pg-bk-choices { row-gap: 6px; }
+  .pg-profile-root .pg-bk-radio { min-height: 32px; }
+  .pg-profile-root .pg-bk-radios { margin-top: 2px; }
+  .pg-profile-root .pg-bk-btn--quiet { height: 32px; }
+}
 @media (min-width: 1024px) and (max-height: 1000px) {
   .pg-profile-root .pg-bk { --bk-cell: 40px; --bk-gap: 10px; }
   .pg-profile-root .pg-bk__body { padding: 12px 20px 14px; }
@@ -501,6 +510,11 @@
   .pg-profile-root .pg-bk-days { row-gap: 2px; }
   .pg-profile-root .pg-bk-time { min-height: 28px; }
   .pg-profile-root .pg-bk-btn { height: 36px; }
+  .pg-profile-root .pg-bk-btn--quiet { height: 28px; }
+  .pg-profile-root .pg-bk-choice { padding: 6px 10px; }
+  .pg-profile-root .pg-bk-choice__desc { display: none; }
+  .pg-profile-root .pg-bk-radio { min-height: 28px; font-size: 13px; }
+  .pg-profile-root .pg-bk-steps { display: none; }
   .pg-profile-root .pg-bk-month__count { display: none; }
   .pg-profile-root .pg-bk-field__hint { display: none; }
   .pg-profile-root .pg-bk-times { margin-top: 10px !important; padding-top: 8px; }
