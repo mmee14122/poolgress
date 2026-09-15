@@ -803,6 +803,9 @@
   .pg-profile-root .pg-bk { flex: 1 0 auto; display: flex; flex-direction: column; min-height: 100%; }
   .pg-profile-root .pg-bk__body { flex: 1 0 auto; display: flex; flex-direction: column; }
   .pg-profile-root .pg-bk__body > * { flex: 0 0 auto; }
+  /* flex column 裡 margin:auto 的日曆會縮成內容寬（日期格變超小）：明確撐滿 */
+  .pg-profile-root .pg-bk-cal { width: 100%; max-width: none; }
+  .pg-profile-root .pg-bk-times, .pg-profile-root .pg-bk-summary, .pg-profile-root .pg-bk-row, .pg-profile-root .pg-bk-field { width: 100%; }
   .pg-profile-root .pg-bk-dock,
   .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-dock { margin-top: auto; }
   .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk__body { padding-bottom: 0; }
