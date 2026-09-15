@@ -9,7 +9,8 @@
    預設照片乾淨、無疊字；桌機 hover：scale(1.03)、charcoal 遮罩 50%、中央「EXPLORE APP ↗」由下 12px 淡入，400ms。
    不加框線、陰影、實心按鈕、位移。手機：上下排、圖上淡淡底部漸層＋文字常駐。 */
 .pg-landing-root .pg-dual {
-  background: var(--pg-ivory);
+  background: var(--pg-app-world-bg-fallback);
+  background: var(--pg-app-world-bg);              /* 淺藍（2026-09-16 使用者） */
   padding: clamp(56px, 7vh, 96px) 0 clamp(48px, 6vh, 80px);
 }
 .pg-landing-root .pg-dual__inner {

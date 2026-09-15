@@ -367,7 +367,9 @@
   .pg-landing-root .pg-coaches__link { margin-top: 40px; }
 }
 
-/* ---------- 底色配置（2026-09-16 使用者最終指示）----------
-   01 THE APP 淺霧藍（沿用 home.css 的 --pg-app-world-bg）、02 教練與課程暖米白、03 場館米白。
-   兩段背景直接相接，中間沒有額外色帶。（曾有 a／b／c 三案與 ?tone= 預覽切換，已移除。） */
-.pg-landing-root .pg-coaches { background: var(--pg-ivory); }
+/* ---------- 底色配置（2026-09-16 使用者最終指示，晚間再改）----------
+   PLAY／LEARN 雙入口 淺藍、01 THE APP 淺米白、02 COACHING 淺藍、03 場館米白。
+   淺藍＝home.css 的 --pg-app-world-bg（Secondary 22% 混 Ivory）；各段滿版直接相接。
+   （/app 玩法頁的 .pg-app-world 仍是淺藍——只有首頁的 01 改米白。） */
+.pg-landing-root:not(.pg-app-play-root) .pg-app-world { background: var(--pg-ivory); }
+.pg-landing-root .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }
