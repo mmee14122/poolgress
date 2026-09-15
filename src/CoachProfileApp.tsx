@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { ProfileBooking } from './components/landing/ProfileBooking'
 import { coachById, coachLabels, profilePage } from './data/partner-coaches'
+import { landingNav } from './data/landing'
 
 /**
  * 教練詳細頁（coach-profile.html?id=coach-a）— 2026-09-16。
@@ -19,12 +20,8 @@ import { coachById, coachLabels, profilePage } from './data/partner-coaches'
  * 樣式在 styles/coach-profile.css（.pg-profile-root …）。id 不存在 → 「找不到這位教練」。
  */
 
-const nav = [
-  { label: 'App 玩法', href: '/#app' },
-  { label: '合作教練', href: './coaches.html' },
-  { label: '關於場館', href: '/#space' },
-  { label: '聯絡我們', href: '/#contact' },
-]
+/* 導覽與首頁共用同一份（2026-09-16：之前這裡寫死 '/#app'，從本頁點「App 玩法」會跳回首頁 THE APP） */
+const nav = landingNav
 
 export default function CoachProfileApp() {
   const [coach] = useState(() => coachById(new URLSearchParams(window.location.search).get('id')))

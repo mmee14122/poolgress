@@ -215,7 +215,7 @@
 }
 
 /* ---------- 01 THE APP 開場文案：改成同一行（2026-09-16 使用者），桌機解除 480px 上限；手機自然換行 ---------- */
-.pg-landing-root .pg-app-intro__desc { max-width: 44em; }
+.pg-landing-root .pg-app-intro__desc { max-width: none; }
 
 /* ---------- 02 教練區標題：兩行（\n） ---------- */
 .pg-landing-root .pg-coaches__title { white-space: pre-line; }

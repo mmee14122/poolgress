@@ -3,7 +3,7 @@ import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { CoachCard } from './components/landing/CoachCard'
 import { coaches, coachesPage } from './data/partner-coaches'
-import { landingContactEmail } from './data/landing'
+import { landingContactEmail, landingNav } from './data/landing'
 
 /**
  * 合作教練列表頁（coaches.html）— 2026-09-16 重設計。
@@ -16,12 +16,8 @@ import { landingContactEmail } from './data/landing'
  * 這一頁同時存在於根目錄與 /ui/，用絕對路徑兩邊都對。
  */
 
-const nav = [
-  { label: 'App 玩法', href: '/#app' },
-  { label: '合作教練', href: './coaches.html' },
-  { label: '關於場館', href: '/#space' },
-  { label: '聯絡我們', href: '/#contact' },
-]
+/* 導覽與首頁共用同一份（2026-09-16：之前這裡寫死 '/#app'，從本頁點「App 玩法」會跳回首頁 THE APP） */
+const nav = landingNav
 
 export default function CoachesApp() {
   /* 進場：整頁一次淡入（沒有捲動 reveal，內容短、不需要） */
