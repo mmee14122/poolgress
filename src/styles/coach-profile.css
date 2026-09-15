@@ -155,7 +155,8 @@
   padding: 6px 11px;
   font-size: 13px;
   letter-spacing: 0.04em;
-  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.26);
+  border: 1px solid var(--pg-secondary);            /* 淺藍框（2026-09-16 使用者：標籤太不明顯） */
+  background: rgba(255, 255, 255, 0.55);           /* 比 Ivory 更淺的底 */
   border-radius: 2px;
 }
 .pg-profile-root .pg-pf-facts {
@@ -218,7 +219,7 @@
 .pg-profile-root .pg-bk {
   border: 1px solid var(--pg-pf-line);
   border-radius: 3px;
-  background: var(--pg-ivory);
+  background: var(--pg-cream);   /* 比頁面 Ivory 更淺的米色，讓面板與背景分開（2026-09-16 使用者） */
 }
 .pg-profile-root .pg-bk__head { padding: 18px 22px 16px; border-bottom: 1px solid var(--pg-pf-line); }
 .pg-profile-root .pg-bk__eyebrow { margin: 0; font-size: 10px; letter-spacing: 0.22em; color: var(--pg-walnut); }
@@ -369,7 +370,7 @@
 
 /* 處理中覆蓋 */
 .pg-profile-root .pg-bk-overlay { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(var(--pg-charcoal-rgb), 0.5); }
-.pg-profile-root .pg-bk-overlay__card { width: 100%; max-width: 360px; padding: 32px; text-align: center; background: var(--pg-ivory); border-radius: 3px; }
+.pg-profile-root .pg-bk-overlay__card { width: 100%; max-width: 360px; padding: 32px; text-align: center; background: var(--pg-cream); border-radius: 3px; }
 .pg-profile-root .pg-bk-spinner { display: block; width: 36px; height: 36px; margin-inline: auto; border: 3px solid rgba(var(--pg-charcoal-rgb), 0.15); border-top-color: var(--pg-charcoal); border-radius: 50%; animation: pg-bk-spin 0.9s linear infinite; }
 @keyframes pg-bk-spin { to { transform: rotate(360deg); } }
 .pg-profile-root .pg-bk-overlay__title { margin: 16px 0 0; font-family: var(--pg-font-serif); font-size: 18px; font-weight: 600; }
