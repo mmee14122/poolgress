@@ -100,7 +100,7 @@ export const pillarSections: Pillar[] = [
 export const appChapter = {
   eyebrow: '01 / THE APP',   /* 2026-09-16：App 移到第一章 */
   titleLines: ['THE GAME', 'GOES WITH YOU.'] as [string, string],
-  body: 'Poolgress 不只陪你打完一局。從闖關、學習，到找到一起玩的朋友，每一次上桌，都能延續到下一次。',   /* 2026-09-16 使用者：不分行 */
+  body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',   /* 2026-09-16：疊在 App Hero 圖上，三行 */
   /* App 介紹影片（2026-09-06 使用者：放在文案右側）。
      檔案放 public/assets/app/ 後把路徑填進 src；poster 是封面圖。
      兩者留 null 時顯示同尺寸佔位框。例：src: '/ui/assets/app/intro.mp4' */
@@ -111,6 +111,9 @@ export const appChapter = {
     hint: 'APP 介紹影片（16:9）',
   },
 }
+
+/** 03 / THE SPACE 大標下的副標（2026-09-16 使用者） */
+export const spaceIntro = '打球、相聚，或只是待一會。這裡有屬於你的空間。'
 
 /** landing 對外信箱（2026-09-06 使用者指定；與全站 site.contactEmail 分開，不影響舊站） */
 export const landingContactEmail = 'poolgresswork@gmail.com'

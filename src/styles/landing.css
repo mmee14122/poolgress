@@ -372,4 +372,4 @@
    淺藍＝home.css 的 --pg-app-world-bg（Secondary 22% 混 Ivory）；各段滿版直接相接。
    （/app 玩法頁的 .pg-app-world 仍是淺藍——只有首頁的 01 改米白。） */
 .pg-landing-root:not(.pg-app-play-root) .pg-app-world { background: var(--pg-ivory); }
-.pg-landing-root .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }
+.pg-landing-root .pg-coaches { background: var(--pg-ivory); }   /* 2026-09-16 使用者：01／02 都米白，靠 App 大圖分隔，不用底色硬切 */

@@ -214,9 +214,6 @@
   .pg-landing-root .pg-app-preview__cta:hover svg { transform: translateX(3px); }
 }
 
-/* ---------- 01 THE APP 開場文案：改成同一行（2026-09-16 使用者），桌機解除 480px 上限；手機自然換行 ---------- */
-.pg-landing-root .pg-app-intro__desc { max-width: none; }
-
 /* ---------- 03 THE SPACE 開場：上下留白收緊（2026-09-16 使用者選 T2 的留白）----------
    解除 home.css 的 min-height，上 32／下 40。大標字級見下方「三章標題統一」。只作用於首頁。 */
 .pg-landing-root .pg-intro01 { min-height: 0; padding-top: 32px; padding-bottom: 40px; }
@@ -291,3 +288,139 @@
 .pg-landing-root .pg-coaches__intro { margin-top: 20px; line-height: 1.7; }
 /* 03 THE SPACE：基準，只確認字距 */
 .pg-landing-root .pg-intro01 .pg-t-display { letter-spacing: 0; }
+
+/* ==========================================================================
+   01 / THE APP 章節 Hero（2026-09-16 使用者規格）
+   眉標在橫幅上方；橫幅近乎 full-bleed（兩側各留 24）、桌機高 clamp(420,50vh,520)、cover、
+   charcoal 40% 遮罩；文字疊在圖上、靠左對齊網站 grid。整張是單一 <a>，hover 圖 1.02／遮罩加深／右下角淡入。
+   ========================================================================== */
+.pg-landing-root .pg-app-hero { padding-top: 26px; }                       /* 眉標行框偏移 6 → 實測 32 */
+.pg-landing-root .pg-app-hero__head { padding-bottom: 24px; }
+.pg-landing-root .pg-app-hero__banner {
+  --hero-dur: 0.4s;
+  --hero-ease: var(--pg-ease-out-3, cubic-bezier(0.22, 1, 0.36, 1));
+  position: relative;
+  display: block;
+  margin-inline: 24px;
+  height: clamp(420px, 50vh, 520px);
+  overflow: hidden;
+  border-radius: var(--pg-landing-photo-radius, 3px);
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pg-landing-root .pg-app-hero__banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  transform: scale(1);
+  transition: transform var(--hero-dur) var(--hero-ease);
+}
+.pg-landing-root .pg-app-hero__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--pg-charcoal-rgb), 0.4);
+  transition: background var(--hero-dur) var(--hero-ease);
+  pointer-events: none;
+}
+/* 文字：靠左，起點對齊 site-container 內距（橫幅本身已內縮 24） */
+.pg-landing-root .pg-app-hero__copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: max(12px, calc(var(--site-gutter) - 24px));    /* 文字起點＝眉標左緣（site-container 內距） */
+  padding-right: max(12px, calc(var(--site-gutter) - 24px));
+  max-width: calc(var(--site-max, 1680px) - 48px);
+  margin-inline: auto;
+}
+.pg-landing-root .pg-app-hero__title {
+  display: block;
+  font-family: var(--pg-font-serif);
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+.pg-landing-root .pg-app-hero__line { display: block; }
+.pg-landing-root .pg-app-hero__body {
+  display: block;
+  margin-top: 22px;
+  max-width: 30em;
+  font-size: var(--pg-fs-body, 16px);
+  line-height: 1.8;
+  color: rgba(var(--pg-cream-rgb, 248, 244, 236), 0.92);
+  white-space: pre-line;
+}
+.pg-landing-root .pg-app-hero__peek {
+  position: absolute;
+  right: 28px;
+  bottom: 22px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: rgba(var(--pg-cream-rgb, 248, 244, 236), 0.9);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--hero-dur) var(--hero-ease), transform var(--hero-dur) var(--hero-ease);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .pg-landing-root .pg-app-hero__banner:is(:hover, .is-hover) img { transform: scale(1.02); }
+  .pg-landing-root .pg-app-hero__banner:is(:hover, .is-hover) .pg-app-hero__veil { background: rgba(var(--pg-charcoal-rgb), 0.5); }
+  .pg-landing-root .pg-app-hero__banner:is(:hover, .is-hover) .pg-app-hero__peek { opacity: 1; transform: translateY(0); }
+}
+.pg-landing-root .pg-app-hero__banner:focus-visible { outline: 1px solid var(--pg-charcoal); outline-offset: 6px; }
+.pg-landing-root .pg-app-hero__banner:focus-visible .pg-app-hero__peek { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .pg-landing-root .pg-app-hero__banner img, .pg-landing-root .pg-app-hero__veil, .pg-landing-root .pg-app-hero__peek { transition: none; }
+  .pg-landing-root .pg-app-hero__banner:is(:hover, .is-hover) img { transform: none; }
+}
+
+/* 摘要接在橫幅下；結束後 120–160 大留白進 02（02 自己的 padding-top 是 24，這裡給 120） */
+.pg-landing-root .pg-app-preview { padding-top: 40px; padding-bottom: 120px; }
+.pg-landing-root .pg-app-preview__row { max-width: none; margin-top: 0; }
+
+/* 手機：直式 76svh、主標三行、文字在下方、EXPLORE THE APP 常駐 */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-app-hero__head { padding-bottom: 16px; }
+  .pg-landing-root .pg-app-hero__banner { margin-inline: 16px; height: 76svh; min-height: 480px; max-height: 720px; }
+  .pg-landing-root .pg-app-hero__copy { justify-content: flex-end; padding: 0 20px 64px; }
+  .pg-landing-root .pg-app-hero__title { font-size: clamp(34px, 10vw, 44px); }
+  .pg-landing-root .pg-app-hero__w1, .pg-landing-root .pg-app-hero__w2 { display: block; }
+  .pg-landing-root .pg-app-hero__body { margin-top: 16px; font-size: 15px; line-height: 1.7; max-width: 22em; }
+  .pg-landing-root .pg-app-hero__peek { opacity: 1; transform: none; right: 20px; bottom: 20px; }
+  .pg-landing-root .pg-app-preview { padding-top: 32px; padding-bottom: 72px; }
+}
+@media (hover: none) and (min-width: 768px) {
+  .pg-landing-root .pg-app-hero__peek { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   三章兩行 Display Heading 的錯位規則統一（2026-09-16 使用者）
+   第二行相對第一行固定向右縮排 --pg-display-indent：桌機 90、平板等比、手機約 32。
+   01（App Hero 圖上）、02、03 同一個 token、同一個字級／行高。
+   ========================================================================== */
+.pg-landing-root { --pg-display-indent: clamp(32px, 6.25vw, 90px); }
+.pg-landing-root .pg-app-hero__line:nth-child(2) { margin-left: var(--pg-display-indent); }
+.pg-landing-root .pg-coaches__title-line { display: block; }
+.pg-landing-root .pg-coaches__title-line[data-line='1'] { margin-left: var(--pg-display-indent); }
+/* 01 Hero 標題與 02／03 同字級、同行高 */
+.pg-landing-root .pg-app-hero__title { font-size: var(--pg-fs-chapter-unified); line-height: 1.15; }
+/* 03 副標：與 01／02 supporting copy 同一套（16px／1.7、距大標 20、最大 34em） */
+.pg-landing-root .pg-intro01__sub { margin: 10px 0 0; max-width: 34em; font-size: var(--pg-fs-body, 16px); line-height: 1.7; }   /* h2 行框偏移 10 → 實測大標到副標 20 */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-app-hero__w1, .pg-landing-root .pg-app-hero__w2 { display: block; }
+  .pg-landing-root .pg-app-hero__w2 { margin-left: var(--pg-display-indent); }   /* 手機第三行再縮一次，維持階梯 */
+}

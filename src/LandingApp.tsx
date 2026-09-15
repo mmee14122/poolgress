@@ -8,12 +8,13 @@
  * 之後 landing 要改版型，改這個檔不會動到現行首頁。
  */
 import { useEffect, useRef, useState } from 'react'
-import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } from './data/landing'
+import { finale, hero, palette as P, pillarSections, type Pillar, appChapter, spaceIntro } from './data/landing'
 import { landingNav } from './data/landing'
 import { coaches, coachesSection } from './data/partner-coaches'
 import { CoachCard } from './components/landing/CoachCard'
 import { DualEntry } from './components/landing/DualEntry'
 import { AppPreview } from './components/landing/AppPreview'
+import { AppHero } from './components/landing/AppHero'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { ProgressPoint } from './components/ProgressPoint'
@@ -172,12 +173,11 @@ export function useLandingReveal(ids: string[]) {
 }
 
 /* 首頁要觀察的區塊：hero、雙入口、01 場館、02 App（轉場＋預覽）、教練、finale */
-const HOME_IDS = ['hero', 'dual', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'coaches', 'finale']
+const HOME_IDS = ['hero', 'dual', 'intro01', 'intro01h', ...pillarSections.map((s) => s.id), 'coaches', 'finale']
 
 export default function LandingApp() {
   const { reg, shown, narrow, maskP } = useLandingReveal(HOME_IDS)
   const on01 = shown(narrow ? 'intro01h' : 'intro01')
-  const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
   return (
     <main id="top" className="pg-home-root pg-landing-root" style={{ background: P.bg, color: P.text }}>
@@ -331,11 +331,12 @@ export default function LandingApp() {
           App 的三段長敘事（球桌變成你的關卡／一個人的挑戰／下一場）沒有刪，整套搬到 /app 玩法頁（AppPlayApp）。 */}
       <DualEntry on={shown('dual')} refCb={reg('dual')} />
 
-      {/* 01 THE APP：極淡灰藍底（見 .pg-app-world）。章節開場沿用 ChapterTransition（含 #app 錨點），
-          下面只放精簡預覽：主視覺（女孩打撞球＋關卡 UI）＋ CHALLENGE／COMPETE／CONNECT 三行摘要＋「探索 App 玩法 →」。 */}
+      {/* 01 THE APP（2026-09-16 使用者規格）：米白底、不再有獨立灰藍區。
+          眉標 → 近乎 full-bleed 的大幅照片 Hero（THE GAME GOES WITH YOU. 直接疊在圖上）
+          → CHALLENGE／COMPETE／CONNECT 摘要 → 120–160 大留白 → 02。#app 錨點在 AppHero 的眉標。 */}
       <div className="pg-app-world">
-        <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
-        <AppPreview on={shown('s02')} refCb={reg('s02')} />
+        <AppHero on={shown('s02')} refCb={reg('s02')} />
+        <AppPreview on={shown('s02')} />
       </div>
 
       {/* ---------- 02 / THE COACHES（2026-09-16 重設計）：App 之後、場館之前 ----------
@@ -354,7 +355,9 @@ export default function LandingApp() {
             {coachesSection.eyebrow}
           </p>
           <h2 className="pg-t-feature-h2 pg-coaches__title" style={fadeUp(shown('coaches'), 0.08)}>
-            {coachesSection.title}
+            {coachesSection.title.split('\n').map((line, i) => (
+              <span key={line} className="pg-coaches__title-line" data-line={i}>{line}</span>
+            ))}
           </h2>
           <p className="pg-t-body pg-coaches__intro" style={fadeUp(shown('coaches'), 0.16)}>
             {coachesSection.intro}
@@ -421,7 +424,8 @@ export default function LandingApp() {
                   /* editorial stagger（2026-09-05 使用者定義）：第二行起點＝第一行
                      文字寬度的 30%。"YOUR TABLE." 實測寬 6.858em，故 0.30 × 6.858
                      ≈ 2.05em；用大字自己的 clamp 換算，桌機／手機自動等比縮放。 */
-                  i === 1 ? { marginLeft: 'calc(var(--pg-fs-display) * var(--pg-display-stagger))' } : undefined
+                  /* 2026-09-16 使用者：三章兩行大標統一用 --pg-display-indent（桌機 90、手機約 32），不再依句子寬度各自算 */
+                  i === 1 ? { marginLeft: 'var(--pg-display-indent)' } : undefined
                 }
               >
                 <span
@@ -437,6 +441,10 @@ export default function LandingApp() {
               </span>
             ))}
           </h2>
+          {/* 03 副標（2026-09-16 使用者）：沿用 01／02 supporting copy 同一套樣式 */}
+          <p className="pg-t-body pg-intro01__sub" style={fadeUp(on01, 0.5, 0.6, 10)}>
+            {spaceIntro}
+          </p>
         </div>
       </div>
 
