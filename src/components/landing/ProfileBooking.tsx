@@ -280,6 +280,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
         <BookingResult coach={coach} service={service} venue={venue} date={selectedDate!} time={selectedTime!} email={email} onReset={resetAll} />
       ) : (
         <div className="pg-bk__body">
+          <div className="pg-bk-row">
           {/* ── 服務 ── */}
           {coach.services.length > 0 && (
             <div className="pg-bk-field">
@@ -330,6 +331,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
               </p>
             </div>
           ) : null}
+          </div>
 
           {/* ── 日曆或空白狀態 ── */}
           {!venue ? (
@@ -414,8 +416,13 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             </>
           )}
 
-          {/* ── 摘要與前往付款 ── */}
-          {summary}
+          {/* ── 摘要（精簡：教練／服務／球館已在上方選過）與前往付款 ── */}
+          <dl className="pg-bk-summary pg-bk-summary--grid">
+            <Row label="日期" value={selectedDate ? formatDate(selectedDate) : '尚未選擇'} />
+            <Row label="時間" value={selectedTime ?? '尚未選擇'} />
+            <Row label="時長" value={formatDuration(service)} />
+            <Row label="價格" value={formatPrice(service)} strong />
+          </dl>
           <div className="pg-bk-actions">
             <button type="button" className="pg-bk-btn pg-bk-btn--primary" onClick={() => setStep('payment')} disabled={!ready}>
               前往確認與付款

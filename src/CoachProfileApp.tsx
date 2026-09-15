@@ -118,11 +118,7 @@ export default function CoachProfileApp() {
               </div>
             </header>
 
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.about}</h2>
-              <p className="pg-pf-section__body">{coach.intro}</p>
-            </section>
-
+            <div className="pg-pf-details">
             <section className="pg-pf-section">
               <h2 className="pg-pf-section__title">預約資訊</h2>
               <dl className="pg-pf-services">
@@ -136,23 +132,6 @@ export default function CoachProfileApp() {
                 ))}
               </dl>
             </section>
-
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.courses}</h2>
-              {coach.courses.length === 0 ? (
-                <p className="pg-pf-empty">{profilePage.coursesEmpty}</p>
-              ) : (
-                <ul className="pg-pf-courses">
-                  {coach.courses.map((c) => (
-                    <li key={c.title}>
-                      <span className="pg-pf-courses__role">{c.role}</span>
-                      <a href={c.href}>{c.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-
             <section className="pg-pf-section">
               <h2 className="pg-pf-section__title">{S.venues}</h2>
               <ul className="pg-pf-venues">
@@ -173,12 +152,29 @@ export default function CoachProfileApp() {
                 ))}
               </ul>
             </section>
-
+            <section className="pg-pf-section">
+              <h2 className="pg-pf-section__title">{S.about}</h2>
+              <p className="pg-pf-section__body">{coach.intro}</p>
+            </section>
             <section className="pg-pf-section">
               <h2 className="pg-pf-section__title">{S.philosophy}</h2>
               <p className="pg-pf-quote">{coach.philosophy}</p>
             </section>
-
+            <section className="pg-pf-section">
+              <h2 className="pg-pf-section__title">{S.courses}</h2>
+              {coach.courses.length === 0 ? (
+                <p className="pg-pf-empty">{profilePage.coursesEmpty}</p>
+              ) : (
+                <ul className="pg-pf-courses">
+                  {coach.courses.map((c) => (
+                    <li key={c.title}>
+                      <span className="pg-pf-courses__role">{c.role}</span>
+                      <a href={c.href}>{c.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
             <section className="pg-pf-section">
               <h2 className="pg-pf-section__title">{S.credentials}</h2>
               {coach.credentials.length === 0 ? (
@@ -191,6 +187,7 @@ export default function CoachProfileApp() {
                 </ul>
               )}
             </section>
+            </div>
           </div>
 
           {/* ---------- 右欄：預約面板（桌機 sticky） ---------- */}
