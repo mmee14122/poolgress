@@ -118,7 +118,7 @@ export default function CoachProfileApp() {
               </div>
             </header>
 
-            {/* 左欄資訊列（2026-09-16 使用者）：介紹 → 經歷與資格（建立信任，條列）→ 教學方式與理念 → 課程；
+            {/* 左欄資訊列（2026-09-16 使用者）：介紹 → 經歷與資格（建立信任，條列）；理念與課程區塊 2026-09-16 使用者要求移除；
                 預約資訊與球館在右欄預約面板，這裡不重複。各區高度依內容決定。 */}
             <div className="pg-pf-details">
             <section className="pg-pf-section">
@@ -133,35 +133,6 @@ export default function CoachProfileApp() {
                 <ul className="pg-pf-credentials">
                   {coach.credentials.map((c) => (
                     <li key={c}>{c}</li>
-                  ))}
-                </ul>
-              )}
-            </section>
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.philosophy}</h2>
-              <p className="pg-pf-quote">{coach.philosophy}</p>
-              <dl className="pg-pf-facts pg-pf-facts--inline">
-                <div>
-                  <dt>{coachLabels.format}</dt>
-                  <dd>{coach.format}</dd>
-                </div>
-                <div>
-                  <dt>{coachLabels.levels}</dt>
-                  <dd>{coach.levels}</dd>
-                </div>
-              </dl>
-            </section>
-            <section className="pg-pf-section">
-              <h2 className="pg-pf-section__title">{S.courses}</h2>
-              {coach.courses.length === 0 ? (
-                <p className="pg-pf-empty">{profilePage.coursesEmpty}</p>
-              ) : (
-                <ul className="pg-pf-courses">
-                  {coach.courses.map((c) => (
-                    <li key={c.title}>
-                      <span className="pg-pf-courses__role">{c.role}</span>
-                      <a href={c.href}>{c.title}</a>
-                    </li>
                   ))}
                 </ul>
               )}
