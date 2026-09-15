@@ -221,6 +221,21 @@
    解除 home.css 的 min-height，上 32／下 40。大標字級見下方「三章標題統一」。只作用於首頁。 */
 .pg-landing-root .pg-intro01 { min-height: 0; padding-top: 32px; padding-bottom: 40px; }
 
+/* ---------- 三章標題統一（2026-09-16 使用者選 U52）----------
+   01 THE GAME GOES WITH YOU.／02 專業 × 無菸／03 YOUR TABLE. YOUR SPACE. 同一個字級：
+   1440 時 52px（原本 42／40／91）。同一個 clamp，手機自動等比；只作用於首頁。 */
+.pg-landing-root {
+  --pg-fs-chapter-unified: clamp(30px, 3.6vw, 52px);
+}
+.pg-landing-root .pg-app-intro .pg-t-chapter,
+.pg-landing-root .pg-coaches__title,
+.pg-landing-root .pg-intro01 .pg-t-display {
+  font-size: var(--pg-fs-chapter-unified);
+  line-height: 1.15;
+}
+/* 01 第二行的縮排是用 --pg-fs-chapter 算的，跟著統一字級走 */
+.pg-landing-root .pg-app-intro { --pg-fs-chapter: var(--pg-fs-chapter-unified); }
+
 /* ---------- 02 教練區標題：兩行（\n） ---------- */
 .pg-landing-root .pg-coaches__title { white-space: pre-line; }
 
