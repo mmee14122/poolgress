@@ -6,8 +6,8 @@
    ========================================================================== */
 
 .pg-profile-root {
-  --pg-pf-pad: clamp(22px, 5vw, 96px);
-  --pg-pf-max: 1440px;
+  --pg-pf-pad: var(--pg-page-pad);           /* 2026-09-16 使用者：與合作教練列表頁同一套版心 */
+  --pg-pf-max: var(--pg-page-max);
   --pg-pf-line: rgba(var(--pg-charcoal-rgb), 0.16);
   --pg-pf-line-soft: rgba(var(--pg-charcoal-rgb), 0.1);
   --pg-pf-bar-h: 64px;
@@ -107,8 +107,8 @@
 .pg-profile-root .pg-pf-grid {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(440px, 40%);   /* 2026-09-16 使用者：右欄改比例寬——1440 時約 560，125% 縮放（1152）時約 460，左欄不會被擠扁 */
-  column-gap: clamp(40px, 4vw, 72px);
+  grid-template-columns: minmax(0, 1fr) min(40%, 560px);   /* 2026-09-16 使用者：右欄 Booking 最大 560、靠右對齊版心右緣；左欄吃剩餘 */
+  column-gap: clamp(56px, 5vw, 72px);
   align-items: start;
 }
 .pg-profile-root .pg-pf-side { position: sticky; top: calc(var(--pg-nav-h-desktop, 72px) + 16px); }
@@ -117,8 +117,8 @@
 /* ---------- 標頭 ---------- */
 .pg-profile-root .pg-pf-head {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);   /* 2026-09-16 使用者選 P260：照片 260×325 */
-  column-gap: 28px;
+  grid-template-columns: 336px minmax(0, 1fr);   /* 2026-09-16 使用者：照片放大到 336×420（4:5 直式） */
+  column-gap: 32px;
   align-items: start;
 }
 .pg-profile-root .pg-pf-head__photo {
@@ -141,15 +141,15 @@
   line-height: 1.2;
 }
 .pg-profile-root .pg-pf-head__pitch {
-  margin: 10px 0 0;
+  margin: 14px 0 0;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--pg-text-body);
   max-width: 30em;
 }
 .pg-profile-root .pg-pf-topics {
-  list-style: none; margin: 12px 0 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 6px;
+  list-style: none; margin: 18px 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 8px;
 }
 .pg-profile-root .pg-pf-topics li {
   padding: 6px 11px;
@@ -161,11 +161,11 @@
   border-radius: 2px;
 }
 .pg-profile-root .pg-pf-facts {
-  margin: 14px 0 0;
-  padding-top: 12px;
+  margin: 22px 0 0;
+  padding-top: 16px;
   border-top: 1px solid var(--pg-pf-line-soft);
   display: grid;
-  row-gap: 5px;
+  row-gap: 8px;
 }
 .pg-profile-root .pg-pf-facts > div { display: grid; grid-template-columns: 5em 1fr; column-gap: 12px; align-items: baseline; }
 .pg-profile-root .pg-pf-facts dt { font-size: 11px; letter-spacing: 0.14em; color: rgba(var(--pg-charcoal-rgb), 0.55); }
@@ -176,8 +176,8 @@
 /* 左欄資訊列（2026-09-16 使用者）：單欄往下排——介紹 → 經歷與資格 → 教學方式與理念 → 課程；
    各區高度依內容決定，不為了對齊右欄硬撐。 */
 .pg-profile-root .pg-pf-details {
-  margin-top: 28px;
-  padding-top: 24px;
+  margin-top: 20px;                        /* 介紹區往上收（2026-09-16 使用者） */
+  padding-top: 20px;
   border-top: 1px solid var(--pg-pf-line-soft);
   display: grid;
   row-gap: 28px;
@@ -437,7 +437,10 @@
     transform: translateY(0);
     transition: transform 0.35s var(--pg-ease-out-3), opacity 0.35s var(--pg-ease-out-3);
   }
-  .pg-profile-root .pg-pf-bar__btn { width: 100%; }
+  .pg-profile-root .pg-pf-bar__btn { width: 100%; gap: 10px; }
+  .pg-profile-root .pg-pf-bar__chev { flex: 0 0 18px; transition: transform 0.2s ease; }
+  @media (hover: hover) { .pg-profile-root .pg-pf-bar__btn:hover .pg-pf-bar__chev { transform: translateY(-2px); } }
+  .pg-profile-root .pg-pf-bar__btn:active .pg-pf-bar__chev { transform: translateY(-2px); }
 }
 @media (max-width: 767px) {
   .pg-profile-root .pg-pf { padding-top: 24px; }
@@ -721,8 +724,9 @@
   }
   .pg-profile-root[data-sheet='open'] .pg-sheet-backdrop { opacity: 1; pointer-events: auto; }
 
-  /* 面板：固定於底、左右貼齊、上圓角 18；高度約 82%，矮螢幕接近全高 */
-  .pg-profile-root .pg-pf-side {
+  /* 面板：固定於底、左右貼齊、上圓角 18；高度約 82%，矮螢幕接近全高。
+     選擇器帶 [data-sheet] 提高特異度：否則被進場動畫的 [data-on='1'] .pg-pf-side { transform:none } 蓋掉，滑入／滑出動畫不會發生 */
+  .pg-profile-root[data-sheet] .pg-pf-side {
     display: block !important;
     position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 61;   /* top:auto 覆蓋桌機 sticky 的 top，否則面板會被抬高 64px */
     height: min(82dvh, 100dvh - 48px);
@@ -731,13 +735,14 @@
     border-radius: 18px 18px 0 0;
     box-shadow: 0 -8px 32px rgba(var(--pg-charcoal-rgb), 0.18);
     transform: translateY(105%);
-    transition: transform 0.38s var(--pg-ease-out-3);
+    opacity: 0;
+    transition: transform 0.35s ease-in-out, opacity 0.35s ease-in-out, visibility 0s linear 0.35s;   /* 收合：先動畫再隱藏 */
     visibility: hidden;
   }
   @media (max-height: 700px) {
-    .pg-profile-root .pg-pf-side { height: calc(100dvh - 24px); }
+    .pg-profile-root[data-sheet] .pg-pf-side { height: calc(100dvh - 24px); }
   }
-  .pg-profile-root[data-sheet='open'] .pg-pf-side { transform: translateY(0); visibility: visible; }
+  .pg-profile-root[data-sheet='open'] .pg-pf-side { transform: translateY(0); opacity: 1; visibility: visible; transition: transform 0.35s ease-in-out, opacity 0.35s ease-in-out, visibility 0s; }
   @media (prefers-reduced-motion: reduce) {
     .pg-profile-root .pg-pf-side, .pg-profile-root .pg-sheet-backdrop { transition: none; }
   }
@@ -754,9 +759,11 @@
   .pg-profile-root .pg-sheet__close {
     width: 44px; height: 44px; flex: 0 0 44px;
     display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--pg-pf-line); border-radius: 50%;
-    background: transparent; color: var(--pg-charcoal); cursor: pointer;
+    border: 0; border-radius: 0; background: transparent; box-shadow: none;
+    color: var(--pg-charcoal); cursor: pointer;
+    transition: opacity 0.2s ease;
   }
+  .pg-profile-root .pg-sheet__close:hover { opacity: 0.7; }
   .pg-profile-root .pg-sheet__close:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 2px; }
 
   /* 單一捲動區：內容 + sticky 底部操作區 */

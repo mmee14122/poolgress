@@ -1,0 +1,49 @@
+/* ==========================================================================
+   page-intro.css — 分頁開場（2026-09-16）：合作教練頁與 App 玩法頁共用。
+   由 coaches.css 的 .pg-cp-hero（使用者選定的 H3 矮版）原樣搬來，兩頁只換文字：
+   Eyebrow → 主標 → 副標（垂直、同一條左基準線）→ 1px 淡線（rgba(37,44,48,.12)）。（2026-09-16 使用者改垂直排）
+   容器：max 1680、左右 clamp(22px, 5vw, 96px)，與合作教練頁 main 相同；導覽列到開場 28px。
+   ========================================================================== */
+/* 分頁共用版心 token（2026-09-16 使用者：列表頁與預約頁必須同一套 Grid）：
+   合作教練列表、App 玩法、教練詳細／預約頁的 main 都用這兩個值，不各自寫死。 */
+:root {
+  --pg-page-max: 1680px;
+  --pg-page-pad: clamp(22px, 5vw, 96px);
+}
+.pg-page-intro { color: var(--pg-charcoal); }
+.pg-page-intro__inner {
+  max-width: var(--pg-page-max);
+  margin-inline: auto;
+  padding: 28px var(--pg-page-pad) 40px;              /* 副標下留 40 再接淡線（2026-09-16 使用者：垂直排） */
+  display: block;
+}
+/* 線要對齊內容 grid 的左右邊界，所以底線畫在 inner 的內容盒上：用 padding 內縮後再以 ::after 取代 border */
+.pg-page-intro__inner { border-bottom: 0; position: relative; }
+.pg-page-intro__inner::after {
+  content: '';
+  position: absolute;
+  left: var(--pg-page-pad);
+  right: var(--pg-page-pad);
+  bottom: 0;
+  height: 1px;
+  background: rgba(var(--pg-charcoal-rgb), 0.12);
+}
+.pg-page-intro__title {
+  margin: 8px 0 0;
+  font-family: var(--pg-font-serif);
+  font-size: clamp(26px, 2.4vw, 36px);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+  color: var(--pg-charcoal);
+  white-space: normal;
+}
+.pg-page-intro__tline + .pg-page-intro__tline { margin-left: 0.5em; }   /* 桌機同一行時兩段留半個字距（去標點後） */
+.pg-page-intro__intro { margin: 20px 0 0; max-width: 44em; }      /* 大標下 20；約 700px 內自然換行；不加粗 */
+
+@media (max-width: 767px) {
+  .pg-page-intro__tline { display: block; margin-left: 0; }   /* 手機：\n 處換行 */
+  .pg-page-intro__inner { padding: 32px 22px 28px; }
+  .pg-page-intro__inner::after { left: 22px; right: 22px; }
+  .pg-page-intro__intro { margin-top: 14px; }
+}

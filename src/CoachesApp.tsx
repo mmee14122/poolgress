@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { CoachCard } from './components/landing/CoachCard'
+import { PageIntro } from './components/landing/PageIntro'
 import { coaches, coachesPage } from './data/partner-coaches'
 import { landingContactEmail, landingNav } from './data/landing'
 
@@ -33,13 +34,10 @@ export default function CoachesApp() {
     <div className="pg-coaches-root" data-on={on ? '1' : '0'}>
       <Navbar links={nav} minimal logoHref="/" />
 
+      {/* 開場：與 App 玩法頁共用同一個 PageIntro（眉標／主標／副標／淡線） */}
+      <PageIntro eyebrow={coachesPage.eyebrow} title={coachesPage.title} intro={coachesPage.intro} />
+
       <main>
-        {/* 開場：眉標／主標／一句說明，左對齊、留白大 */}
-        <header className="pg-cp-hero">
-          <p className="pg-t-eyebrow">{coachesPage.eyebrow}</p>
-          <h1 className="pg-cp-title">{coachesPage.title}</h1>
-          <p className="pg-t-body pg-cp-intro">{coachesPage.intro}</p>
-        </header>
 
         {/* 三位教練：桌機三欄等寬；卡片內容與首頁相同 */}
         <section className="pg-cp-list" aria-label="合作教練">
@@ -53,7 +51,11 @@ export default function CoachesApp() {
         {/* 收尾：教練合作洽談 */}
         <section className="pg-cp-closing" id="join">
           <p className="pg-t-manifesto pg-cp-closing__eyebrow">{coachesPage.closing.eyebrow}</p>
-          <h2 className="pg-t-finale-h2 pg-cp-closing__title">{coachesPage.closing.title}</h2>
+          <h2 className="pg-t-finale-h2 pg-cp-closing__title">
+            {coachesPage.closing.title.split('\n').map((line) => (
+              <span key={line} className="pg-cp-closing__tline">{line}</span>
+            ))}
+          </h2>
           <p className="pg-t-body pg-cp-closing__body">{coachesPage.closing.body}</p>
           <a href={mailto} className="pg-t-cta pg-primary-cta pg-cp-closing__cta">
             {coachesPage.closing.ctaLabel}

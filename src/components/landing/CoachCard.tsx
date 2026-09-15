@@ -77,7 +77,7 @@ export function CoachCard({
 
         {/* 手機：低調的文字連結（桌機隱藏，桌機靠 hover 提示） */}
         <span className="pg-coach-card__more" aria-hidden="true">
-          {coachLabels.cta} ↗
+          {coachLabels.ctaMobile}
         </span>
       </div>
     </a>

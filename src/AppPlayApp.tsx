@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
+import { PageIntro } from './components/landing/PageIntro'
 import { PillarBlock, useLandingReveal, fadeUp, EASE3 } from './LandingApp'
 import { appChapter, appPlayPage, landingNav, palette as P, pillarSections } from './data/landing'
 
@@ -31,6 +32,9 @@ export default function AppPlayApp() {
   return (
     <main id="top" className="pg-home-root pg-landing-root pg-app-play-root" style={{ background: P.bg, color: P.text }}>
       <Navbar links={landingNav} minimal logoHref="/" />
+
+      {/* 開場：與合作教練頁共用同一個 PageIntro（2026-09-16 使用者：兩頁同一套 Design System） */}
+      <PageIntro eyebrow={appPlayPage.intro.eyebrow} title={appPlayPage.intro.title} intro={appPlayPage.intro.intro} />
 
       {/* 整段沿用首頁原本的 App 長敘事：同一個淡藍底 .pg-app-world。
           「01 / THE APP」章節開場依使用者 2026-09-16 指示移除，直接從 01 / CHALLENGE 開始。 */}

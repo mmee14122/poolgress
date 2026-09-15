@@ -146,6 +146,11 @@ export default function CoachProfileApp() {
                 <h2 className="pg-pf-section__title">{S.about}</h2>
                 <p className="pg-pf-section__body">{coach.intro}</p>
               </section>
+              {/* 教學方式（2026-09-16 使用者預留）：教學理念／課程方式／適合學員，資料進來前顯示待補 */}
+              <section className="pg-pf-section">
+                <h2 className="pg-pf-section__title">{S.method}</h2>
+                <p className="pg-pf-empty">{profilePage.methodEmpty}</p>
+              </section>
               <section className="pg-pf-section">
                 <h2 className="pg-pf-section__title">{S.credentials}</h2>
                 {coach.credentials.length === 0 ? (
@@ -175,9 +180,10 @@ export default function CoachProfileApp() {
                 <p id="sheet-title" className="pg-sheet__title">預約教練</p>
                 <p className="pg-sheet__coach">{coach.name}</p>
               </div>
-              <button ref={closeRef} type="button" className="pg-sheet__close" onClick={closeSheet} aria-label="關閉預約面板">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
-                  <path d="M6 6l12 12M18 6L6 18" />
+              {/* 向下 chevron：語意＝面板往下收起（2026-09-16 使用者）；只有箭頭、觸控範圍 44×44 */}
+              <button ref={closeRef} type="button" className="pg-sheet__close" onClick={closeSheet} aria-label="收起預約面板">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
             </div>
@@ -190,8 +196,12 @@ export default function CoachProfileApp() {
 
       {/* 手機底部固定按鈕：開啟 Bottom Sheet；面板開啟時隱藏 */}
       <div className="pg-pf-bar" aria-hidden={sheetOpen}>
-        <button ref={openerRef} type="button" className="pg-pf-btn pg-pf-bar__btn" onClick={openSheet} tabIndex={sheetOpen ? -1 : 0}>
-          {profilePage.mobileCta}
+        {/* 整條可點；文字右側細線 chevron-up 表示「往上展開」（2026-09-16 使用者） */}
+        <button ref={openerRef} type="button" className="pg-pf-btn pg-pf-bar__btn" onClick={openSheet} tabIndex={sheetOpen ? -1 : 0} aria-expanded={sheetOpen}>
+          <span>{profilePage.mobileCta}</span>
+          <svg className="pg-pf-bar__chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 15l6-6 6 6" />
+          </svg>
         </button>
       </div>
 

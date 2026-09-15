@@ -217,6 +217,8 @@ export const coachLabels = {
   format: '授課方式',
   venue: '授課地點',
   cta: '查看課程與預約',
+  /** 手機卡片底部的文字連結（2026-09-16 使用者） */
+  ctaMobile: '查看課程・預約　↗',
   /** 三張卡的學習層級（2026-09-16 使用者）：依卡片順序 01 START → 02 IMPROVE → 03 COMPETE */
   levels3: [
     { no: '01', en: 'START', zh: '新手入門' },
@@ -238,11 +240,11 @@ export const coachesSection = {
 /** coaches.html 列表頁文案 */
 export const coachesPage = {
   eyebrow: 'COACHING',
-  title: '跟著教練，打出自己的節奏。',
+  title: '跟著教練\n打出自己的節奏',   /* 去標點（2026-09-16 使用者）；\n＝手機換行點，桌機以空格接成一行 */
   intro: '專業 × 無菸，預約舒適的撞球學習體驗。',
   closing: {
     eyebrow: 'JOIN US',
-    title: '和我們一起，讓撞球變得更好',
+    title: '和我們一起\n讓撞球變得更好',   /* 去標點（2026-09-16 使用者）；\n＝手機換行點，桌機一行 */
     body: '成為 Poolgress 合作教練，和我們一起打造專業、無菸、讓更多人願意走進來的撞球學習環境。',
     ctaLabel: '加入我們',
   },
@@ -257,9 +259,11 @@ export const profilePage = {
     venues: '授課球館',
     philosophy: '教學方式與理念',
     credentials: '經歷與資格',
+    method: '教學方式',
   },
   coursesEmpty: '課程籌備中，開課後會在這裡列出。',
   credentialsEmpty: '經歷與資格待教練提供後補上。',
+  methodEmpty: '教學方式、課程進行方式與適合學員，待教練提供後補上。',
   mapLink: '查看地圖',
   mapPending: '地圖連結待補',
   mobileCta: '查看可預約時段',

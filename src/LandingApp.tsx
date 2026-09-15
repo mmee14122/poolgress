@@ -334,7 +334,7 @@ export default function LandingApp() {
           近乎 full-bleed 的大幅照片 Hero：01 / THE APP 眉標、THE GAME GOES WITH YOU.、中文都疊在圖上，
           圖下沒有功能摘要（AppPreview 元件保留未使用），直接接 02。#app 錨點在圖內眉標。 */}
       <div className="pg-app-world">
-        <AppHero on={shown('s02')} refCb={reg('s02')} />
+        <AppHero on={shown('s02')} refCb={reg('s02')} link />
       </div>
 
       {/* ---------- 02 / THE COACHES（2026-09-16 重設計）：App 之後、場館之前 ----------
@@ -373,6 +373,12 @@ export default function LandingApp() {
         {/* 「查看全部教練」連結：2026-09-16 使用者要求移除（列表頁仍由導覽「合作教練」進入） */}
         </div>
       </section>
+
+      {/* 02 → 03 的章節分界（2026-09-16 使用者）：1px #D8D3C9 細線，寬度對齊 content container，
+          教練內容 → 線約 110、線 → 03 眉標約 80；不是設計元素，只是讓兩章分界清楚 */}
+      <div className="pg-section-divider site-container" aria-hidden="true">
+        <hr className="pg-section-divider__line" />
+      </div>
 
       {/* ---------- Hero → 01 Editorial Typography Transition ----------
           Typography first, graphic second：乾淨水平交界，140–220px 呼吸空間，

@@ -119,12 +119,12 @@ export const appHeroImage = '/ui/assets/landing/app-hero.webp'
 export const spaceIntro = '打球、相聚，或只是待一會。這裡有屬於你的空間。'
 
 /** landing 對外信箱（2026-09-06 使用者指定；與全站 site.contactEmail 分開，不影響舊站） */
-export const landingContactEmail = 'poolgresswork@gmail.com'
+export const landingContactEmail = 'poolgress@poolgress.com'   /* 2026-09-16 使用者：洽談合作與頁尾信箱改此 */
 
 export const finale = {
   /* 2026-09-06：App 未上架，下載入口全面移除，結尾只剩合作洽詢 */
   en: 'LET US KNOW',
-  zh: '一起讓想法成真',            /* 2026-09-16 使用者：去句號 */
+  zh: '一起\n讓撞球有更多可能',    /* 2026-09-16 使用者改稿：兩行 */
   ctas: [{ label: '洽談合作', href: `mailto:${landingContactEmail}?subject=${encodeURIComponent('Poolgress 合作洽詢')}` }],
 }
 
@@ -173,9 +173,10 @@ export const dualEntry = {
   play: {
     no: '01',
     short: 'PLAY',
+    tag: '01 / THE APP',        /* 首頁三大入口編號（2026-09-16 使用者） */
     title: 'PLAY WITH APP',
     desc: '闖關、挑戰，讓每一次上桌都有新的目標。',
-    hover: 'EXPLORE APP',
+    hover: 'EXPLORE THE APP',   /* 2026-09-16 使用者 */
     href: '/app',            /* 2026-09-16 使用者：跳到 App 玩法頁 */
     image: '/ui/assets/landing/play-entry.webp', /* 2026-09-16 使用者提供的 PLAY 入口圖（PNG → WebP，2000 寬） */
     imagePlaceholder: false,
@@ -183,6 +184,7 @@ export const dualEntry = {
   learn: {
     no: '02',
     short: 'LEARN',
+    tag: '02 / COACHING',
     title: 'LEARN WITH COACH',
     desc: '找到適合你的教練，在舒適的環境開始學習。',
     hover: 'FIND A COACH',
@@ -205,10 +207,18 @@ export const appPreview = {
 
 /** /app 玩法頁：章節標籤（CHALLENGE → COMPETE → CONNECT）與收尾 */
 export const appPlayPage = {
+  /** /app 最上方滿版 Hero 的眉標：只寫 THE APP（01／02／03 是首頁入口編號，內頁不用） */
+  heroEyebrow: 'THE APP',
+  /** 分頁開場（PageIntro）——2026-09-16 使用者最終指示改由滿版 Hero 取代，資料保留 */
+  intro: {
+    eyebrow: 'THE APP',
+    title: '從一場遊戲\n開始喜歡撞球',   /* 去標點（2026-09-16 使用者）；\n＝手機換行點，桌機以半字距接成一行 */
+    intro: '闖關、挑戰、紀錄與分享，讓每一局都成為下一次進步的開始。',
+  },
   chapterTags: { s02: 'CHALLENGE', s03: 'COMPETE', s04: 'CONNECT' } as Record<string, string>,
   finale: {
     en: 'PLAY. LEARN. PROGRESS.',
-    zh: '讓每一局，都有新的挑戰與相遇。',   /* 2026-09-16 使用者改稿 */
+    zh: '讓每一局\n都有新的挑戰與相遇',   /* 2026-09-16 使用者：分兩行、去標點 */
     ctas: [
       { label: '尋找教練', href: '/coaches.html' },   /* 2026-09-16 使用者：導到合作教練列表頁 */
       { label: '回到首頁', href: '/' },

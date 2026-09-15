@@ -5,8 +5,8 @@
    ========================================================================== */
 
 .pg-coaches-root {
-  --pg-cp-pad: clamp(22px, 5vw, 96px);
-  --pg-cp-max: 1680px;
+  --pg-cp-pad: var(--pg-page-pad);
+  --pg-cp-max: var(--pg-page-max);
   min-height: 100vh;
   background: var(--pg-ivory);
   color: var(--pg-charcoal);
@@ -68,8 +68,7 @@
   row-gap: 64px;
   padding-top: 32px;
   padding-bottom: 72px;
-  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
-  align-items: stretch;
+  align-items: stretch;                    /* 上邊線改由共用 PageIntro 畫 */
 }
 /* 2026-09-16 使用者定案：≥1200 時卡片固定 357 寬、三張置中、欄距 48（更窄回等分三欄，避免橫向捲動） */
 /* 2026-09-16 使用者定案 A：卡片吃滿內容寬（1440 時每張 405）、照片 1:1（與首頁卡片相同比例） */
@@ -88,6 +87,7 @@
 }
 .pg-coaches-root .pg-cp-closing__eyebrow { color: var(--pg-walnut); }
 .pg-coaches-root .pg-cp-closing__title { margin-top: 16px; }
+.pg-coaches-root .pg-cp-closing__tline + .pg-cp-closing__tline { margin-left: 0.5em; }   /* 桌機一行、兩段半字距 */
 .pg-coaches-root .pg-cp-closing__body { margin: 20px auto 0; max-width: 30em; }
 .pg-coaches-root .pg-cp-closing__cta {
   display: inline-flex;
@@ -122,4 +122,5 @@
     padding-bottom: 72px;
   }
   .pg-coaches-root .pg-cp-closing { padding: 64px 0 88px; }
+  .pg-coaches-root .pg-cp-closing__tline { display: block; margin-left: 0; }   /* 手機：\n 處換行 */
 }
