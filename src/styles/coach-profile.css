@@ -810,3 +810,20 @@
   .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-dock { margin-top: auto; }
   .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk__body { padding-bottom: 0; }
 }
+
+/* ---------- 月份切換箭頭（2026-09-16 使用者）：只留裸的 ‹ ›，無圓框、無底；點擊範圍仍 44×44（透明） ----------
+   放在檔尾且用較高特異度，蓋過上面各視窗高度分檔的 30／34／40 尺寸。 */
+.pg-profile-root .pg-bk .pg-bk-month__nav {
+  width: 44px; height: 44px;
+  border: 0; border-radius: 0; background: transparent;
+  color: var(--pg-charcoal);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.pg-profile-root .pg-bk .pg-bk-month__nav svg { width: 26px; height: 26px; }
+.pg-profile-root .pg-bk .pg-bk-month__nav:disabled { opacity: 0.25; transform: none; }
+@media (hover: hover) {
+  .pg-profile-root .pg-bk .pg-bk-month__nav:hover:not(:disabled) { opacity: 0.7; background: transparent; }
+  .pg-profile-root .pg-bk .pg-bk-month__nav[aria-label='上個月']:hover:not(:disabled) { transform: translateX(-2px); }
+  .pg-profile-root .pg-bk .pg-bk-month__nav[aria-label='下個月']:hover:not(:disabled) { transform: translateX(2px); }
+}
+.pg-profile-root .pg-bk .pg-bk-month__nav:focus-visible { outline: 1px solid var(--pg-charcoal); outline-offset: 2px; }
