@@ -13,7 +13,6 @@ import { landingNav } from './data/landing'
 import { coaches, coachesSection } from './data/partner-coaches'
 import { CoachCard } from './components/landing/CoachCard'
 import { DualEntry } from './components/landing/DualEntry'
-import { AppPreview } from './components/landing/AppPreview'
 import { AppHero } from './components/landing/AppHero'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
@@ -332,11 +331,10 @@ export default function LandingApp() {
       <DualEntry on={shown('dual')} refCb={reg('dual')} />
 
       {/* 01 THE APP（2026-09-16 使用者規格）：米白底、不再有獨立灰藍區。
-          眉標 → 近乎 full-bleed 的大幅照片 Hero（THE GAME GOES WITH YOU. 直接疊在圖上）
-          → CHALLENGE／COMPETE／CONNECT 摘要 → 120–160 大留白 → 02。#app 錨點在 AppHero 的眉標。 */}
+          近乎 full-bleed 的大幅照片 Hero：01 / THE APP 眉標、THE GAME GOES WITH YOU.、中文都疊在圖上，
+          圖下沒有功能摘要（AppPreview 元件保留未使用），直接接 02。#app 錨點在圖內眉標。 */}
       <div className="pg-app-world">
         <AppHero on={shown('s02')} refCb={reg('s02')} />
-        <AppPreview on={shown('s02')} />
       </div>
 
       {/* ---------- 02 / THE COACHES（2026-09-16 重設計）：App 之後、場館之前 ----------

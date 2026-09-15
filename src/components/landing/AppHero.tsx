@@ -4,7 +4,7 @@ import { fadeUp } from '../../LandingApp'
 /**
  * 01 / THE APP 章節 Hero（2026-09-16 使用者規格）：大幅攝影＋Typography＋留白，不是 SaaS 功能區也不是廣告 Banner。
  *
- * 眉標「01 / THE APP」留在橫幅上方（#app 錨點掛在這裡）；
+ * 眉標「01 / THE APP」在圖內、主標上方（#app 錨點掛在這裡）；圖下方沒有功能摘要，直接接 02。
  * 橫幅：THE APP 主視覺（play.webp）近乎 full-bleed、桌機高 420–520、object-fit: cover、charcoal 40% 遮罩；
  * 文字直接疊在圖上、靠左對齊網站 grid：THE GAME／GOES WITH YOU.（白色 serif display）＋三行中文（暖白）。
  * 整張 Hero 是單一 <a> 進 /app：hover 圖 1.02、遮罩加深、右下角低調淡入「EXPLORE THE APP ↗」，400ms；
@@ -16,16 +16,12 @@ export function AppHero({ on, refCb }: { on: boolean; refCb: (el: HTMLElement | 
   const [l1, l2] = appChapter.titleLines
   return (
     <section ref={refCb} id="app-hero" className="pg-app-hero">
-      <div className="pg-app-hero__head site-container">
-        <p id="app" className="pg-anchor-line pg-t-eyebrow" style={fadeUp(on, 0, 0.5, 8)}>
-          {appChapter.eyebrow}
-        </p>
-      </div>
-
-      <a href={appPlayHref} className="pg-app-hero__banner" aria-label={`${l1} ${l2}，探索 App 玩法`} style={fadeUp(on, 0.08, 0.9, 16)}>
+      {/* 2026-09-16 使用者：眉標「01 / THE APP」移進圖內，與主標、中文同一個 overlay 容器；圖上方不再有米白空白 */}
+      <a href={appPlayHref} className="pg-app-hero__banner" aria-label={`${l1} ${l2}，探索 App 玩法`} style={fadeUp(on, 0.05, 0.9, 16)}>
         {visual?.image && <img src={visual.image} alt={appPreview.imageAlt} />}
         <span className="pg-app-hero__veil" aria-hidden="true" />
         <span className="pg-app-hero__copy">
+          <span id="app" className="pg-anchor-line pg-app-hero__eyebrow">{appChapter.eyebrow}</span>
           <span className="pg-app-hero__title">
             <span className="pg-app-hero__line">{l1}</span>
             {/* 手機：GOES WITH／YOU. 拆成兩行（CSS 控制） */}

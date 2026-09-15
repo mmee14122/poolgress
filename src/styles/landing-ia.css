@@ -294,8 +294,8 @@
    眉標在橫幅上方；橫幅近乎 full-bleed（兩側各留 24）、桌機高 clamp(420,50vh,520)、cover、
    charcoal 40% 遮罩；文字疊在圖上、靠左對齊網站 grid。整張是單一 <a>，hover 圖 1.02／遮罩加深／右下角淡入。
    ========================================================================== */
-.pg-landing-root .pg-app-hero { padding-top: 26px; }                       /* 眉標行框偏移 6 → 實測 32 */
-.pg-landing-root .pg-app-hero__head { padding-bottom: 24px; }
+.pg-landing-root .pg-app-hero { padding-top: 0; padding-bottom: 96px; }   /* 圖上方無空白；圖下直接留 section spacing 進 02 */
+.pg-landing-root .pg-app-hero__eyebrow { display: block; margin-bottom: 32px; font-size: 11px; letter-spacing: 0.3em; color: rgba(var(--pg-cream-rgb, 248, 244, 236), 0.85); }
 .pg-landing-root .pg-app-hero__banner {
   --hero-dur: 0.4s;
   --hero-ease: var(--pg-ease-out-3, cubic-bezier(0.22, 1, 0.36, 1));
@@ -394,7 +394,8 @@
 
 /* 手機：直式 76svh、主標三行、文字在下方、EXPLORE THE APP 常駐 */
 @media (max-width: 767px) {
-  .pg-landing-root .pg-app-hero__head { padding-bottom: 16px; }
+  .pg-landing-root .pg-app-hero { padding-bottom: 56px; }
+  .pg-landing-root .pg-app-hero__eyebrow { margin-bottom: 24px; }
   .pg-landing-root .pg-app-hero__banner { margin-inline: 16px; height: 76svh; min-height: 480px; max-height: 720px; }
   .pg-landing-root .pg-app-hero__copy { justify-content: flex-end; padding: 0 20px 64px; }
   .pg-landing-root .pg-app-hero__title { font-size: clamp(34px, 10vw, 44px); }
