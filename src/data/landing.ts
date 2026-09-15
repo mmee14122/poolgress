@@ -205,7 +205,7 @@ export const appPlayPage = {
     en: 'PLAY. LEARN. PROGRESS.',
     zh: '讓每一次上桌，都有下一個挑戰與下一場。',
     ctas: [
-      { label: '尋找教練', href: '/#coach' },
+      { label: '尋找教練', href: '/coaches.html' },   /* 2026-09-16 使用者：導到合作教練列表頁 */
       { label: '回到首頁', href: '/' },
     ],
   },
