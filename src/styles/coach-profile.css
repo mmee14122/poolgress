@@ -795,3 +795,15 @@
   .pg-profile-root[data-sheet='open'] .pg-pf-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
   .pg-profile-root .pg-pf { padding-bottom: calc(96px + var(--pg-pf-bar-h)); }
 }
+
+/* 手機 sheet：內容比面板矮時，操作列貼在面板底、不留一段空白（2026-09-16 使用者）——
+   捲動區改成 flex column，面板主體撐滿高度，操作列 margin-top:auto 推到底；內容較長時 sticky 行為不變 */
+@media (max-width: 1023px) {
+  .pg-profile-root .pg-pf-side__inner { display: flex; flex-direction: column; }
+  .pg-profile-root .pg-bk { flex: 1 0 auto; display: flex; flex-direction: column; min-height: 100%; }
+  .pg-profile-root .pg-bk__body { flex: 1 0 auto; display: flex; flex-direction: column; }
+  .pg-profile-root .pg-bk__body > * { flex: 0 0 auto; }
+  .pg-profile-root .pg-bk-dock,
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-dock { margin-top: auto; }
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk__body { padding-bottom: 0; }
+}

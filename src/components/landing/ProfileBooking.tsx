@@ -74,6 +74,14 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
       inner.scrollTo({ top, behavior: 'smooth' })
     })
   }
+  /** 手機 sheet：選好時段後把面板捲到底，讓摘要與底部操作列一起看到（2026-09-16 使用者） */
+  const revealBottom = () => {
+    if (!window.matchMedia('(max-width: 1023px)').matches) return
+    requestAnimationFrame(() => {
+      const inner = timesRef.current?.closest<HTMLElement>('.pg-pf-side__inner')
+      inner?.scrollTo({ top: inner.scrollHeight, behavior: 'smooth' })
+    })
+  }
   /** 換球館後原本選的日期／時段失效：顯示提示（說明清了什麼），直到重新選日期 */
   const [venueChanged, setVenueChanged] = useState<null | 'date' | 'time'>(null)
   const paying = useRef(false)
@@ -459,7 +467,15 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                       <ul className="pg-bk-times__list">
                         {times.map((t) => (
                           <li key={t}>
-                            <button type="button" onClick={() => setSelectedTime(t)} aria-pressed={selectedTime === t} className="pg-bk-time">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedTime(t)
+                                revealBottom()
+                              }}
+                              aria-pressed={selectedTime === t}
+                              className="pg-bk-time"
+                            >
                               {t}
                             </button>
                           </li>
