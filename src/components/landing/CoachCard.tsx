@@ -5,14 +5,13 @@ import { coachLabels, coachProfileHref, type PartnerCoach } from '../../data/par
  *
  * 目標：不點進詳細頁也能回答「教什麼／適合誰／在哪裡怎麼上／從哪裡預約」。
  * 資訊順序固定（三張一致，方便比較）：
- *   照片（4:3，比舊版 4:5 矮，讓下方資訊與按鈕一起進視窗）
- *   → 教學方向（最醒目）→ 姓名 → 一句教學說明 → 2–3 個項目標籤
- *   → 適合對象／授課方式／授課地點 → 主按鈕「查看課程與預約」（實底、永遠可見）
+ *   照片 → 教學方向（或姓名，nameFirst）→ 姓名（或教學方向）→ 一句教學說明 → 2–3 個項目標籤
+ *   → 適合對象／授課方式／授課地點（compact 不顯示）→ 底部「查看課程與預約」（compact 不顯示）
  *
- * 整張卡都可點（主按鈕用 stretched-link 覆蓋整張卡），hover 時照片放大、浮出「查看教練頁 ↗」、
- * 主按鈕加深——讓人一看就知道點照片會進教練頁（2026-09-16 使用者）。
- * compact＝首頁用：不顯示「適合對象／授課方式／授課地點」三行，也不顯示「查看課程與預約」按鈕
- *（2026-09-16 使用者）；連結仍在（視覺隱藏、鍵盤與讀屏可用），整張卡靠 hover 提示可點。列表頁維持完整。
+ * 互動（2026-09-16 使用者規格）：整張卡是**單一 <a>**，沒有巢狀連結或按鈕；
+ * hover／focus-visible 時整卡同步：藍灰外框、淡陰影、上移 3px、照片在容器內放大 1.02、
+ * 底部入口變深藍灰底米白字；內文不動。照片上不再有浮動按鈕或遮罩。
+ * 外框預先保留（透明 1px），hover 不會改變尺寸或推動鄰卡。手機不靠 hover，點一下即進入。
  *
  * 樣式在 styles/coach-card.css（.pg-coach-card 自成根，不依賴 landing/coaches root）。
  * 進場動畫由外層決定（首頁用 fadeUp 的 style，列表頁用 data-on）。
@@ -27,8 +26,9 @@ export function CoachCard({
   coach: PartnerCoach
   style?: React.CSSProperties
   eager?: boolean
+  /** 首頁：不顯示三行小資訊與底部入口（2026-09-16 使用者） */
   compact?: boolean
-  /** 列表頁：大字放姓名（原標題位置），教學方向改成小字那行（2026-09-16 使用者） */
+  /** 列表頁：大字放姓名，教學方向改成小字那行（2026-09-16 使用者） */
   nameFirst?: boolean
 }) {
   const venueText =
@@ -39,17 +39,16 @@ export function CoachCard({
         : `${coach.venues[0].city}・${coach.venues[0].name} 等 ${coach.venues.length} 處`
 
   return (
-    <article className="pg-coach-card" style={style} data-compact={compact ? '1' : '0'}>
+    <a
+      className="pg-coach-card"
+      href={coachProfileHref(coach.id)}
+      style={style}
+      data-compact={compact ? '1' : '0'}
+      aria-label={`${coach.name}：${coach.focus}，${coachLabels.cta}`}
+    >
       <div className="pg-coach-card__photo">
         <img src={coach.photo} alt={coach.photoAlt} loading={eager ? 'eager' : 'lazy'} />
         {coach.placeholder && <span className="pg-coach-card__badge">{coachLabels.placeholderPhoto}</span>}
-        {/* hover 時浮出的提示：整張卡可點 */}
-        <span className="pg-coach-card__hint" aria-hidden="true">
-          {coachLabels.hoverHint}
-          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 17 17 7M8.5 7H17v8.5" />
-          </svg>
-        </span>
       </div>
 
       <div className="pg-coach-card__body">
@@ -70,29 +69,32 @@ export function CoachCard({
         </ul>
 
         {!compact && (
-        <dl className="pg-coach-card__facts">
-          <div>
-            <dt>{coachLabels.levels}</dt>
-            <dd>{coach.levels}</dd>
-          </div>
-          <div>
-            <dt>{coachLabels.format}</dt>
-            <dd>{coach.format}</dd>
-          </div>
-          <div>
-            <dt>{coachLabels.venue}</dt>
-            <dd>{venueText}</dd>
-          </div>
-        </dl>
+          <dl className="pg-coach-card__facts">
+            <div>
+              <dt>{coachLabels.levels}</dt>
+              <dd>{coach.levels}</dd>
+            </div>
+            <div>
+              <dt>{coachLabels.format}</dt>
+              <dd>{coach.format}</dd>
+            </div>
+            <div>
+              <dt>{coachLabels.venue}</dt>
+              <dd>{venueText}</dd>
+            </div>
+          </dl>
         )}
 
-        <a className="pg-coach-card__cta" href={coachProfileHref(coach.id)}>
-          <span>{coachLabels.cta}</span>
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </a>
+        {/* 底部入口：純顯示（整張卡就是連結），不再是第二個 <a> */}
+        {!compact && (
+          <span className="pg-coach-card__cta" aria-hidden="true">
+            <span>{coachLabels.cta}</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        )}
       </div>
-    </article>
+    </a>
   )
 }

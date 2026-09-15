@@ -2,24 +2,38 @@
    coach-card.css — 合作教練卡片（2026-09-16 重設計）。
    首頁 02 區塊（landing-entry）與 coaches.html 列表（coaches-entry）共用；
    選擇器一律以 .pg-coach-card 開頭，不動共用檔。
-   語言與正式首頁一致：Ivory 底、Charcoal 字、Walnut 眉標、serif 600 標題、
-   照片 3px 圓角、無卡片底色／陰影；主按鈕 Sand 實底、直角、永遠可見。
+   語言與正式首頁一致：Ivory 底、Charcoal 字、Walnut 眉標、serif 600 標題。
+
+   互動（2026-09-16 使用者規格）：整張卡是單一 <a>；hover／focus-visible 時整卡同步——
+   藍灰外框、淡陰影、上移 3px、照片在容器內放大 1.02、底部入口深藍灰底米白字；
+   外框預先保留（透明），不造成尺寸或鄰卡位移；動畫 200ms；減少動態時停用上移與縮放。
    ========================================================================== */
 
 .pg-coach-card {
-  position: relative;               /* stretched link 的定位基準 */
-  min-width: 0;
+  --cc-radius: 8px;
+  --cc-pad: 12px;
+  --cc-hover-line: #6f8fa3;                              /* 品牌藍灰 --pg-primary */
+  --cc-cta-hover: #2c3e4a;                               /* 深藍灰 */
+  position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  padding: var(--cc-pad);
+  border: 1px solid transparent;                         /* 預留外框空間 */
+  border-radius: var(--cc-radius);
   color: var(--pg-charcoal);
+  text-decoration: none;
+  background: transparent;
+  transform: translateY(0);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-/* 照片 4:3（舊版 4:5）：1440 寬三欄時約 300px 高，讓資訊與按鈕一起進視窗 */
+/* 照片 4:3；放大只在容器內（overflow hidden） */
 .pg-coach-card__photo {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 4px;
   background: rgba(var(--pg-charcoal-rgb), 0.06);
 }
 .pg-coach-card__photo img {
@@ -29,48 +43,9 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 18%;
-  transition: transform 0.9s var(--pg-ease-out-3);
+  transform: scale(1);
+  transition: transform 0.2s ease;
 }
-/* 照片上的暗色薄紗（hover 才出現） */
-.pg-coach-card__photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(var(--pg-charcoal-rgb), 0);
-  transition: background 0.4s var(--pg-ease-out-3);
-  pointer-events: none;
-}
-/* hover 提示：照片中央的小標籤，靜止時隱藏 */
-.pg-coach-card__hint {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--pg-charcoal);
-  background: rgba(var(--pg-ivory-rgb), 0.94);
-  border-radius: 2px;
-  opacity: 0;
-  transform: translate(-50%, calc(-50% + 8px));
-  transition: opacity 0.35s var(--pg-ease-out-3), transform 0.45s var(--pg-ease-out-3);
-  pointer-events: none;
-}
-/* 整張卡的 hover 狀態（:hover 與 .is-hover 同義，後者給截圖工具用） */
-@media (hover: hover) {
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo img { transform: scale(1.04); }
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo::after { background: rgba(var(--pg-charcoal-rgb), 0.18); }
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__hint { opacity: 1; transform: translate(-50%, -50%); }
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__focus { color: var(--pg-walnut); }
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta { background: var(--pg-sand-hover, #c9b69f); border-color: var(--pg-sand-hover, #c9b69f); }
-  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta svg { transform: translateX(3px); }
-}
-.pg-coach-card__focus { transition: color 0.3s var(--pg-ease-out-3); }
 .pg-coach-card__badge {
   position: absolute;
   top: 12px;
@@ -83,27 +58,20 @@
   border-radius: 2px;
 }
 
-/* 文字區：上方髮絲線承接照片；flex 讓三張卡的按鈕齊底 */
+/* 文字區 */
 .pg-coach-card__body {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  margin-top: 20px;
-  padding-top: 16px;
+  margin-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
 }
-.pg-coach-card__index {
-  margin: 0;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: var(--pg-walnut);
-}
-/* 教學方向：卡片最醒目的一行 */
 .pg-coach-card__focus {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin: 10px 0 0;
+  margin: 0;
   font-family: var(--pg-font-serif);
   font-size: 24px;
   font-weight: 600;
@@ -122,6 +90,7 @@
   color: var(--pg-charcoal);
 }
 .pg-coach-card__ph {
+  font-family: var(--pg-font-serif, inherit);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -146,14 +115,14 @@
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--pg-charcoal);
-  border: 1px solid var(--pg-sand);                                   /* 金色框（2026-09-16 使用者選 ③） */
+  border: 1px solid var(--pg-sand);                      /* 金色框（2026-09-16 使用者選 ③） */
   background: var(--pg-app-world-bg-fallback, #e5e6e2);
-  background: var(--pg-app-world-bg);                                 /* 淺藍底，與 THE APP 區同色 */
+  background: var(--pg-app-world-bg);                    /* 淺藍底，與 THE APP 區同色 */
   border-radius: 2px;
 }
-/* 適合對象／授課方式／授課地點：標籤＋值，三行固定順序 */
+/* 適合對象／授課方式／授課地點 */
 .pg-coach-card__facts {
-  margin: 18px 0 0;
+  margin: 18px 0 22px;
   padding-top: 14px;
   border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
   display: grid;
@@ -177,60 +146,57 @@
   line-height: 1.5;
   color: var(--pg-charcoal);
 }
-/* 主按鈕：Sand 實底、44 高、全寬、直角；靠 margin-top:auto 齊底 */
+/* 底部入口：常態 Sand 底；整卡 hover 時深藍灰底米白字。靠 margin-top:auto 齊底 */
 .pg-coach-card__cta {
-  margin-top: 22px;
-  align-self: stretch;
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   height: 44px;
   padding: 0 16px;
-  border-radius: 0;
+  border-radius: 4px;
   background: var(--pg-sand);
-  border: 1px solid var(--pg-sand);
   color: var(--pg-charcoal);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-decoration: none;
-  transition: background 0.3s var(--pg-ease-out-3), border-color 0.3s var(--pg-ease-out-3);
+  transition: background 0.2s ease, color 0.2s ease;
 }
-/* stretched link：按鈕的 ::after 蓋住整張卡，點照片、標題都會進教練頁 */
-.pg-coach-card__cta::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+.pg-coach-card__cta svg { transition: transform 0.2s ease; }
+
+/* ---------- 整卡 hover／focus 狀態（:hover 與 .is-hover 同義，後者給截圖工具用） ---------- */
+@media (hover: hover) {
+  .pg-coach-card:is(:hover, .is-hover) {
+    border-color: var(--cc-hover-line);
+    box-shadow: 0 6px 18px rgba(var(--pg-charcoal-rgb), 0.1);
+    transform: translateY(-3px);
+  }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo img { transform: scale(1.02); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta { background: var(--cc-cta-hover); color: var(--pg-ivory); }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__cta svg { transform: translateX(3px); }
 }
-.pg-coach-card__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
-.pg-coach-card__cta:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 2px; }
-.pg-coach-card__body { justify-content: flex-start; }
-.pg-coach-card__cta { margin-top: auto; padding-top: 0; }
-.pg-coach-card__facts { margin-bottom: 22px; }
-/* compact（首頁）：沒有三行小資訊、沒有按鈕列；連結視覺隱藏但 ::after 仍蓋住整張卡 */
+.pg-coach-card:focus-visible {
+  outline: none;
+  border-color: var(--cc-hover-line);
+  box-shadow: 0 0 0 3px rgba(111, 143, 163, 0.35), 0 6px 18px rgba(var(--pg-charcoal-rgb), 0.1);
+}
+.pg-coach-card:focus-visible .pg-coach-card__cta { background: var(--cc-cta-hover); color: var(--pg-ivory); }
+@media (prefers-reduced-motion: reduce) {
+  .pg-coach-card, .pg-coach-card__photo img, .pg-coach-card__cta, .pg-coach-card__cta svg { transition: none; }
+  .pg-coach-card:is(:hover, .is-hover) { transform: none; }
+  .pg-coach-card:is(:hover, .is-hover) .pg-coach-card__photo img { transform: none; }
+}
+
+/* compact（首頁）：沒有三行小資訊、沒有底部入口 */
 .pg-coach-card[data-compact='1'] .pg-coach-card__topics { margin-bottom: 0; }
-.pg-coach-card[data-compact='1'] .pg-coach-card__cta {
-  position: static;
-  height: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  font-size: 0;
-  color: transparent;
-  background: transparent;
-}
-.pg-coach-card[data-compact='1'] .pg-coach-card__cta:focus-visible { outline: none; }
-.pg-coach-card[data-compact='1']:has(.pg-coach-card__cta:focus-visible) { outline: 2px solid var(--pg-charcoal); outline-offset: 4px; }
 
 @media (max-width: 1023px) {
   .pg-coach-card__focus { font-size: 21px; }
 }
-/* 手機：單欄，照片左右各多留 6（外層內距 22 → 照片 16） */
+/* 手機：單欄；不靠 hover，點一下即進入 */
 @media (max-width: 767px) {
-  .pg-coach-card__photo { margin-inline: -6px; }
-  .pg-coach-card__body { margin-top: 16px; }
+  .pg-coach-card { padding: 10px; }
+  .pg-coach-card__body { margin-top: 14px; }
   .pg-coach-card__focus { font-size: 22px; }
 }
