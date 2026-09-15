@@ -174,7 +174,7 @@ export default function CoachProfileApp() {
       {/* 手機底部固定按鈕：只在「教練介紹」頁籤出現，點了切到預約頁籤 */}
       <div className="pg-pf-bar" aria-hidden={tab !== 'about'}>
         <button type="button" className="pg-pf-btn pg-pf-bar__btn" onClick={goBooking} tabIndex={tab === 'about' ? 0 : -1}>
-          {profilePage.mobileCta}
+          預約這位教練
         </button>
       </div>
 

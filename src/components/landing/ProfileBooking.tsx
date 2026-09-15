@@ -61,8 +61,8 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
   const [mobileCode, setMobileCode] = useState('')
   const [certCode, setCertCode] = useState('')
   const [tried, setTried] = useState(false)
-  /** 換球館後原本選的日期／時段失效：顯示提示，直到重新選日期 */
-  const [venueChanged, setVenueChanged] = useState(false)
+  /** 換球館後原本選的日期／時段失效：顯示提示（說明清了什麼），直到重新選日期 */
+  const [venueChanged, setVenueChanged] = useState<null | 'date' | 'time'>(null)
   const paying = useRef(false)
 
   const service = coach.services.find((s) => s.id === serviceId) ?? null
@@ -89,9 +89,19 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
   function pickVenue(id: string) {
     if (id === venueId) return
     setVenueId(id)
-    setVenueChanged(Boolean(selectedDate || selectedTime))
-    setSelectedDate(null)
-    setSelectedTime(null)
+    /* 重新驗證：新球館同一天仍開放就保留日期；同一時段仍在就保留時段；否則只清失效的那項並提示 */
+    const next = coach.venues.find((v) => v.id === id)?.availability ?? {}
+    const dayTimes = selectedDate ? (next[selectedDate] ?? []) : []
+    if (selectedDate && dayTimes.length === 0) {
+      setSelectedDate(null)
+      setSelectedTime(null)
+      setVenueChanged('date')
+    } else if (selectedTime && !dayTimes.includes(selectedTime)) {
+      setSelectedTime(null)
+      setVenueChanged('time')
+    } else {
+      setVenueChanged(null)
+    }
   }
 
   const emailError = tried && !isEmail(email) ? '請填寫正確的 Email' : null
@@ -149,7 +159,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
   )
 
   return (
-    <section className="pg-bk" aria-labelledby="booking-heading">
+    <section className="pg-bk" aria-labelledby="booking-heading" data-stage={step !== 'select' ? 'next' : !selectedDate ? 'date' : !selectedTime ? 'time' : 'ready'}>
       <div className="pg-bk__head">
         <p className="pg-bk__eyebrow">BOOKING</p>
         <h2 id="booking-heading" className="pg-bk__title">預約教練</h2>
@@ -312,7 +322,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
               <select id="bk-venue" value={venueId ?? ''} onChange={(e) => pickVenue(e.target.value)} className="pg-bk-select pg-bk-venue-select">
                 {coach.venues.map((v) => (
                   <option key={v.id} value={v.id}>
-                    {v.name}・{v.city}
+                    {v.name}
                   </option>
                 ))}
               </select>
@@ -331,7 +341,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
           {/* 所選球館的地址與地圖：手機可展開查看（桌機隱藏） */}
           {venue && (
             <details className="pg-bk-venue-more">
-              <summary>{venue.name} 的地址與地圖</summary>
+              <summary>查看球館位置</summary>
               <p className="pg-bk-venue-more__addr">
                 {venue.city}・{venue.address}
               </p>
@@ -343,7 +353,11 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             </details>
           )}
           {venueChanged && (
-            <p role="status" className="pg-bk-notice">已更換球館，原本選的日期與時段已清除，請重新選擇。</p>
+            <p role="status" className="pg-bk-notice">
+              {venueChanged === 'date'
+                ? '已更換球館，這一天在新球館沒有開放，日期與時段已清除，請重新選擇。'
+                : '已更換球館，原本的時段在新球館沒有開放，請重新選擇上課時間。'}
+            </p>
           )}
 
           {/* ── 日曆或空白狀態 ── */}
@@ -397,7 +411,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                       onClick={() => {
                         setSelectedDate(key)
                         setSelectedTime(null)
-                        setVenueChanged(false)
+                        setVenueChanged(null)
                       }}
                       className="pg-bk-day"
                       data-state={active ? 'active' : open ? 'open' : past ? 'past' : 'closed'}
@@ -419,13 +433,15 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
 
               <div className="pg-bk-times">
                 {!selectedDate ? (
-                  <p className="pg-bk-muted">請先選擇日期，查看可預約時段。</p>
+                  <p className="pg-bk-muted pg-bk-times__hint">請選擇可預約日期</p>
                 ) : (
                   <>
                     <p className="pg-bk-times__date">{formatDate(selectedDate)}</p>
                     {times.length === 0 ? (
-                      <p className="pg-bk-muted">這一天目前沒有開放時段。</p>
+                      <p className="pg-bk-muted">當日暫無可預約時段，請選擇其他日期。</p>
                     ) : (
+                      <>
+                      {!selectedTime && <p className="pg-bk-times__hint">請選擇上課時間</p>}
                       <ul className="pg-bk-times__list">
                         {times.map((t) => (
                           <li key={t}>
@@ -435,6 +451,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                           </li>
                         ))}
                       </ul>
+                      </>
                     )}
                   </>
                 )}
@@ -455,6 +472,19 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
             </button>
           </div>
           <p className="pg-bk-note">預約與開放時段皆為示意，尚未串接排程系統。</p>
+
+          {/* 手機：選好時段後底部固定操作列（桌機隱藏；桌機用上方按鈕） */}
+          {ready && (
+            <div className="pg-bk-dock">
+              <div className="pg-bk-dock__text">
+                <span className="pg-bk-dock__date">{formatDate(selectedDate!)}</span>
+                <span className="pg-bk-dock__time">{selectedTime}</span>
+              </div>
+              <button type="button" className="pg-bk-btn pg-bk-btn--primary pg-bk-dock__btn" onClick={() => setStep('payment')}>
+                確認預約
+              </button>
+            </div>
+          )}
         </div>
       )}
     </section>

@@ -657,3 +657,44 @@
 .pg-profile-root .pg-bk-result__mark { border-color: var(--bk-green); }
 .pg-profile-root .pg-bk-result__mark svg { fill: var(--bk-green); }
 .pg-profile-root .pg-bk-venue-more summary { color: var(--bk-accent); }
+
+/* ==========================================================================
+   手機預約頁籤：依進度顯示、底部固定操作列（2026-09-16 使用者第二輪規格）
+   ========================================================================== */
+.pg-profile-root .pg-bk-dock { display: none; }
+.pg-profile-root .pg-bk-times__hint { font-size: 13px; color: rgba(var(--pg-charcoal-rgb), 0.6); }
+.pg-profile-root .pg-bk-times__date + .pg-bk-times__hint,
+.pg-profile-root .pg-bk-times__date ~ .pg-bk-times__hint { margin: 4px 0 0; }
+
+@media (max-width: 1023px) {
+  /* 未選日期：先不顯示摘要與按鈕；已選日期：仍不顯示；選好時段：顯示摘要，按鈕改到底部操作列 */
+  .pg-profile-root .pg-bk[data-stage='date'] .pg-bk-summary--grid,
+  .pg-profile-root .pg-bk[data-stage='date'] .pg-bk-actions,
+  .pg-profile-root .pg-bk[data-stage='time'] .pg-bk-summary--grid,
+  .pg-profile-root .pg-bk[data-stage='time'] .pg-bk-actions,
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-actions { display: none; }
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-dock {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(var(--pg-ivory-rgb), 0.96); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--pg-pf-line);
+  }
+  .pg-profile-root .pg-bk-dock__text { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+  .pg-profile-root .pg-bk-dock__date { font-size: 13px; color: rgba(var(--pg-charcoal-rgb), 0.65); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pg-profile-root .pg-bk-dock__time { font-size: 17px; font-weight: 700; color: var(--pg-charcoal); }
+  .pg-profile-root .pg-bk-dock__btn { width: auto; flex: 0 0 auto; height: 48px; padding: 0 22px; font-size: 16px; }
+  /* 操作列出現時，內容底部預留其高度＋安全邊距 */
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk__body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+
+  /* 可讀性：主要操作 16px、點擊範圍 ≥ 44 */
+  .pg-profile-root .pg-bk-time { min-height: 44px; font-size: 16px; }
+  .pg-profile-root .pg-bk-times__date { font-size: 17px; }
+  .pg-profile-root .pg-bk-btn { height: 48px; font-size: 16px; }
+  .pg-profile-root .pg-bk-select { min-height: 44px; font-size: 16px; }
+  .pg-profile-root .pg-bk-month__title { font-size: 18px; }
+  .pg-profile-root .pg-bk-month__nav { width: 44px; height: 44px; }
+  /* 選單裡的長名稱：整行可讀；服務／球館上下排 */
+  .pg-profile-root .pg-bk-row { display: grid; grid-template-columns: 1fr; row-gap: 12px; }
+  .pg-profile-root .pg-bk-field__value { white-space: normal; overflow-wrap: anywhere; }
+}
