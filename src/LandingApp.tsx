@@ -399,16 +399,7 @@ export default function LandingApp() {
           ))}
         </div>
 
-        <a
-          href={coachesSection.link.href}
-          className="pg-coaches__link"
-          style={fadeUp(shown('coaches'), 0.5, 0.6, 10)}
-        >
-          <span>{coachesSection.link.label}</span>
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M7 17 17 7M8.5 7H17v8.5" />
-          </svg>
-        </a>
+        {/* 「查看全部教練」連結：2026-09-16 使用者要求移除（列表頁仍由導覽「合作教練」進入） */}
       </section>
 
       {/* ---------- Hero → 01 Editorial Typography Transition ----------
