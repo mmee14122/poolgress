@@ -43,8 +43,8 @@ export function DualEntry({ on, refCb }: { on: boolean; refCb: (el: HTMLElement 
               </span>
 
               {/* 圖下 editorial 資訊層 */}
+              {/* 圖下 editorial 資訊層（2026-09-16 使用者：拿掉「01 — PLAY」小標，只留大標＋副標） */}
               <span className="pg-dual__caption">
-                <span className="pg-dual__no">{t.no} — {t.short}</span>
                 <span className="pg-dual__name">{t.title}</span>
                 <span className="pg-dual__desc">{t.desc}</span>
               </span>
