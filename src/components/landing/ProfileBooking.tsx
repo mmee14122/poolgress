@@ -346,7 +346,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                 </button>
                 <div className="pg-bk-month__label">
                   <p className="pg-bk-month__title">{month.getFullYear()} 年 {month.getMonth() + 1} 月</p>
-                  <p className="pg-bk-month__count">尚有 <strong>{openCount}</strong> 天可預約</p>
+                  <p className="pg-bk-month__count">尚有 <strong>{openCount}</strong> 天可預約 · 白底日期可預約</p>
                 </div>
                 <button type="button" onClick={() => goMonth(1)} disabled={!canNext} aria-label="下個月" className="pg-bk-month__nav">
                   <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.3 4.7l1.4-1.4L15.4 10l-6.7 6.7-1.4-1.4L12.6 10z" /></svg>
@@ -383,9 +383,12 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                       data-today={isToday ? '1' : '0'}
                     >
                       <span>{date.getDate()}</span>
-                      <svg viewBox="0 0 20 20" aria-hidden="true" className="pg-bk-day__tick">
-                        <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
-                      </svg>
+                      {/* 勾號只出現在已選取的日期（2026-09-16 使用者） */}
+                      {active && (
+                        <svg viewBox="0 0 20 20" aria-hidden="true" className="pg-bk-day__tick">
+                          <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
+                        </svg>
+                      )}
                     </button>
                   )
                 })}

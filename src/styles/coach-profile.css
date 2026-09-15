@@ -301,26 +301,33 @@
 
 /* 日曆 */
 .pg-profile-root .pg-bk-week { margin-top: 8px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; font-size: 11px; color: rgba(var(--pg-charcoal-rgb), 0.45); }
-/* 日期方格底下鋪一層白色方塊（2026-09-16 使用者） */
-.pg-profile-root .pg-bk-days { margin-top: 3px; padding: 6px; background: #fff; border-radius: 2px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+/* 日期：七欄；每格是置中的近正方形按鈕（44px、圓角 6），不拉成整欄長條。
+   面板底色延續米色；「白色方塊」是每個可預約日期各自的按鈕（2026-09-16 使用者規格） */
+.pg-profile-root .pg-bk-days { margin-top: 3px; display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 4px; justify-items: center; }
 .pg-profile-root .pg-bk-day {
-  min-height: 32px;
+  position: relative;
+  width: 44px; height: 44px;
   display: flex; flex-direction: row; gap: 3px; align-items: center; justify-content: center;
-  border: 1px solid transparent; border-radius: 2px;
+  border: 1px solid transparent; border-radius: 6px;
   background: transparent; color: var(--pg-charcoal);
-  font: inherit; font-size: 13px; font-variant-numeric: tabular-nums;
+  font: inherit; font-size: 14px; font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
 }
 .pg-profile-root .pg-bk-day--empty { cursor: default; }
-.pg-profile-root .pg-bk-day[data-state='open'] { border-color: rgba(var(--pg-charcoal-rgb), 0.22); background: rgba(var(--pg-sand-rgb), 0.38); }
-.pg-profile-root .pg-bk-day[data-state='open']:hover { border-color: var(--pg-charcoal); }
-.pg-profile-root .pg-bk-day[data-state='active'] { border-color: var(--pg-charcoal); background: var(--pg-charcoal); color: var(--pg-ivory); }
+/* 可預約、未選取：白底、深藍灰數字、淡灰細框 */
+.pg-profile-root .pg-bk-day[data-state='open'] { background: #fff; color: #2c3e4a; border-color: rgba(var(--pg-charcoal-rgb), 0.18); font-weight: 600; }
+/* 滑入：框加深、底略帶淺藍 */
+.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: #2c3e4a; background: #eef3f6; }
+/* 已選取：深藍灰底、白數字、白勾 */
+.pg-profile-root .pg-bk-day[data-state='active'] { border-color: #2c3e4a; background: #2c3e4a; color: #fff; font-weight: 600; }
+/* 不可預約／已過：無底無框、淡灰數字、不可點 */
 .pg-profile-root .pg-bk-day[data-state='closed'],
-.pg-profile-root .pg-bk-day[data-state='past'] { color: rgba(var(--pg-charcoal-rgb), 0.3); cursor: not-allowed; }
-.pg-profile-root .pg-bk-day[data-today='1']:not([data-state='active']) { box-shadow: inset 0 0 0 1px var(--pg-walnut); }
-.pg-profile-root .pg-bk-day__tick { width: 8px; height: 8px; fill: transparent; }
-.pg-profile-root .pg-bk-day[data-state='open'] .pg-bk-day__tick { fill: var(--pg-walnut); }
-.pg-profile-root .pg-bk-day[data-state='active'] .pg-bk-day__tick { fill: var(--pg-ivory); }
+.pg-profile-root .pg-bk-day[data-state='past'] { color: rgba(var(--pg-charcoal-rgb), 0.38); cursor: not-allowed; }
+/* 今天：數字下方一顆小圓點，與選取狀態分開 */
+.pg-profile-root .pg-bk-day[data-today='1']::after { content: ''; position: absolute; left: 50%; bottom: 5px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--pg-walnut); }
+.pg-profile-root .pg-bk-day[data-today='1'][data-state='active']::after { background: #fff; }
+.pg-profile-root .pg-bk-day__tick { width: 9px; height: 9px; fill: #fff; }
 
 /* 時段 */
 .pg-profile-root .pg-bk-times { padding-top: 10px; border-top: 1px solid var(--pg-pf-line-soft); }
@@ -435,7 +442,7 @@
   .pg-profile-root .pg-bk-row { display: block; }
   .pg-profile-root .pg-bk-row > * + * { margin-top: 12px; }
   .pg-profile-root .pg-bk-times__list { grid-template-columns: repeat(3, 1fr); }
-  .pg-profile-root .pg-bk-day { min-height: 40px; }
+  .pg-profile-root .pg-bk-day { width: 42px; height: 42px; }
   .pg-profile-root .pg-bk__head { padding: 16px 18px 14px; }
   .pg-profile-root .pg-bk__body { padding: 18px 18px 20px; }
   .pg-profile-root .pg-bk-day { min-height: 44px; }

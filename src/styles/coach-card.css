@@ -100,6 +100,9 @@
 }
 /* 教學方向：卡片最醒目的一行 */
 .pg-coach-card__focus {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   margin: 10px 0 0;
   font-family: var(--pg-font-serif);
   font-size: 24px;

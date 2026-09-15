@@ -40,8 +40,8 @@
 /* ---------- 開場 ---------- */
 /* 2026-09-16 使用者選 H3：矮版開場——眉標一行，標題與副標並排、底對齊（桌機高約 137px） */
 .pg-coaches-root .pg-cp-hero {
-  padding-top: 40px;
-  padding-bottom: 28px;
+  padding-top: 28px;
+  padding-bottom: 20px;
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 40px;
@@ -64,13 +64,20 @@
 .pg-coaches-root .pg-cp-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 40px;
+  column-gap: 64px;                 /* 2026-09-16 使用者：三張卡間距加寬 */
   row-gap: 64px;
-  padding-top: 48px;
-  padding-bottom: 96px;
+  padding-top: 32px;
+  padding-bottom: 72px;
   border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
   align-items: stretch;
 }
+/* 2026-09-16 使用者：桌機不捲動就能看完整三張卡——照片 3:2、卡內間距收緊 */
+.pg-coaches-root .pg-coach-card__photo { aspect-ratio: 3 / 2; }
+.pg-coaches-root .pg-coach-card__body { margin-top: 16px; padding-top: 12px; }
+.pg-coaches-root .pg-coach-card__pitch { margin-top: 8px; font-size: 14px; line-height: 1.6; }
+.pg-coaches-root .pg-coach-card__topics { margin-top: 12px; }
+.pg-coaches-root .pg-coach-card__facts { margin: 14px 0 16px; padding-top: 12px; row-gap: 6px; }
+.pg-coaches-root .pg-coach-card__cta { height: 42px; }
 .pg-coaches-root .pg-cp-item { display: flex; min-width: 0; scroll-margin-top: 88px; }
 .pg-coaches-root .pg-cp-item > .pg-coach-card { flex: 1 1 auto; }
 

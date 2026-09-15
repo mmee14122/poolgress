@@ -22,11 +22,14 @@ export function CoachCard({
   style,
   eager,
   compact,
+  nameFirst,
 }: {
   coach: PartnerCoach
   style?: React.CSSProperties
   eager?: boolean
   compact?: boolean
+  /** 列表頁：大字放姓名（原標題位置），教學方向改成小字那行（2026-09-16 使用者） */
+  nameFirst?: boolean
 }) {
   const venueText =
     coach.venues.length === 0
@@ -50,10 +53,13 @@ export function CoachCard({
       </div>
 
       <div className="pg-coach-card__body">
-        <h3 className="pg-coach-card__focus">{coach.focus}</h3>
+        <h3 className="pg-coach-card__focus">
+          {nameFirst ? coach.name : coach.focus}
+          {nameFirst && coach.placeholder && <span className="pg-coach-card__ph">{coachLabels.placeholder}</span>}
+        </h3>
         <p className="pg-coach-card__name">
-          {coach.name}
-          {coach.placeholder && <span className="pg-coach-card__ph">{coachLabels.placeholder}</span>}
+          {nameFirst ? coach.focus : coach.name}
+          {!nameFirst && coach.placeholder && <span className="pg-coach-card__ph">{coachLabels.placeholder}</span>}
         </p>
         <p className="pg-coach-card__pitch">{coach.pitch}</p>
 
