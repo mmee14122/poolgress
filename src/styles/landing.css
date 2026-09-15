@@ -321,7 +321,7 @@
   font-size: calc(var(--pg-fs-feature-h2) * 0.84);
   font-weight: 600;
 }
-.pg-landing-root .pg-coaches__intro { margin-top: 20px; max-width: 34em; }
+.pg-landing-root .pg-coaches__intro { margin-top: 20px; max-width: 34em; white-space: pre-line; }
 .pg-landing-root .pg-coaches__grid {
   margin: 56px 0 0;
   display: grid;

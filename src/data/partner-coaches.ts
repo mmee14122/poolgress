@@ -227,7 +227,8 @@ export const coachLabels = {
 export const coachesSection = {
   eyebrow: '02 / 撞球教練與課程預約',
   title: '跟著教練，打出自己的節奏。',
-  intro: '依照程度與想練的項目選擇教練，查看授課地點與可預約時段。',
+  intro: '專業 × 無菸
+預約更舒適的撞球學習體驗',
   link: { label: '查看全部教練', href: './coaches.html' },
 }
 
@@ -235,7 +236,8 @@ export const coachesSection = {
 export const coachesPage = {
   eyebrow: '撞球教練與課程預約',
   title: '跟著教練，\n打出自己的節奏。',
-  intro: '依照程度與想練的項目選擇教練，查看授課地點與可預約時段。',
+  intro: '專業 × 無菸
+預約更舒適的撞球學習體驗',
   closing: {
     eyebrow: 'JOIN US',
     title: '想成為 Poolgress 合作教練？',

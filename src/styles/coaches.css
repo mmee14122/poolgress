@@ -58,7 +58,7 @@
   color: var(--pg-charcoal);
   white-space: normal;
 }
-.pg-coaches-root .pg-cp-intro { margin: 0 0 6px; max-width: 36em; }
+.pg-coaches-root .pg-cp-intro { margin: 0 0 6px; max-width: 36em; white-space: pre-line; }
 
 /* ---------- 三張卡：桌機三欄等寬，按鈕齊底 ---------- */
 .pg-coaches-root .pg-cp-list {
