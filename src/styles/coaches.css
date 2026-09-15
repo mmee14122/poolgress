@@ -72,10 +72,9 @@
   align-items: stretch;
 }
 /* 2026-09-16 使用者定案：≥1200 時卡片固定 357 寬、三張置中、欄距 48（更窄回等分三欄，避免橫向捲動） */
-/* 2026-09-16 使用者：三張圖再大一點——不再固定 357 寬、改吃滿內容寬（1440 時每張約 389），照片 4:5 直式更高 */
+/* 2026-09-16 使用者定案 A：卡片吃滿內容寬（1440 時每張 405）、照片 1:1（與首頁卡片相同比例） */
 @media (min-width: 1200px) {
   .pg-coaches-root .pg-cp-list { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
-  .pg-coaches-root .pg-coach-card__photo { aspect-ratio: 4 / 5; }
 }
 /* 2026-09-16 第三版卡片：照片 4:5 直式為主視覺（不再為了一屏放完縮成 3:2） */
 .pg-coaches-root .pg-cp-item { display: flex; min-width: 0; scroll-margin-top: 88px; }
