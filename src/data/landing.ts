@@ -160,8 +160,7 @@ export const appPlayHref = '/app'
 
 /** Hero 下方 PLAY／LEARN 大型 Image Navigation（2026-09-16 使用者第二版規格）：
  *  預設只有情境大圖＋左上角極小提示，hover 才出現標題／關鍵詞／CTA。
- *  ⚠️ LEARN 的「教練指導學生的乾淨球館場景」照片尚未提供，先借用場館願景圖並標「示意圖・待更換」；
- *     拿到真實照片後把 image 換掉、imagePlaceholder 改 false 即可。 */
+ *  兩張入口圖皆為使用者 2026-09-16 提供（public/assets/landing/play-entry.webp、learn-entry.webp）。 */
 export const dualEntry = {
   eyebrow: 'PLAY. LEARN. PROGRESS.',
   title: '想玩、想學，都從這裡開始。',
@@ -182,8 +181,8 @@ export const dualEntry = {
     desc: '找到適合你的教練，在舒適的環境開始學習。',
     hover: 'FIND A COACH',
     href: '#coach',
-    image: '/ui/assets/hero/s01-venue.webp',     /* 暫用場館願景圖，待「教練指導學生」實拍 */
-    imagePlaceholder: true,
+    image: '/ui/assets/landing/learn-entry.webp', /* 2026-09-16 使用者提供的 LEARN 入口圖（PNG → WebP） */
+    imagePlaceholder: false,
   },
 }
 
