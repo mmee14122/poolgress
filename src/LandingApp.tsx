@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } from './data/landing'
 import { landingNav } from './data/landing'
+import { coaches, coachesSection } from './data/partner-coaches'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { ProgressPoint } from './components/ProgressPoint'
@@ -72,7 +73,7 @@ export default function LandingApp() {
   const refs = useRef(new Map<string, HTMLElement>())
 
   useEffect(() => {
-    const ids = ['hero', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'finale']
+    const ids = ['hero', 'intro01', 'intro01h', 'trans02', 'trans02h', ...pillarSections.map((s) => s.id), 'coaches', 'finale']
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(new Set(ids))
       setMaskP({ s02: 1, s03: 1, s04: 1 })
@@ -143,6 +144,17 @@ export default function LandingApp() {
     const sync = () => setNarrow(mq.matches)
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  /* 從其他頁帶 hash 進來（例：coaches.html 的導覽 /#space）：內容是 React 掛載後才長出來，
+     瀏覽器原生的 hash 捲動已經錯過，這裡補捲一次；圖片載入可能再推版面，300ms 後再對一次。 */
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    const go = () => document.getElementById(id)?.scrollIntoView()
+    go()
+    const t = window.setTimeout(go, 300)
+    return () => window.clearTimeout(t)
   }, [])
 
   const reg = (id: string) => (el: HTMLElement | null) => {
@@ -426,6 +438,56 @@ export default function LandingApp() {
           </div>
         </section>
       </div>
+
+      {/* ---------- 03 / THE COACHES（2026-09-16）：影片之後、收尾 CTA 之前 ----------
+          精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影；
+          首頁只放精簡資訊，詳細內容在 coaches.html。資料集中在 data/coaches.ts。 */}
+      <section
+        ref={reg('coaches')}
+        id="coaches"
+        className="pg-coaches site-container"
+        style={{ background: P.bg, color: P.text }}
+      >
+        <div className="pg-coaches__head">
+          <p id="coach" className="pg-anchor-line pg-t-eyebrow" style={fadeUp(shown('coaches'), 0, 0.5, 8)}>
+            {coachesSection.eyebrow}
+          </p>
+          <h2 className="pg-t-feature-h2 pg-coaches__title" style={fadeUp(shown('coaches'), 0.08)}>
+            {coachesSection.title}
+          </h2>
+          <p className="pg-t-body pg-coaches__intro" style={fadeUp(shown('coaches'), 0.16)}>
+            {coachesSection.intro}
+          </p>
+        </div>
+
+        <ul className="pg-coaches__grid" aria-label="合作教練">
+          {coaches.map((c, i) => (
+            <li key={c.id} className="pg-coach" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
+              <div className="pg-coach__photo">
+                <img src={c.photo} alt={c.photoAlt} loading="lazy" />
+                {c.placeholder && <span className="pg-coach__badge">示意照片</span>}
+              </div>
+              <h3 className="pg-coach__name">
+                {c.name}
+                {c.placeholder && <span className="pg-coach__ph">示意</span>}
+              </h3>
+              <p className="pg-coach__tagline">{c.tagline}</p>
+              <p className="pg-coach__summary">{c.summary}</p>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={coachesSection.link.href}
+          className="pg-coaches__link"
+          style={fadeUp(shown('coaches'), 0.5, 0.6, 10)}
+        >
+          <span>{coachesSection.link.label}</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7M8.5 7H17v8.5" />
+          </svg>
+        </a>
+      </section>
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section

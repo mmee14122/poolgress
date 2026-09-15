@@ -37,6 +37,7 @@ export default defineConfig({
         booking: fileURLToPath(new URL('./booking.html', import.meta.url)),
         app: fileURLToPath(new URL('./app.html', import.meta.url)),
         landing: fileURLToPath(new URL('./landing.html', import.meta.url)),
+        coaches: fileURLToPath(new URL('./coaches.html', import.meta.url)),
         shop: fileURLToPath(new URL('./shop.html', import.meta.url)),
         // 舊網址轉址與 404（純靜態，仍需列入才會複製到 dist）
         games: fileURLToPath(new URL('./games.html', import.meta.url)),
