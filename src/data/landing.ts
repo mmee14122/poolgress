@@ -172,7 +172,7 @@ export const dualEntry = {
     desc: '闖關、挑戰，讓每一次上桌都有新的目標。',
     hover: 'EXPLORE APP',
     href: '#app',
-    image: '/ui/assets/landing/play.webp',       /* 玩家＋App 闖關情境（既有素材） */
+    image: '/ui/assets/landing/play-entry.webp', /* 2026-09-16 使用者提供的 PLAY 入口圖（PNG → WebP，2000 寬） */
     imagePlaceholder: false,
   },
   learn: {
