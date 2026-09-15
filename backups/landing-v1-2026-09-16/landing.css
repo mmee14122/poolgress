@@ -1,0 +1,428 @@
+/* ==========================================================================
+   landing.css — 一頁式首頁（landing.html）專用樣式，2026-09-06 起。
+   只有 landing-entry.tsx 會載入，舊首頁（index.html）不會讀到這個檔。
+
+   規則：landing 的所有樣式調整都寫在這裡，且一律用 .pg-landing-root 開頭，
+   例如  .pg-landing-root .pg-hero .pg-t-h1 { ... }
+   這樣即使沿用 home.css 的 class 名稱，也只作用在這一頁；
+   舊首頁保持原樣，不需要為了 landing 去改共用檔。
+
+   共用檔（tokens.css／home.css／nav.css／buttons.css）在 landing 定案前不動。
+   ========================================================================== */
+
+/* ---------- 錨點導覽 ----------
+   #space／#app 直接掛在眉標那一行（見 LandingApp）：
+   兩個 section 的頂端都有大量留白（01 是滿版置中構圖、THE APP 有 chapter padding），
+   直接捲到 section 頂端會在導覽列下方多出一大段空白，所以錨點下移到眉標。
+   html 已有 scroll-padding-top ＝ 導覽列高（home.css），所以這裡只補一段呼吸距離，
+   不要再把導覽列高度加一次，否則會多出約 70px 空白。 */
+.pg-landing-root .pg-anchor-line {
+  scroll-margin-top: 28px;
+}
+.pg-landing-root #contact {
+  scroll-margin-top: var(--pg-nav-h-mobile);
+}
+@media (min-width: 768px) {
+  .pg-landing-root .pg-anchor-line {
+    scroll-margin-top: 32px;
+  }
+  .pg-landing-root #contact {
+    scroll-margin-top: var(--pg-nav-h-desktop);
+  }
+}
+
+/* ---------- 02 / THE APP 開場 ----------
+   QR 欄移除後只剩單欄文案；影片另外獨立成一區（見下） */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-app-intro__row { display: block; }
+}
+
+/* ---------- App 介紹影片區（2026-09-06 使用者定案）----------
+   位置：三塊功能之後、聯絡 CTA 之前，且放在 .pg-app-world 內，
+   底色因此與上方 THE APP 同一塊淺藍（2026-09-06 使用者指定，不是米色）。
+   桌機置中、最大寬 960、16:9；手機整寬。
+   影片成為 app-world 最後一個子元素後，原本給最後一段 feature 的 80 底距失效，
+   改由這一區的 padding-top 補回同樣的節奏。 */
+.pg-landing-root .pg-app-video-section {
+  padding-top: 40px;
+  padding-bottom: 72px;
+}
+@media (min-width: 768px) {
+  .pg-landing-root .pg-app-video-section { padding-top: 48px; padding-bottom: 96px; }
+}
+.pg-landing-root .pg-app-video {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--pg-landing-photo-radius, 3px);
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
+}
+
+/* ---------- Hero 兩顆 CTA（2026-09-06 使用者重新設計）----------
+   精品飯店語彙，不是電商／控制面板按鈕：
+   - 拿掉右側米色方格與左右分格感：整顆是一個完整按鈕（fill 層停用）
+   - 低透明度深底 ＋ 1px 半透明白細框，靠 backdrop blur 站在照片上
+   - 文字靠左、細線 ↗ 靠右垂直置中；兩顆等寬等高
+   - hover 按鈕本身不位移，只有箭頭往右上滑 3px */
+.pg-landing-root .pg-hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: var(--button-ghost-mt);
+}
+.pg-landing-root .pg-hero-cta.pg-cta-book {
+  --pg-book-icon: 0px;              /* 靜止：右側沒有米色方塊 */
+  --pg-book-square: 44px;           /* hover 第一段只填到這個寬度＝按鈕高度 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 158px;
+  height: 44px;
+  margin-top: 0;
+  padding: 0 14px;
+  border-radius: 0;
+  background: rgba(var(--pg-charcoal-rgb), 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: none;
+  color: rgba(var(--pg-ivory-rgb), 0.95);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+/* 米色填色層：靜止時寬度 0（看不到方塊），hover 時才登場——見下方 keyframes */
+.pg-landing-root .pg-hero-cta .pg-cta-book__fill { display: flex; }
+.pg-landing-root .pg-hero-cta .pg-cta-text {
+  flex: 0 1 auto;
+  text-align: left;
+  white-space: nowrap;
+}
+.pg-landing-root .pg-hero-cta .pg-cta-book__icon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: rgba(var(--pg-ivory-rgb), 0.9);
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+}
+/* hover（2026-09-06 使用者：改回原本的米色填滿，但分兩段）：
+   0 → 0.05s 只有右側箭頭區域是米色方塊（提示「這裡可以按」），
+   之後才往左長開填滿整顆（全長 0.8s），尾段沿用原本的阻尼彈簧手感。
+   文字等填色掃過去（0.1s）才轉深色；箭頭在方塊出現當下就轉深色。
+   離開：寬度直接 transition 回 0，快速平順收回右側。 */
+@keyframes pg-landing-book-fill {
+  0%   { width: 0; }
+  3%   { width: var(--pg-book-square); }
+  6%   { width: var(--pg-book-square); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }  /* 0.05s 後就長開（2026-09-06 使用者第三次縮短） */
+  18%  { width: 96%;   animation-timing-function: ease-in; }
+  30%  { width: 90%;   animation-timing-function: ease-in-out; }
+  44%  { width: 78%;   animation-timing-function: ease-out; }
+  60%  { width: 96%;   animation-timing-function: ease-in-out; }
+  74%  { width: 94%;   animation-timing-function: ease-out; }
+  88%  { width: 99%; }
+  100% { width: 100%; }
+}
+@media (hover: hover) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__fill::before {
+    width: 100%;
+    animation: pg-landing-book-fill 800ms;   /* 不用 forwards：結束落在基礎值 100%，離開才會走 width transition */
+  }
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover {
+    background: rgba(var(--pg-charcoal-rgb), 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: var(--pg-charcoal);
+    transition: color 0.18s ease 0.1s, background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .pg-landing-root .pg-hero-cta.pg-cta-book:hover .pg-cta-book__icon {
+    color: var(--pg-charcoal);
+    transition: color 0.18s ease 0.06s;
+  }
+}
+
+@media (max-width: 767px) {
+  .pg-landing-root .pg-hero-cta.pg-cta-book {
+    --pg-book-square: 42px;
+    width: 150px;
+    height: 42px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+  .pg-landing-root .pg-hero-cta-row { gap: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-landing-root .pg-hero-cta .pg-cta-book__icon { transition: none; }
+}
+
+/* ---------- 02–04 主圖片：低調的小圓角（2026-09-06 使用者）----------
+   完全直角太硬，圓角卡片又太 UI；折衷用 3px——遠看是直角，近看邊角有一點收，
+   精品攝影排版常見的處理。仍然不加外框、陰影或卡片底色。
+   影片框沿用同一個值，整頁的媒體邊角語言一致。 */
+.pg-landing-root {
+  --pg-landing-photo-radius: 3px;
+}
+.pg-landing-root .pg-feature-media,
+.pg-landing-root .pg-feature-media *,
+.pg-landing-root .pg-feature-media img,
+.pg-landing-root .pg-feature-media picture,
+.pg-landing-root .pg-feature-media video,
+.pg-landing-root .pg-feature-media::before,
+.pg-landing-root .pg-feature-media::after,
+.pg-landing-root .pg-feature-mask {
+  border-radius: var(--pg-landing-photo-radius);
+}
+
+/* ---------- 02–04 圖文編排（2026-09-06 使用者第二版規格）----------
+   目標：圖與文是同一組內容，不是兩個各自漂浮的元素。
+   做法：同一個 CSS Grid、共同的置中容器、垂直置中，欄距收在 48–72，
+   不再用出血負邊距或 translate 各自定位。
+   欄位比例：圖 62%｜文字 30%（minmax(280px) 保底），兩組完全一致。
+   交錯：非 reverse＝圖在右、reverse（Tailwind lg:flex-row-reverse）＝圖在左。 */
+.pg-landing-root .pg-feature {
+  --pg-landing-pad: clamp(48px, 5vw, 96px);
+  --pg-landing-margin: max(0px, calc((100vw - 1680px) / 2));  /* 超過 1680 時容器兩側的外留白 */
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: var(--pg-landing-pad);
+}
+@media (min-width: 1024px) {
+  /* 統一的兩欄鏡像版面（2026-09-06 使用者第四版規格）：
+     兩組用完全相同的 grid，只交換欄位順序；除了交換之外不再有任何水平位移
+     （先前的負邊距、translate、justify-self 偏移全部移除）。 */
+  .pg-landing-root .pg-feature-row {
+    --pg-landing-col-gap: clamp(64px, 5vw, 88px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.75fr);  /* 圖左｜文右 */
+    column-gap: var(--pg-landing-col-gap);
+    align-items: center;
+  }
+  .pg-landing-root .pg-feature-media {
+    width: auto;
+    max-width: 100%;
+    flex: initial;
+    margin: 0;
+    grid-row: 1;
+    grid-column: 1;
+  }
+  /* 文字區在「淺色帶」裡水平置中（2026-09-09 使用者）：
+     淺色帶的左右邊界是上下兩張圖片的外側，也就是「文字欄 ＋ 欄距」這一整段。
+     做法：文字塊縮成內容寬（上限 340），先在自己的欄置中，再往圖片方向平移半個欄距，
+     兩者相加剛好等於「在整條淺色帶裡置中」。
+     垂直則補 -18px：box 本身偏差 0，但中文字身在行框裡偏下，實測視覺中心低 18px。 */
+  /* 置中基準（2026-09-11 使用者定案）：照片旁到頁面邊緣的整片留白。
+     文字欄本身置中之後，欄中心與留白區中心差 (欄距 − 內距 − 外留白) / 2，
+     再往圖片方向平移這個量即可；文字框 = 實際文字寬（不再有最小寬度）。 */
+  .pg-landing-root .pg-feature-text {
+    width: max-content;
+    max-width: 400px;        /* 第三列內文最長一句約 390，380 會折出孤行「彩。」 */
+    flex: initial;
+    justify-self: center;
+    translate: calc((var(--pg-landing-col-gap) - var(--pg-landing-pad) - var(--pg-landing-margin)) / -2) -18px;  /* 圖在左、文在右 */
+    grid-row: 1;
+    grid-column: 2;
+  }
+  /* 第二組：只交換欄位順序，比例與間距完全相同 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] {
+    grid-template-columns: minmax(320px, 0.75fr) minmax(0, 1.65fr);  /* 文左｜圖右 */
+  }
+  /* 鏡像的那一組：文字在左、圖片在右，平移方向相反 */
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-text {
+    grid-column: 1;
+    translate: calc((var(--pg-landing-col-gap) - var(--pg-landing-pad) - var(--pg-landing-margin)) / 2) -18px;   /* 圖在右、文在左 */
+  }
+  .pg-landing-root .pg-feature-row[class*='flex-row-reverse'] .pg-feature-media { grid-column: 2; }
+
+  /* 兩組標題完全相同：字級、行高、最大寬度都一致，換行交給欄寬決定 */
+  .pg-landing-root .pg-feature-text .pg-t-feature-h2 {
+    font-size: calc(var(--pg-fs-feature-h2) * 0.84);
+    font-weight: 600;
+    max-width: none;
+  }
+  .pg-landing-root .pg-feature-text .pg-t-body {
+    max-width: none;
+    margin-top: 28px;
+  }
+
+  /* 區塊之間統一 40（上下各 20；2026-09-06 使用者從 72 收緊，選 B 版） */
+  .pg-landing-root .pg-app-world .pg-feature {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .pg-landing-root .pg-app-world > .pg-feature:last-of-type { padding-bottom: 40px; }
+}
+/* ---------- 手機（<768）：單欄 editorial（2026-09-06 使用者規格）----------
+   內文情境圖不是 Hero，所以不做滿版：文字左右 22、圖片左右 16，
+   圖片比文字向外多延伸 6px，水平置中；圓角最多 2px，不加框線陰影。 */
+@media (max-width: 767px) {
+  .pg-landing-root .pg-feature { padding-inline: 22px; }
+  /* 文字容器的底比最後一行文字高 20px（行框留白），所以 gap 設 50，
+     視覺上的「內文最後一行 → 圖片頂」才會是 30 */
+  .pg-landing-root .pg-feature-row { gap: 50px; }
+  /* 圖片底 → 下一段標題 60（同樣扣掉那 20 的行框差） */
+  .pg-landing-root .pg-app-world .pg-feature {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .pg-landing-root .pg-feature-media {
+    width: calc(100% + 12px);      /* 內容寬 ＋ 兩側各 6 ＝ 螢幕寬 − 32 */
+    margin-inline: -6px;
+    border-radius: 2px;
+  }
+  .pg-landing-root .pg-feature-media,
+  .pg-landing-root .pg-feature-media *,
+  .pg-landing-root .pg-feature-media img,
+  .pg-landing-root .pg-feature-mask {
+    border-radius: 2px;
+  }
+}
+
+/* 圖片比例（2026-09-06 使用者定案）：2:1，比 16:9 再細長一點。
+   註：這條曾在一次區塊改寫中被誤刪，導致線上回到 token 預設的 21:9（2026-09-09 補回）。 */
+.pg-landing-root .pg-feature-media {
+  aspect-ratio: 2 / 1;
+}
+
+/* 裁切位置（2026-09-06 使用者）：三張圖一律保留上緣、優先裁掉下方，
+   人物與 App 介面都在畫面上半部，往下裁不會切到重點。 */
+.pg-landing-root .pg-feature-media img {
+  object-position: 50% 0%;
+}
+
+/* 舊瀏覽器保底（主要是 iOS 15 之前）：不支援 aspect-ratio 時，
+   圖框高度會塌成 0，整頁圖片就都不見。改用 padding-top 百分比撐高。 */
+@supports not (aspect-ratio: 1 / 1) {
+  .pg-landing-root .pg-feature-media {
+    height: 0;
+    padding-top: 50%;            /* 2:1 */
+  }
+  .pg-landing-root .pg-app-video {
+    height: 0;
+    padding-top: 56.25%;         /* 16:9 */
+  }
+}
+
+/* ---------- 03 / THE COACHES 首頁區塊（2026-09-16）----------
+   精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影／明顯圓角。
+   容器沿用 THE APP 的 1680 置中與內距；手機單欄、照片左右留 16。 */
+.pg-landing-root .pg-coaches {
+  max-width: 1680px;
+  margin-inline: auto;
+  padding: 88px clamp(48px, 5vw, 96px) 96px;
+}
+.pg-landing-root .pg-coaches__head { max-width: 640px; }
+.pg-landing-root .pg-coaches__title {
+  margin-top: 14px;
+  font-size: calc(var(--pg-fs-feature-h2) * 0.84);
+  font-weight: 600;
+}
+.pg-landing-root .pg-coaches__intro { margin-top: 20px; max-width: 34em; }
+.pg-landing-root .pg-coaches__grid {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 32px;
+  row-gap: 48px;
+}
+.pg-landing-root .pg-coach { min-width: 0; }
+.pg-landing-root .pg-coach__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--pg-landing-photo-radius, 3px);
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
+}
+.pg-landing-root .pg-coach__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  transition: transform 0.6s var(--pg-ease-out-3);
+}
+@media (hover: hover) {
+  .pg-landing-root .pg-coach:hover .pg-coach__photo img { transform: scale(1.02); }
+}
+/* 示意標記：等正式照片／資料進來就會自動消失（data.placeholder=false） */
+.pg-landing-root .pg-coach__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 8px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--pg-charcoal);
+  background: rgba(var(--pg-ivory-rgb), 0.86);
+  border-radius: 2px;
+}
+.pg-landing-root .pg-coach__name {
+  margin-top: 20px;
+  font-family: var(--pg-font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--pg-charcoal);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.pg-landing-root .pg-coach__ph {
+  font-family: var(--pg-font-sans, inherit);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-coach__tagline {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-coach__summary {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--pg-text-body, var(--pg-charcoal));
+}
+/* 「認識合作教練 ↗」：與 Hero CTA 同一套細線斜箭頭語彙，但用文字連結＋髮絲底線 */
+.pg-landing-root .pg-coaches__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  color: var(--pg-charcoal);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.pg-landing-root .pg-coaches__link svg { transition: transform 0.32s var(--pg-ease-out-3); }
+@media (hover: hover) {
+  .pg-landing-root .pg-coaches__link:hover { border-color: var(--pg-charcoal); }
+  .pg-landing-root .pg-coaches__link:hover svg { transform: translate(2px, -2px); }
+}
+@media (max-width: 1023px) {
+  .pg-landing-root .pg-coaches { padding: 72px clamp(32px, 5vw, 64px) 80px; }
+  .pg-landing-root .pg-coaches__grid { column-gap: 24px; }
+}
+@media (max-width: 767px) {
+  .pg-landing-root .pg-coaches { padding: 64px 22px 72px; }
+  .pg-landing-root .pg-coaches__grid {
+    grid-template-columns: 1fr;
+    row-gap: 44px;
+    margin-top: 40px;
+  }
+  .pg-landing-root .pg-coach__photo { margin-inline: -6px; }   /* 照片左右 16，與 THE APP 手機版一致 */
+  .pg-landing-root .pg-coaches__link { margin-top: 40px; }
+}
