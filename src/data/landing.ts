@@ -170,7 +170,7 @@ export const dualEntry = {
     title: 'PLAY WITH APP',
     desc: '闖關、挑戰，讓每一次上桌都有新的目標。',
     hover: 'EXPLORE APP',
-    href: '#app',
+    href: '/app',            /* 2026-09-16 使用者：跳到 App 玩法頁 */
     image: '/ui/assets/landing/play-entry.webp', /* 2026-09-16 使用者提供的 PLAY 入口圖（PNG → WebP，2000 寬） */
     imagePlaceholder: false,
   },
@@ -180,7 +180,7 @@ export const dualEntry = {
     title: 'LEARN WITH COACH',
     desc: '找到適合你的教練，在舒適的環境開始學習。',
     hover: 'FIND A COACH',
-    href: '#coach',
+    href: '/coaches.html',   /* 與 Hero「尋找教練」一致：合作教練列表頁 */
     image: '/ui/assets/landing/learn-entry.webp', /* 2026-09-16 使用者提供的 LEARN 入口圖（PNG → WebP） */
     imagePlaceholder: false,
   },
