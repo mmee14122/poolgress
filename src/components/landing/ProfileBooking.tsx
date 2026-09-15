@@ -316,21 +316,6 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                   </option>
                 ))}
               </select>
-              <div className="pg-bk-venues" role="radiogroup" aria-label="授課球館">
-                {coach.venues.map((v) => (
-                  <button
-                    key={v.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={v.id === venueId}
-                    onClick={() => pickVenue(v.id)}
-                    className="pg-bk-venue"
-                  >
-                    <span className="pg-bk-venue__name">{v.name}</span>
-                    <span className="pg-bk-venue__city">{v.city}</span>
-                  </button>
-                ))}
-              </div>
             </div>
           ) : venue ? (
             <div className="pg-bk-field">
@@ -418,9 +403,9 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                       data-state={active ? 'active' : open ? 'open' : past ? 'past' : 'closed'}
                       data-today={isToday ? '1' : '0'}
                     >
-                      <span>{date.getDate()}</span>
-                      {/* 勾號只出現在已選取的日期（2026-09-16 使用者） */}
-                      {active && (
+                      <span className="pg-bk-day__num">{date.getDate()}</span>
+                      {/* 勾號固定在數字下方、不參與水平排列：可預約＝綠勾（同舊版）、已選＝白勾 */}
+                      {(open || active) && (
                         <svg viewBox="0 0 20 20" aria-hidden="true" className="pg-bk-day__tick">
                           <path d="M7.6 14.6L3 10l1.4-1.4 3.2 3.2 8-8L17 5.2z" />
                         </svg>

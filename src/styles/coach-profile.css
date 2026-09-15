@@ -527,7 +527,6 @@
    ========================================================================== */
 .pg-profile-root .pg-pf-mini,
 .pg-profile-root .pg-pf-tabs,
-.pg-profile-root .pg-bk-venue-select,
 .pg-profile-root .pg-bk-venue-more { display: none; }
 .pg-profile-root .pg-bk-notice { margin: 8px 0 0; padding: 8px 12px; font-size: 12px; line-height: 1.6; color: var(--pg-charcoal); background: rgba(var(--pg-sand-rgb), 0.35); border-radius: 2px; }
 
@@ -587,3 +586,74 @@
   .pg-profile-root[data-tab='booking'] .pg-pf-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
   .pg-profile-root[data-tab='booking'] .pg-pf { padding-bottom: 48px; }
 }
+
+/* ==========================================================================
+   預約面板：閱讀層級與元件一致性（2026-09-16 使用者，參考舊版預約卡）
+   - 「預約教練」保留襯線；月份、日期、時段、摘要一律無襯線
+   - 主色：--bk-accent（品牌 --pg-primary 加深，白字對比 ≥ 4.5）用於已選日期／已選時段／啟用的確認按鈕
+   - 可預約：淡霧藍底＋柔和藍框＋綠勾（同舊版）；停用：低彩度
+   - 圓角統一 --bk-radius；日期數字置中，勾號固定在下方；今天＝右上角小圓點
+   ========================================================================== */
+.pg-profile-root .pg-bk {
+  --bk-accent: #587589;                                  /* --pg-primary #6f8fa3 × 70% ＋ Charcoal 30% */
+  --bk-accent-rgb: 88, 117, 137;
+  --bk-open-bg: #eef3f6;
+  --bk-open-line: #b9cad3;
+  --bk-green: #3f7a0e;                                   /* 舊版 pulse-700 */
+  --bk-radius: 8px;
+  --bk-muted: rgba(var(--pg-charcoal-rgb), 0.6);
+}
+.pg-profile-root .pg-bk-month__title { font-family: inherit; font-size: 17px; font-weight: 700; color: var(--pg-charcoal); }
+.pg-profile-root .pg-bk-month__count { font-size: 12px; color: var(--bk-muted); }
+.pg-profile-root .pg-bk-month__nav { border-radius: 50%; }
+.pg-profile-root .pg-bk-week { font-size: 12px; color: var(--bk-muted); }
+
+/* 日期：數字絕對置中；勾號固定在下緣、不佔排版 */
+.pg-profile-root .pg-bk-day { border-radius: var(--bk-radius); font-size: 15px; font-weight: 500; color: var(--pg-charcoal); }
+.pg-profile-root .pg-bk-day__num { position: relative; top: -3px; }
+.pg-profile-root .pg-bk-day__tick { position: absolute; left: 50%; bottom: 4px; width: 9px; height: 9px; margin-left: -4.5px; }
+.pg-profile-root .pg-bk-day[data-state='open'] { background: var(--bk-open-bg); border-color: var(--bk-open-line); color: var(--pg-charcoal); font-weight: 600; }
+.pg-profile-root .pg-bk-day[data-state='open'] .pg-bk-day__tick { fill: var(--bk-green); }
+.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: var(--bk-accent); background: #e2ebf1; }
+.pg-profile-root .pg-bk-day[data-state='active'] { background: var(--bk-accent); border-color: var(--bk-accent); color: #fff; font-weight: 600; }
+.pg-profile-root .pg-bk-day[data-state='active'] .pg-bk-day__tick { fill: #fff; }
+.pg-profile-root .pg-bk-day[data-state='closed'],
+.pg-profile-root .pg-bk-day[data-state='past'] { color: rgba(var(--pg-charcoal-rgb), 0.38); font-weight: 400; }
+.pg-profile-root .pg-bk-day[data-today='1']::after { left: auto; right: 5px; top: 5px; bottom: auto; margin: 0; width: 5px; height: 5px; background: var(--pg-walnut); }
+.pg-profile-root .pg-bk-day[data-today='1'][data-state='active']::after { background: #fff; }
+.pg-profile-root .pg-bk-legend__sw--open { background: var(--bk-open-bg); border-color: var(--bk-open-line); }
+.pg-profile-root .pg-bk-legend__sw--active { background: var(--bk-accent); }
+
+/* 所選日期標題與時段：等寬網格，依容器自動兩欄／三欄 */
+.pg-profile-root .pg-bk-times__date { font-size: 16px; font-weight: 700; color: var(--pg-charcoal); }
+.pg-profile-root .pg-bk-times__list { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.pg-profile-root .pg-bk-time { border-radius: var(--bk-radius); border-color: var(--bk-open-line); background: #fff; color: var(--pg-charcoal); font-size: 15px; font-weight: 600; }
+.pg-profile-root .pg-bk-time:hover { border-color: var(--bk-accent); background: var(--bk-open-bg); }
+.pg-profile-root .pg-bk-time[aria-pressed='true'] { background: var(--bk-accent); border-color: var(--bk-accent); color: #fff; }
+.pg-profile-root .pg-bk-muted { color: var(--bk-muted); }
+
+/* 服務／球館：清楚標籤＋緊湊選單，同一圓角 */
+.pg-profile-root .pg-bk-field__label { font-size: 12px; letter-spacing: 0.1em; color: var(--bk-muted); }
+.pg-profile-root .pg-bk-field__value { font-size: 15px; font-weight: 700; color: var(--pg-charcoal); }
+.pg-profile-root .pg-bk-field__hint { color: var(--bk-muted); }
+.pg-profile-root .pg-bk-input,
+.pg-profile-root .pg-bk-select { border-radius: var(--bk-radius); border-color: var(--bk-open-line); background: #fff; font-weight: 500; }
+.pg-profile-root .pg-bk-venue-select { display: block; }
+
+/* 摘要：標籤次要色、值深色 600 */
+.pg-profile-root .pg-bk-summary { border-radius: var(--bk-radius); font-size: 14px; }
+.pg-profile-root .pg-bk-summary__row dt { color: var(--bk-muted); }
+.pg-profile-root .pg-bk-summary__row dd { color: var(--pg-charcoal); font-weight: 600; }
+
+/* 按鈕：啟用＝主色白字；停用＝低彩度；圓角統一 */
+.pg-profile-root .pg-bk-btn { border-radius: var(--bk-radius); font-size: 15px; }
+.pg-profile-root .pg-bk-btn--primary { background: var(--bk-accent); border-color: var(--bk-accent); color: #fff; }
+.pg-profile-root .pg-bk-btn--primary:hover:not(:disabled) { background: #4b667a; border-color: #4b667a; }
+.pg-profile-root .pg-bk-btn--primary:disabled { opacity: 1; background: rgba(var(--pg-charcoal-rgb), 0.1); border-color: transparent; color: rgba(var(--pg-charcoal-rgb), 0.45); }
+.pg-profile-root .pg-bk-btn--secondary { border-color: var(--bk-accent); color: var(--bk-accent); }
+.pg-profile-root .pg-bk-choice { border-radius: var(--bk-radius); }
+.pg-profile-root .pg-bk-choice[data-checked='1'] { border-color: var(--bk-accent); background: var(--bk-open-bg); }
+.pg-profile-root .pg-bk-choice input, .pg-profile-root .pg-bk-radio input { accent-color: var(--bk-accent); }
+.pg-profile-root .pg-bk-result__mark { border-color: var(--bk-green); }
+.pg-profile-root .pg-bk-result__mark svg { fill: var(--bk-green); }
+.pg-profile-root .pg-bk-venue-more summary { color: var(--bk-accent); }
