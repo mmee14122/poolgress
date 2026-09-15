@@ -205,7 +205,7 @@ export const appPlayPage = {
   chapterTags: { s02: 'CHALLENGE', s03: 'COMPETE', s04: 'CONNECT' } as Record<string, string>,
   finale: {
     en: 'PLAY. LEARN. PROGRESS.',
-    zh: '讓每一次上桌，都有下一個挑戰與下一場。',
+    zh: '讓每一局，都有新的挑戰與相遇。',   /* 2026-09-16 使用者改稿 */
     ctas: [
       { label: '尋找教練', href: '/coaches.html' },   /* 2026-09-16 使用者：導到合作教練列表頁 */
       { label: '回到首頁', href: '/' },
