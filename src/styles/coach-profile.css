@@ -22,7 +22,6 @@
 }
 
 /* ---------- 進場 ---------- */
-.pg-profile-root .pg-pf-head,
 .pg-profile-root .pg-pf-main,
 .pg-profile-root .pg-pf-side {
   opacity: 0;
@@ -30,11 +29,9 @@
   transition: opacity 0.7s var(--pg-ease-out-2), transform 0.7s var(--pg-ease-out-2);
 }
 .pg-profile-root .pg-pf-side { transition-delay: 0.1s; }
-.pg-profile-root[data-on='1'] .pg-pf-head,
 .pg-profile-root[data-on='1'] .pg-pf-main,
 .pg-profile-root[data-on='1'] .pg-pf-side { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .pg-profile-root .pg-pf-head,
   .pg-profile-root .pg-pf-main,
   .pg-profile-root .pg-pf-side { transition: none; opacity: 1; transform: none; }
 }
@@ -98,8 +95,8 @@
 }
 .pg-profile-root .pg-pf-empty {
   margin: 0;
-  padding: 14px 16px;
-  font-size: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
   line-height: 1.7;
   color: rgba(var(--pg-charcoal-rgb), 0.6);
   border: 1px dashed var(--pg-pf-line);
@@ -108,23 +105,20 @@
 
 /* ---------- 兩欄 ---------- */
 .pg-profile-root .pg-pf-grid {
-  margin-top: 40px;
-  padding-top: 32px;
-  border-top: 1px solid var(--pg-pf-line-soft);
+  margin-top: 16px;
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);   /* 主內容 2/3 ／ 預約 1/3 */
+  grid-template-columns: minmax(0, 1fr) 500px;
   column-gap: clamp(40px, 4vw, 72px);
-  align-items: start;                                          /* 各自往下排，不逐列對齊 */
+  align-items: start;
 }
 .pg-profile-root .pg-pf-side { position: sticky; top: calc(var(--pg-nav-h-desktop, 72px) + 16px); }
 .pg-profile-root .pg-pf-side__inner { scroll-margin-top: calc(var(--pg-nav-h-mobile, 64px) + 16px); }
 
 /* ---------- 標頭 ---------- */
 .pg-profile-root .pg-pf-head {
-  margin-top: 20px;
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  column-gap: 36px;
+  grid-template-columns: 200px minmax(0, 1fr);
+  column-gap: 28px;
   align-items: start;
 }
 .pg-profile-root .pg-pf-head__photo {
@@ -142,7 +136,7 @@
 .pg-profile-root .pg-pf-head__name {
   margin: 12px 0 0;
   font-family: var(--pg-font-serif);
-  font-size: clamp(30px, 2.6vw, 38px);
+  font-size: clamp(28px, 2.4vw, 34px);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -177,28 +171,35 @@
 .pg-profile-root .pg-pf-facts dt { font-size: 11px; letter-spacing: 0.14em; color: rgba(var(--pg-charcoal-rgb), 0.55); }
 .pg-profile-root .pg-pf-facts dd { margin: 0; font-size: 14px; font-weight: 500; }
 .pg-profile-root .pg-pf-head__cta { display: none; }
-.pg-profile-root .pg-pf-facts--inline { display: flex; flex-wrap: wrap; gap: 8px 32px; }
-.pg-profile-root .pg-pf-facts--inline > div { grid-template-columns: auto auto; column-gap: 10px; }
 
 /* ---------- 左欄各區 ---------- */
-/* 主內容：介紹 → 經歷與資格 → 教學方式與理念 → 課程，各區高度依內容決定 */
-.pg-profile-root .pg-pf-main { display: grid; row-gap: 36px; }
+/* 左欄資訊列（2026-09-16 使用者）：單欄往下排——介紹 → 經歷與資格 → 教學方式與理念 → 課程；
+   各區高度依內容決定，不為了對齊右欄硬撐。 */
+.pg-profile-root .pg-pf-details {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--pg-pf-line-soft);
+  display: grid;
+  row-gap: 28px;
+}
 .pg-profile-root .pg-pf-section { min-width: 0; }
+.pg-profile-root .pg-pf-facts--inline { display: flex; flex-wrap: wrap; gap: 6px 28px; padding-top: 0; border-top: 0; }
+.pg-profile-root .pg-pf-facts--inline > div { grid-template-columns: auto auto; column-gap: 10px; }
 .pg-profile-root .pg-pf-section__title {
   margin: 0;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--pg-pf-line-soft);
   font-family: var(--pg-font-serif);
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--pg-charcoal);
 }
-.pg-profile-root .pg-pf-section__body { margin: 14px 0 0; font-size: 15px; line-height: 1.8; color: var(--pg-text-body); max-width: 40em; }
-.pg-profile-root .pg-pf-section > *:not(.pg-pf-section__title) { margin-top: 14px; }
+.pg-profile-root .pg-pf-section__body { margin: 12px 0 0; font-size: 14px; line-height: 1.75; color: var(--pg-text-body); max-width: 40em; }
+.pg-profile-root .pg-pf-section > *:not(.pg-pf-section__title) { margin-top: 12px; }
 .pg-profile-root .pg-pf-quote {
   font-family: var(--pg-font-serif);
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.6;
   max-width: 30em;
 }
@@ -211,7 +212,7 @@
 .pg-profile-root .pg-pf-venues__name { margin: 0; font-size: 13px; font-weight: 600; }
 .pg-profile-root .pg-pf-venues__addr { margin: 2px 0 4px; font-size: 12px; color: var(--pg-text-body); }
 .pg-profile-root .pg-pf-courses,
-.pg-profile-root .pg-pf-credentials { margin: 14px 0 0; padding-left: 0; list-style: none; font-size: 15px; line-height: 1.8; color: var(--pg-text-body); display: grid; row-gap: 8px; }
+.pg-profile-root .pg-pf-credentials { margin: 12px 0 0; padding-left: 0; list-style: none; font-size: 14px; line-height: 1.75; color: var(--pg-text-body); display: grid; row-gap: 6px; }
 .pg-profile-root .pg-pf-credentials li { position: relative; padding-left: 18px; }
 .pg-profile-root .pg-pf-credentials li::before { content: ''; position: absolute; left: 0; top: 0.8em; width: 8px; height: 1px; background: var(--pg-walnut); }
 .pg-profile-root .pg-pf-courses { list-style: none; padding: 0; }
@@ -238,13 +239,8 @@
 .pg-profile-root .pg-bk__title { margin: 0; font-family: var(--pg-font-serif); font-size: 20px; font-weight: 600; line-height: 1.2; }
 .pg-profile-root .pg-bk__body { padding: 14px 20px 16px; }
 .pg-profile-root .pg-bk__body > * + * { margin-top: 12px; }
-/* 服務與球館：上下排（側欄只有 1/3 寬） */
-.pg-profile-root .pg-bk-row { display: grid; row-gap: 12px; }
-/* 所選球館的地址與地圖連結 */
-.pg-profile-root .pg-bk-venue-info { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 12px; border: 1px solid var(--pg-pf-line-soft); border-radius: 2px; font-size: 12px; }
-.pg-profile-root .pg-bk-venue-info__addr { margin: 0; color: var(--pg-text-body); }
-.pg-profile-root .pg-bk-venue-info__map { color: var(--pg-charcoal); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35); }
-.pg-profile-root .pg-bk-venue-info__pending { color: rgba(var(--pg-charcoal-rgb), 0.5); }
+/* 服務與球館並排一列 */
+.pg-profile-root .pg-bk-row { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; align-items: start; }
 
 .pg-profile-root .pg-bk-field__label { display: block; margin: 0; font-size: 11px; letter-spacing: 0.16em; color: rgba(var(--pg-charcoal-rgb), 0.6); }
 .pg-profile-root .pg-bk-field__label span { color: var(--pg-walnut); }
@@ -271,7 +267,7 @@
 .pg-profile-root .pg-bk-input[aria-invalid='true'] { border-color: #9b3b2e; }
 
 /* 球館：兩欄切換 */
-.pg-profile-root .pg-bk-venues { margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pg-profile-root .pg-bk-venues { margin-top: 6px; display: grid; grid-template-columns: 1fr; gap: 6px; }
 .pg-profile-root .pg-bk-venue {
   min-height: 40px;
   padding: 4px 10px;
@@ -434,9 +430,9 @@
   .pg-profile-root .pg-pf-head__photo { aspect-ratio: 4 / 3; margin-inline: -6px; }
   .pg-profile-root .pg-pf-head__name { font-size: 30px; }
   .pg-profile-root .pg-pf-head__pitch { font-size: 16px; }
-  .pg-profile-root .pg-pf-main { row-gap: 32px; }
-  .pg-profile-root .pg-pf-grid { margin-top: 32px; padding-top: 28px; row-gap: 40px; }
-  .pg-profile-root .pg-bk-venues { grid-template-columns: 1fr; }
+  .pg-profile-root .pg-pf-details { row-gap: 28px; margin-top: 32px; }
+  .pg-profile-root .pg-bk-row { display: block; }
+  .pg-profile-root .pg-bk-row > * + * { margin-top: 12px; }
   .pg-profile-root .pg-bk-times__list { grid-template-columns: repeat(3, 1fr); }
   .pg-profile-root .pg-bk-day { min-height: 40px; }
   .pg-profile-root .pg-bk__head { padding: 16px 18px 14px; }

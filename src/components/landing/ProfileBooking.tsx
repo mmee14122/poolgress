@@ -333,22 +333,6 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
           ) : null}
           </div>
 
-          {/* ── 所選球館的地址與地圖 ── */}
-          {venue && (
-            <div className="pg-bk-venue-info">
-              <p className="pg-bk-venue-info__addr">
-                {venue.city}・{venue.address}
-              </p>
-              {venue.mapUrl ? (
-                <a href={venue.mapUrl} target="_blank" rel="noopener noreferrer" className="pg-bk-venue-info__map">
-                  查看地圖 ↗
-                </a>
-              ) : (
-                <span className="pg-bk-venue-info__pending">地圖連結待補</span>
-              )}
-            </div>
-          )}
-
           {/* ── 日曆或空白狀態 ── */}
           {!venue ? (
             <EmptySlots text="尚未安排授課球館，暫時無法線上預約。" />
