@@ -595,10 +595,11 @@
    - 圓角統一 --bk-radius；日期數字置中，勾號固定在下方；今天＝右上角小圓點
    ========================================================================== */
 .pg-profile-root .pg-bk {
-  --bk-accent: #587589;                                  /* --pg-primary #6f8fa3 × 70% ＋ Charcoal 30% */
-  --bk-accent-rgb: 88, 117, 137;
-  --bk-open-bg: #eef3f6;
-  --bk-open-line: #b9cad3;
+  --bk-accent: #2b66b4;                                  /* 品牌藍（舊站 brand-600，2026-09-16 使用者指定） */
+  --bk-accent-rgb: 43, 102, 180;
+  --bk-accent-hover: #23528f;                            /* brand-700 */
+  --bk-open-bg: #eef4fc;                                 /* brand-50 */
+  --bk-open-line: #b7d3f2;                               /* brand-200 */
   --bk-green: #3f7a0e;                                   /* 舊版 pulse-700 */
   --bk-radius: 8px;
   --bk-muted: rgba(var(--pg-charcoal-rgb), 0.6);
@@ -614,7 +615,7 @@
 .pg-profile-root .pg-bk-day__tick { position: absolute; left: 50%; bottom: 4px; width: 9px; height: 9px; margin-left: -4.5px; }
 .pg-profile-root .pg-bk-day[data-state='open'] { background: var(--bk-open-bg); border-color: var(--bk-open-line); color: var(--pg-charcoal); font-weight: 600; }
 .pg-profile-root .pg-bk-day[data-state='open'] .pg-bk-day__tick { fill: var(--bk-green); }
-.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: var(--bk-accent); background: #e2ebf1; }
+.pg-profile-root .pg-bk-day[data-state='open']:is(:hover, .is-hover) { border-color: var(--bk-accent); background: #dbe9f9; }
 .pg-profile-root .pg-bk-day[data-state='active'] { background: var(--bk-accent); border-color: var(--bk-accent); color: #fff; font-weight: 600; }
 .pg-profile-root .pg-bk-day[data-state='active'] .pg-bk-day__tick { fill: #fff; }
 .pg-profile-root .pg-bk-day[data-state='closed'],
@@ -648,7 +649,7 @@
 /* 按鈕：啟用＝主色白字；停用＝低彩度；圓角統一 */
 .pg-profile-root .pg-bk-btn { border-radius: var(--bk-radius); font-size: 15px; }
 .pg-profile-root .pg-bk-btn--primary { background: var(--bk-accent); border-color: var(--bk-accent); color: #fff; }
-.pg-profile-root .pg-bk-btn--primary:hover:not(:disabled) { background: #4b667a; border-color: #4b667a; }
+.pg-profile-root .pg-bk-btn--primary:hover:not(:disabled) { background: var(--bk-accent-hover); border-color: var(--bk-accent-hover); }
 .pg-profile-root .pg-bk-btn--primary:disabled { opacity: 1; background: rgba(var(--pg-charcoal-rgb), 0.1); border-color: transparent; color: rgba(var(--pg-charcoal-rgb), 0.45); }
 .pg-profile-root .pg-bk-btn--secondary { border-color: var(--bk-accent); color: var(--bk-accent); }
 .pg-profile-root .pg-bk-choice { border-radius: var(--bk-radius); }
