@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
-import { ChapterTransition, PillarBlock, useLandingReveal, fadeUp, EASE3 } from './LandingApp'
+import { PillarBlock, useLandingReveal, fadeUp, EASE3 } from './LandingApp'
 import { appChapter, appPlayPage, landingNav, palette as P, pillarSections } from './data/landing'
 
 /**
  * App 玩法頁（/app，檔名 app-play.html）— 2026-09-16 使用者規格。
  *
  * 首頁只留 App 精簡預覽；原本首頁那整套 App 長敘事搬到這裡，一行程式碼都不重寫：
- *   ChapterTransition（01 / THE APP、THE GAME GOES WITH YOU.、體驗文案）
- *   → PillarBlock s02「球桌變成你的關卡」＝ CHALLENGE
+ *   PillarBlock s02「球桌變成你的關卡」＝ CHALLENGE
  *   → PillarBlock s03「一個人的挑戰，兩個人的遊戲」＝ COMPETE
  *   → PillarBlock s04「下一場，就在這裡」＝ CONNECT
  *   → 收尾 CTA → Footer
@@ -20,11 +19,10 @@ import { appChapter, appPlayPage, landingNav, palette as P, pillarSections } fro
  * 「合作教練／關於場館／聯絡我們」會回首頁並定位。Logo 回首頁。
  */
 
-const IDS = ['trans02', 'trans02h', ...pillarSections.slice(1).map((s) => s.id), 'finale']
+const IDS = [...pillarSections.slice(1).map((s) => s.id), 'finale']
 
 export default function AppPlayApp() {
   const { reg, shown, narrow, maskP } = useLandingReveal(IDS)
-  const onTrans = shown(narrow ? 'trans02h' : 'trans02')
 
   useEffect(() => {
     document.title = 'App 玩法｜Poolgress'
@@ -34,9 +32,9 @@ export default function AppPlayApp() {
     <main id="top" className="pg-home-root pg-landing-root pg-app-play-root" style={{ background: P.bg, color: P.text }}>
       <Navbar links={landingNav} minimal logoHref="/" />
 
-      {/* 整段沿用首頁原本的 App 長敘事：同一個淡藍底 .pg-app-world */}
+      {/* 整段沿用首頁原本的 App 長敘事：同一個淡藍底 .pg-app-world。
+          「01 / THE APP」章節開場依使用者 2026-09-16 指示移除，直接從 01 / CHALLENGE 開始。 */}
       <div className="pg-app-world">
-        <ChapterTransition on={onTrans} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
         {pillarSections.slice(1).map((s, i) => (
           <PillarBlock
             key={s.id}

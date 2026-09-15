@@ -222,7 +222,7 @@
 
 /* ---------- /app 玩法頁：導覽列是 sticky 實底（不是首頁的透明 hero 變體），章節開場不需要 Hero 高度 ----------
    頁面底與收尾 CTA 與內容區同一個淺藍；導覽列維持共用 Navbar 的白底（2026-09-16 使用者改回） */
-.pg-landing-root.pg-app-play-root .pg-app-world { padding-top: 8px; }
+.pg-landing-root.pg-app-play-root .pg-app-world { padding-top: clamp(32px, 5vh, 64px); }   /* 開場已移除，第一段直接在導覽列下方 */
 .pg-landing-root.pg-app-play-root { background: var(--pg-app-world-bg-fallback) !important; background: var(--pg-app-world-bg) !important; }
 .pg-landing-root.pg-app-play-root #app-finale { background: var(--pg-app-world-bg-fallback) !important; background: var(--pg-app-world-bg) !important; }
 
