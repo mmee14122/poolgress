@@ -16,12 +16,15 @@ export function CoachCard({
   index,
   style,
   eager,
+  hideLevel,
 }: {
   coach: PartnerCoach
   /** 0/1/2 → 01 START／02 IMPROVE／03 COMPETE */
   index: number
   style?: React.CSSProperties
   eager?: boolean
+  /** 首頁：不顯示上方的層級標示（2026-09-16 使用者）；列表頁維持 */
+  hideLevel?: boolean
 }) {
   const level = coachLabels.levels3[index] ?? coachLabels.levels3[coachLabels.levels3.length - 1]
 
@@ -32,13 +35,15 @@ export function CoachCard({
       style={style}
       aria-label={`${level.en}／${level.zh}：${coach.name}，${coach.focus}，${coachLabels.cta}`}
     >
-      {/* 層級標示：學習路徑優先 */}
+      {/* 層級標示：學習路徑優先（首頁 hideLevel 不顯示） */}
+      {!hideLevel && (
       <p className="pg-coach-card__level">
         <span className="pg-coach-card__level-no">{level.no}</span>
         <span className="pg-coach-card__level-sep" aria-hidden="true">—</span>
         <span className="pg-coach-card__level-en">{level.en}</span>
         <span className="pg-coach-card__level-zh">{level.zh}</span>
       </p>
+      )}
 
       <div className="pg-coach-card__photo">
         <img src={coach.photo} alt={coach.photoAlt} loading={eager ? 'eager' : 'lazy'} />

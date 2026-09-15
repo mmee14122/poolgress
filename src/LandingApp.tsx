@@ -365,7 +365,7 @@ export default function LandingApp() {
         <div className="pg-coaches__grid" role="list" aria-label="合作教練">
           {coaches.map((c, i) => (
             <div key={c.id} role="listitem" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
-              <CoachCard coach={c} index={i} />
+              <CoachCard coach={c} index={i} hideLevel />
             </div>
           ))}
         </div>
