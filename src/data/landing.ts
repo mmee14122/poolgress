@@ -19,9 +19,9 @@ export const hero = {
   titleLines: ['讓撞球成為', '一家人的共同記憶'],
   /** 導到 01 THE SPACE 的章節開場（#the-space），不是照片 #s01 */
   /** 2026-09-06：預約場館 → 合作場館頁（booking.html 的 Coming Soon／BookingForm 保留，之後有訂位系統再改回） */
-  cta: { label: '探索場館', href: '#space' },       /* 一頁式：指向頁內 CLUB 段落，不外連 */
+  cta: { label: '探索 App', href: '#app' },       /* 一頁式：指向頁內 CLUB 段落，不外連 */
   /** 第二顆 Hero CTA（2026-09-06 使用者）：與第一顆同款，指向 02 / THE APP 章節 */
-  ctaSecondary: { label: '探索 App', href: '#app' },
+  ctaSecondary: { label: '探索場館', href: '#space' },
 }
 
 /* 2026-09-06 使用者：THE APP 內三塊不再顯示 01/02/03 標記——與上方「01 / THE SPACE」
@@ -97,13 +97,14 @@ export const pillarSections: Pillar[] = [
 
 /** 02 / THE APP 章節開場。App 未上架：QR 與下載字樣全部移除，右側改放介紹影片（2026-09-06 使用者） */
 export const appChapter = {
-  eyebrow: '02 / THE APP',
+  eyebrow: '01 / THE APP',   /* 2026-09-16：App 移到第一章 */
   titleLines: ['THE GAME', 'GOES WITH YOU.'] as [string, string],
   body: 'Poolgress 不只陪你打完一局。\n從闖關、學習，到找到一起玩的朋友，\n每一次上桌，都能延續到下一次。',
   /* App 介紹影片（2026-09-06 使用者：放在文案右側）。
      檔案放 public/assets/app/ 後把路徑填進 src；poster 是封面圖。
      兩者留 null 時顯示同尺寸佔位框。例：src: '/ui/assets/app/intro.mp4' */
   video: {
+    show: false,   /* 2026-09-16 使用者：Hero 之後會換成介紹影片，這段先不放 */
     src: '/ui/assets/app/intro.mp4' as string | null,        /* 1920×1080 H.264，85 秒 */
     poster: '/ui/assets/app/intro-poster.jpg' as string | null,
     hint: 'APP 介紹影片（16:9）',
@@ -145,8 +146,8 @@ export const brand = {
 
 /** 一頁式導覽：頁內錨點 ＋ App 下載頁（唯一對外連結） */
 export const landingNav = [
-  { label: '關於場館', href: '#space' },          /* 01 / THE SPACE 眉標處 */
-  { label: 'App 玩法', href: '#app' },            /* 02 / THE APP 眉標處 */
-  { label: '合作教練', href: './coaches.html' },  /* 2026-09-16：獨立分頁 */
-  { label: '聯絡我們', href: '#contact' },        /* 頁尾前的「想一起打造這件事？」 */
+  { label: 'App 玩法', href: '#app' },            /* 01 / THE APP 眉標處 */
+  { label: '合作教練', href: './coaches.html' },  /* 獨立分頁 */
+  { label: '關於場館', href: '#space' },          /* 03 / THE SPACE 眉標處 */
+  { label: '聯絡我們', href: '#contact' },        /* 頁尾前的「一起讓想法成真。」 */
 ]

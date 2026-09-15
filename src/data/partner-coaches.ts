@@ -14,7 +14,13 @@ export type PartnerCoach = {
   /** 是否為佔位資料；true 時畫面會加「示意」標記 */
   placeholder: boolean
   name: string
-  /** 一行定位，例：花式撞球 · 教學 8 年（首頁與分頁的小字） */
+  /** 角色標籤，例：基礎訓練教練（名字下方那行，粗一點） */
+  role: string
+  /** 教學年資，例：8 年；未確認就寫「待補」 */
+  years: string
+  /** 授課方式，例：一對一 · 團體班 */
+  format: string
+  /** 一行定位（舊欄位，分頁 tagline 用） */
   tagline: string
   /** 首頁用的一句話（≤ 26 字） */
   summary: string
@@ -33,6 +39,9 @@ export const coaches: PartnerCoach[] = [
     id: 'coach-a',
     placeholder: true,
     name: '教練 A',
+    role: '基礎訓練教練（示意）',
+    years: '待補',
+    format: '一對一 · 團體班（示意）',
     tagline: '示意 · 專長待補 · 教學年資待補',
     summary: '示意文字：一句話說明這位教練的教學風格與適合的學員。',
     philosophy: '示意文字：教練的教學理念，一到兩句，例如「先把姿勢站穩，再談進球」。',
@@ -45,6 +54,9 @@ export const coaches: PartnerCoach[] = [
     id: 'coach-b',
     placeholder: true,
     name: '教練 B',
+    role: '瞄準與球路教練（示意）',
+    years: '待補',
+    format: '一對一 · 團體班（示意）',
     tagline: '示意 · 專長待補 · 教學年資待補',
     summary: '示意文字：一句話說明這位教練的教學風格與適合的學員。',
     philosophy: '示意文字：教練的教學理念，一到兩句。',
@@ -57,6 +69,9 @@ export const coaches: PartnerCoach[] = [
     id: 'coach-c',
     placeholder: true,
     name: '教練 C',
+    role: '實戰策略教練（示意）',
+    years: '待補',
+    format: '一對一 · 團體班（示意）',
     tagline: '示意 · 專長待補 · 教學年資待補',
     summary: '示意文字：一句話說明這位教練的教學風格與適合的學員。',
     philosophy: '示意文字：教練的教學理念，一到兩句。',
@@ -69,7 +84,7 @@ export const coaches: PartnerCoach[] = [
 
 /** 首頁區塊文案 */
 export const coachesSection = {
-  eyebrow: '03 / THE COACHES',
+  eyebrow: '02 / THE COACHES',
   title: '跟著教練，打出自己的節奏。',
   intro: '三位合作教練，從基礎姿勢到比賽思維，陪你把每一次上桌變成看得見的進步。',
   link: { label: '認識合作教練', href: './coaches.html' },

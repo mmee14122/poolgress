@@ -426,3 +426,199 @@
   .pg-landing-root .pg-coach__photo { margin-inline: -6px; }   /* 照片左右 16，與 THE APP 手機版一致 */
   .pg-landing-root .pg-coaches__link { margin-top: 40px; }
 }
+
+/* ---------- 02 / THE COACHES：三個版本（2026-09-16 給使用者比較，定案後只留一個）----------
+   共用：三欄等寬、4:5 照片；版本差在資訊層級與字級。
+   A 精品雜誌：名字＋角色＋專長一行＋一句話，最安靜。
+   B 學院型（參考音樂學院師資頁）：上方髮絲線、編號、名字更大、角色粗一點、專長標籤、年資／授課方式數據列。
+   C 人物列：每位教練一整列，照片左、資料右，資訊最完整、最有「師資」份量。 */
+.pg-landing-root .pg-coach__index,
+.pg-landing-root .pg-coach__role,
+.pg-landing-root .pg-coach__specs,
+.pg-landing-root .pg-coach__stats,
+.pg-landing-root .pg-coach__more { display: none; }
+.pg-landing-root .pg-coach__specs { list-style: none; margin: 0; padding: 0; }
+.pg-landing-root .pg-coach__stats { margin: 0; }
+.pg-landing-root .pg-coach__stats dd { margin: 0; }
+
+/* ----- A：精品雜誌（微調：字級放大） ----- */
+.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__name { font-size: 26px; }
+.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__role {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__specs li + li::before { content: '·'; margin-right: 10px; color: rgba(var(--pg-charcoal-rgb), 0.4); }
+.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__summary { font-size: 16px; margin-top: 14px; }
+
+/* ----- B：學院型 ----- */
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__body {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__index {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__name { margin-top: 10px; font-size: 30px; }
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__role {
+  display: block;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__specs li {
+  padding: 6px 11px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--pg-charcoal);
+  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.28);
+  border-radius: 2px;
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats dt {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(var(--pg-charcoal-rgb), 0.55);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats dd {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__summary { font-size: 15px; margin-top: 18px; }
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--pg-charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  padding-bottom: 3px;
+}
+.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__tagline { display: none; }
+
+/* ----- C：人物列 ----- */
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coaches__grid {
+  grid-template-columns: 1fr;
+  row-gap: 0;
+  margin-top: 40px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
+  column-gap: clamp(40px, 5vw, 88px);
+  align-items: center;
+  padding: 48px 0;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__index {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--pg-walnut);
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__name { margin-top: 10px; font-size: 34px; }
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__role {
+  display: block;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pg-charcoal);
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__specs li {
+  padding: 6px 12px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--pg-charcoal);
+  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.28);
+  border-radius: 2px;
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 22px;
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats dt {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(var(--pg-charcoal-rgb), 0.55);
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats dd {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__summary { font-size: 16px; margin-top: 20px; max-width: 44em; }
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__tagline { display: none; }
+.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--pg-charcoal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  padding-bottom: 3px;
+}
+@media (max-width: 767px) {
+  .pg-landing-root .pg-coaches[data-variant='C'] .pg-coach {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+    padding: 36px 0;
+  }
+  .pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__name,
+  .pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__name { font-size: 26px; }
+}
+
+/* ---------- 底色配置三案（2026-09-16：THE APP 移到 Hero 之後，藍與米色要重新分配）----------
+   a：維持——THE APP 淡藍、教練與場館米白（照片 → 冷 → 暖 → 暖）
+   b：THE APP 米白、教練淡藍、場館米白（藍色帶移到中段，前後都是暖色）
+   c：THE APP 稍深的石板藍灰（Secondary 34%），教練與場館米白，冷暖對比更明確 */
+.pg-landing-root .pg-coaches { background: var(--pg-ivory); }
+.pg-landing-root[data-tone='b'] .pg-app-world { background: var(--pg-ivory); }
+.pg-landing-root[data-tone='b'] .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }
+.pg-landing-root[data-tone='c'] .pg-app-world { background: #d9dfe1; background: color-mix(in srgb, #afc4cf 34%, #f2eee6); }

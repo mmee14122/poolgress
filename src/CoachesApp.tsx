@@ -19,9 +19,9 @@ import { landingContactEmail } from './data/landing'
  */
 
 const nav = [
-  { label: '關於場館', href: '/#space' },
   { label: 'App 玩法', href: '/#app' },
   { label: '合作教練', href: './coaches.html' },
+  { label: '關於場館', href: '/#space' },
   { label: '聯絡我們', href: '/#contact' },
 ]
 

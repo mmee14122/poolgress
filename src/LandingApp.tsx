@@ -16,7 +16,7 @@ import { LandingFooter } from './components/LandingFooter'
 import { ProgressPoint } from './components/ProgressPoint'
 
 /**
- * 首頁定案版：NAV → HERO → 01 場館 → 02 轉場 → 02–04 內容 → FINAL CTA → FOOTER。
+ * 首頁（2026-09-16 起）：NAV → HERO → 01 THE APP → 02 THE COACHES → 03 THE SPACE → FINAL CTA → FOOTER。
  *
  * 進場動畫（2026-08-17 依使用者規格改版）：left-to-right masked reveal。
  * 內容一開始就在最終位置，不飛入、不上浮——用 clip-path: inset(0 100% 0 0)
@@ -157,6 +157,12 @@ export default function LandingApp() {
     return () => window.clearTimeout(t)
   }, [])
 
+  /* 預覽用切換（2026-09-16，定案後移除）：?coach=A|B|C 教練區版本、?tone=a|b|c 底色配置 */
+  const [previewVariant] = useState(() => {
+    const q = new URLSearchParams(window.location.search)
+    return { coach: q.get('coach') ?? 'A', tone: q.get('tone') ?? 'a' }
+  })
+
   const reg = (id: string) => (el: HTMLElement | null) => {
     if (el) refs.current.set(id, el)
   }
@@ -165,7 +171,7 @@ export default function LandingApp() {
   const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
   return (
-    <main id="top" className="pg-home-root pg-landing-root" style={{ background: P.bg, color: P.text }}>
+    <main id="top" className="pg-home-root pg-landing-root" data-tone={previewVariant.tone} style={{ background: P.bg, color: P.text }}>
       {/* ---------- NAV：與其他頁同一顆 Navbar，首頁走透明玻璃變體（方案 B）。
           深色區塊加 data-nav-dark 讓它切成透明漸層＋白字，其餘落回米白玻璃 ---------- */}
       <Navbar theme="hero" glass links={landingNav} minimal logoHref="#top" />
@@ -311,6 +317,133 @@ export default function LandingApp() {
         </div>
       </section>
 
+      {/* ---------- 頁面順序（2026-09-16 使用者定案）：Hero → 01 THE APP → 02 THE COACHES → 03 THE SPACE → CTA
+          場館最後才會出場，所以放在最後當作願景收尾；App 介紹影片先不放（Hero 之後會換成影片）。 */}
+      {/* 02 THE APP：從章節開場到 04 結束共享同一個極淡灰藍底
+          （Secondary 22% × Background，見 .pg-app-world），用顏色說
+          「實體空間（暖）→ 數位體驗（冷）」；眉標仍 Walnut、大標仍 Charcoal */}
+      <div className="pg-app-world">
+        <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
+        {pillarSections.slice(1).map((s, i) => (
+          <PillarBlock
+            key={s.id}
+            s={s}
+            flip={i % 2 === 0}
+            on={shown(s.id)}
+            refCb={reg(s.id)}
+            imgRefCb={reg(s.id + '-img')}
+            maskProgress={maskP[s.id] ?? 0}
+            hideChapterHead
+            quick={narrow}
+          />
+        ))}
+      {/* ---------- App 介紹影片（2026-09-06 使用者定案）----------
+            位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
+            這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
+            桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
+        {appChapter.video.show && (
+        <section className="pg-app-video-section site-container">
+          <div className="pg-app-video">
+            {appChapter.video.src ? (
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src={appChapter.video.src}
+                poster={appChapter.video.poster ?? undefined}
+                controls
+                playsInline
+                preload="none"
+              />
+            ) : (
+              <div className="pg-media-placeholder absolute inset-0">
+                <div
+                  className="absolute inset-[4%] rounded-lg border border-dashed"
+                  style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
+                />
+                <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
+                  {appChapter.video.hint}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+        )}
+      </div>
+
+      {/* ---------- 02 / THE COACHES（2026-09-16）：App 之後、場館之前 ----------
+          精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影；
+          首頁只放精簡資訊，詳細內容在 coaches.html。資料集中在 data/coaches.ts。 */}
+      <section
+        ref={reg('coaches')}
+        id="coaches"
+        className="pg-coaches site-container"
+        data-variant={previewVariant.coach}
+        style={{ color: P.text }}
+      >
+        <div className="pg-coaches__head">
+          <p id="coach" className="pg-anchor-line pg-t-eyebrow" style={fadeUp(shown('coaches'), 0, 0.5, 8)}>
+            {coachesSection.eyebrow}
+          </p>
+          <h2 className="pg-t-feature-h2 pg-coaches__title" style={fadeUp(shown('coaches'), 0.08)}>
+            {coachesSection.title}
+          </h2>
+          <p className="pg-t-body pg-coaches__intro" style={fadeUp(shown('coaches'), 0.16)}>
+            {coachesSection.intro}
+          </p>
+        </div>
+
+        <ul className="pg-coaches__grid" aria-label="合作教練">
+          {coaches.map((c, i) => (
+            <li key={c.id} className="pg-coach" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
+              <div className="pg-coach__photo">
+                <img src={c.photo} alt={c.photoAlt} loading="lazy" />
+                {c.placeholder && <span className="pg-coach__badge">示意照片</span>}
+              </div>
+              <div className="pg-coach__body">
+                <p className="pg-coach__index">0{i + 1}</p>
+                <h3 className="pg-coach__name">
+                  {c.name}
+                  {c.placeholder && <span className="pg-coach__ph">示意</span>}
+                </h3>
+                <p className="pg-coach__role">{c.role}</p>
+                <ul className="pg-coach__specs" aria-label="專長">
+                  {c.specialties.map((sp) => (
+                    <li key={sp}>{sp}</li>
+                  ))}
+                </ul>
+                <dl className="pg-coach__stats">
+                  <div>
+                    <dt>教學年資</dt>
+                    <dd>{c.years}</dd>
+                  </div>
+                  <div>
+                    <dt>授課方式</dt>
+                    <dd>{c.format}</dd>
+                  </div>
+                </dl>
+                <p className="pg-coach__summary">{c.summary}</p>
+                <a className="pg-coach__more" href={`./coaches.html#${c.id}`}>
+                  完整介紹
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7M8.5 7H17v8.5" />
+                  </svg>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={coachesSection.link.href}
+          className="pg-coaches__link"
+          style={fadeUp(shown('coaches'), 0.5, 0.6, 10)}
+        >
+          <span>{coachesSection.link.label}</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7M8.5 7H17v8.5" />
+          </svg>
+        </a>
+      </section>
+
       {/* ---------- Hero → 01 Editorial Typography Transition ----------
           Typography first, graphic second：乾淨水平交界，140–220px 呼吸空間，
           先讀到 01 / THE SPACE，再讀到大字標題（逐行 mask reveal），最後才進場館圖。
@@ -335,7 +468,7 @@ export default function LandingApp() {
             id="space"
             className="pg-anchor-line pg-t-eyebrow flex flex-wrap items-center gap-x-3 gap-y-2"
           >
-            <span style={reveal(on01, 0, 0.9)}>01 / THE SPACE</span>
+            <span style={reveal(on01, 0, 0.9)}>03 / THE SPACE</span>
             <ProgressPoint on={on01} delay={0.35} />
             <span
               className="pg-t-badge rounded-full px-3 py-1 normal-case"
@@ -390,104 +523,6 @@ export default function LandingApp() {
         hideHeading
         quick={narrow}
       />
-
-      {/* 02 THE APP：從章節開場到 04 結束共享同一個極淡灰藍底
-          （Secondary 22% × Background，見 .pg-app-world），用顏色說
-          「實體空間（暖）→ 數位體驗（冷）」；眉標仍 Walnut、大標仍 Charcoal */}
-      <div className="pg-app-world">
-        <ChapterTransition on={onTrans02} refCb={reg('trans02')} headRefCb={reg('trans02h')} />
-        {pillarSections.slice(1).map((s, i) => (
-          <PillarBlock
-            key={s.id}
-            s={s}
-            flip={i % 2 === 0}
-            on={shown(s.id)}
-            refCb={reg(s.id)}
-            imgRefCb={reg(s.id + '-img')}
-            maskProgress={maskP[s.id] ?? 0}
-            hideChapterHead
-            quick={narrow}
-          />
-        ))}
-      {/* ---------- App 介紹影片（2026-09-06 使用者定案）----------
-            位置在三塊功能之後、聯絡 CTA 之前：前面用情境與文案建立印象，
-            這裡才給實際手機畫面當證據，看完就接「想一起打造這件事？」。
-            桌機置中、最大寬 960；沒有影片檔時顯示同尺寸佔位框。 */}
-        <section className="pg-app-video-section site-container">
-          <div className="pg-app-video">
-            {appChapter.video.src ? (
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                src={appChapter.video.src}
-                poster={appChapter.video.poster ?? undefined}
-                controls
-                playsInline
-                preload="none"
-              />
-            ) : (
-              <div className="pg-media-placeholder absolute inset-0">
-                <div
-                  className="absolute inset-[4%] rounded-lg border border-dashed"
-                  style={{ borderColor: 'rgba(var(--pg-charcoal-rgb),.25)' }}
-                />
-                <span className="absolute top-3 left-4 text-[11px]" style={{ color: 'rgba(var(--pg-charcoal-rgb),.6)' }}>
-                  {appChapter.video.hint}
-                </span>
-              </div>
-            )}
-          </div>
-        </section>
-      </div>
-
-      {/* ---------- 03 / THE COACHES（2026-09-16）：影片之後、收尾 CTA 之前 ----------
-          精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影；
-          首頁只放精簡資訊，詳細內容在 coaches.html。資料集中在 data/coaches.ts。 */}
-      <section
-        ref={reg('coaches')}
-        id="coaches"
-        className="pg-coaches site-container"
-        style={{ background: P.bg, color: P.text }}
-      >
-        <div className="pg-coaches__head">
-          <p id="coach" className="pg-anchor-line pg-t-eyebrow" style={fadeUp(shown('coaches'), 0, 0.5, 8)}>
-            {coachesSection.eyebrow}
-          </p>
-          <h2 className="pg-t-feature-h2 pg-coaches__title" style={fadeUp(shown('coaches'), 0.08)}>
-            {coachesSection.title}
-          </h2>
-          <p className="pg-t-body pg-coaches__intro" style={fadeUp(shown('coaches'), 0.16)}>
-            {coachesSection.intro}
-          </p>
-        </div>
-
-        <ul className="pg-coaches__grid" aria-label="合作教練">
-          {coaches.map((c, i) => (
-            <li key={c.id} className="pg-coach" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
-              <div className="pg-coach__photo">
-                <img src={c.photo} alt={c.photoAlt} loading="lazy" />
-                {c.placeholder && <span className="pg-coach__badge">示意照片</span>}
-              </div>
-              <h3 className="pg-coach__name">
-                {c.name}
-                {c.placeholder && <span className="pg-coach__ph">示意</span>}
-              </h3>
-              <p className="pg-coach__tagline">{c.tagline}</p>
-              <p className="pg-coach__summary">{c.summary}</p>
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={coachesSection.link.href}
-          className="pg-coaches__link"
-          style={fadeUp(shown('coaches'), 0.5, 0.6, 10)}
-        >
-          <span>{coachesSection.link.label}</span>
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M7 17 17 7M8.5 7H17v8.5" />
-          </svg>
-        </a>
-      </section>
 
       {/* ---------- FINAL CTA：三入口 ---------- */}
       <section
