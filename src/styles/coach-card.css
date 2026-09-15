@@ -1,0 +1,175 @@
+/* ==========================================================================
+   coach-card.css — 合作教練卡片（2026-09-16 重設計）。
+   首頁 02 區塊（landing-entry）與 coaches.html 列表（coaches-entry）共用；
+   選擇器一律以 .pg-coach-card 開頭，不動共用檔。
+   語言與正式首頁一致：Ivory 底、Charcoal 字、Walnut 眉標、serif 600 標題、
+   照片 3px 圓角、無卡片底色／陰影；主按鈕 Sand 實底、直角、永遠可見。
+   ========================================================================== */
+
+.pg-coach-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--pg-charcoal);
+}
+
+/* 照片 4:3（舊版 4:5）：1440 寬三欄時約 300px 高，讓資訊與按鈕一起進視窗 */
+.pg-coach-card__photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(var(--pg-charcoal-rgb), 0.06);
+}
+.pg-coach-card__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  transition: transform 1.2s var(--pg-ease-out-3);
+}
+@media (hover: hover) {
+  .pg-coach-card:hover .pg-coach-card__photo img { transform: scale(1.02); }
+}
+.pg-coach-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 8px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--pg-charcoal);
+  background: rgba(var(--pg-ivory-rgb), 0.88);
+  border-radius: 2px;
+}
+
+/* 文字區：上方髮絲線承接照片；flex 讓三張卡的按鈕齊底 */
+.pg-coach-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
+}
+.pg-coach-card__index {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--pg-walnut);
+}
+/* 教學方向：卡片最醒目的一行 */
+.pg-coach-card__focus {
+  margin: 10px 0 0;
+  font-family: var(--pg-font-serif);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--pg-charcoal);
+}
+.pg-coach-card__name {
+  margin: 6px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--pg-charcoal);
+}
+.pg-coach-card__ph {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--pg-walnut);
+}
+.pg-coach-card__pitch {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--pg-text-body);
+}
+.pg-coach-card__topics {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pg-coach-card__topics li {
+  padding: 5px 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--pg-charcoal);
+  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.26);
+  border-radius: 2px;
+}
+/* 適合對象／授課方式／授課地點：標籤＋值，三行固定順序 */
+.pg-coach-card__facts {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
+  display: grid;
+  row-gap: 8px;
+}
+.pg-coach-card__facts > div {
+  display: grid;
+  grid-template-columns: 4.5em 1fr;
+  column-gap: 12px;
+  align-items: baseline;
+}
+.pg-coach-card__facts dt {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(var(--pg-charcoal-rgb), 0.55);
+}
+.pg-coach-card__facts dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--pg-charcoal);
+}
+/* 主按鈕：Sand 實底、44 高、全寬、直角；靠 margin-top:auto 齊底 */
+.pg-coach-card__cta {
+  margin-top: 22px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 0;
+  background: var(--pg-sand);
+  border: 1px solid var(--pg-sand);
+  color: var(--pg-charcoal);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 0.3s var(--pg-ease-out-3), border-color 0.3s var(--pg-ease-out-3);
+}
+.pg-coach-card__cta svg { transition: transform 0.3s var(--pg-ease-out-3); }
+@media (hover: hover) {
+  .pg-coach-card__cta:hover { background: var(--pg-sand-hover, #c9b69f); border-color: var(--pg-sand-hover, #c9b69f); }
+  .pg-coach-card__cta:hover svg { transform: translateX(3px); }
+}
+.pg-coach-card__cta:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 2px; }
+.pg-coach-card__body { justify-content: flex-start; }
+.pg-coach-card__cta { margin-top: auto; padding-top: 0; }
+.pg-coach-card__facts { margin-bottom: 22px; }
+
+@media (max-width: 1023px) {
+  .pg-coach-card__focus { font-size: 21px; }
+}
+/* 手機：單欄，照片左右各多留 6（外層內距 22 → 照片 16） */
+@media (max-width: 767px) {
+  .pg-coach-card__photo { margin-inline: -6px; }
+  .pg-coach-card__body { margin-top: 16px; }
+  .pg-coach-card__focus { font-size: 22px; }
+}

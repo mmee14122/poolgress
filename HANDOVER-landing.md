@@ -31,8 +31,9 @@ git rm -rq ui/ && cp -r "C:/Users/User/Documents/Poolgress/dist/." ui/
 # 3 重產根目錄首頁與教練頁（把 "./assets/ 換成 "/ui/assets/）
 #    root/index.html   ← ui/landing.html
 #    root/coaches.html ← ui/coaches.html
+#    root/coach-profile.html ← ui/coach-profile.html
 python -c "import io
-for src,dst in [('landing.html','index.html'),('coaches.html','coaches.html')]:
+for src,dst in [('landing.html','index.html'),('coaches.html','coaches.html'),('coach-profile.html','coach-profile.html')]:
     s=io.open('ui/'+src,encoding='utf-8').read().replace('\"./assets/','\"/ui/assets/')
     io.open(dst,'w',encoding='utf-8').write(s)"
 
@@ -55,8 +56,11 @@ curl -s -X POST "$(cat ~/.poolgress-vercel-hook)"
 | `src/data/landing.ts` | 首頁文案、Hero CTA、導覽 `landingNav`、影片開關、聯絡信箱 |
 | `src/styles/landing.css` | 首頁所有樣式，**選擇器一律 `.pg-landing-root …`** |
 | `src/components/LandingFooter.tsx` | 精簡頁尾（Logo／Better Pool. Better Life.／信箱／版權） |
-| `coaches.html` / `src/coaches-entry.tsx` / `src/CoachesApp.tsx` / `src/styles/coaches.css` | 合作教練分頁（`.pg-coaches-root …`） |
-| `src/data/partner-coaches.ts` | **三位教練資料（目前全部示意）**；首頁區塊與分頁共用 |
+| `coaches.html` / `src/coaches-entry.tsx` / `src/CoachesApp.tsx` / `src/styles/coaches.css` | 合作教練列表頁（`.pg-coaches-root …`） |
+| `src/components/landing/CoachCard.tsx` / `src/styles/coach-card.css` | 教練卡片（首頁 02 區塊與列表頁共用，`.pg-coach-card …`） |
+| `coach-profile.html` / `src/coach-profile-entry.tsx` / `src/CoachProfileApp.tsx` / `src/styles/coach-profile.css` | 教練詳細頁 `?id=coach-a`（`.pg-profile-root …`）：左介紹／右預約面板 |
+| `src/components/landing/ProfileBooking.tsx` | 預約面板：流程複製自舊站 `components/coach/CoachBooking.tsx`（前端模擬付款），外觀換成新站語彙 |
+| `src/data/partner-coaches.ts` | **三位教練資料（目前全部示意）**：教學方向／標籤／適合對象／球館與各館時段／服務與價格；卡片、列表、詳細頁共用 |
 | `public/assets/landing/`、`/hero/`、`/app/`、`/coaches/` | 圖片與影片；程式裡一律寫 **`/ui/assets/…` 絕對路徑** |
 | `tools/shot.mjs` | 無頭 Chrome 截圖／量測工具（見 §7） |
 | `backups/landing-v1-2026-09-16/` + git tag `landing-v1-2026-09-16` | 改版前完整備份 |
@@ -75,9 +79,9 @@ curl -s -X POST "$(cat ~/.poolgress-vercel-hook)"
 ## 5. 待使用者決定（2026-09-16 停在這裡）
 
 1. **是否上線**新順序（App → 教練 → 場館）＋教練分頁。目前只在本機 commit。
-2. **教練區塊版本**：`?coach=A|B|C`（A 精品雜誌 / B 學院型 / C 人物列）。定案後在 `LandingApp.tsx` 移除 `previewVariant`，並把 `landing.css` 裡另外兩個版本的規則刪掉。
+2. ~~教練區塊版本 A/B/C~~ → 2026-09-16 已重設計成單一卡片（以 B 為底），切換已移除。
 3. **底色配置**：`?tone=a|b|c`（a App 淡藍 / b 教練淡藍 / c App 較深藍灰）。定案後同樣移除切換，把選定的顏色寫死。
-4. 教練頁 `coaches.html` 目前用的是 A 版的資訊層級，選了 B/C 要一起改。
+4. 教練詳細頁 `coach-profile.html` 的預約／付款／登入流程與舊站相同，全部是前端模擬（使用者 2026-09-16 指示：不正式上線，但要看起來功能相同）。
 5. 三位教練真實資料：姓名／照片（直式、≥1200 寬）／角色／專長／年資／理念／簡介 → 只改 `partner-coaches.ts`，把 `placeholder` 改 false 標記就消失。
 6. Hero 未來換成介紹影片；App 影片段落已用 `appChapter.video.show=false` 關掉，檔案仍在 `/ui/assets/app/intro.mp4`。
 7. SEO：首頁 meta description / og:image / canonical / robots.txt / sitemap.xml 都還沒做（文案三組草稿見 9/9 對話：建議用「Poolgress｜讓撞球成為一家人的共同記憶」）。Google 目前還顯示舊站快取，要在 Search Console 要求重新索引。
@@ -93,8 +97,8 @@ curl -s -X POST "$(cat ~/.poolgress-vercel-hook)"
 
 ```bash
 # 建一個和正式站相同結構的本機鏡像（根目錄 index/coaches + /ui/）
-mkdir -p site/ui && cp -r dist/. site/ui/ && (同 §2 第 3 步產 site/index.html、site/coaches.html)
-python -m http.server 8088 --directory site
+mkdir -p site/ui && cp -r dist/. site/ui/ && (同 §2 第 3 步產 site/index.html、site/coaches.html、site/coach-profile.html)
+python -m http.server 8088 --directory site   # 或 preview_start site-mirror（.claude/launch.json）
 # 截圖／量測：node tools/shot.mjs jobs.json out.json（jobs 格式見 tools/shot-jobs-example.json）
 ```
 

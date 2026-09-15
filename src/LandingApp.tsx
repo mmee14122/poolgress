@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react'
 import { finale, hero, palette as P, pillarSections, type Pillar, appChapter } from './data/landing'
 import { landingNav } from './data/landing'
 import { coaches, coachesSection } from './data/partner-coaches'
+import { CoachCard } from './components/landing/CoachCard'
 import { Navbar } from './components/Navbar'
 import { LandingFooter } from './components/LandingFooter'
 import { ProgressPoint } from './components/ProgressPoint'
@@ -157,10 +158,10 @@ export default function LandingApp() {
     return () => window.clearTimeout(t)
   }, [])
 
-  /* 預覽用切換（2026-09-16，定案後移除）：?coach=A|B|C 教練區版本、?tone=a|b|c 底色配置 */
+  /* 預覽用切換（2026-09-16，底色定案後移除）：?tone=a|b|c 底色配置 */
   const [previewVariant] = useState(() => {
     const q = new URLSearchParams(window.location.search)
-    return { coach: q.get('coach') ?? 'A', tone: q.get('tone') ?? 'a' }
+    return { tone: q.get('tone') ?? 'a' }
   })
 
   const reg = (id: string) => (el: HTMLElement | null) => {
@@ -369,14 +370,13 @@ export default function LandingApp() {
         )}
       </div>
 
-      {/* ---------- 02 / THE COACHES（2026-09-16）：App 之後、場館之前 ----------
-          精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影；
-          首頁只放精簡資訊，詳細內容在 coaches.html。資料集中在 data/coaches.ts。 */}
+      {/* ---------- 02 / THE COACHES（2026-09-16 重設計）：App 之後、場館之前 ----------
+          三張教練卡（components/landing/CoachCard）：不點進去也能看到教什麼／適合誰／在哪上／預約入口。
+          詳細頁與預約在 coach-profile.html?id=…。資料集中在 data/partner-coaches.ts。 */}
       <section
         ref={reg('coaches')}
         id="coaches"
         className="pg-coaches site-container"
-        data-variant={previewVariant.coach}
         style={{ color: P.text }}
       >
         <div className="pg-coaches__head">
@@ -391,46 +391,13 @@ export default function LandingApp() {
           </p>
         </div>
 
-        <ul className="pg-coaches__grid" aria-label="合作教練">
+        <div className="pg-coaches__grid" role="list" aria-label="合作教練">
           {coaches.map((c, i) => (
-            <li key={c.id} className="pg-coach" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
-              <div className="pg-coach__photo">
-                <img src={c.photo} alt={c.photoAlt} loading="lazy" />
-                {c.placeholder && <span className="pg-coach__badge">示意照片</span>}
-              </div>
-              <div className="pg-coach__body">
-                <p className="pg-coach__index">0{i + 1}</p>
-                <h3 className="pg-coach__name">
-                  {c.name}
-                  {c.placeholder && <span className="pg-coach__ph">示意</span>}
-                </h3>
-                <p className="pg-coach__role">{c.role}</p>
-                <ul className="pg-coach__specs" aria-label="專長">
-                  {c.specialties.map((sp) => (
-                    <li key={sp}>{sp}</li>
-                  ))}
-                </ul>
-                <dl className="pg-coach__stats">
-                  <div>
-                    <dt>教學年資</dt>
-                    <dd>{c.years}</dd>
-                  </div>
-                  <div>
-                    <dt>授課方式</dt>
-                    <dd>{c.format}</dd>
-                  </div>
-                </dl>
-                <p className="pg-coach__summary">{c.summary}</p>
-                <a className="pg-coach__more" href={`./coaches.html#${c.id}`}>
-                  完整介紹
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M7 17 17 7M8.5 7H17v8.5" />
-                  </svg>
-                </a>
-              </div>
-            </li>
+            <div key={c.id} role="listitem" style={fadeUp(shown('coaches'), 0.2 + i * 0.1, 0.8, 24)}>
+              <CoachCard coach={c} index={i} />
+            </div>
           ))}
-        </ul>
+        </div>
 
         <a
           href={coachesSection.link.href}

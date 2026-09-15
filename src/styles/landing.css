@@ -306,9 +306,9 @@
   }
 }
 
-/* ---------- 03 / THE COACHES 首頁區塊（2026-09-16）----------
-   精品雜誌式人物介紹：三欄等寬、4:5 照片、無卡片底色／陰影／明顯圓角。
-   容器沿用 THE APP 的 1680 置中與內距；手機單欄、照片左右留 16。 */
+/* ---------- 02 / THE COACHES 首頁區塊（2026-09-16 重設計）----------
+   三張教練卡（樣式在 coach-card.css）；這裡只管區塊的容器、標題與底部連結。
+   容器沿用 THE APP 的 1680 置中與內距；手機單欄。 */
 .pg-landing-root .pg-coaches {
   max-width: 1680px;
   margin-inline: auto;
@@ -322,90 +322,28 @@
 }
 .pg-landing-root .pg-coaches__intro { margin-top: 20px; max-width: 34em; }
 .pg-landing-root .pg-coaches__grid {
-  list-style: none;
   margin: 56px 0 0;
-  padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: 32px;
   row-gap: 48px;
+  align-items: stretch;
 }
-.pg-landing-root .pg-coach { min-width: 0; }
-.pg-landing-root .pg-coach__photo {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: var(--pg-landing-photo-radius, 3px);
-  background: rgba(var(--pg-charcoal-rgb), 0.06);
-}
-.pg-landing-root .pg-coach__photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 20%;
-  transition: transform 0.6s var(--pg-ease-out-3);
-}
-@media (hover: hover) {
-  .pg-landing-root .pg-coach:hover .pg-coach__photo img { transform: scale(1.02); }
-}
-/* 示意標記：等正式照片／資料進來就會自動消失（data.placeholder=false） */
-.pg-landing-root .pg-coach__badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 8px;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: var(--pg-charcoal);
-  background: rgba(var(--pg-ivory-rgb), 0.86);
-  border-radius: 2px;
-}
-.pg-landing-root .pg-coach__name {
-  margin-top: 20px;
-  font-family: var(--pg-font-serif);
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--pg-charcoal);
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.pg-landing-root .pg-coach__ph {
-  font-family: var(--pg-font-sans, inherit);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  color: var(--pg-walnut);
-}
-.pg-landing-root .pg-coach__tagline {
-  margin-top: 6px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--pg-walnut);
-}
-.pg-landing-root .pg-coach__summary {
-  margin-top: 12px;
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--pg-text-body, var(--pg-charcoal));
-}
-/* 「認識合作教練 ↗」：與 Hero CTA 同一套細線斜箭頭語彙，但用文字連結＋髮絲底線 */
+.pg-landing-root .pg-coaches__grid > div { display: flex; }
+.pg-landing-root .pg-coaches__grid > div > .pg-coach-card { flex: 1 1 auto; }
 .pg-landing-root .pg-coaches__link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   margin-top: 48px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
-  color: var(--pg-charcoal);
-  font-size: 14px;
+  padding-bottom: 4px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  color: var(--pg-charcoal);
   text-decoration: none;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
+  transition: border-color 0.32s var(--pg-ease-out-3);
 }
 .pg-landing-root .pg-coaches__link svg { transition: transform 0.32s var(--pg-ease-out-3); }
 @media (hover: hover) {
@@ -420,198 +358,10 @@
   .pg-landing-root .pg-coaches { padding: 64px 22px 72px; }
   .pg-landing-root .pg-coaches__grid {
     grid-template-columns: 1fr;
-    row-gap: 44px;
+    row-gap: 48px;
     margin-top: 40px;
   }
-  .pg-landing-root .pg-coach__photo { margin-inline: -6px; }   /* 照片左右 16，與 THE APP 手機版一致 */
   .pg-landing-root .pg-coaches__link { margin-top: 40px; }
-}
-
-/* ---------- 02 / THE COACHES：三個版本（2026-09-16 給使用者比較，定案後只留一個）----------
-   共用：三欄等寬、4:5 照片；版本差在資訊層級與字級。
-   A 精品雜誌：名字＋角色＋專長一行＋一句話，最安靜。
-   B 學院型（參考音樂學院師資頁）：上方髮絲線、編號、名字更大、角色粗一點、專長標籤、年資／授課方式數據列。
-   C 人物列：每位教練一整列，照片左、資料右，資訊最完整、最有「師資」份量。 */
-.pg-landing-root .pg-coach__index,
-.pg-landing-root .pg-coach__role,
-.pg-landing-root .pg-coach__specs,
-.pg-landing-root .pg-coach__stats,
-.pg-landing-root .pg-coach__more { display: none; }
-.pg-landing-root .pg-coach__specs { list-style: none; margin: 0; padding: 0; }
-.pg-landing-root .pg-coach__stats { margin: 0; }
-.pg-landing-root .pg-coach__stats dd { margin: 0; }
-
-/* ----- A：精品雜誌（微調：字級放大） ----- */
-.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__name { font-size: 26px; }
-.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__role {
-  display: block;
-  margin-top: 6px;
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  color: var(--pg-walnut);
-}
-.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__specs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 10px;
-  margin-top: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--pg-charcoal);
-}
-.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__specs li + li::before { content: '·'; margin-right: 10px; color: rgba(var(--pg-charcoal-rgb), 0.4); }
-.pg-landing-root .pg-coaches[data-variant='A'] .pg-coach__summary { font-size: 16px; margin-top: 14px; }
-
-/* ----- B：學院型 ----- */
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__body {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__index {
-  display: block;
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  color: var(--pg-walnut);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__name { margin-top: 10px; font-size: 30px; }
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__role {
-  display: block;
-  margin-top: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--pg-charcoal);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__specs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__specs li {
-  padding: 6px 11px;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--pg-charcoal);
-  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.28);
-  border-radius: 2px;
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats dt {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: rgba(var(--pg-charcoal-rgb), 0.55);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__stats dd {
-  margin-top: 4px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--pg-charcoal);
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__summary { font-size: 15px; margin-top: 18px; }
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--pg-charcoal);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
-  padding-bottom: 3px;
-}
-.pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__tagline { display: none; }
-
-/* ----- C：人物列 ----- */
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coaches__grid {
-  grid-template-columns: 1fr;
-  row-gap: 0;
-  margin-top: 40px;
-  border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
-  column-gap: clamp(40px, 5vw, 88px);
-  align-items: center;
-  padding: 48px 0;
-  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.18);
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__index {
-  display: block;
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  color: var(--pg-walnut);
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__name { margin-top: 10px; font-size: 34px; }
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__role {
-  display: block;
-  margin-top: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--pg-charcoal);
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__specs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__specs li {
-  padding: 6px 12px;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--pg-charcoal);
-  border: 1px solid rgba(var(--pg-charcoal-rgb), 0.28);
-  border-radius: 2px;
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats {
-  display: flex;
-  gap: 40px;
-  margin-top: 22px;
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats dt {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: rgba(var(--pg-charcoal-rgb), 0.55);
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__stats dd {
-  margin-top: 4px;
-  font-size: 15px;
-  font-weight: 600;
-}
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__summary { font-size: 16px; margin-top: 20px; max-width: 44em; }
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__tagline { display: none; }
-.pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 18px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--pg-charcoal);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(var(--pg-charcoal-rgb), 0.35);
-  padding-bottom: 3px;
-}
-@media (max-width: 767px) {
-  .pg-landing-root .pg-coaches[data-variant='C'] .pg-coach {
-    grid-template-columns: 1fr;
-    row-gap: 20px;
-    padding: 36px 0;
-  }
-  .pg-landing-root .pg-coaches[data-variant='B'] .pg-coach__name,
-  .pg-landing-root .pg-coaches[data-variant='C'] .pg-coach__name { font-size: 26px; }
 }
 
 /* ---------- 底色配置三案（2026-09-16：THE APP 移到 Hero 之後，藍與米色要重新分配）----------
