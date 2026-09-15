@@ -362,11 +362,8 @@
   .pg-landing-root .pg-coaches__link { margin-top: 40px; }
 }
 
-/* ---------- 底色配置三案（2026-09-16：THE APP 移到 Hero 之後，藍與米色要重新分配）----------
-   a：維持——THE APP 淡藍、教練與場館米白（照片 → 冷 → 暖 → 暖）
-   b：THE APP 米白、教練淡藍、場館米白（藍色帶移到中段，前後都是暖色）
-   c：THE APP 稍深的石板藍灰（Secondary 34%），教練與場館米白，冷暖對比更明確 */
-.pg-landing-root .pg-coaches { background: var(--pg-ivory); }
-.pg-landing-root[data-tone='b'] .pg-app-world { background: var(--pg-ivory); }
-.pg-landing-root[data-tone='b'] .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }
-.pg-landing-root[data-tone='c'] .pg-app-world { background: #d9dfe1; background: color-mix(in srgb, #afc4cf 34%, #f2eee6); }
+/* ---------- 底色配置（2026-09-16 使用者定案 b）----------
+   THE APP 米白、教練淡藍、場館米白：藍色帶在中段，前後都是暖色。
+   （曾有 a／c 兩案與 ?tone= 預覽切換，定案後移除。） */
+.pg-landing-root .pg-app-world { background: var(--pg-ivory); }
+.pg-landing-root .pg-coaches { background: var(--pg-app-world-bg-fallback); background: var(--pg-app-world-bg); }

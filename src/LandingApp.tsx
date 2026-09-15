@@ -158,12 +158,6 @@ export default function LandingApp() {
     return () => window.clearTimeout(t)
   }, [])
 
-  /* 預覽用切換（2026-09-16，底色定案後移除）：?tone=a|b|c 底色配置 */
-  const [previewVariant] = useState(() => {
-    const q = new URLSearchParams(window.location.search)
-    return { tone: q.get('tone') ?? 'a' }
-  })
-
   const reg = (id: string) => (el: HTMLElement | null) => {
     if (el) refs.current.set(id, el)
   }
@@ -172,7 +166,7 @@ export default function LandingApp() {
   const onTrans02 = shown(narrow ? 'trans02h' : 'trans02')
 
   return (
-    <main id="top" className="pg-home-root pg-landing-root" data-tone={previewVariant.tone} style={{ background: P.bg, color: P.text }}>
+    <main id="top" className="pg-home-root pg-landing-root" style={{ background: P.bg, color: P.text }}>
       {/* ---------- NAV：與其他頁同一顆 Navbar，首頁走透明玻璃變體（方案 B）。
           深色區塊加 data-nav-dark 讓它切成透明漸層＋白字，其餘落回米白玻璃 ---------- */}
       <Navbar theme="hero" glass links={landingNav} minimal logoHref="#top" />
