@@ -699,3 +699,99 @@
   .pg-profile-root .pg-bk-row { display: grid; grid-template-columns: 1fr; row-gap: 12px; }
   .pg-profile-root .pg-bk-field__value { white-space: normal; overflow-wrap: anywhere; }
 }
+
+/* ==========================================================================
+   手機 Bottom Sheet（2026-09-16 使用者規格）：<aside class="pg-pf-side"> 在 <1024 變成底部彈出面板。
+   標題列固定、底部操作區 sticky、中間單一捲動區；遮罩＋背景鎖捲動在 CoachProfileApp。
+   ========================================================================== */
+.pg-profile-root .pg-sheet-backdrop,
+.pg-profile-root .pg-sheet__head { display: none; }
+
+@media (max-width: 1023px) {
+  /* 手機不再有頁籤／精簡摘要；介紹永遠顯示 */
+  .pg-profile-root .pg-pf-mini, .pg-profile-root .pg-pf-tabs { display: none; }
+  .pg-profile-root .pg-pf-main { display: block !important; padding-top: 0; }
+  .pg-profile-root .pg-pf-grid { display: block; margin-top: 20px; padding-top: 0; border-top: 0; }
+
+  /* 遮罩 */
+  .pg-profile-root .pg-sheet-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 60;
+    background: rgba(var(--pg-charcoal-rgb), 0.45);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s var(--pg-ease-out-3);
+  }
+  .pg-profile-root[data-sheet='open'] .pg-sheet-backdrop { opacity: 1; pointer-events: auto; }
+
+  /* 面板：固定於底、左右貼齊、上圓角 18；高度約 82%，矮螢幕接近全高 */
+  .pg-profile-root .pg-pf-side {
+    display: block !important;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 61;
+    height: min(82dvh, 100dvh - 48px);
+    display: flex !important; flex-direction: column;
+    background: var(--pg-cream);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -8px 32px rgba(var(--pg-charcoal-rgb), 0.18);
+    transform: translateY(105%);
+    transition: transform 0.38s var(--pg-ease-out-3);
+    visibility: hidden;
+  }
+  @media (max-height: 700px) {
+    .pg-profile-root .pg-pf-side { height: calc(100dvh - 24px); }
+  }
+  .pg-profile-root[data-sheet='open'] .pg-pf-side { transform: translateY(0); visibility: visible; }
+  @media (prefers-reduced-motion: reduce) {
+    .pg-profile-root .pg-pf-side, .pg-profile-root .pg-sheet-backdrop { transition: none; }
+  }
+
+  /* 標題列：固定在面板頂 */
+  .pg-profile-root .pg-sheet__head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex: 0 0 auto;
+    padding: 10px 18px 8px;
+    border-bottom: 1px solid var(--pg-pf-line);
+  }
+  .pg-profile-root .pg-sheet__title { margin: 0; font-family: var(--pg-font-serif); font-size: 19px; font-weight: 600; line-height: 1.2; }
+  .pg-profile-root .pg-sheet__coach { margin: 2px 0 0; font-size: 12px; letter-spacing: 0.08em; color: var(--pg-walnut); }
+  .pg-profile-root .pg-sheet__close {
+    width: 44px; height: 44px; flex: 0 0 44px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--pg-pf-line); border-radius: 50%;
+    background: transparent; color: var(--pg-charcoal); cursor: pointer;
+  }
+  .pg-profile-root .pg-sheet__close:focus-visible { outline: 2px solid var(--pg-charcoal); outline-offset: 2px; }
+
+  /* 單一捲動區：內容 + sticky 底部操作區 */
+  .pg-profile-root .pg-pf-side__inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .pg-profile-root .pg-bk { border: 0; border-radius: 0; background: transparent; }
+  .pg-profile-root .pg-bk__head { display: none; }
+  .pg-profile-root .pg-bk__body { padding: 10px 18px 0; }
+  .pg-profile-root .pg-bk__body > * + * { margin-top: 8px; }
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk__body { padding-bottom: 0; }
+  .pg-profile-root .pg-bk-cal { max-width: none; }
+  /* 面板內優先讓月曆完整可見：圖例收掉、月份列與星期列收緊（日期格與字級不縮） */
+  .pg-profile-root .pg-bk-legend { display: none; }
+  .pg-profile-root .pg-bk-month__nav { width: 40px; height: 40px; }
+  .pg-profile-root .pg-bk-week { margin-top: 6px; }
+  .pg-profile-root .pg-bk-days { row-gap: 3px; }
+  .pg-profile-root .pg-bk-row { row-gap: 8px; }
+  .pg-profile-root .pg-bk-field__hint { margin-top: 3px; }
+  .pg-profile-root .pg-bk-venue-more { margin-top: 6px; }
+
+  /* 底部操作區：sticky 在捲動區底部，常駐；依進度切內容；預留安全邊距 */
+  .pg-profile-root .pg-bk-dock,
+  .pg-profile-root .pg-bk[data-stage='ready'] .pg-bk-dock {
+    position: sticky; bottom: 0; left: auto; right: auto; z-index: 5;
+    display: flex; align-items: center; gap: 12px; min-height: 64px;
+    margin: 16px -18px 0; padding: 10px 18px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--pg-cream); border-top: 1px solid var(--pg-pf-line);
+    box-shadow: none; backdrop-filter: none;
+  }
+  .pg-profile-root .pg-bk-dock__hint { margin: 0; font-size: 15px; font-weight: 600; color: rgba(var(--pg-charcoal-rgb), 0.6); }
+  /* 摘要／按鈕依進度顯示（沿用前一版規則），確認按鈕只在底部操作區 */
+  .pg-profile-root .pg-bk-actions { display: none; }
+  .pg-profile-root .pg-bk[data-stage='next'] .pg-bk-actions { display: grid; }
+  .pg-profile-root .pg-bk[data-stage='next'] .pg-bk-dock { display: none; }
+
+  /* 頁面底部固定「查看可預約時段」：面板開啟時隱藏 */
+  .pg-profile-root[data-sheet='open'] .pg-pf-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
+  .pg-profile-root .pg-pf { padding-bottom: calc(96px + var(--pg-pf-bar-h)); }
+}

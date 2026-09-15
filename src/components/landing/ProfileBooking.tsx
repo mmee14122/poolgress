@@ -61,6 +61,19 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
   const [mobileCode, setMobileCode] = useState('')
   const [certCode, setCertCode] = useState('')
   const [tried, setTried] = useState(false)
+  /** 手機 sheet：選日期後把時段列捲進可視範圍（桌機不動） */
+  const timesRef = useRef<HTMLDivElement | null>(null)
+  const revealTimes = () => {
+    if (!window.matchMedia('(max-width: 1023px)').matches) return
+    requestAnimationFrame(() => {
+      const el = timesRef.current
+      const inner = el?.closest<HTMLElement>('.pg-pf-side__inner')
+      if (!el || !inner) return
+      /* 只捲面板的單一捲動區：把時段列帶到可視區頂端下方一點 */
+      const top = inner.scrollTop + (el.getBoundingClientRect().top - inner.getBoundingClientRect().top) - 12
+      inner.scrollTo({ top, behavior: 'smooth' })
+    })
+  }
   /** 換球館後原本選的日期／時段失效：顯示提示（說明清了什麼），直到重新選日期 */
   const [venueChanged, setVenueChanged] = useState<null | 'date' | 'time'>(null)
   const paying = useRef(false)
@@ -412,6 +425,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
                         setSelectedDate(key)
                         setSelectedTime(null)
                         setVenueChanged(null)
+                        revealTimes()
                       }}
                       className="pg-bk-day"
                       data-state={active ? 'active' : open ? 'open' : past ? 'past' : 'closed'}
@@ -431,7 +445,7 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
 
             </div>
 
-              <div className="pg-bk-times">
+              <div ref={timesRef} className="pg-bk-times">
                 {!selectedDate ? (
                   <p className="pg-bk-muted pg-bk-times__hint">請選擇可預約日期</p>
                 ) : (
@@ -473,18 +487,23 @@ export function ProfileBooking({ coach }: { coach: PartnerCoach }) {
           </div>
           <p className="pg-bk-note">預約與開放時段皆為示意，尚未串接排程系統。</p>
 
-          {/* 手機：選好時段後底部固定操作列（桌機隱藏；桌機用上方按鈕） */}
-          {ready && (
-            <div className="pg-bk-dock">
-              <div className="pg-bk-dock__text">
-                <span className="pg-bk-dock__date">{formatDate(selectedDate!)}</span>
-                <span className="pg-bk-dock__time">{selectedTime}</span>
-              </div>
-              <button type="button" className="pg-bk-btn pg-bk-btn--primary pg-bk-dock__btn" onClick={() => setStep('payment')}>
-                確認預約
-              </button>
-            </div>
-          )}
+          {/* 手機 sheet 底部操作區（sticky 在捲動區底；桌機隱藏，桌機用上方按鈕）：
+              依進度顯示「請選擇日期」「請選擇時間」→ 日期＋時間＋「確認預約」（進入摘要，不直接送出） */}
+          <div className="pg-bk-dock" data-stage={!selectedDate ? 'date' : !selectedTime ? 'time' : 'ready'}>
+            {ready ? (
+              <>
+                <div className="pg-bk-dock__text">
+                  <span className="pg-bk-dock__date">{formatDate(selectedDate!)}</span>
+                  <span className="pg-bk-dock__time">{selectedTime}</span>
+                </div>
+                <button type="button" className="pg-bk-btn pg-bk-btn--primary pg-bk-dock__btn" onClick={() => setStep('payment')}>
+                  確認預約
+                </button>
+              </>
+            ) : (
+              <p className="pg-bk-dock__hint">{!selectedDate ? '請選擇日期' : '請選擇時間'}</p>
+            )}
+          </div>
         </div>
       )}
     </section>
