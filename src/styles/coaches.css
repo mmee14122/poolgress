@@ -63,14 +63,17 @@
 /* ---------- 三張卡：桌機三欄等寬，按鈕齊底 ---------- */
 .pg-coaches-root .pg-cp-list {
   display: grid;
-  grid-template-columns: repeat(3, 357px);   /* 2026-09-16 使用者定案：卡片固定 357 寬、三張置中、欄距 48 */
-  justify-content: center;
-  column-gap: 48px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 40px;
   row-gap: 64px;
   padding-top: 32px;
   padding-bottom: 72px;
   border-top: 1px solid rgba(var(--pg-charcoal-rgb), 0.12);
   align-items: stretch;
+}
+/* 2026-09-16 使用者定案：≥1200 時卡片固定 357 寬、三張置中、欄距 48（更窄回等分三欄，避免橫向捲動） */
+@media (min-width: 1200px) {
+  .pg-coaches-root .pg-cp-list { grid-template-columns: repeat(3, 357px); justify-content: center; column-gap: 48px; }
 }
 /* 2026-09-16 使用者：桌機不捲動就能看完整三張卡——照片 3:2、卡內間距收緊 */
 .pg-coaches-root .pg-coach-card__photo { aspect-ratio: 3 / 2; }
@@ -110,7 +113,7 @@
 }
 
 @media (max-width: 1023px) {
-  .pg-coaches-root .pg-cp-list { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 28px; }
+  .pg-coaches-root .pg-cp-list { column-gap: 28px; }
 }
 /* ---------- 手機：單欄 ---------- */
 @media (max-width: 767px) {
