@@ -112,6 +112,9 @@ export const appChapter = {
   },
 }
 
+/** 首頁 01 / THE APP 章節 Hero 的橫幅圖（2026-09-16 使用者提供；/app 第一段仍用 play.webp） */
+export const appHeroImage = '/ui/assets/landing/app-hero.webp'
+
 /** 03 / THE SPACE 大標下的副標（2026-09-16 使用者） */
 export const spaceIntro = '打球、相聚，或只是待一會。這裡有屬於你的空間。'
 

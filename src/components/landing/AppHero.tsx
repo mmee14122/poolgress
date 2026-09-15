@@ -1,4 +1,4 @@
-import { appChapter, appPlayHref, appPreview, pillarSections } from '../../data/landing'
+import { appChapter, appHeroImage, appPlayHref, appPreview } from '../../data/landing'
 import { fadeUp } from '../../LandingApp'
 
 /**
@@ -12,13 +12,12 @@ import { fadeUp } from '../../LandingApp'
  * 樣式在 styles/landing-ia.css（.pg-landing-root .pg-app-hero…）。
  */
 export function AppHero({ on, refCb }: { on: boolean; refCb: (el: HTMLElement | null) => void }) {
-  const visual = pillarSections.find((s) => s.id === 's02')
   const [l1, l2] = appChapter.titleLines
   return (
     <section ref={refCb} id="app-hero" className="pg-app-hero">
       {/* 2026-09-16 使用者：眉標「01 / THE APP」移進圖內，與主標、中文同一個 overlay 容器；圖上方不再有米白空白 */}
       <a href={appPlayHref} className="pg-app-hero__banner" aria-label={`${l1} ${l2}，探索 App 玩法`} style={fadeUp(on, 0.05, 0.9, 16)}>
-        {visual?.image && <img src={visual.image} alt={appPreview.imageAlt} />}
+        <img src={appHeroImage} alt={appPreview.imageAlt} />
         <span className="pg-app-hero__veil" aria-hidden="true" />
         <span className="pg-app-hero__copy">
           <span id="app" className="pg-anchor-line pg-app-hero__eyebrow">{appChapter.eyebrow}</span>
